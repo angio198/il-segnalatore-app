@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101E28">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Segnalatore Live</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF1EC; --bg-alt:#E3E8E0; --surface:#FFFFFF;
+    --ink:#101E28; --ink-soft:#4C5C61; --line:rgba(16,30,40,0.14);
+    --accent:#C97A22; --accent-strong:#8A5115; --teal:#345F58;
+    --good:#3C7A57; --bad:#A24632;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0C161C; --bg-alt:#101E25; --surface:#132029;
+      --ink:#E8ECE6; --ink-soft:#A6B3B1; --line:rgba(232,236,230,0.15);
+      --accent:#E8A252; --accent-strong:#F0B36B; --teal:#7CAEA5;
+      --good:#6FBE92; --bad:#E08268; color-scheme:dark;
+    }
+  }
+  *{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html,body{height:100%;margin:0;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Source Sans 3',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    line-height:1.45;display:flex;flex-direction:column;overflow:hidden;
+  }
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums;}
+  button{font-family:inherit;}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  .topbar{
+    flex:none;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px 12px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    border-bottom:1px solid var(--line);background:var(--surface);
+  }
+  .brand{display:flex;align-items:center;gap:9px;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:1.05rem;}
+  .brand .ring{transform-origin:24px 14px;animation:pulse 3.4s ease-in-out infinite;}
+  .brand .ring:nth-child(2){animation-delay:.5s;}
+  @keyframes pulse{0%{opacity:.55;transform:scale(0.9);}60%{opacity:0;transform:scale(1.35);}100%{opacity:0;transform:scale(1.35);}}
+  @media (prefers-reduced-motion: reduce){.brand .ring{animation:none;opacity:.35;}}
+  .topright{display:flex;align-items:center;gap:10px;}
+  .asof{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);text-align:right;line-height:1.35;}
+  .iconbtn{
+    background:none;border:1px solid var(--line);border-radius:999px;color:var(--ink);
+    width:34px;height:34px;display:grid;place-items:center;font-size:1rem;cursor:pointer;flex:none;
+  }
+
+  .view{flex:1;overflow-y:auto;padding:18px 16px calc(env(safe-area-inset-bottom,0px) + 84px);-webkit-overflow-scrolling:touch;}
+  .view[hidden]{display:none!important;}
+
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px;}
+  .sectiontitle{font-size:1.05rem;margin:26px 0 12px;}
+  .note{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:0.85rem;color:var(--ink-soft);line-height:1.5;}
+  .gap{margin-bottom:26px;}
+
+  /* lock */
+  .lock{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:14px;max-width:360px;margin:8vh auto 0;}
+  .lock h1{font-size:1.5rem;}
+  .lock p{margin:0;color:var(--ink-soft);font-size:0.92rem;}
+  .lock label{font-weight:600;font-size:0.9rem;}
+  .lock input{
+    font:inherit;font-size:1rem;padding:12px 14px;border-radius:10px;border:1px solid var(--line);
+    background:var(--surface);color:var(--ink);width:100%;
+  }
+  .primary{
+    font-weight:700;font-size:0.95rem;padding:13px 18px;border-radius:999px;border:1px solid var(--ink);
+    background:var(--ink);color:var(--bg);cursor:pointer;
+  }
+  @media (prefers-color-scheme: dark){.primary{background:var(--accent);border-color:var(--accent);color:#12181A;}}
+  .primary[disabled]{opacity:.6;cursor:wait;}
+  .msg{font-size:0.88rem;min-height:1.3em;color:var(--bad);}
+
+  /* status */
+  .statuscards{display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
+  .scard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;}
+  .scard .icon{font-size:1.5rem;flex:none;width:38px;text-align:center;}
+  .scard .body{flex:1;min-width:0;}
+  .scard .sport{font-weight:700;font-size:0.98rem;}
+  .scard .sub{color:var(--ink-soft);font-size:0.84rem;margin-top:2px;}
+  .scard .count{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:1.3rem;flex:none;min-width:34px;text-align:right;}
+  .pill{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.04em;padding:4px 9px;border-radius:999px;white-space:nowrap;flex:none;}
+  .pill.on{background:color-mix(in srgb, var(--good) 16%, transparent);color:var(--good);}
+  .pill.warm{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
+
+  /* andamento */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:15px 16px;margin-bottom:10px;}
+  .card .head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px;}
+  .card .title{font-weight:700;font-size:0.92rem;}
+  .card .n{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--ink-soft);white-space:nowrap;}
+  .small-sample{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.04em;color:var(--accent-strong);margin-left:6px;}
+  .row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .row:last-child{margin-bottom:0;}
+  .row .label{width:64px;flex:none;font-size:0.82rem;color:var(--ink-soft);}
+  .track{flex:1;height:8px;background:var(--bg-alt);border-radius:5px;overflow:hidden;position:relative;}
+  .track .fill{height:100%;border-radius:5px;position:absolute;top:0;}
+  .track .zero{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--ink-soft);opacity:.45;}
+  .row .val{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;min-width:52px;text-align:right;flex:none;}
+  .roi{margin-top:7px;font-family:'IBM Plex Mono',monospace;font-size:0.82rem;font-weight:600;}
+  .pos{color:var(--good);} .neg{color:var(--bad);}
+
+  /* feed */
+  .chips{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .chip{
+    font-size:0.84rem;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--line);
+    background:var(--surface);color:var(--ink-soft);cursor:pointer;
+  }
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+  @media (prefers-color-scheme: dark){.chip[aria-pressed="true"]{background:var(--accent);color:#12181A;border-color:var(--accent);}}
+  .feedcard .top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .feedcard .cat{font-size:0.78rem;color:var(--ink-soft);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .feedcard .time{font-family:'IBM Plex Mono',monospace;font-size:0.74rem;color:var(--ink-soft);flex:none;}
+  .feedcard .event{font-weight:700;font-size:0.94rem;margin-bottom:8px;overflow-wrap:anywhere;}
+  .feedcard .pickrow{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:0.88rem;}
+  .feedcard .ev{font-family:'IBM Plex Mono',monospace;font-size:0.85rem;font-weight:600;flex:none;}
+  .feedcard .meta{margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:0.76rem;color:var(--ink-soft);}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.04em;padding:3px 8px;border-radius:999px;margin-top:9px;display:inline-block;}
+  .badge.valore{background:color-mix(in srgb, var(--good) 16%, transparent);color:var(--good);}
+  .badge.lieve{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
+  .badge.nessun{background:color-mix(in srgb, var(--bad) 14%, transparent);color:var(--bad);}
+  .badge.info{background:color-mix(in srgb, var(--teal) 14%, transparent);color:var(--teal);}
+
+  .tabbar{
+    position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;background:var(--surface);border-top:1px solid var(--line);
+    padding:8px 6px calc(env(safe-area-inset-bottom,0px) + 8px);
+  }
+  .tabbar[hidden]{display:none!important;}
+  .tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;
+    font-size:0.72rem;font-weight:600;color:var(--ink-soft);cursor:pointer;padding:6px 4px;border-radius:10px;
+  }
+  .tab .ic{font-size:1.25rem;line-height:1;}
+  .tab[aria-current="page"]{color:var(--accent-strong);}
+  @media (prefers-color-scheme: dark){.tab[aria-current="page"]{color:var(--accent);}}
+
+  @media (min-width:600px){
+    body{max-width:480px;margin-inline:auto;box-shadow:0 0 0 1px var(--line);}
+    .tabbar{max-width:480px;margin-inline:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <svg width="20" height="22" viewBox="0 0 48 40" fill="none" aria-hidden="true">
+      <circle class="ring" cx="24" cy="14" r="9" stroke="var(--accent)" stroke-width="1.6"/>
+      <circle class="ring" cx="24" cy="14" r="9" stroke="var(--accent)" stroke-width="1.6"/>
+      <circle cx="24" cy="14" r="3.4" fill="var(--accent)"/>
+      <path d="M18 32L22 18H26L30 32" stroke="var(--ink)" stroke-width="1.6" stroke-linejoin="round"/>
+      <line x1="15" y1="32" x2="33" y2="32" stroke="var(--ink)" stroke-width="1.6"/>
+    </svg>
+    Il Segnalatore
+  </div>
+  <div class="topright" id="topright" hidden>
+    <div class="asof" id="asof"></div>
+    <button class="iconbtn" id="refresh" type="button" aria-label="Aggiorna i dati">↻</button>
+    <button class="iconbtn" id="logout" type="button" aria-label="Esci e dimentica la password">⎋</button>
+  </div>
+</div>
+
+<main class="view" id="view-lock">
+  <form class="lock" id="lockform">
+    <h1>I tuoi segnali</h1>
+    <p>I dati sono cifrati: solo con la tua password si possono leggere. Sul tuo telefono la chiedo una volta sola.</p>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" autocomplete="current-password" required>
+    <button class="primary" id="unlock" type="submit">Apri</button>
+    <div class="msg" id="lockmsg" role="alert"></div>
+  </form>
+</main>
+
+<main class="view" id="view-stato" hidden>
+  <div class="eyebrow">Stato dei motori</div>
+  <div class="statuscards" id="status"></div>
+  <h2 class="sectiontitle">Cosa significano i numeri</h2>
+  <div class="note">Il numero a destra è quanti segnali sono usciti <b>oggi</b>, non un punteggio: più segnali non vuol dire modello migliore. "In raccolta" vuol dire che il motore gira ma non ha ancora pubblicato nessun segnale.</div>
+</main>
+
+<main class="view" id="view-andamento" hidden>
+  <div class="eyebrow">Ippica · modello contro favorito</div>
+  <div id="ippica-track"></div>
+  <div class="eyebrow">Tennis · strategie pubblicate sul canale</div>
+  <div id="tennis-track"></div>
+  <div class="note gap">La barra parte dal centro: a destra guadagna, a sinistra perde (metà barra = ±20%). Sotto le 100 analisi il campione è troppo piccolo per fidarsi.</div>
+  <div class="eyebrow">Calcio</div>
+  <div class="note">Nessun numero affidabile ancora: il calcio ha appena iniziato a pubblicare.</div>
+</main>
+
+<main class="view" id="view-segnali" hidden>
+  <div class="chips" id="chips" role="group" aria-label="Filtra per sport">
+    <button class="chip" type="button" data-filter="all" aria-pressed="true">Tutti</button>
+    <button class="chip" type="button" data-filter="tennis" aria-pressed="false">🎾 Tennis</button>
+    <button class="chip" type="button" data-filter="ippica" aria-pressed="false">🐎 Ippica</button>
+    <button class="chip" type="button" data-filter="calcio" aria-pressed="false">⚽ Calcio</button>
+  </div>
+  <div id="feed"></div>
+</main>
+
+<nav class="tabbar" id="tabbar" hidden>
+  <button class="tab" type="button" data-view="stato" aria-current="page"><span class="ic">◎</span>Stato</button>
+  <button class="tab" type="button" data-view="andamento"><span class="ic">▤</span>Andamento</button>
+  <button class="tab" type="button" data-view="segnali"><span class="ic">≡</span>Segnali</button>
+</nav>
+
+<script>
+(function () {
+  "use strict";
+  var PW_KEY = "segnalatore.pw";
+  var EMOJI = { tennis: "🎾", ippica: "🐎", calcio: "⚽" };
+  var NAME = { tennis: "Tennis", ippica: "Ippica", calcio: "Calcio" };
+  var TIER_LABEL = { valore: "VALORE", lieve: "LIEVE VALORE", nessun: "NESSUN VALORE", info: "INFORMATIVO" };
+  var data = null, filter = "all";
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function it(n, digits) { return n.toFixed(digits).replace(".", ","); }
+  function pct(frac) { return (frac >= 0 ? "+" : "−") + it(Math.abs(frac) * 100, 1) + "%"; }
+  function storeGet() { try { return localStorage.getItem(PW_KEY); } catch (e) { return null; } }
+  function storeSet(v) { try { v ? localStorage.setItem(PW_KEY, v) : localStorage.removeItem(PW_KEY); } catch (e) {} }
+
+  function b64(s) { return Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }); }
+  async function decrypt(env, password) {
+    var enc = new TextEncoder();
+    var base = await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]);
+    var key = await crypto.subtle.deriveKey(
+      { name: "PBKDF2", salt: b64(env.salt), iterations: env.iter, hash: "SHA-256" },
+      base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    var plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(env.iv) }, key, b64(env.ct));
+    return JSON.parse(new TextDecoder().decode(plain));
+  }
+
+  async function fetchEnvelope() {
+    var res = await fetch("data.enc.json?t=" + Date.now(), { cache: "no-store" });
+    if (res.status === 404) throw { code: "nodata" };
+    if (!res.ok) throw { code: "network" };
+    return res.json();
+  }
+
+  function whenLabel(ts) {
+    var d = new Date(ts * 1000), now = new Date();
+    var hm = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+    if (d.toDateString() === now.toDateString()) return hm;
+    var y = new Date(now); y.setDate(now.getDate() - 1);
+    if (d.toDateString() === y.toDateString()) return "ieri " + hm;
+    return String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0") + " " + hm;
+  }
+
+  function renderStatus() {
+    $("status").innerHTML = ["tennis", "ippica", "calcio"].map(function (s) {
+      var st = data.status[s];
+      var on = st.state === "attivo";
+      return '<div class="scard"><div class="icon" aria-hidden="true">' + EMOJI[s] + '</div>'
+        + '<div class="body"><div class="sport">' + NAME[s] + '</div><div class="sub">' + esc(st.sub) + '</div></div>'
+        + '<span class="pill ' + (on ? "on" : "warm") + '">' + (on ? "ATTIVO" : "IN RACCOLTA") + '</span>'
+        + '<div class="count" aria-label="segnali oggi">' + st.today + '</div></div>';
+    }).join("");
+  }
+
+  function renderTrack() {
+    var ip = data.track.ippica;
+    if (!ip) {
+      $("ippica-track").innerHTML = '<div class="note gap">Nessuna corsa liquidata ancora.</div>';
+    } else {
+      var ahead = ip.model > ip.favorite;
+      $("ippica-track").innerHTML = '<div class="card"><div class="head"><span class="title">Corse pubblicate: probabilità &gt; 35%, valore atteso ≤ 30%</span><span class="n">' + ip.n + ' corse</span></div>'
+        + '<div class="row"><span class="label">Modello</span><div class="track"><div class="fill" style="left:0;width:' + (ip.model / ip.n * 100) + '%;background:var(--teal);"></div></div><span class="val">' + ip.model + '/' + ip.n + '</span></div>'
+        + '<div class="row"><span class="label">Favorito</span><div class="track"><div class="fill" style="left:0;width:' + (ip.favorite / ip.n * 100) + '%;background:var(--accent);"></div></div><span class="val">' + ip.favorite + '/' + ip.n + '</span></div></div>'
+        + '<div class="note gap">' + (ahead
+          ? "Il modello è davanti al favorito su queste " + ip.n + " corse, ma sono poche per parlare di vantaggio."
+          : "Il favorito di mercato vince più spesso del modello (o lo pareggia). Nessun vantaggio dimostrato.")
+        + '</div>';
+    }
+    var t = data.track.tennis || [];
+    $("tennis-track").innerHTML = t.length ? t.map(function (s) {
+      var w = Math.min(Math.abs(s.roi) / 0.20, 1) * 50;
+      var pos = s.roi >= 0;
+      return '<div class="card"><div class="head"><span class="title">' + esc(s.strategy)
+        + (s.n < 100 ? '<span class="small-sample">CAMPIONE PICCOLO</span>' : "") + '</span><span class="n">' + s.n + ' analisi</span></div>'
+        + '<div class="track"><div class="zero"></div><div class="fill" style="' + (pos ? "left:50%" : "right:50%") + ';width:' + w + '%;background:var(' + (pos ? "--good" : "--bad") + ');"></div></div>'
+        + '<div class="roi ' + (pos ? "pos" : "neg") + '">ROI storico ' + pct(s.roi) + '</div></div>';
+    }).join("") : '<div class="note">Nessuna strategia tennis pubblicata ancora.</div>';
+  }
+
+  function renderFeed() {
+    var items = data.feed.filter(function (f) { return filter === "all" || f.sport === filter; });
+    if (!items.length) { $("feed").innerHTML = '<div class="note">Nessun segnale per questo filtro, per ora.</div>'; return; }
+    $("feed").innerHTML = items.map(function (f) {
+      var top = '<div class="top"><span aria-hidden="true">' + EMOJI[f.sport] + '</span><span class="cat">' + esc(f.kind === "outcome" ? ("Esito" + (f.cat ? " · " + f.cat : "")) : f.cat) + '</span><span class="time">' + whenLabel(f.ts) + '</span></div>'
+        + '<div class="event">' + esc(f.event) + '</div>';
+      if (f.kind === "outcome") {
+        return '<div class="card feedcard">' + top + '<div class="pickrow"><span>' + (f.hit ? "✅ " : "❌ ") + esc(f.detail) + '</span>'
+          + '<span class="ev ' + (f.hit ? "pos" : "neg") + '">' + esc(f.result) + '</span></div></div>';
+      }
+      var ev = f.ev == null ? '<span class="ev">EV n/d</span>' : '<span class="ev ' + (f.ev >= 0 ? "pos" : "neg") + '">' + pct(f.ev) + '</span>';
+      return '<div class="card feedcard">' + top
+        + '<div class="pickrow"><span>Indicazione: <b>' + esc(f.pick) + '</b></span>' + ev + '</div>'
+        + '<div class="meta">' + esc(f.prob_label) + ' ' + f.prob + '% · Quota ' + it(f.odds, 2) + (f.strategy ? " · " + esc(f.strategy) : "") + '</div>'
+        + '<span class="badge ' + f.tier + '">' + TIER_LABEL[f.tier] + '</span></div>';
+    }).join("");
+  }
+
+  function show(view) {
+    ["lock", "stato", "andamento", "segnali"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    var unlocked = view !== "lock";
+    $("tabbar").hidden = !unlocked;
+    $("topright").hidden = !unlocked;
+    document.querySelectorAll(".tab").forEach(function (t) {
+      if (t.dataset.view === view) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
+    });
+  }
+
+  function renderAll() {
+    var g = new Date(data.generated_at);
+    $("asof").innerHTML = "Dati aggiornati<br>" + whenLabel(g.getTime() / 1000);
+    renderStatus(); renderTrack(); renderFeed();
+  }
+
+  async function load(password, fromForm) {
+    var btn = $("unlock"), msg = $("lockmsg");
+    btn.disabled = true; msg.textContent = fromForm ? "Apro i dati…" : "";
+    try {
+      var env = await fetchEnvelope();
+      data = await decrypt(env, password);
+      storeSet(password);
+      renderAll();
+      if (!$("view-lock").hidden) show("stato");
+      msg.textContent = "";
+    } catch (e) {
+      show("lock");
+      if (e && e.code === "nodata") msg.textContent = "Non ci sono ancora dati caricati. Riprova tra qualche minuto.";
+      else if (e && e.code === "network") msg.textContent = "Dati non raggiungibili. Controlla la connessione e riprova.";
+      else if (e && e.name === "OperationError") { storeSet(null); msg.textContent = "Password sbagliata."; }
+      else msg.textContent = "Qualcosa non ha funzionato. Riprova.";
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  $("lockform").addEventListener("submit", function (e) { e.preventDefault(); load($("pw").value, true); });
+  $("refresh").addEventListener("click", function () { var pw = storeGet(); if (pw) load(pw, false); });
+  $("logout").addEventListener("click", function () { storeSet(null); data = null; $("pw").value = ""; show("lock"); });
+  $("tabbar").addEventListener("click", function (e) { var b = e.target.closest(".tab"); if (b) show(b.dataset.view); });
+  $("chips").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip"); if (!b) return;
+    filter = b.dataset.filter;
+    document.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
+    if (data) renderFeed();
+  });
+
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
+  var saved = storeGet();
+  if (saved) load(saved, false); else show("lock");
+})();
+</script>
+</body>
+</html>
