@@ -436,6 +436,8 @@
       html += '<h2 class="sectiontitle">Il segnale</h2><div class="facts">'
         + '<div><span class="k">Indicazione: </span><b>' + esc(sig.pick) + '</b></div>'
         + '<div><span class="k">Quota: </span><b>' + it(sig.odds, 2) + '</b></div>'
+        + (sig.it_best && sig.it_best.best ? '<div><span class="k">Miglior quota italiana: </span><b class="' + (sig.it_best.best >= sig.odds ? "pos" : "") + '">' + it(sig.it_best.best, 2) + '</b> (' + esc(sig.it_best.bookmaker) + ', fra ' + sig.it_best.books + ' bookmaker) <span class="k">· solo per te</span></div>'
+           : (sig.it_best ? '<div><span class="k">Miglior quota italiana: </span>non trovata</div>' : ""))
         + '<div><span class="k">' + esc(sig.prob_label) + ': </span><b>' + sig.prob + '%</b></div>'
         + '<div><span class="k">Valore atteso: </span><b>' + (sig.ev == null ? "non calcolabile per questo tipo di segnale" : pct(sig.ev)) + '</b></div>'
         + (strat ? '<div><span class="k">Strategia: </span><button class="more" type="button" data-more="' + esc(strat) + '">' + esc(strat) + ' ›</button></div>' : "")
