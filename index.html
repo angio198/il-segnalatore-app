@@ -681,6 +681,16 @@
         + pct(b.roi) + ' su ' + b.n.toLocaleString("it-IT") + ' partite. Nessuna arriva a pari.</div></div>';
     }
     var tests = [];
+    if (v.dopo_goleada && v.dopo_goleada.length) {
+      var dg = function (how) { return v.dopo_goleada.filter(function (r) { return r.dopo === how; }); };
+      tests.push('<div class="test"><div class="tn">Dopo tanti gol esce Under?</div><div class="tt">Dopo una partita con 5 gol o più (3-2, 4-1…), la partita dopo: quante volte finisce Under, contro quanto dice la quota e quanto succede sempre.</div><div class="tl">'
+        + ["campionato", "squadre"].map(function (how) {
+          return '<span><b>' + (how === "campionato" ? "turno dopo, stesso campionato" : "partita dopo delle stesse squadre") + '</b></span>'
+            + dg(how).map(function (r) {
+              return '<span>' + esc(r.linea) + ': ' + it(r.under * 100, 1) + '% (quota ' + it(r.atteso * 100, 1) + '%, sempre ' + it(r.base_under * 100, 1) + '%) · <b class="' + (r.roi >= 0 ? "pos" : "neg") + '">' + pct(r.roi) + '</b></span>';
+            }).join("");
+        }).join("") + '</div></div>');
+    }
     if (strongest.candidati != null) {
       tests.push('<div class="test"><div class="tn">Partite "fortunate"</div><div class="tt">Esiti che nei primi giorni sono usciti più del dovuto (almeno +20%), giocati poi negli ultimi ' + v.verifica_giorni + ' giorni.</div><div class="tl">'
         + '<span>trovati: ' + strongest.candidati + ' (per puro caso ne escono ~' + Math.round(strongest.candidati_per_caso) + ')</span>'
