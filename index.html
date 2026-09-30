@@ -202,6 +202,19 @@
   details.raw pre{white-space:pre-wrap;overflow-wrap:anywhere;font-family:'IBM Plex Mono',monospace;font-size:0.76rem;
     background:var(--bg-alt);border-radius:10px;padding:12px;margin:0;}
 
+  /* calcio virtuale */
+  .test{padding:12px 0;border-bottom:1px solid var(--line);}
+  .test:last-child{border-bottom:none;}
+  .test .tn{font-weight:700;font-size:0.9rem;}
+  .test .tt{font-size:0.84rem;color:var(--ink-soft);margin-top:3px;}
+  .test .tl{font-family:'IBM Plex Mono',monospace;font-size:0.76rem;margin-top:6px;display:flex;flex-direction:column;gap:3px;}
+  .vres{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 10px;align-items:baseline;font-size:0.84rem;}
+  .vres .w{font-family:'IBM Plex Mono',monospace;font-size:0.74rem;color:var(--ink-soft);white-space:nowrap;}
+  .vres .p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .vres .s{font-family:'IBM Plex Mono',monospace;font-weight:600;}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:0.74rem;color:var(--ink-soft);margin-top:4px;}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px;}
+
   .tabbar{
     position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;background:var(--surface);border-top:1px solid var(--line);
     padding:8px 6px calc(env(safe-area-inset-bottom,0px) + 8px);
@@ -292,9 +305,15 @@
   <div id="dettaglio"></div>
 </main>
 
+<main class="view" id="view-virtuali" hidden>
+  <div class="eyebrow">Calcio virtuale Sisal</div>
+  <div id="virtuali"></div>
+</main>
+
 <nav class="tabbar" id="tabbar" hidden>
   <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic">≡</span>Segnali</button>
   <button class="tab" type="button" data-view="strategie"><span class="ic">⚙</span>Strategie</button>
+  <button class="tab" type="button" data-view="virtuali"><span class="ic">⚄</span>Virtuali</button>
 </nav>
 
 <script>
@@ -587,8 +606,114 @@
     $("view-dettaglio").scrollTop = 0;
   }
 
+  // Quota contro realta': per ogni fascia, probabilita' detta dalla quota (chiara) e frequenza vera (piena).
+  function calibChart(rows) {
+    var W = 320, H = 170, L = 8, R = 8, T = 18, B = 34, top = 0.7;
+    var slot = (W - L - R) / rows.length, bw = Math.min(16, slot * 0.3);
+    function y(v) { return T + (H - T - B) * (1 - v / top); }
+    var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Probabilita della quota e frequenza reale per fascia">'
+      + '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(0) + '" y2="' + y(0) + '" stroke="var(--ink-soft)" stroke-width="1"/>';
+    rows.forEach(function (r, i) {
+      var cx = L + slot * (i + 0.5);
+      [[r.prob_quote, -1, "var(--teal)", "0.35"], [r.freq_vera, 1, "var(--accent)", "1"]].forEach(function (b) {
+        var x0 = cx + (b[1] < 0 ? -bw - 1 : 1);
+        out += '<rect x="' + x0.toFixed(1) + '" y="' + y(b[0]).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + (y(0) - y(b[0])).toFixed(1)
+          + '" rx="2" fill="' + b[2] + '" fill-opacity="' + b[3] + '"/>';
+      });
+      out += '<text x="' + cx.toFixed(1) + '" y="' + (y(Math.max(r.prob_quote, r.freq_vera)) - 4).toFixed(1) + '" text-anchor="middle" font-size="10" fill="var(--ink-soft)">'
+        + Math.round(r.freq_vera * 100) + '%</text>'
+        + '<text x="' + cx.toFixed(1) + '" y="' + (H - 20) + '" text-anchor="middle" font-size="10" fill="var(--ink-soft)">' + esc(r.fascia) + '</text>'
+        + '<text x="' + cx.toFixed(1) + '" y="' + (H - 7) + '" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)">' + (r.disc === "FAS" ? "FAS" : "League") + '</text>';
+    });
+    return out + '</svg>';
+  }
+
+  // Tutte le giocate fisse come puntini sul rendimento: lo zero e' la linea tratteggiata.
+  function stripChart(rows) {
+    var W = 320, H = 96, L = 12, R = 12;
+    var vals = rows.map(function (r) { return r.roi; }).filter(function (v) { return v != null; });
+    var lo = Math.min(-0.2, Math.min.apply(null, vals)), hi = 0.05;
+    function x(v) { return L + (W - L - R) * (v - lo) / (hi - lo); }
+    var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Rendimento di tutte le giocate fisse">'
+      + '<line x1="' + x(0).toFixed(1) + '" x2="' + x(0).toFixed(1) + '" y1="6" y2="' + (H - 24) + '" stroke="var(--good)" stroke-dasharray="3 3" stroke-width="1.2"/>'
+      + '<text x="' + x(0).toFixed(1) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="10" fill="var(--good)">pari</text>';
+    [-0.2, -0.1].concat(lo < -0.25 ? [-0.3] : []).forEach(function (t) {
+      if (t >= lo) out += '<text x="' + x(t).toFixed(1) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="10" fill="var(--ink-soft)">' + Math.round(t * 100) + '%</text>';
+    });
+    rows.forEach(function (r, i) {
+      if (r.roi == null) return;
+      var yy = (r.disc === "FAS" ? 22 : 50) + (i % 3 - 1) * 6;
+      out += '<circle cx="' + x(r.roi).toFixed(1) + '" cy="' + yy + '" r="3.2" fill="' + (r.disc === "FAS" ? "var(--teal)" : "var(--accent)") + '" fill-opacity="0.75"/>';
+    });
+    return out + '</svg>';
+  }
+
+  function dmy(iso) { return iso ? iso.slice(8, 10) + "/" + iso.slice(5, 7) : "—"; }
+
+  function renderVirtuali() {
+    var v = data.virtuali;
+    if (!v) { $("virtuali").innerHTML = '<div class="note">Analisi del calcio virtuale non ancora disponibile.</div>'; return; }
+    var fixed = (v.fisse || []).filter(function (r) { return r.roi != null; }).sort(function (a, b) { return b.roi - a.roi; });
+    var pairs = v.accoppiamenti || {}, strongest = pairs["20%"] || {};
+    var edgeFixed = fixed.filter(function (r) { return r.lo > 0; });
+    var edgePairs = Object.keys(pairs).filter(function (k) { return pairs[k].lo > 0; });
+    var mg = v.margini || {};
+    var verdict = edgeFixed.length || edgePairs.length
+      ? "Qualcosa sembra battere il banco: va rivisto con più giorni prima di crederci."
+      : "No. Le quote sono calibrate sul generatore casuale: esce quello che dicono, né più né meno. Il banco trattiene "
+        + Object.keys(mg).map(function (d) { return it(mg[d] * 100, 1) + "% (" + d + ")"; }).join(" e ")
+        + " su ogni mercato, e nessuna giocata provata regge la verifica sugli ultimi " + v.verifica_giorni + " giorni. Per questo qui non escono segnali.";
+    var html = '<h1 class="dtitle">Si può battere?</h1>'
+      + '<div class="dsub">FAS e FAS League · ' + v.partite.toLocaleString("it-IT") + ' partite dal ' + dmy(v.dal) + ' al ' + dmy(v.al) + '</div>'
+      + '<div class="verdict">' + esc(verdict) + '</div>'
+      + '<div class="kpis"><div class="kpi"><div class="v">' + v.partite.toLocaleString("it-IT") + '</div><div class="l">partite</div></div>'
+      + Object.keys(mg).map(function (d) { return '<div class="kpi"><div class="v neg">' + it(mg[d] * 100, 1) + '%</div><div class="l">margine ' + esc(d) + '</div></div>'; }).join("") + '</div>';
+    if (v.fasce && v.fasce.length) {
+      html += '<div class="chart"><h3>Quello che dice la quota e quello che esce</h3>' + calibChart(v.fasce)
+        + '<div class="legend"><span><i style="background:var(--teal);opacity:.35"></i>probabilità della quota (senza margine)</span><span><i style="background:var(--accent)"></i>uscito davvero</span></div>'
+        + '<div class="cap">1X2, Under/Over 2,5 e Goal/No Goal divisi per probabilità. Le barre sono uguali: la quota è giusta, il guadagno del banco è tutto nel margine.</div></div>';
+    }
+    if (fixed.length) {
+      var b = fixed[0];
+      html += '<div class="chart"><h3>Tutte le ' + fixed.length + ' giocate fisse</h3>' + stripChart(fixed)
+        + '<div class="legend"><span><i style="background:var(--teal)"></i>FAS</span><span><i style="background:var(--accent)"></i>FAS League</span></div>'
+        + '<div class="cap">Giocare sempre lo stesso esito (sempre Over 2,5, sempre il 2…). La migliore: ' + esc(b.esito) + ' ' + esc(b.market) + ' (' + esc(b.disc) + '), '
+        + pct(b.roi) + ' su ' + b.n.toLocaleString("it-IT") + ' partite. Nessuna arriva a pari.</div></div>';
+    }
+    var tests = [];
+    if (strongest.candidati != null) {
+      tests.push('<div class="test"><div class="tn">Partite "fortunate"</div><div class="tt">Esiti che nei primi giorni sono usciti più del dovuto (almeno +20%), giocati poi negli ultimi ' + v.verifica_giorni + ' giorni.</div><div class="tl">'
+        + '<span>trovati: ' + strongest.candidati + ' (per puro caso ne escono ~' + Math.round(strongest.candidati_per_caso) + ')</span>'
+        + '<span class="' + (strongest.verifica_roi >= 0 ? "pos" : "neg") + '">verifica: ' + pct(strongest.verifica_roi) + ' su ' + strongest.verifica_n.toLocaleString("it-IT") + ' giocate</span></div></div>');
+    }
+    if (v.serie_top && v.serie_top.length) {
+      tests.push('<div class="test"><div class="tn">Serie</div><div class="tt">Dopo lo stesso esito più volte di fila, rigiocarlo. Le migliori nei primi giorni, e poi:</div><div class="tl">'
+        + v.serie_top.slice(0, 3).map(function (s) {
+          return '<span>' + esc(s.disc) + ' · dopo ' + esc(s.serie.replace(/ \(.*\)$/, "")) + ': ' + pct(s.roi_scoperta) + ' → <b class="' + (s.roi_verifica >= 0 ? "pos" : "neg") + '">' + pct(s.roi_verifica) + '</b></span>';
+        }).join("") + '</div></div>');
+    }
+    if (v.ore_top) {
+      var o = v.ore_top;
+      tests.push('<div class="test"><div class="tn">Ore del giorno</div><div class="tt">La fascia oraria migliore su ' + o.fasce_provate + ' provate (' + o.positive + ' sopra lo zero).</div><div class="tl">'
+        + '<span>' + esc(o.disc) + ' · ' + esc(o.giocata) + ' · ore ' + esc(o.ore) + ': ' + pct(o.roi) + ' su ' + o.n + ' (fra ' + pct(o.lo) + ' e ' + pct(o.hi) + ': rumore)</span></div></div>');
+    }
+    if (v.giornate && v.giornate.length) {
+      tests.push('<div class="test"><div class="tn">Giornate del campionato</div><div class="tt">FAS League, sempre il favorito, a inizio, metà e fine campionato.</div><div class="tl">'
+        + v.giornate.map(function (g) { return '<span>giornate ' + esc(g.giornate) + ': <b class="' + ((g.roi || 0) >= 0 ? "pos" : "neg") + '">' + (g.roi == null ? "—" : pct(g.roi)) + '</b> su ' + g.n + '</span>'; }).join("") + '</div></div>');
+    }
+    if (tests.length) html += '<h2 class="sectiontitle">Prove fuori dalla logica</h2><div class="card">' + tests.join("") + '</div>';
+    if (v.recenti && v.recenti.length) {
+      html += '<h2 class="sectiontitle">Ultime partite in archivio</h2><div class="card"><div class="vres">'
+        + v.recenti.map(function (r) {
+          return '<span class="w">' + dmy(r.day) + ' ' + esc(r.time) + '</span><span class="p">' + esc(r.pair) + ' <span class="w">' + esc(r.disc) + '</span></span><span class="s">' + esc(r.score) + '</span>';
+        }).join("") + '</div></div>';
+    }
+    html += '<div class="src">Fonte: archivio pubblico Sisal (tiene gli ultimi 14 giorni). Analisi del ' + (v.generated_at ? dmy(v.generated_at.slice(0, 10)) + ' ore ' + v.generated_at.slice(11, 16) : "—") + '.</div>';
+    $("virtuali").innerHTML = html;
+  }
+
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     $("tabbar").hidden = !unlocked;
     $("topright").hidden = !unlocked;
@@ -603,7 +728,7 @@
   function renderAll() {
     var g = new Date(data.generated_at);
     $("asof").innerHTML = "Dati aggiornati<br>" + whenLabel(g.getTime() / 1000);
-    renderStatus(); renderFeed(); renderStrategie();
+    renderStatus(); renderFeed(); renderStrategie(); renderVirtuali();
   }
 
   async function load(password, fromForm) {
