@@ -517,7 +517,12 @@
           + (hidden.has(s.id) ? "" : " checked") + ' aria-label="Mostra i segnali di ' + esc(s.name) + '"><span class="slider"></span></span></div>';
       }).join("");
       return rows ? '<h2 class="sectiontitle">' + EMOJI[sport] + ' ' + NAME[sport] + '</h2><div class="card">' + rows + '</div>' : "";
-    }).join("");
+    }).join("") + ((data.esclusi || []).length
+      ? '<h2 class="sectiontitle">Cosa non copriamo, di proposito</h2><div class="card">'
+        + data.esclusi.map(function (e) {
+          return '<div class="test"><div class="tn">' + esc(e.title) + '</div><div class="tt">' + esc(e.long) + '</div></div>';
+        }).join("") + '</div>'
+      : "");
   }
 
   function money(v) { return (v >= 0 ? "+" : "−") + it(Math.abs(v), Math.abs(v) >= 100 ? 0 : 1) + " €"; }
