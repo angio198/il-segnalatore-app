@@ -127,7 +127,46 @@
   .badge.valore{background:color-mix(in srgb, var(--good) 16%, transparent);color:var(--good);}
   .badge.lieve{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
   .badge.nessun{background:color-mix(in srgb, var(--bad) 14%, transparent);color:var(--bad);}
-  .badge.info{background:color-mix(in srgb, var(--teal) 14%, transparent);color:var(--teal);}
+  .badge.info,.badge.prova{background:color-mix(in srgb, var(--teal) 14%, transparent);color:var(--teal);}
+  .feedcard .extra{margin-top:8px;display:flex;flex-direction:column;gap:4px;font-size:0.82rem;color:var(--ink-soft);}
+
+  /* filtro per strategia */
+  .filternote{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;padding:10px 12px;
+    border-radius:10px;background:color-mix(in srgb, var(--accent) 14%, transparent);font-size:0.84rem;}
+  .filternote[hidden]{display:none!important;}
+  .linkbtn{background:none;border:none;color:var(--accent-strong);font-weight:700;font-size:0.84rem;cursor:pointer;padding:4px;}
+  .strat{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line);}
+  .strat:last-child{border-bottom:none;}
+  .strat .txt{flex:1;min-width:0;}
+  .strat .nm{font-weight:700;font-size:0.92rem;overflow-wrap:anywhere;}
+  .strat .ds{font-size:0.82rem;color:var(--ink-soft);margin-top:2px;}
+  .strat .rc{font-family:'IBM Plex Mono',monospace;font-size:0.74rem;color:var(--ink-soft);margin-top:4px;}
+  .switch{position:relative;flex:none;width:46px;height:28px;margin-top:2px;}
+  .switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1;}
+  .switch .slider{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:background .15s;}
+  .switch .slider::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;
+    background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s;}
+  .switch input:checked + .slider{background:var(--good);}
+  .switch input:checked + .slider::after{transform:translateX(18px);}
+  .switch input:focus-visible + .slider{outline:2px solid var(--accent);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){.switch .slider,.switch .slider::after{transition:none;}}
+  .more{background:none;border:none;padding:0 0 0 4px;color:var(--accent-strong);font-weight:700;font-size:0.82rem;cursor:pointer;}
+
+  /* scheda strategia */
+  .back{background:none;border:none;color:var(--accent-strong);font-weight:700;font-size:0.9rem;cursor:pointer;padding:4px 0;margin-bottom:10px;}
+  .dtitle{font-size:1.35rem;margin-bottom:4px;overflow-wrap:anywhere;}
+  .dsub{font-size:0.84rem;color:var(--ink-soft);margin-bottom:16px;}
+  .prose{font-size:0.92rem;line-height:1.6;margin:0 0 18px;}
+  .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px;}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;}
+  .kpi .v{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:1.05rem;font-variant-numeric:tabular-nums;}
+  .kpi .l{font-size:0.72rem;color:var(--ink-soft);margin-top:2px;}
+  .verdict{border-left:3px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0;padding:12px 14px;font-size:0.9rem;margin-bottom:18px;}
+  .chart{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 12px 8px;margin-bottom:12px;}
+  .chart h3{font-family:'Source Sans 3',sans-serif;font-size:0.86rem;font-weight:700;margin-bottom:8px;}
+  .chart svg{display:block;width:100%;height:auto;}
+  .chart .cap{font-size:0.74rem;color:var(--ink-soft);margin-top:6px;}
+  .src{font-size:0.76rem;color:var(--ink-soft);margin-top:4px;}
 
   .tabbar{
     position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;background:var(--surface);border-top:1px solid var(--line);
@@ -203,13 +242,29 @@
     <button class="chip" type="button" data-filter="ippica" aria-pressed="false">🐎 Ippica</button>
     <button class="chip" type="button" data-filter="calcio" aria-pressed="false">⚽ Calcio</button>
   </div>
+  <div class="filternote" id="filternote" hidden>
+    <span id="filtertext"></span>
+    <button class="linkbtn" id="showall" type="button">Mostra tutto</button>
+  </div>
   <div id="feed"></div>
+</main>
+
+<main class="view" id="view-strategie" hidden>
+  <div class="eyebrow">Filtro dei segnali</div>
+  <div class="note">Spegni una strategia per nasconderne segnali ed esiti nella lista "Segnali". Riaccendila e tornano tutti: i dati non si cancellano. Il filtro vale solo in questa app, le notifiche Telegram non cambiano.</div>
+  <div id="strategie"></div>
+</main>
+
+<main class="view" id="view-dettaglio" hidden>
+  <button class="back" id="back" type="button">‹ Strategie</button>
+  <div id="dettaglio"></div>
 </main>
 
 <nav class="tabbar" id="tabbar" hidden>
   <button class="tab" type="button" data-view="stato" aria-current="page"><span class="ic">◎</span>Stato</button>
   <button class="tab" type="button" data-view="andamento"><span class="ic">▤</span>Andamento</button>
   <button class="tab" type="button" data-view="segnali"><span class="ic">≡</span>Segnali</button>
+  <button class="tab" type="button" data-view="strategie"><span class="ic">⚙</span>Strategie</button>
 </nav>
 
 <script>
@@ -218,8 +273,18 @@
   var PW_KEY = "segnalatore.pw";
   var EMOJI = { tennis: "🎾", ippica: "🐎", calcio: "⚽" };
   var NAME = { tennis: "Tennis", ippica: "Ippica", calcio: "Calcio" };
-  var TIER_LABEL = { valore: "VALORE", lieve: "LIEVE VALORE", nessun: "NESSUN VALORE", info: "INFORMATIVO" };
+  var TIER_LABEL = { valore: "VALORE", lieve: "LIEVE VALORE", nessun: "NESSUN VALORE", info: "INFORMATIVO", prova: "IN PROVA" };
+  var FILTER_KEY = "segnalatore.filtri";
   var data = null, filter = "all";
+  var hidden = loadHidden();  // strategie spente nel filtro (solo su questo telefono)
+
+  function loadHidden() {
+    try { return new Set(JSON.parse(localStorage.getItem(FILTER_KEY) || "[]")); } catch (e) { return new Set(); }
+  }
+  function saveHidden() { try { localStorage.setItem(FILTER_KEY, JSON.stringify(Array.from(hidden))); } catch (e) {} }
+  function known(id) { return !!(data && data.catalog && data.catalog.some(function (s) { return s.id === id; })); }
+  // una parte di messaggio e' visibile se la sua strategia e' accesa (o sconosciuta: meglio mostrarla)
+  function on(id) { return !id || !known(id) || !hidden.has(id); }
 
   function $(id) { return document.getElementById(id); }
   function esc(s) {
@@ -296,37 +361,150 @@
   }
 
   function renderFeed() {
-    var items = data.feed.filter(function (f) { return filter === "all" || f.sport === filter; });
-    if (!items.length) { $("feed").innerHTML = '<div class="note">Nessun segnale per questo filtro, per ora.</div>'; return; }
-    $("feed").innerHTML = items.map(function (f) {
+    var n = Array.from(hidden).filter(known).length;
+    $("filternote").hidden = n === 0;
+    $("filtertext").textContent = n === 1 ? "Filtro attivo: 1 strategia nascosta" : "Filtro attivo: " + n + " strategie nascoste";
+    var cards = data.feed.filter(function (f) { return filter === "all" || f.sport === filter; }).map(function (f) {
+      var extra = (f.extra || []).filter(function (e) { return on(e.strategy); });
+      var hasMain = f.kind === "signal" || (f.kind === "outcome" && f.detail);
+      var showMain = hasMain && on(f.main);
+      if (!showMain && !extra.length) return "";  // tutto cio' che contiene e' filtrato
+      var extraHtml = extra.length ? '<div class="extra">' + extra.map(function (e) { return '<span>' + esc(e.text) + '</span>'; }).join("") + '</div>' : "";
       var top = '<div class="top"><span aria-hidden="true">' + EMOJI[f.sport] + '</span><span class="cat">' + esc(f.kind === "outcome" ? ("Esito" + (f.cat ? " · " + f.cat : "")) : f.cat) + '</span><span class="time">' + whenLabel(f.ts) + '</span></div>'
         + '<div class="event">' + esc(f.event) + '</div>';
       if (f.kind === "outcome") {
-        return '<div class="card feedcard">' + top + '<div class="pickrow"><span>' + (f.hit ? "✅ " : "❌ ") + esc(f.detail) + '</span>'
-          + '<span class="ev ' + (f.hit ? "pos" : "neg") + '">' + esc(f.result) + '</span></div></div>';
+        var main = showMain ? '<div class="pickrow"><span>' + (f.hit ? "✅ " : "❌ ") + esc(f.detail) + '</span>'
+          + '<span class="ev ' + (f.hit ? "pos" : "neg") + '">' + esc(f.result) + '</span></div>' : "";
+        return '<div class="card feedcard">' + top + main + extraHtml + '</div>';
       }
+      if (f.kind === "lista" || !showMain) return '<div class="card feedcard">' + top + extraHtml + '</div>';
       var ev = f.ev == null ? '<span class="ev">EV n/d</span>' : '<span class="ev ' + (f.ev >= 0 ? "pos" : "neg") + '">' + pct(f.ev) + '</span>';
       return '<div class="card feedcard">' + top
         + '<div class="pickrow"><span>Indicazione: <b>' + esc(f.pick) + '</b></span>' + ev + '</div>'
         + '<div class="meta">' + esc(f.prob_label) + ' ' + f.prob + '% · Quota ' + it(f.odds, 2) + (f.strategy ? " · " + esc(f.strategy) : "") + '</div>'
-        + '<span class="badge ' + f.tier + '">' + TIER_LABEL[f.tier] + '</span></div>';
+        + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml + '</div>';
+    }).filter(Boolean);
+    $("feed").innerHTML = cards.length ? cards.join("")
+      : '<div class="note">Nessun segnale per questo filtro, per ora.' + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>';
+  }
+
+  function renderStrategie() {
+    var cat = data.catalog || [];
+    if (!cat.length) { $("strategie").innerHTML = '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'; return; }
+    $("strategie").innerHTML = ["tennis", "calcio", "ippica"].map(function (sport) {
+      var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) {
+        var id = "sw-" + s.id;
+        return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>'
+          + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
+          + '<div class="rc">' + esc(s.record) + '</div></div>'
+          + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
+          + (hidden.has(s.id) ? "" : " checked") + ' aria-label="Mostra i segnali di ' + esc(s.name) + '"><span class="slider"></span></span></div>';
+      }).join("");
+      return rows ? '<h2 class="sectiontitle">' + EMOJI[sport] + ' ' + NAME[sport] + '</h2><div class="card">' + rows + '</div>' : "";
     }).join("");
   }
 
+  function money(v) { return (v >= 0 ? "+" : "−") + it(Math.abs(v), Math.abs(v) >= 100 ? 0 : 1) + " €"; }
+  function dayLabel(ts, long) {
+    var d = new Date(ts * 1000);
+    return long ? String(d.getFullYear()) : String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0");
+  }
+
+  // Guadagno cumulato (1 EUR a caso): linea con lo zero tratteggiato.
+  function lineChart(pts) {
+    var W = 320, H = 150, L = 42, R = 8, T = 10, B = 22;
+    var ys = pts.map(function (p) { return p[1]; });
+    var lo = Math.min(0, Math.min.apply(null, ys)), hi = Math.max(0, Math.max.apply(null, ys));
+    var pad = (hi - lo) * 0.08 || 1; lo -= pad; hi += pad;
+    var n = pts.length;
+    function x(i) { return L + (W - L - R) * (n === 1 ? 0.5 : i / (n - 1)); }
+    function y(v) { return T + (H - T - B) * (hi - v) / (hi - lo); }
+    var line = pts.map(function (p, i) { return x(i).toFixed(1) + "," + y(p[1]).toFixed(1); }).join(" ");
+    var last = ys[ys.length - 1], col = last >= 0 ? "var(--good)" : "var(--bad)";
+    var area = x(0).toFixed(1) + "," + y(0).toFixed(1) + " " + line + " " + x(n - 1).toFixed(1) + "," + y(0).toFixed(1);
+    var long = (pts[n - 1][0] - pts[0][0]) > 400 * 86400;
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Guadagno cumulato, ultimo valore ' + money(last) + '">'
+      + '<polygon points="' + area + '" fill="' + col + '" fill-opacity="0.12"/>'
+      + '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(0).toFixed(1) + '" y2="' + y(0).toFixed(1) + '" stroke="var(--ink-soft)" stroke-dasharray="3 3" stroke-width="1"/>'
+      + '<polyline points="' + line + '" fill="none" stroke="' + col + '" stroke-width="2" stroke-linejoin="round"/>'
+      + '<circle cx="' + x(n - 1).toFixed(1) + '" cy="' + y(last).toFixed(1) + '" r="3.5" fill="' + col + '"/>'
+      + '<text x="' + (L - 6) + '" y="' + (y(hi - pad) + 4).toFixed(1) + '" text-anchor="end" font-size="11" fill="var(--ink-soft)">' + money(hi - pad) + '</text>'
+      + '<text x="' + (L - 6) + '" y="' + (y(0) + 4).toFixed(1) + '" text-anchor="end" font-size="11" fill="var(--ink-soft)">0</text>'
+      + (lo + pad < 0 ? '<text x="' + (L - 6) + '" y="' + (y(lo + pad) + 4).toFixed(1) + '" text-anchor="end" font-size="11" fill="var(--ink-soft)">' + money(lo + pad) + '</text>' : "")
+      + '<text x="' + L + '" y="' + (H - 6) + '" font-size="11" fill="var(--ink-soft)">' + dayLabel(pts[0][0], long) + '</text>'
+      + '<text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" font-size="11" fill="var(--ink-soft)">' + dayLabel(pts[n - 1][0], long) + '</text>'
+      + '</svg>';
+  }
+
+  // Rendimento per periodo: barre sopra (guadagno) o sotto (perdita) lo zero.
+  function barChart(bars) {
+    var W = 320, H = 160, L = 8, R = 8, T = 14, B = 26;
+    var cap = Math.max(0.1, Math.min(1, Math.max.apply(null, bars.map(function (b) { return Math.abs(b[1]); }))));
+    var mid = T + (H - T - B) / 2, half = (H - T - B) / 2;
+    var slot = (W - L - R) / bars.length, bw = Math.max(4, slot * 0.62);
+    var every = bars.length > 12 ? 2 : 1;
+    var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Rendimento per periodo">'
+      + '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + mid + '" y2="' + mid + '" stroke="var(--ink-soft)" stroke-width="1"/>';
+    bars.forEach(function (b, i) {
+      var v = Math.max(-cap, Math.min(cap, b[1])), h = Math.abs(v) / cap * half;
+      var cx = L + slot * (i + 0.5), top = v >= 0 ? mid - h : mid;
+      out += '<rect x="' + (cx - bw / 2).toFixed(1) + '" y="' + top.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + Math.max(1, h).toFixed(1)
+        + '" rx="2" fill="' + (b[1] >= 0 ? "var(--good)" : "var(--bad)") + '"' + (b[2] < 30 ? ' fill-opacity="0.45"' : "") + '/>';
+      if (bars.length <= 8) {
+        out += '<text x="' + cx.toFixed(1) + '" y="' + (v >= 0 ? top - 3 : top + h + 10).toFixed(1) + '" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">'
+          + (b[1] >= 0 ? "+" : "−") + Math.round(Math.abs(b[1]) * 100) + '%</text>';
+      }
+      if (i % every === 0) {
+        out += '<text x="' + cx.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">' + esc(String(b[0]).replace("sett. ", "")) + '</text>';
+      }
+    });
+    return out + '</svg>';
+  }
+
+  function renderDetail(id) {
+    var s = (data.catalog || []).filter(function (c) { return c.id === id; })[0];
+    if (!s) return;
+    var d = s.detail || {}, st = d.stats || { n: 0, wins: 0 };
+    var enough = st.n >= 30 && st.roi != null;
+    var kpis = '<div class="kpis">'
+      + '<div class="kpi"><div class="v">' + st.n + '</div><div class="l">casi</div></div>'
+      + '<div class="kpi"><div class="v">' + (st.n ? Math.round(st.wins / st.n * 100) + "%" : "—") + '</div><div class="l">vinte</div></div>'
+      + '<div class="kpi"><div class="v ' + (enough ? (st.roi >= 0 ? "pos" : "neg") : "") + '">' + (enough ? pct(st.roi) : "—") + '</div><div class="l">' + (enough ? "rendimento" : "troppo pochi casi") + '</div></div></div>';
+    var live = s.live ? '<div class="note gap">Segnali pubblicati dal vivo: ' + s.live.n + ' con esito, ' + s.live.wins + ' vinti'
+      + (s.live.n >= 30 ? ', rendimento ' + pct(s.live.roi) : ' (troppo pochi per una percentuale)') + '.</div>' : "";
+    var charts = "";
+    if (d.curve && d.curve.length >= 2) {
+      charts += '<div class="chart"><h3>Quanto avresti in tasca puntando 1 € ogni volta</h3>' + lineChart(d.curve)
+        + '<div class="cap">Guadagno cumulato caso dopo caso. Sotto la linea tratteggiata sei in perdita.</div></div>';
+    }
+    if (d.bars && d.bars.length >= 2) {
+      charts += '<div class="chart"><h3>Rendimento per ' + esc(d.period) + '</h3>' + barChart(d.bars)
+        + '<div class="cap">Barre chiare: meno di 30 casi in quel periodo, poco affidabili.</div></div>';
+    }
+    $("dettaglio").innerHTML = '<h1 class="dtitle">' + esc(s.name) + '</h1>'
+      + '<div class="dsub">' + EMOJI[s.sport] + ' ' + NAME[s.sport] + ' · ' + (hidden.has(s.id) ? "nascosta nel filtro" : "visibile nel filtro") + '</div>'
+      + '<h2 class="sectiontitle">Cosa fa</h2><p class="prose">' + esc(s.long || s.description) + '</p>'
+      + '<h2 class="sectiontitle">Come sta andando</h2>' + kpis + '<div class="verdict">' + esc(d.verdict || "") + '</div>'
+      + live + charts + (d.source ? '<div class="src">Fonte: ' + esc(d.source) + '.</div>' : "");
+    show("dettaglio");
+    $("view-dettaglio").scrollTop = 0;
+  }
+
   function show(view) {
-    ["lock", "stato", "andamento", "segnali"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "andamento", "segnali", "strategie", "dettaglio"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     $("tabbar").hidden = !unlocked;
     $("topright").hidden = !unlocked;
+    var tabView = view === "dettaglio" ? "strategie" : view;  // la scheda sta dentro "Strategie"
     document.querySelectorAll(".tab").forEach(function (t) {
-      if (t.dataset.view === view) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
+      if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
   }
 
   function renderAll() {
     var g = new Date(data.generated_at);
     $("asof").innerHTML = "Dati aggiornati<br>" + whenLabel(g.getTime() / 1000);
-    renderStatus(); renderTrack(); renderFeed();
+    renderStatus(); renderTrack(); renderFeed(); renderStrategie();
   }
 
   async function load(password, fromForm) {
@@ -359,6 +537,20 @@
     filter = b.dataset.filter;
     document.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
     if (data) renderFeed();
+  });
+  $("strategie").addEventListener("change", function (e) {
+    var sw = e.target.closest("input[data-strategy]"); if (!sw) return;
+    if (sw.checked) hidden.delete(sw.dataset.strategy); else hidden.add(sw.dataset.strategy);
+    saveHidden();
+    if (data) renderFeed();
+  });
+  $("strategie").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-more]"); if (b && data) renderDetail(b.dataset.more);
+  });
+  $("back").addEventListener("click", function () { show("strategie"); });
+  $("showall").addEventListener("click", function () {
+    hidden.clear(); saveHidden();
+    if (data) { renderFeed(); renderStrategie(); }
   });
 
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
