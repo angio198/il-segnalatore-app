@@ -168,6 +168,40 @@
   .chart .cap{font-size:0.74rem;color:var(--ink-soft);margin-top:6px;}
   .src{font-size:0.76rem;color:var(--ink-soft);margin-top:4px;}
 
+  /* led di stato accanto al nome */
+  .led{display:inline-flex;align-items:center;gap:6px;margin-left:8px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);
+    background:var(--surface);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:600;color:var(--ink-soft);cursor:pointer;}
+  .led .dot{width:9px;height:9px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb, var(--good) 25%, transparent);}
+  .led.warn .dot{background:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);}
+  .led.down .dot{background:var(--bad);box-shadow:0 0 0 3px color-mix(in srgb, var(--bad) 25%, transparent);}
+  .hrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:0.86rem;}
+  .hrow:last-child{border-bottom:none;}
+  .hrow .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .hrow .hb{flex:1;min-width:0;}
+  .hrow .hn{font-weight:600;}
+  .hrow .ht{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ink-soft);margin-top:2px;}
+
+  /* barre dell'andamento nelle strategie */
+  .perf{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:3px 8px;margin-top:8px;font-size:0.74rem;}
+  .perf .pl{color:var(--ink-soft);}
+  .ptrack{position:relative;height:8px;border-radius:5px;background:var(--bg-alt);overflow:hidden;grid-column:1 / -1;grid-row:2;}
+  @media (max-width:420px){.asof{display:none;}}  /* sul telefono l'ora dei dati sta nella pagina di stato */
+  .pzero{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--ink-soft);opacity:.5;}
+  .pfill,.pwin,.ploss{position:absolute;top:0;bottom:0;}
+  .pwin{left:0;background:var(--good);}
+  .ploss{background:var(--bad);opacity:.8;}
+  .pv{font-family:'IBM Plex Mono',monospace;white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+  /* scheda del segnale */
+  .feedcard{cursor:pointer;}
+  .feedcard:active{transform:scale(0.995);}
+  .result{font-size:1.15rem;font-weight:700;margin:4px 0 6px;}
+  .facts{display:flex;flex-direction:column;gap:6px;font-size:0.88rem;margin-bottom:16px;}
+  .facts .k{color:var(--ink-soft);}
+  details.raw summary{cursor:pointer;font-size:0.84rem;color:var(--accent-strong);font-weight:700;margin:14px 0 8px;}
+  details.raw pre{white-space:pre-wrap;overflow-wrap:anywhere;font-family:'IBM Plex Mono',monospace;font-size:0.76rem;
+    background:var(--bg-alt);border-radius:10px;padding:12px;margin:0;}
+
   .tabbar{
     position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;background:var(--surface);border-top:1px solid var(--line);
     padding:8px 6px calc(env(safe-area-inset-bottom,0px) + 8px);
@@ -199,6 +233,7 @@
       <line x1="15" y1="32" x2="33" y2="32" stroke="var(--ink)" stroke-width="1.6"/>
     </svg>
     Il Segnalatore
+    <button class="led" id="led" type="button" hidden aria-label="Stato del sistema"><span class="dot"></span><span id="ledtext">online</span></button>
   </div>
   <div class="topright" id="topright" hidden>
     <div class="asof" id="asof"></div>
@@ -219,20 +254,17 @@
 </main>
 
 <main class="view" id="view-stato" hidden>
-  <div class="eyebrow">Stato dei motori</div>
+  <button class="back" type="button" data-back="segnali">‹ Segnali</button>
+  <div class="eyebrow">Stato del sistema</div>
+  <div class="card" id="health"></div>
+  <div class="eyebrow" style="margin-top:22px;">Segnali di oggi</div>
   <div class="statuscards" id="status"></div>
-  <h2 class="sectiontitle">Cosa significano i numeri</h2>
-  <div class="note">Il numero a destra è quanti segnali sono usciti <b>oggi</b>, non un punteggio: più segnali non vuol dire modello migliore. "In raccolta" vuol dire che il motore gira ma non ha ancora pubblicato nessun segnale.</div>
+  <div class="note">Il numero a destra è quanti segnali sono usciti <b>oggi</b>, non un punteggio. "In raccolta" vuol dire che il motore gira ma non ha ancora pubblicato nessun segnale.</div>
 </main>
 
-<main class="view" id="view-andamento" hidden>
-  <div class="eyebrow">Ippica · modello contro favorito</div>
-  <div id="ippica-track"></div>
-  <div class="eyebrow">Tennis · strategie pubblicate sul canale</div>
-  <div id="tennis-track"></div>
-  <div class="note gap">La barra parte dal centro: a destra guadagna, a sinistra perde (metà barra = ±20%). Sotto le 100 analisi il campione è troppo piccolo per fidarsi.</div>
-  <div class="eyebrow">Calcio</div>
-  <div class="note">Nessun numero affidabile ancora: il calcio ha appena iniziato a pubblicare.</div>
+<main class="view" id="view-segnale" hidden>
+  <button class="back" type="button" data-back="segnali">‹ Segnali</button>
+  <div id="segnale"></div>
 </main>
 
 <main class="view" id="view-segnali" hidden>
@@ -261,9 +293,7 @@
 </main>
 
 <nav class="tabbar" id="tabbar" hidden>
-  <button class="tab" type="button" data-view="stato" aria-current="page"><span class="ic">◎</span>Stato</button>
-  <button class="tab" type="button" data-view="andamento"><span class="ic">▤</span>Andamento</button>
-  <button class="tab" type="button" data-view="segnali"><span class="ic">≡</span>Segnali</button>
+  <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic">≡</span>Segnali</button>
   <button class="tab" type="button" data-view="strategie"><span class="ic">⚙</span>Strategie</button>
 </nav>
 
@@ -324,7 +354,26 @@
     return String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0") + " " + hm;
   }
 
+  // Led accanto al nome: verde se tutto gira, arancione se un pezzo e' fermo, rosso se i dati
+  // non arrivano da piu' di 90 minuti (PC spento o esportazione ferma).
+  function ledState() {
+    var hb = data.heartbeat ? new Date(data.heartbeat).getTime() : new Date(data.generated_at).getTime();
+    var ageMin = (Date.now() - hb) / 60000;
+    var bad = (data.health || []).filter(function (h) { return !h.ok; });
+    if (ageMin > 90) return { cls: "down", text: "offline", why: "Nessun dato nuovo da " + Math.round(ageMin / 60 * 10) / 10 + " ore: il PC potrebbe essere spento." };
+    if (bad.length) return { cls: "warn", text: "attenzione", why: bad.length === 1 ? "Un pezzo del sistema non risponde." : bad.length + " pezzi del sistema non rispondono." };
+    return { cls: "", text: "online", why: "Tutto funziona." };
+  }
+
   function renderStatus() {
+    var led = ledState();
+    $("led").className = "led " + led.cls;
+    $("ledtext").textContent = led.text;
+    var dot = function (ok) { return '<span class="dot" style="background:var(' + (ok ? "--good" : "--bad") + ')"></span>'; };
+    $("health").innerHTML = '<div class="verdict" style="margin-bottom:8px;">' + esc(led.why) + ' Ultimo aggiornamento dei dati: ' + whenLabel(new Date(data.generated_at).getTime() / 1000) + '.</div>'
+      + (data.health || []).map(function (h) {
+        return '<div class="hrow">' + dot(h.ok) + '<div class="hb"><div class="hn">' + esc(h.name) + '</div><div class="ht">' + esc(h.text) + '</div></div></div>';
+      }).join("");
     $("status").innerHTML = ["tennis", "ippica", "calcio"].map(function (s) {
       var st = data.status[s];
       var on = st.state === "attivo";
@@ -335,36 +384,84 @@
     }).join("");
   }
 
-  function renderTrack() {
-    var ip = data.track.ippica;
-    if (!ip) {
-      $("ippica-track").innerHTML = '<div class="note gap">Nessuna corsa liquidata ancora.</div>';
+  // Barra dell'andamento: rendimento (centro = pari) da 30 casi in su, altrimenti vinti/persi.
+  function perfBar(label, st) {
+    var body;
+    if (!st || !st.n) {
+      body = '<div class="ptrack"></div><span class="pv">nessun esito</span>';
+    } else if (st.n >= 30 && st.roi != null) {
+      var w = Math.min(Math.abs(st.roi) / 0.2, 1) * 50, pos = st.roi >= 0;
+      body = '<div class="ptrack"><div class="pzero"></div><div class="pfill" style="' + (pos ? "left:50%" : "right:50%") + ';width:' + w.toFixed(1)
+        + '%;background:var(' + (pos ? "--good" : "--bad") + ')"></div></div><span class="pv ' + (pos ? "pos" : "neg") + '">' + pct(st.roi) + ' · ' + st.n + '</span>';
     } else {
-      var ahead = ip.model > ip.favorite;
-      $("ippica-track").innerHTML = '<div class="card"><div class="head"><span class="title">Corse pubblicate: probabilità &gt; 35%, valore atteso ≤ 30%</span><span class="n">' + ip.n + ' corse</span></div>'
-        + '<div class="row"><span class="label">Modello</span><div class="track"><div class="fill" style="left:0;width:' + (ip.model / ip.n * 100) + '%;background:var(--teal);"></div></div><span class="val">' + ip.model + '/' + ip.n + '</span></div>'
-        + '<div class="row"><span class="label">Favorito</span><div class="track"><div class="fill" style="left:0;width:' + (ip.favorite / ip.n * 100) + '%;background:var(--accent);"></div></div><span class="val">' + ip.favorite + '/' + ip.n + '</span></div></div>'
-        + '<div class="note gap">' + (ahead
-          ? "Il modello è davanti al favorito su queste " + ip.n + " corse, ma sono poche per parlare di vantaggio."
-          : "Il favorito di mercato vince più spesso del modello (o lo pareggia). Nessun vantaggio dimostrato.")
+      var wp = st.wins / st.n * 100;
+      body = '<div class="ptrack"><div class="pwin" style="width:' + wp.toFixed(1) + '%"></div><div class="ploss" style="left:' + wp.toFixed(1) + '%;width:' + (100 - wp).toFixed(1) + '%"></div></div>'
+        + '<span class="pv">' + st.wins + ' vinti su ' + st.n + '</span>';
+    }
+    return '<div class="perf"><span class="pl">' + label + '</span>' + body + '</div>';
+  }
+
+  // Scheda del segnale: il segnale e, se c'e', com'e' finita (stessa partita/corsa).
+  function renderSignal(idx) {
+    var f = data.feed[idx];
+    if (!f) return;
+    var same = data.feed.filter(function (x) { return f.key && x.key === f.key; });
+    var sig = f.kind !== "outcome" ? f : same.filter(function (x) { return x.kind !== "outcome"; })[0];
+    var out = f.kind === "outcome" ? f : same.filter(function (x) { return x.kind === "outcome"; })[0];
+    var base = sig || out;
+    var html = '<div class="dsub">' + EMOJI[base.sport] + ' ' + esc(sig ? sig.cat : (out.cat || NAME[base.sport])) + ' · ' + whenLabel(base.ts) + '</div>'
+      + '<h1 class="dtitle">' + esc(base.event) + '</h1>';
+    var strat = base.main || (sig && sig.strategy);
+    if (sig && sig.kind === "signal") {
+      html += '<h2 class="sectiontitle">Il segnale</h2><div class="facts">'
+        + '<div><span class="k">Indicazione: </span><b>' + esc(sig.pick) + '</b></div>'
+        + '<div><span class="k">Quota: </span><b>' + it(sig.odds, 2) + '</b></div>'
+        + '<div><span class="k">' + esc(sig.prob_label) + ': </span><b>' + sig.prob + '%</b></div>'
+        + '<div><span class="k">Valore atteso: </span><b>' + (sig.ev == null ? "non calcolabile per questo tipo di segnale" : pct(sig.ev)) + '</b></div>'
+        + (strat ? '<div><span class="k">Strategia: </span><button class="more" type="button" data-more="' + esc(strat) + '">' + esc(strat) + ' ›</button></div>' : "")
         + '</div>';
     }
-    var t = data.track.tennis || [];
-    $("tennis-track").innerHTML = t.length ? t.map(function (s) {
-      var w = Math.min(Math.abs(s.roi) / 0.20, 1) * 50;
-      var pos = s.roi >= 0;
-      return '<div class="card"><div class="head"><span class="title">' + esc(s.strategy)
-        + (s.n < 100 ? '<span class="small-sample">CAMPIONE PICCOLO</span>' : "") + '</span><span class="n">' + s.n + ' analisi</span></div>'
-        + '<div class="track"><div class="zero"></div><div class="fill" style="' + (pos ? "left:50%" : "right:50%") + ';width:' + w + '%;background:var(' + (pos ? "--good" : "--bad") + ');"></div></div>'
-        + '<div class="roi ' + (pos ? "pos" : "neg") + '">ROI storico ' + pct(s.roi) + '</div></div>';
-    }).join("") : '<div class="note">Nessuna strategia tennis pubblicata ancora.</div>';
+    if (sig && sig.extra && sig.extra.length) {
+      html += '<h2 class="sectiontitle">Strategie del bot</h2><div class="facts">'
+        + sig.extra.map(function (e) { return '<div>' + esc(e.text) + '</div>'; }).join("") + '</div>';
+    }
+    html += '<h2 class="sectiontitle">Com\'è finita</h2>';
+    if (!out) {
+      html += '<div class="note gap">Esito non ancora disponibile: arriva a fine partita o corsa.</div>';
+    } else {
+      if (out.detail) {
+        html += '<div class="result ' + (out.hit ? "pos" : "neg") + '">' + (out.hit ? "✅ VINTO" : "❌ PERSO") + '</div><div class="facts">';
+        if (base.sport === "tennis") {
+          var players = base.event.split(" v ");
+          var pick = sig ? sig.pick : out.detail;
+          var winner = out.hit ? pick : players.filter(function (p) { return p !== pick; })[0];
+          if (winner) html += '<div><span class="k">Ha vinto: </span><b>' + esc(winner) + '</b></div>';
+        } else {
+          html += '<div><span class="k">Risultato: </span><b>' + esc(out.result) + '</b></div>';
+        }
+        if (sig && sig.kind === "signal" && sig.odds) {
+          var gain = out.hit ? (sig.odds - 1) * 10 : -10;
+          html += '<div><span class="k">Con 10 € puntati: </span><b class="' + (gain >= 0 ? "pos" : "neg") + '">' + money(gain) + '</b></div>';
+        }
+        html += '</div>';
+      }
+      if (out.extra && out.extra.length) {
+        html += '<div class="facts">' + out.extra.map(function (e) { return '<div>' + esc(e.text) + '</div>'; }).join("") + '</div>';
+      }
+    }
+    html += (sig ? '<details class="raw"><summary>Messaggio completo del segnale</summary><pre>' + esc(sig.text) + '</pre></details>' : "")
+      + (out ? '<details class="raw"><summary>Messaggio completo dell\'esito</summary><pre>' + esc(out.text) + '</pre></details>' : "");
+    $("segnale").innerHTML = html;
+    show("segnale");
+    $("view-segnale").scrollTop = 0;
   }
 
   function renderFeed() {
     var n = Array.from(hidden).filter(known).length;
     $("filternote").hidden = n === 0;
     $("filtertext").textContent = n === 1 ? "Filtro attivo: 1 strategia nascosta" : "Filtro attivo: " + n + " strategie nascoste";
-    var cards = data.feed.filter(function (f) { return filter === "all" || f.sport === filter; }).map(function (f) {
+    var cards = data.feed.map(function (f, i) {
+      if (filter !== "all" && f.sport !== filter) return "";
       var extra = (f.extra || []).filter(function (e) { return on(e.strategy); });
       var hasMain = f.kind === "signal" || (f.kind === "outcome" && f.detail);
       var showMain = hasMain && on(f.main);
@@ -375,11 +472,11 @@
       if (f.kind === "outcome") {
         var main = showMain ? '<div class="pickrow"><span>' + (f.hit ? "✅ " : "❌ ") + esc(f.detail) + '</span>'
           + '<span class="ev ' + (f.hit ? "pos" : "neg") + '">' + esc(f.result) + '</span></div>' : "";
-        return '<div class="card feedcard">' + top + main + extraHtml + '</div>';
+        return '<div class="card feedcard" data-idx="' + i + '">' + top + main + extraHtml + '</div>';
       }
-      if (f.kind === "lista" || !showMain) return '<div class="card feedcard">' + top + extraHtml + '</div>';
+      if (f.kind === "lista" || !showMain) return '<div class="card feedcard" data-idx="' + i + '">' + top + extraHtml + '</div>';
       var ev = f.ev == null ? '<span class="ev">EV n/d</span>' : '<span class="ev ' + (f.ev >= 0 ? "pos" : "neg") + '">' + pct(f.ev) + '</span>';
-      return '<div class="card feedcard">' + top
+      return '<div class="card feedcard" data-idx="' + i + '">' + top
         + '<div class="pickrow"><span>Indicazione: <b>' + esc(f.pick) + '</b></span>' + ev + '</div>'
         + '<div class="meta">' + esc(f.prob_label) + ' ' + f.prob + '% · Quota ' + it(f.odds, 2) + (f.strategy ? " · " + esc(f.strategy) : "") + '</div>'
         + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml + '</div>';
@@ -396,7 +493,7 @@
         var id = "sw-" + s.id;
         return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>'
           + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
-          + '<div class="rc">' + esc(s.record) + '</div></div>'
+          + perfBar("Storico", s.detail && s.detail.stats) + perfBar("Ultimi 3 giorni", s.recent) + '</div>'
           + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
           + (hidden.has(s.id) ? "" : " checked") + ' aria-label="Mostra i segnali di ' + esc(s.name) + '"><span class="slider"></span></span></div>';
       }).join("");
@@ -491,11 +588,13 @@
   }
 
   function show(view) {
-    ["lock", "stato", "andamento", "segnali", "strategie", "dettaglio"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     $("tabbar").hidden = !unlocked;
     $("topright").hidden = !unlocked;
-    var tabView = view === "dettaglio" ? "strategie" : view;  // la scheda sta dentro "Strategie"
+    $("led").hidden = !unlocked;
+    // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
+    var tabView = { dettaglio: "strategie", segnale: "segnali" }[view] || view;
     document.querySelectorAll(".tab").forEach(function (t) {
       if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -504,7 +603,7 @@
   function renderAll() {
     var g = new Date(data.generated_at);
     $("asof").innerHTML = "Dati aggiornati<br>" + whenLabel(g.getTime() / 1000);
-    renderStatus(); renderTrack(); renderFeed(); renderStrategie();
+    renderStatus(); renderFeed(); renderStrategie();
   }
 
   async function load(password, fromForm) {
@@ -515,7 +614,7 @@
       data = await decrypt(env, password);
       storeSet(password);
       renderAll();
-      if (!$("view-lock").hidden) show("stato");
+      if (!$("view-lock").hidden) show("segnali");  // l'app si apre sui segnali
       msg.textContent = "";
     } catch (e) {
       show("lock");
@@ -548,6 +647,17 @@
     var b = e.target.closest("button[data-more]"); if (b && data) renderDetail(b.dataset.more);
   });
   $("back").addEventListener("click", function () { show("strategie"); });
+  $("feed").addEventListener("click", function (e) {
+    var c = e.target.closest(".feedcard[data-idx]"); if (c && data) renderSignal(Number(c.dataset.idx));
+  });
+  $("segnale").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-more]"); if (b && data) renderDetail(b.dataset.more);
+  });
+  $("led").addEventListener("click", function () { if (data) { renderStatus(); show("stato"); } });
+  document.querySelectorAll("button[data-back]").forEach(function (b) {
+    b.addEventListener("click", function () { show(b.dataset.back); });
+  });
+  setInterval(function () { if (data) renderStatus(); }, 60000);  // il led invecchia anche senza ricaricare
   $("showall").addEventListener("click", function () {
     hidden.clear(); saveHidden();
     if (data) { renderFeed(); renderStrategie(); }
