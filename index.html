@@ -299,6 +299,7 @@
     <button class="chip" type="button" data-filter="ippica" aria-pressed="false">🐎 Ippica</button>
     <button class="chip" type="button" data-filter="calcio" aria-pressed="false">⚽ Calcio</button>
     <button class="chip" type="button" data-filter="hockey" aria-pressed="false">🏒 Hockey</button>
+    <button class="chip" type="button" data-filter="basket" aria-pressed="false">🏀 Basket</button>
   </div>
   <div class="filternote" id="filternote" hidden>
     <span id="filtertext"></span>
@@ -332,8 +333,8 @@
 (function () {
   "use strict";
   var PW_KEY = "segnalatore.pw";
-  var EMOJI = { tennis: "🎾", ippica: "🐎", calcio: "⚽", hockey: "🏒" };
-  var NAME = { tennis: "Tennis", ippica: "Ippica", calcio: "Calcio", hockey: "Hockey" };
+  var EMOJI = { tennis: "🎾", ippica: "🐎", calcio: "⚽", hockey: "🏒", basket: "🏀" };
+  var NAME = { tennis: "Tennis", ippica: "Ippica", calcio: "Calcio", hockey: "Hockey", basket: "Basket" };
   var TIER_LABEL = { valore: "VALORE", lieve: "LIEVE VALORE", nessun: "NESSUN VALORE", info: "INFORMATIVO", prova: "IN PROVA" };
   var FILTER_KEY = "segnalatore.filtri";
   var data = null, filter = "all", when = "all";
@@ -414,7 +415,7 @@
       + (data.health || []).map(function (h) {
         return '<div class="hrow">' + dot(h.ok) + '<div class="hb"><div class="hn">' + esc(h.name) + '</div><div class="ht">' + esc(h.text) + '</div></div></div>';
       }).join("");
-    $("status").innerHTML = ["tennis", "ippica", "calcio", "hockey"].filter(function (s) { return data.status[s]; }).map(function (s) {
+    $("status").innerHTML = ["tennis", "ippica", "calcio", "hockey", "basket"].filter(function (s) { return data.status[s]; }).map(function (s) {
       var st = data.status[s];
       var on = st.state === "attivo";
       return '<div class="scard"><div class="icon" aria-hidden="true">' + EMOJI[s] + '</div>'
@@ -558,7 +559,7 @@
   function renderStrategie() {
     var cat = data.catalog || [];
     if (!cat.length) { $("strategie").innerHTML = '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'; return; }
-    $("strategie").innerHTML = ["tennis", "calcio", "hockey", "ippica"].map(function (sport) {
+    $("strategie").innerHTML = ["tennis", "calcio", "hockey", "basket", "ippica"].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) {
         var id = "sw-" + s.id;
         return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>' + tmTag(s.timing)
