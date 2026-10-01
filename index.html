@@ -132,6 +132,7 @@
   .tm.live{background:color-mix(in srgb, var(--bad) 15%, transparent);color:var(--bad);}
   .tm.corsa{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
   .tm.prepartita{background:color-mix(in srgb, var(--teal) 14%, transparent);color:var(--teal);}
+  .tm.spenta{background:color-mix(in srgb, var(--ink-soft) 16%, transparent);color:var(--ink-soft);}
   .strat .nm + .tm{margin-left:6px;vertical-align:2px;}
   .todaycard .best{display:flex;align-items:baseline;gap:10px;margin:2px 0 4px;}
   .todaycard .big{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;}
@@ -562,7 +563,8 @@
     $("strategie").innerHTML = ["tennis", "calcio", "hockey", "basket", "ippica"].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) {
         var id = "sw-" + s.id;
-        return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>' + tmTag(s.timing)
+        return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>'
+          + (s.retired ? '<span class="tm spenta">SPENTA DAL ' + esc(s.retired) + '</span>' : tmTag(s.timing))
           + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
           + perfBar("Storico", s.detail && s.detail.stats) + perfBar("Ultimi 3 giorni", s.recent) + '</div>'
           + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
