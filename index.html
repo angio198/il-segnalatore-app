@@ -78,6 +78,24 @@
   }
   @media (prefers-color-scheme: dark){.primary{background:var(--accent);border-color:var(--accent);color:#12181A;}}
   .primary[disabled]{opacity:.6;cursor:wait;}
+  /* Diario delle giocate a occhio */
+  .evrow{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;}
+  .evrow .lg{font-size:0.74rem;color:var(--ink-soft);}
+  .evrow .tm2{font-weight:700;font-size:0.92rem;}
+  .evrow .sc{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:1rem;white-space:nowrap;text-align:right;}
+  .evrow .mn{font-size:0.74rem;color:var(--live,var(--accent-strong));font-weight:700;}
+  .bigscore{font-family:'IBM Plex Mono',monospace;font-size:2rem;font-weight:600;text-align:center;margin:6px 0 2px;}
+  .bigmin{text-align:center;color:var(--ink-soft);font-size:0.85rem;margin-bottom:14px;}
+  .stt{width:100%;border-collapse:collapse;font-size:0.86rem;margin-bottom:16px;}
+  .stt td{padding:6px 4px;border-bottom:1px solid var(--line);}
+  .stt td:first-child,.stt td:last-child{font-family:'IBM Plex Mono',monospace;width:22%;}
+  .stt td:first-child{text-align:left;} .stt td:last-child{text-align:right;} .stt td:nth-child(2){text-align:center;color:var(--ink-soft);}
+  .betform{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+  .betform label{font-weight:600;font-size:0.86rem;margin-top:4px;}
+  .betform select,.betform input{font:inherit;font-size:1rem;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%;}
+  #diariobets .pickrow{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:0.88rem;}
+  #diariobets .meta{font-size:0.8rem;color:var(--ink-soft);margin-top:4px;}
+  .betform .primary{margin-top:8px;text-align:center;text-decoration:none;display:block;}
   .msg{font-size:0.88rem;min-height:1.3em;color:var(--bad);}
 
   /* status */
@@ -331,8 +349,29 @@
   <div id="virtuali"></div>
 </main>
 
+<main class="view" id="view-diario" hidden>
+  <div class="eyebrow">Il mio occhio</div>
+  <div id="diariokpi"></div>
+  <h2 class="sectiontitle">Partite live adesso</h2>
+  <div class="chips" id="diariochips" role="group" aria-label="Filtra per sport">
+    <button class="chip" type="button" data-dsport="all" aria-pressed="true">Tutte</button>
+    <button class="chip" type="button" data-dsport="calcio" aria-pressed="false">⚽ Calcio</button>
+    <button class="chip" type="button" data-dsport="tennis" aria-pressed="false">🎾 Tennis</button>
+  </div>
+  <div id="diarioevents"></div>
+  <div class="note" style="margin-bottom:10px;">Partita che non c'è? Scrivi al bot: <b>/giocata Croazia-Italia U19 Under 1,5 2,00</b> (la quota alla fine). Per quelle l'esito lo scrivi tu con /esito.</div>
+  <h2 class="sectiontitle">Le mie giocate</h2>
+  <div id="diariobets"></div>
+</main>
+
+<main class="view" id="view-giocata" hidden>
+  <button class="back" type="button" data-back="diario">‹ Diario</button>
+  <div id="giocata"></div>
+</main>
+
 <nav class="tabbar" id="tabbar" hidden>
   <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic">≡</span>Segnali</button>
+  <button class="tab" type="button" data-view="diario"><span class="ic">✎</span>Diario</button>
   <button class="tab" type="button" data-view="strategie"><span class="ic">⚙</span>Strategie</button>
 </nav>
 
@@ -823,13 +862,13 @@
   }
 
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     $("tabbar").hidden = !unlocked;
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie" }[view] || view;
+    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario" }[view] || view;
     document.querySelectorAll(".tab").forEach(function (t) {
       if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -838,8 +877,108 @@
   function renderAll() {
     var g = new Date(data.generated_at);
     $("asof").innerHTML = "Dati aggiornati<br>" + whenLabel(g.getTime() / 1000);
-    renderStatus(); renderFeed(); renderStrategie();
+    renderStatus(); renderFeed(); renderStrategie(); renderDiario();
   }
+
+  // ---------------------------------------------------------------- Diario delle giocate a occhio
+  // L'app non puo' scrivere dati: "Salva" apre il bot Telegram con /start <codice> (signals/diario.py
+  // encode_payload) e il bot fotografa minuto, punteggio e statistiche di quel momento.
+  var dsport = "all", curEvent = null;
+  var GROUPS = { calcio: ["1X2", "Doppia chance", "Prossimo gol", "Under/Over", "Goal/NoGoal"], tennis: ["Vincente"] };
+  function oddsTxt(n) { return it(n, 2); }
+  function estMinute(e) {
+    if (e.sport !== "calcio" || e.minute == null) return "";
+    if (e.ht) return "Intervallo";
+    var m = e.minute + Math.max(0, Math.floor((Date.now() / 1000 - e.ts) / 60));
+    return (m > 90 ? "90+" : "~" + m) + "'";
+  }
+  function scoreTxt(e) {
+    if (e.sport === "calcio") return (e.gh == null ? "–" : e.gh) + " - " + (e.ga == null ? "–" : e.ga);
+    return e.sets ? e.sets.replace(" - ", "-") + (e.game ? " · " + e.game.replace(" - ", "-") : "") : "";
+  }
+  function ageTxt(ts) { var m = Math.round((Date.now() / 1000 - ts) / 60); return m <= 1 ? "adesso" : m + " min fa"; }
+
+  function renderDiario() {
+    var dz = data.diario;
+    if (!dz) { $("diarioevents").innerHTML = '<div class="note">Diario non disponibile in questo aggiornamento.</div>'; $("diariokpi").innerHTML = ""; $("diariobets").innerHTML = ""; return; }
+    var s = dz.summary, MIN = 30;
+    $("diariokpi").innerHTML = '<div class="kpis">'
+      + '<div class="kpi"><div class="v">' + s.won + ' / ' + s.n + '</div><div class="l">vinte su chiuse</div></div>'
+      + '<div class="kpi"><div class="v">' + it(s.expected, 1) + '</div><div class="l">vinte attese dalle quote</div></div>'
+      + '<div class="kpi"><div class="v ' + (s.n >= MIN ? (s.roi >= 0 ? "pos" : "neg") : "") + '">' + (s.n >= MIN && s.roi != null ? pct(s.roi) : "—") + '</div><div class="l">rendimento' + (s.n >= MIN ? "" : " (da " + MIN + " giocate)") + '</div></div></div>'
+      + '<div class="verdict">' + (s.n === 0 ? "Ancora nessuna giocata chiusa. Scegli una partita live qui sotto e salva quello che giochi: dopo 50-100 giocate vediamo se il tuo occhio batte le quote."
+        : s.won > s.expected ? "Finora vinci più di quanto dicevano le quote (" + s.won + " contro " + it(s.expected, 1) + ")." + (s.n < MIN ? " Sono ancora poche giocate per dire che è occhio e non fortuna." : "")
+        : "Finora vinci meno o uguale a quanto dicevano le quote (" + s.won + " contro " + it(s.expected, 1) + ").") + (s.open ? " In attesa di esito: " + s.open + "." : "") + '</div>';
+
+    var evs = (dz.events || []).filter(function (e) { return dsport === "all" || e.sport === dsport; });
+    $("diarioevents").innerHTML = (evs.length ? '<div class="note" style="margin-bottom:10px;">Lista aggiornata ' + ageTxt(dz.at) + '. Punteggio e minuto veri li prende il bot quando salvi.</div>' : '<div class="note" style="margin-bottom:10px;">Nessuna partita live in questo momento (o PC spento).</div>')
+      + evs.map(function (e, i) {
+        return '<button class="card evrow" type="button" data-ev="' + esc(e.sport + ":" + e.id) + '"><span><div class="lg">' + EMOJI[e.sport] + ' ' + esc(e.league || NAME[e.sport]) + '</div>'
+          + '<div class="tm2">' + esc(e.home) + '</div><div class="tm2">' + esc(e.away) + '</div></span>'
+          + '<span><div class="sc">' + esc(scoreTxt(e)) + '</div><div class="mn">' + esc(estMinute(e) || (e.sport === "tennis" && e.o1 ? oddsTxt(e.o1) + " / " + oddsTxt(e.o2) : "LIVE")) + '</div></span></button>';
+      }).join("");
+
+    var mark = { 1: "✅", 0: "❌", "-1": "➖" };
+    $("diariobets").innerHTML = (dz.bets || []).length ? dz.bets.map(function (b) {
+      var state = b.result == null ? (b.note ? "⚠️ " + b.note : "⏳ in attesa") : (b.result === 1 ? "vinta" : b.result === 0 ? "persa" : "nulla");
+      return '<div class="card"><div class="head"><span class="title">' + (mark[b.result] || "⏳") + ' ' + esc(b.event) + '</span><span class="n">#' + b.id + ' · ' + whenLabel(b.created_at) + '</span></div>'
+        + '<div class="pickrow"><span><b>' + esc(b.pick || "giocata libera") + '</b> @ ' + oddsTxt(b.odds) + '</span><span class="ev ' + (b.result === 1 ? "pos" : b.result === 0 ? "neg" : "") + '">' + esc(state) + '</span></div>'
+        + '<div class="meta">' + (b.minute != null ? b.minute + "' · " : "") + esc(b.score || "") + (b.reason ? ' · “' + esc(b.reason) + '”' : "") + '</div></div>';
+    }).join("") : '<div class="note">Nessuna giocata salvata.</div>';
+  }
+
+  function choiceLabel(e, code, choice) {
+    if (e.sport === "tennis") { var o = code === "W1" ? e.o1 : e.o2; return (code === "W1" ? e.home : e.away) + (o ? " (Betfair " + oddsTxt(o) + ")" : ""); }
+    if (code === "1") return "1 · " + e.home;
+    if (code === "2") return "2 · " + e.away;
+    if (code === "P1") return e.home;
+    if (code === "P2") return e.away;
+    return choice;
+  }
+
+  function renderGiocata(key) {
+    var e = (data.diario.events || []).find(function (x) { return x.sport + ":" + x.id === key; });
+    if (!e) return;
+    curEvent = e;
+    var mk = data.diario.markets[e.sport], groups = GROUPS[e.sport];
+    var stats = (e.stats || []).map(function (r) { return '<tr><td>' + esc(r[1]) + '</td><td>' + esc(r[0]) + '</td><td>' + esc(r[2]) + '</td></tr>'; }).join("");
+    $("giocata").innerHTML = '<div class="dsub">' + EMOJI[e.sport] + ' ' + esc(e.league || NAME[e.sport]) + ' · dati di ' + ageTxt(e.ts) + '</div>'
+      + '<h1 class="dtitle">' + esc(e.home) + ' – ' + esc(e.away) + '</h1>'
+      + '<div class="bigscore">' + esc(scoreTxt(e) || "LIVE") + '</div>'
+      + '<div class="bigmin">' + esc(estMinute(e) || (e.games && e.games.length ? "Game: " + e.games.join("  ") : "")) + '</div>'
+      + (stats ? '<table class="stt"><tr><td><b>' + esc(e.home.split(" ").slice(-1)[0]) + '</b></td><td></td><td><b>' + esc(e.away.split(" ").slice(-1)[0]) + '</b></td></tr>' + stats + '</table>' : '<div class="note" style="margin-bottom:14px;">Statistiche non disponibili per questa partita.</div>')
+      + '<form class="betform" id="betform"><label for="bgroup">Mercato</label><select id="bgroup">'
+      + groups.map(function (g) { return '<option>' + esc(g) + '</option>'; }).join("") + '</select>'
+      + '<label for="bpick">Scelta</label><select id="bpick"></select>'
+      + '<label for="bodds">Quota che hai preso</label><input id="bodds" inputmode="decimal" placeholder="es. 2,00" required>'
+      + '<div class="msg" id="betmsg" role="alert"></div>'
+      + '<button class="primary" type="submit">📒 Salva nel diario (apre Telegram)</button></form>'
+      + '<div class="note">Telegram si apre sulla chat del bot: se serve premi <b>Avvia</b>. Il bot salva la giocata con minuto e statistiche di quel momento, poi ti chiede il motivo. L\'esito lo trova da solo.</div>';
+    function fillPicks() {
+      var g = $("bgroup").value;
+      $("bpick").innerHTML = Object.keys(mk).filter(function (c) { return mk[c][0] === g; })
+        .map(function (c) { return '<option value="' + esc(c) + '">' + esc(choiceLabel(e, c, mk[c][1])) + '</option>'; }).join("");
+    }
+    $("bgroup").addEventListener("change", fillPicks);
+    fillPicks();
+    $("betform").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var odds = parseFloat(String($("bodds").value).replace(",", "."));
+      if (!(odds >= 1.01 && odds <= 1000)) { $("betmsg").textContent = "Scrivi la quota, per esempio 2,00."; return; }
+      var id = e.sport === "tennis" ? String(e.id).replace(/^1\./, "") : String(e.id);
+      var code = "g" + (e.sport === "tennis" ? "t" : "c") + id + "_" + $("bpick").value + "_" + Math.round(odds * 100);
+      window.location.href = "https://t.me/" + encodeURIComponent(data.diario.bot) + "?start=" + code;
+    });
+    show("giocata");
+    window.scrollTo(0, 0);
+  }
+  $("diarioevents").addEventListener("click", function (ev) { var b = ev.target.closest("[data-ev]"); if (b) renderGiocata(b.dataset.ev); });
+  $("diariochips").addEventListener("click", function (ev) {
+    var b = ev.target.closest(".chip"); if (!b) return;
+    dsport = b.dataset.dsport;
+    $("diariochips").querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", c === b ? "true" : "false"); });
+    renderDiario();
+  });
 
   async function load(password, fromForm) {
     var btn = $("unlock"), msg = $("lockmsg");
