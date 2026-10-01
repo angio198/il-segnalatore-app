@@ -133,6 +133,8 @@
   .tm.corsa{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
   .tm.prepartita{background:color-mix(in srgb, var(--teal) 14%, transparent);color:var(--teal);}
   .tm.spenta{background:color-mix(in srgb, var(--ink-soft) 16%, transparent);color:var(--ink-soft);}
+  .tm.top{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
+  .strat .tm + .tm{margin-left:4px;vertical-align:2px;}
   .strat .nm + .tm{margin-left:6px;vertical-align:2px;}
   .todaycard .best{display:flex;align-items:baseline;gap:10px;margin:2px 0 4px;}
   .todaycard .big{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;}
@@ -289,6 +291,10 @@
 </main>
 
 <main class="view" id="view-segnali" hidden>
+  <div class="chips" id="topchips" style="margin-bottom:8px;">
+    <button class="chip" type="button" id="top5btn" aria-pressed="false">⭐ Solo le top 5</button>
+  </div>
+  <div class="filternote" id="top5note" hidden><span id="top5text"></span></div>
   <div class="chips" id="timechips" role="group" aria-label="Filtra per momento" style="margin-bottom:8px;">
     <button class="chip" type="button" data-when="all" aria-pressed="true">Tutti</button>
     <button class="chip" type="button" data-when="subito" aria-pressed="false">⚡ Da giocare subito</button>
@@ -349,14 +355,29 @@
   function whenOk(t) { return when === "all" || (when === "pre" ? t === "prepartita" : t !== "prepartita"); }
   function tmTag(t) { return TIMING_LABEL[t] ? '<span class="tm ' + t + '">' + TIMING_LABEL[t] + '</span>' : ""; }
   var hidden = loadHidden();  // strategie spente nel filtro (solo su questo telefono)
+  // Pulsante "Solo le top 5": le 5 strategie col rendimento storico piu' alto, scelte dai dati a ogni
+  // aggiornamento (signals/app_export.top_strategies). Vale solo qui; ricordato su questo telefono.
+  var TOP_KEY = "segnalatore.top5";
+  var top5On = loadTop();
 
   function loadHidden() {
     try { return new Set(JSON.parse(localStorage.getItem(FILTER_KEY) || "[]")); } catch (e) { return new Set(); }
   }
   function saveHidden() { try { localStorage.setItem(FILTER_KEY, JSON.stringify(Array.from(hidden))); } catch (e) {} }
+  function loadTop() { try { return localStorage.getItem(TOP_KEY) === "1"; } catch (e) { return false; } }
+  function saveTop() { try { localStorage.setItem(TOP_KEY, top5On ? "1" : "0"); } catch (e) {} }
+  function topIds() { return (data && data.top5 && data.top5.ids) || []; }
   function known(id) { return !!(data && data.catalog && data.catalog.some(function (s) { return s.id === id; })); }
-  // una parte di messaggio e' visibile se la sua strategia e' accesa (o sconosciuta: meglio mostrarla)
-  function on(id) { return !id || !known(id) || !hidden.has(id); }
+  // una parte di messaggio e' visibile se la sua strategia e' accesa (o sconosciuta: meglio mostrarla);
+  // con "Solo le top 5" solo le strategie fra le 5 (e non nascoste a mano)
+  function on(id) {
+    if (top5On) return !!id && topIds().indexOf(id) >= 0 && !hidden.has(id);
+    return !id || !known(id) || !hidden.has(id);
+  }
+  function nameOf(id) {
+    var s = data && data.catalog && data.catalog.find(function (c) { return c.id === id; });
+    return s ? s.name : id;
+  }
 
   function $(id) { return document.getElementById(id); }
   function esc(s) {
@@ -527,6 +548,13 @@
   }
 
   function renderFeed() {
+    var ids = topIds();
+    $("top5btn").setAttribute("aria-pressed", String(top5On));
+    $("top5note").hidden = !top5On;
+    $("top5text").textContent = !ids.length
+      ? "Nessuna strategia ha ancora " + ((data.top5 && data.top5.min_cases) || 100) + " casi: niente da mostrare."
+      : "Le " + ids.length + " col rendimento storico più alto (almeno " + data.top5.min_cases + " casi), "
+        + "scelte dai dati a ogni aggiornamento: " + ids.map(nameOf).join(" · ") + ".";
     var n = Array.from(hidden).filter(known).length;
     $("filternote").hidden = n === 0;
     $("filtertext").textContent = n === 1 ? "Filtro attivo: 1 strategia nascosta" : "Filtro attivo: " + n + " strategie nascoste";
@@ -554,7 +582,8 @@
         + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml + '</div>';
     }).filter(Boolean);
     $("feed").innerHTML = todayCard() + (cards.length ? cards.join("")
-      : '<div class="note">Nessun segnale per questo filtro, per ora.' + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>');
+      : '<div class="note">Nessun segnale per questo filtro, per ora.' + (top5On ? ' È attivo "Solo le top 5".' : '')
+        + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>');
   }
 
   function renderStrategie() {
@@ -565,6 +594,7 @@
         var id = "sw-" + s.id;
         return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>'
           + (s.retired ? '<span class="tm spenta">SPENTA DAL ' + esc(s.retired) + '</span>' : tmTag(s.timing))
+          + (topIds().indexOf(s.id) >= 0 ? '<span class="tm top">⭐ TOP 5</span>' : "")
           + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
           + perfBar("Storico", s.detail && s.detail.stats) + perfBar("Ultimi 3 giorni", s.recent) + '</div>'
           + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
@@ -842,6 +872,13 @@
     document.querySelectorAll("#timechips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
     if (data) renderFeed();
   });
+  $("top5btn").addEventListener("click", function () {
+    top5On = !top5On;
+    saveTop();
+    $("top5btn").setAttribute("aria-pressed", String(top5On));
+    if (data) renderFeed();
+  });
+  $("top5btn").setAttribute("aria-pressed", String(top5On));
   $("chips").addEventListener("click", function (e) {
     var b = e.target.closest(".chip"); if (!b) return;
     filter = b.dataset.filter;
