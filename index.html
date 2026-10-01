@@ -435,6 +435,8 @@
     if (sig && sig.kind === "signal") {
       html += '<h2 class="sectiontitle">Il segnale</h2><div class="facts">'
         + '<div><span class="k">Indicazione: </span><b>' + esc(sig.pick) + '</b></div>'
+        + (base.sport === "tennis" && /inizio ore \d/.test(sig.text || "") ? '<div><span class="k">Inizio: </span>' + esc((sig.text.match(/inizio ore (\d{1,2}:\d{2})/) || [])[1] || "")
+           + ' <span class="k">· è l\'orario del programma del campo: se la partita è "a seguire" inizia più tardi</span></div>' : "")
         + '<div><span class="k">Quota: </span><b>' + it(sig.odds, 2) + '</b></div>'
         + (sig.it_best && sig.it_best.best ? '<div><span class="k">Miglior quota italiana: </span><b class="' + (sig.it_best.best >= sig.odds ? "pos" : "") + '">' + it(sig.it_best.best, 2) + '</b> (' + esc(sig.it_best.bookmaker) + ', fra ' + sig.it_best.books + ' bookmaker) <span class="k">· solo per te</span></div>'
            : (sig.it_best ? '<div><span class="k">Miglior quota italiana: </span>non trovata</div>' : ""))
