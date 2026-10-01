@@ -95,6 +95,16 @@
   .betform select,.betform input{font:inherit;font-size:1rem;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%;}
   #diariobets .pickrow{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:0.88rem;}
   #diariobets .meta{font-size:0.8rem;color:var(--ink-soft);margin-top:4px;}
+  .demo{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;padding:3px 8px;border-radius:999px;background:var(--accent);color:#12181A;font-weight:600;}
+  .oddsbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:16px;}
+  .oddsbox .oh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;font-size:0.78rem;color:var(--ink-soft);}
+  .oddsbox .og{font-weight:700;font-size:0.82rem;margin:10px 0 6px;}
+  .oddsgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
+  .oddbtn{font:inherit;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:7px 4px;cursor:pointer;text-align:center;}
+  .oddbtn .ol{display:block;font-size:0.72rem;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .oddbtn .ov{display:block;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:0.95rem;}
+  .oddbtn[aria-pressed="true"]{border-color:var(--accent-strong);box-shadow:0 0 0 1px var(--accent-strong);}
+  .oddsbox.tick .ov{opacity:.35;transition:opacity .2s;}
   .betform .primary{margin-top:8px;text-align:center;text-decoration:none;display:block;}
   .msg{font-size:0.88rem;min-height:1.3em;color:var(--bad);}
 
@@ -936,6 +946,62 @@
     return choice;
   }
 
+  // ANTEPRIMA delle quote live (richiesta 01/10): al deploy su un server vero arriveranno quote Betfair
+  // aggiornate ogni 30 secondi. Oggi: tennis = quota Betfair dell'ultimo aggiornamento (vera ma vecchia di
+  // qualche minuto); calcio = STIMA d'esempio da un modello di Poisson (gol medi, minuti che restano), non una
+  // quota di mercato. Toccare una quota compila mercato, scelta e quota del modulo.
+  // ordine fisso: in JavaScript le chiavi numeriche ("1", "2", "12") passano davanti alle altre
+  var ORDER = ["1", "X", "2", "1X", "X2", "12", "P1", "PN", "P2", "O05", "U05", "O15", "U15", "O25", "U25",
+               "O35", "U35", "O45", "U45", "GG", "NG", "W1", "W2"];
+  function codesOf(mk) { return ORDER.filter(function (c) { return mk[c]; }); }
+  function poisson(l, k) { var p = Math.exp(-l); for (var i = 1; i <= k; i++) p *= l / i; return p; }
+  function demoOdds(e) {
+    if (e.sport === "tennis") return e.o1 && e.o2 ? { W1: e.o1, W2: e.o2 } : {};
+    var left = e.ht ? 0.5 : Math.max(0.02, (90 - Math.min(90, e.minute == null ? 0 : e.minute)) / 90);
+    var lh = 1.45 * left, la = 1.15 * left, gh = e.gh || 0, ga = e.ga || 0, p = {}, cell = [];
+    for (var i = 0; i <= 10; i++) for (var j = 0; j <= 10; j++) cell.push([gh + i, ga + j, poisson(lh, i) * poisson(la, j)]);
+    function sum(f) { return cell.reduce(function (s, c) { return s + (f(c[0], c[1]) ? c[2] : 0); }, 0); }
+    p["1"] = sum(function (h, a) { return h > a; }); p["X"] = sum(function (h, a) { return h === a; }); p["2"] = 1 - p["1"] - p["X"];
+    p["1X"] = p["1"] + p["X"]; p["X2"] = p["X"] + p["2"]; p["12"] = p["1"] + p["2"];
+    var none = Math.exp(-(lh + la));
+    p.P1 = (1 - none) * lh / (lh + la); p.P2 = (1 - none) * la / (lh + la); p.PN = none;
+    ["05", "15", "25", "35", "45"].forEach(function (l) {
+      var n = parseInt(l[0], 10) + 1, o = sum(function (h, a) { return h + a >= n; });
+      if (gh + ga < n) { p["O" + l] = o; p["U" + l] = 1 - o; }  // linee gia' superate: niente quota
+    });
+    p.GG = sum(function (h, a) { return h > 0 && a > 0; }); p.NG = 1 - p.GG;
+    var out = {};
+    Object.keys(p).forEach(function (k) { var q = Math.round(100 / (p[k] * 1.06)) / 100; if (p[k] > 0.009 && q >= 1.03) out[k] = q; });
+    return out;
+  }
+  var oddsTimer = null;
+  function startOddsTimer() {
+    clearInterval(oddsTimer);
+    var t = 30;
+    oddsTimer = setInterval(function () {
+      var el = $("oddscount"); if (!el) { clearInterval(oddsTimer); return; }
+      t = t <= 1 ? 30 : t - 1;
+      el.textContent = "prossimo aggiornamento tra " + t + " s";
+      if (t === 30) { var b = $("oddsbox"); b.classList.add("tick"); setTimeout(function () { b.classList.remove("tick"); }, 400); }
+    }, 1000);
+  }
+  function oddsHtml(e) {
+    var o = demoOdds(e), mk = data.diario.markets[e.sport], codes = Object.keys(o);
+    if (!codes.length) return "";
+    var groups = GROUPS[e.sport].map(function (g) {
+      var cs = codesOf(mk).filter(function (c) { return mk[c][0] === g && o[c]; });
+      if (!cs.length) return "";
+      return '<div class="og">' + esc(g) + '</div><div class="oddsgrid"' + (g === "Under/Over" || cs.length === 2 ? ' style="grid-template-columns:repeat(2,minmax(0,1fr));"' : "") + '>' + cs.map(function (c) {
+        var lab = choiceLabel(e, c, mk[c][1]).replace(/ \(Betfair .*\)$/, "");
+        return '<button class="oddbtn" type="button" data-odd="' + esc(c) + '" data-group="' + esc(g) + '" data-val="' + o[c] + '"><span class="ol">' + esc(lab) + '</span><span class="ov">' + oddsTxt(o[c]) + '</span></button>';
+      }).join("") + '</div>';
+    }).join("");
+    var src = e.sport === "tennis" ? "Quote Betfair vere, ma di " + ageTxt(e.ts) + "." : "Quote STIMATE da un modello d'esempio: non sono quote di mercato, non giocarle.";
+    return '<div class="oddsbox" id="oddsbox"><div class="oh"><span class="demo">ANTEPRIMA</span><span id="oddscount">prossimo aggiornamento tra 30 s</span></div>'
+      + '<div class="oh"><span>' + src + ' Con il server vero: quote Betfair aggiornate ogni 30 secondi. Tocca una quota per scegliere la giocata' + (e.sport === "tennis" ? "." : " (la quota la scrivi tu).") + '</span></div>'
+      + groups + '</div>';
+  }
+
   function renderGiocata(key) {
     var e = (data.diario.events || []).find(function (x) { return x.sport + ":" + x.id === key; });
     if (!e) return;
@@ -947,6 +1013,7 @@
       + '<div class="bigscore">' + esc(scoreTxt(e) || "LIVE") + '</div>'
       + '<div class="bigmin">' + esc(estMinute(e) || (e.games && e.games.length ? "Game: " + e.games.join("  ") : "")) + '</div>'
       + (stats ? '<table class="stt"><tr><td><b>' + esc(e.home.split(" ").slice(-1)[0]) + '</b></td><td></td><td><b>' + esc(e.away.split(" ").slice(-1)[0]) + '</b></td></tr>' + stats + '</table>' : '<div class="note" style="margin-bottom:14px;">Statistiche non disponibili per questa partita.</div>')
+      + oddsHtml(e)
       + '<form class="betform" id="betform"><label for="bgroup">Mercato</label><select id="bgroup">'
       + groups.map(function (g) { return '<option>' + esc(g) + '</option>'; }).join("") + '</select>'
       + '<label for="bpick">Scelta</label><select id="bpick"></select>'
@@ -956,11 +1023,22 @@
       + '<div class="note">Telegram si apre sulla chat del bot: se serve premi <b>Avvia</b>. Il bot salva la giocata con minuto e statistiche di quel momento, poi ti chiede il motivo. L\'esito lo trova da solo.</div>';
     function fillPicks() {
       var g = $("bgroup").value;
-      $("bpick").innerHTML = Object.keys(mk).filter(function (c) { return mk[c][0] === g; })
+      $("bpick").innerHTML = codesOf(mk).filter(function (c) { return mk[c][0] === g; })
         .map(function (c) { return '<option value="' + esc(c) + '">' + esc(choiceLabel(e, c, mk[c][1])) + '</option>'; }).join("");
     }
     $("bgroup").addEventListener("change", fillPicks);
     fillPicks();
+    if ($("oddsbox")) {
+      startOddsTimer();
+      $("oddsbox").addEventListener("click", function (ev) {
+        var b = ev.target.closest("[data-odd]"); if (!b) return;
+        $("oddsbox").querySelectorAll("[data-odd]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        $("bgroup").value = b.dataset.group; fillPicks(); $("bpick").value = b.dataset.odd;
+        // la stima del calcio NON entra nel diario (falserebbe il conto): la quota la scrive l'utente
+        if (e.sport === "tennis") $("bodds").value = oddsTxt(parseFloat(b.dataset.val));
+        else { $("bodds").value = ""; $("bodds").focus(); }
+      });
+    }
     $("betform").addEventListener("submit", function (ev) {
       ev.preventDefault();
       var odds = parseFloat(String($("bodds").value).replace(",", "."));
