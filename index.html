@@ -128,6 +128,13 @@
   .badge.lieve{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
   .badge.nessun{background:color-mix(in srgb, var(--bad) 14%, transparent);color:var(--bad);}
   .badge.info,.badge.prova{background:color-mix(in srgb, var(--teal) 14%, transparent);color:var(--teal);}
+  .tm{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.05em;font-weight:600;padding:2px 7px;border-radius:999px;flex:none;white-space:nowrap;}
+  .tm.live{background:color-mix(in srgb, var(--bad) 15%, transparent);color:var(--bad);}
+  .tm.corsa{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
+  .tm.prepartita{background:color-mix(in srgb, var(--teal) 14%, transparent);color:var(--teal);}
+  .strat .nm + .tm{margin-left:6px;vertical-align:2px;}
+  .todaycard .best{display:flex;align-items:baseline;gap:10px;margin:2px 0 4px;}
+  .todaycard .big{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;}
   .feedcard .extra{margin-top:8px;display:flex;flex-direction:column;gap:4px;font-size:0.82rem;color:var(--ink-soft);}
 
   /* filtro per strategia */
@@ -281,6 +288,11 @@
 </main>
 
 <main class="view" id="view-segnali" hidden>
+  <div class="chips" id="timechips" role="group" aria-label="Filtra per momento" style="margin-bottom:8px;">
+    <button class="chip" type="button" data-when="all" aria-pressed="true">Tutti</button>
+    <button class="chip" type="button" data-when="subito" aria-pressed="false">⚡ Da giocare subito</button>
+    <button class="chip" type="button" data-when="pre" aria-pressed="false">📅 Pre-partita</button>
+  </div>
   <div class="chips" id="chips" role="group" aria-label="Filtra per sport">
     <button class="chip" type="button" data-filter="all" aria-pressed="true">Tutti</button>
     <button class="chip" type="button" data-filter="tennis" aria-pressed="false">🎾 Tennis</button>
@@ -307,14 +319,13 @@
 </main>
 
 <main class="view" id="view-virtuali" hidden>
-  <div class="eyebrow">Calcio virtuale Sisal</div>
+  <button class="back" type="button" data-back="strategie">‹ Strategie</button>
   <div id="virtuali"></div>
 </main>
 
 <nav class="tabbar" id="tabbar" hidden>
   <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic">≡</span>Segnali</button>
   <button class="tab" type="button" data-view="strategie"><span class="ic">⚙</span>Strategie</button>
-  <button class="tab" type="button" data-view="virtuali"><span class="ic">⚄</span>Virtuali</button>
 </nav>
 
 <script>
@@ -325,7 +336,16 @@
   var NAME = { tennis: "Tennis", ippica: "Ippica", calcio: "Calcio", hockey: "Hockey" };
   var TIER_LABEL = { valore: "VALORE", lieve: "LIEVE VALORE", nessun: "NESSUN VALORE", info: "INFORMATIVO", prova: "IN PROVA" };
   var FILTER_KEY = "segnalatore.filtri";
-  var data = null, filter = "all";
+  var data = null, filter = "all", when = "all";
+  // Live e corse (ippica a 15 minuti dal via) vanno giocati subito; i pre-partita valgono fino all'inizio.
+  var TIMING_LABEL = { live: "LIVE", corsa: "CORSA", prepartita: "PRE-PARTITA" };
+  var TIMING_NOTE = {
+    live: "⚡ Live: partita in corso, la quota cambia in fretta. Vale solo adesso.",
+    corsa: "🐎 Corsa: il via è pochi minuti dopo il segnale.",
+    prepartita: "📅 Pre-partita: vale fino all'inizio della partita, se la quota è ancora quella."
+  };
+  function whenOk(t) { return when === "all" || (when === "pre" ? t === "prepartita" : t !== "prepartita"); }
+  function tmTag(t) { return TIMING_LABEL[t] ? '<span class="tm ' + t + '">' + TIMING_LABEL[t] + '</span>' : ""; }
   var hidden = loadHidden();  // strategie spente nel filtro (solo su questo telefono)
 
   function loadHidden() {
@@ -443,6 +463,7 @@
         + '<div><span class="k">' + esc(sig.prob_label) + ': </span><b>' + sig.prob + '%</b></div>'
         + '<div><span class="k">Valore atteso: </span><b>' + (sig.ev == null ? "non calcolabile per questo tipo di segnale" : pct(sig.ev)) + '</b></div>'
         + (strat ? '<div><span class="k">Strategia: </span><button class="more" type="button" data-more="' + esc(strat) + '">' + esc(strat) + ' ›</button></div>' : "")
+        + (TIMING_NOTE[sig.timing] ? '<div><span class="k">' + esc(TIMING_NOTE[sig.timing]) + '</span></div>' : "")
         + '</div>';
     }
     if (sig && sig.extra && sig.extra.length) {
@@ -480,18 +501,43 @@
     $("view-segnale").scrollTop = 0;
   }
 
+  // Riquadro "Oggi": la quota piu' alta vinta oggi, sempre insieme al conto completo del giorno
+  // (vinti e persi, con 10 € a segnale). Rispetta il filtro per sport e le strategie nascoste.
+  function todayCard() {
+    var res = (data.today_results || []).filter(function (r) { return (filter === "all" || r.sport === filter) && on(r.strategy) && whenOk(r.timing); });
+    if (!res.length) return "";
+    var best = res.filter(function (r) { return r.hit && r.odds; }).sort(function (a, b) { return b.odds - a.odds; })[0];
+    var priced = res.filter(function (r) { return r.odds; });
+    var pnl = priced.reduce(function (s, r) { return s + (r.hit ? (r.odds - 1) * 10 : -10); }, 0);
+    var wins = res.filter(function (r) { return r.hit; }).length;
+    var idx = best ? data.feed.findIndex(function (f) { return f.key && f.key === best.key && f.kind !== "outcome"; }) : -1;
+    if (best && idx < 0) idx = data.feed.findIndex(function (f) { return f.key && f.key === best.key; });
+    var head = '<div class="top"><span aria-hidden="true">📅</span><span class="cat">Oggi</span><span class="time">' + res.length + (res.length === 1 ? " esito" : " esiti") + '</span></div>';
+    var body = best
+      ? '<div class="best"><span class="k">Quota più alta vinta</span><span class="big pos">' + it(best.odds, 2) + '</span></div>'
+        + '<div class="event">' + EMOJI[best.sport] + ' ' + esc(best.event) + '</div>'
+        + '<div class="meta">' + esc(best.pick) + (best.strategy ? " · " + esc(best.strategy) : "") + '</div>'
+      : '<div class="event">Nessun segnale vinto oggi, per ora.</div>';
+    var tally = '<div class="meta">Oggi ' + wins + ' vinti su ' + res.length
+      + (priced.length ? ' · con 10 € a segnale <b class="' + (pnl >= 0 ? "pos" : "neg") + '">' + money(pnl) + '</b>'
+        + (priced.length < res.length ? ' (' + priced.length + ' con quota)' : "") : "") + '</div>';
+    return '<div class="card todaycard' + (idx >= 0 ? ' feedcard" data-idx="' + idx : "") + '">' + head + body + tally + '</div>';
+  }
+
   function renderFeed() {
     var n = Array.from(hidden).filter(known).length;
     $("filternote").hidden = n === 0;
     $("filtertext").textContent = n === 1 ? "Filtro attivo: 1 strategia nascosta" : "Filtro attivo: " + n + " strategie nascoste";
     var cards = data.feed.map(function (f, i) {
       if (filter !== "all" && f.sport !== filter) return "";
+      if (!whenOk(f.timing)) return "";
       var extra = (f.extra || []).filter(function (e) { return on(e.strategy); });
       var hasMain = f.kind === "signal" || (f.kind === "outcome" && f.detail);
       var showMain = hasMain && on(f.main);
       if (!showMain && !extra.length) return "";  // tutto cio' che contiene e' filtrato
       var extraHtml = extra.length ? '<div class="extra">' + extra.map(function (e) { return '<span>' + esc(e.text) + '</span>'; }).join("") + '</div>' : "";
-      var top = '<div class="top"><span aria-hidden="true">' + EMOJI[f.sport] + '</span><span class="cat">' + esc(f.kind === "outcome" ? ("Esito" + (f.cat ? " · " + f.cat : "")) : f.cat) + '</span><span class="time">' + whenLabel(f.ts) + '</span></div>'
+      var top = '<div class="top"><span aria-hidden="true">' + EMOJI[f.sport] + '</span><span class="cat">' + esc(f.kind === "outcome" ? ("Esito" + (f.cat ? " · " + f.cat : "")) : f.cat) + '</span>'
+        + (f.kind !== "outcome" ? tmTag(f.timing) : "") + '<span class="time">' + whenLabel(f.ts) + '</span></div>'
         + '<div class="event">' + esc(f.event) + '</div>';
       if (f.kind === "outcome") {
         var main = showMain ? '<div class="pickrow"><span>' + (f.hit ? "✅ " : "❌ ") + esc(f.detail) + '</span>'
@@ -505,8 +551,8 @@
         + '<div class="meta">' + esc(f.prob_label) + ' ' + f.prob + '% · Quota ' + it(f.odds, 2) + (f.strategy ? " · " + esc(f.strategy) : "") + '</div>'
         + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml + '</div>';
     }).filter(Boolean);
-    $("feed").innerHTML = cards.length ? cards.join("")
-      : '<div class="note">Nessun segnale per questo filtro, per ora.' + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>';
+    $("feed").innerHTML = todayCard() + (cards.length ? cards.join("")
+      : '<div class="note">Nessun segnale per questo filtro, per ora.' + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>');
   }
 
   function renderStrategie() {
@@ -515,7 +561,7 @@
     $("strategie").innerHTML = ["tennis", "calcio", "hockey", "ippica"].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) {
         var id = "sw-" + s.id;
-        return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>'
+        return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>' + tmTag(s.timing)
           + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
           + perfBar("Storico", s.detail && s.detail.stats) + perfBar("Ultimi 3 giorni", s.recent) + '</div>'
           + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
@@ -525,7 +571,8 @@
     }).join("") + ((data.esclusi || []).length
       ? '<h2 class="sectiontitle">Cosa non copriamo, di proposito</h2><div class="card">'
         + data.esclusi.map(function (e) {
-          return '<div class="test"><div class="tn">' + esc(e.title) + '</div><div class="tt">' + esc(e.long) + '</div></div>';
+          return '<div class="test"><div class="tn">' + esc(e.title) + '</div><div class="tt">' + esc(e.short || e.long)
+            + '<button class="more" type="button" data-escluso="' + esc(e.id) + '">… altro</button></div></div>';
         }).join("") + '</div>'
       : "");
   }
@@ -660,9 +707,19 @@
 
   function dmy(iso) { return iso ? iso.slice(8, 10) + "/" + iso.slice(5, 7) : "—"; }
 
-  function renderVirtuali() {
+  // "… altro" di una voce di "Cosa non copriamo": il perche' completo; per i virtuali anche l'analisi.
+  function renderEscluso(id) {
+    var e = (data.esclusi || []).filter(function (x) { return x.id === id; })[0];
+    if (!e) return;
+    $("virtuali").innerHTML = '<h1 class="dtitle">' + esc(e.title) + '</h1><div class="dsub">Cosa non copriamo, di proposito</div>'
+      + '<p class="prose">' + esc(e.long) + '</p>' + (id === "virtuali" ? virtualiHtml() : "");
+    show("virtuali");
+    $("view-virtuali").scrollTop = 0;
+  }
+
+  function virtualiHtml() {
     var v = data.virtuali;
-    if (!v) { $("virtuali").innerHTML = '<div class="note">Analisi del calcio virtuale non ancora disponibile.</div>'; return; }
+    if (!v) return '<div class="note gap">Analisi del calcio virtuale non ancora disponibile.</div>';
     var fixed = (v.fisse || []).filter(function (r) { return r.roi != null; }).sort(function (a, b) { return b.roi - a.roi; });
     var pairs = v.accoppiamenti || {}, strongest = pairs["20%"] || {};
     var edgeFixed = fixed.filter(function (r) { return r.lo > 0; });
@@ -673,7 +730,7 @@
       : "No. Le quote sono calibrate sul generatore casuale: esce quello che dicono, né più né meno. Il banco trattiene "
         + Object.keys(mg).map(function (d) { return it(mg[d] * 100, 1) + "% (" + d + ")"; }).join(" e ")
         + " su ogni mercato, e nessuna giocata provata regge la verifica sugli ultimi " + v.verifica_giorni + " giorni. Per questo qui non escono segnali.";
-    var html = '<h1 class="dtitle">Si può battere?</h1>'
+    var html = '<h2 class="sectiontitle">Calcio virtuale Sisal: si può battere?</h2>'
       + '<div class="dsub">FAS e FAS League · ' + v.partite.toLocaleString("it-IT") + ' partite dal ' + dmy(v.dal) + ' al ' + dmy(v.al) + '</div>'
       + '<div class="verdict">' + esc(verdict) + '</div>'
       + '<div class="kpis"><div class="kpi"><div class="v">' + v.partite.toLocaleString("it-IT") + '</div><div class="l">partite</div></div>'
@@ -729,7 +786,7 @@
         }).join("") + '</div></div>';
     }
     html += '<div class="src">Fonte: archivio pubblico Sisal (tiene gli ultimi 14 giorni). Analisi del ' + (v.generated_at ? dmy(v.generated_at.slice(0, 10)) + ' ore ' + v.generated_at.slice(11, 16) : "—") + '.</div>';
-    $("virtuali").innerHTML = html;
+    return html;
   }
 
   function show(view) {
@@ -739,7 +796,7 @@
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { dettaglio: "strategie", segnale: "segnali" }[view] || view;
+    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie" }[view] || view;
     document.querySelectorAll(".tab").forEach(function (t) {
       if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -748,7 +805,7 @@
   function renderAll() {
     var g = new Date(data.generated_at);
     $("asof").innerHTML = "Dati aggiornati<br>" + whenLabel(g.getTime() / 1000);
-    renderStatus(); renderFeed(); renderStrategie(); renderVirtuali();
+    renderStatus(); renderFeed(); renderStrategie();
   }
 
   async function load(password, fromForm) {
@@ -776,10 +833,16 @@
   $("refresh").addEventListener("click", function () { var pw = storeGet(); if (pw) load(pw, false); });
   $("logout").addEventListener("click", function () { storeSet(null); data = null; $("pw").value = ""; show("lock"); });
   $("tabbar").addEventListener("click", function (e) { var b = e.target.closest(".tab"); if (b) show(b.dataset.view); });
+  $("timechips").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip"); if (!b) return;
+    when = b.dataset.when;
+    document.querySelectorAll("#timechips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
+    if (data) renderFeed();
+  });
   $("chips").addEventListener("click", function (e) {
     var b = e.target.closest(".chip"); if (!b) return;
     filter = b.dataset.filter;
-    document.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
+    document.querySelectorAll("#chips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
     if (data) renderFeed();
   });
   $("strategie").addEventListener("change", function (e) {
@@ -790,6 +853,7 @@
   });
   $("strategie").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-more]"); if (b && data) renderDetail(b.dataset.more);
+    var x = e.target.closest("button[data-escluso]"); if (x && data) renderEscluso(x.dataset.escluso);
   });
   $("back").addEventListener("click", function () { show("strategie"); });
   $("feed").addEventListener("click", function (e) {
