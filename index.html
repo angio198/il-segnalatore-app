@@ -93,6 +93,12 @@
   .betform{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
   .betform label{font-weight:600;font-size:0.86rem;margin-top:4px;}
   .betform select,.betform input{font:inherit;font-size:1rem;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%;}
+  .chips.sporttabs{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0;margin:-8px 0 10px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;}
+  .sporttabs::-webkit-scrollbar{display:none;}
+  .sporttabs .chip{flex:none;}
+  .hero{border-radius:14px;min-height:118px;padding:18px;background-size:cover;background-position:center;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;margin-bottom:6px;}
+  .hero .ht{font-size:1.45rem;font-weight:800;letter-spacing:-0.01em;text-shadow:0 1px 6px rgba(0,0,0,.35);}
+  .hero .hs{font-size:0.85rem;opacity:.9;}
   .catgroup summary{cursor:pointer;list-style:none;font-size:0.92rem;}
   .catgroup summary::-webkit-details-marker{display:none;}
   .catgroup summary::before{content:"▸ ";color:var(--ink-soft);} .catgroup[open] summary::before{content:"▾ ";}
@@ -351,8 +357,6 @@
 </main>
 
 <main class="view" id="view-strategie" hidden>
-  <div class="eyebrow">Filtro dei segnali</div>
-  <div class="note">Spegni una strategia per nasconderne segnali ed esiti nella lista "Segnali". Riaccendila e tornano tutti: i dati non si cancellano. Il filtro vale solo in questa app, le notifiche Telegram non cambiano.</div>
   <div id="strategie"></div>
 </main>
 
@@ -647,10 +651,38 @@
         + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>');
   }
 
+  // Sport scelto in alto nella scheda Strategie (ricordato su questo telefono)
+  var SPORT_KEY = "segnalatore.sport";
+  var STRAT_SPORTS = ["calcio", "tennis", "hockey", "basket", "ippica"];
+  var stratSport = (function () { try { return localStorage.getItem(SPORT_KEY) || "calcio"; } catch (e) { return "calcio"; } })();
+  // Sfondi disegnati da noi (niente foto di terzi): campo, linee e colori di ogni sport
+  function svgBg(body, bg) {
+    // apici singoli: l'url finisce dentro un attributo style="..." scritto con le doppie virgolette
+    return "url('data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 140" preserveAspectRatio="xMidYMid slice"><rect width="400" height="140" fill="' + bg + '"/>' + body + '</svg>') + "')";
+  }
+  var L = 'fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2"';
+  var HERO = {
+    calcio: svgBg('<g fill="#000" fill-opacity=".07"><rect x="0" width="40" height="140"/><rect x="80" width="40" height="140"/><rect x="160" width="40" height="140"/><rect x="240" width="40" height="140"/><rect x="320" width="40" height="140"/></g>'
+      + '<rect x="10" y="10" width="380" height="120" ' + L + '/><line x1="200" y1="10" x2="200" y2="130" ' + L + '/><circle cx="200" cy="70" r="24" ' + L + '/><circle cx="200" cy="70" r="2.5" fill="#fff" fill-opacity=".6"/>'
+      + '<rect x="10" y="38" width="44" height="64" ' + L + '/><rect x="10" y="54" width="16" height="32" ' + L + '/><rect x="346" y="38" width="44" height="64" ' + L + '/><rect x="374" y="54" width="16" height="32" ' + L + '/>', "#2E7D4F"),
+    tennis: svgBg('<rect x="40" y="15" width="320" height="110" ' + L + '/><line x1="40" y1="29" x2="360" y2="29" ' + L + '/><line x1="40" y1="111" x2="360" y2="111" ' + L + '/><line x1="200" y1="15" x2="200" y2="125" stroke="#fff" stroke-opacity=".8" stroke-width="3"/>'
+      + '<line x1="120" y1="29" x2="120" y2="111" ' + L + '/><line x1="280" y1="29" x2="280" y2="111" ' + L + '/><line x1="120" y1="70" x2="280" y2="70" ' + L + '/>', "#2F6E9E"),
+    hockey: svgBg('<rect x="10" y="10" width="380" height="120" rx="40" fill="none" stroke="#B23A3A" stroke-opacity=".5" stroke-width="2"/><line x1="200" y1="10" x2="200" y2="130" stroke="#B23A3A" stroke-opacity=".6" stroke-width="3"/><line x1="140" y1="10" x2="140" y2="130" stroke="#2F5DA8" stroke-opacity=".5" stroke-width="3"/><line x1="260" y1="10" x2="260" y2="130" stroke="#2F5DA8" stroke-opacity=".5" stroke-width="3"/><circle cx="200" cy="70" r="20" fill="none" stroke="#2F5DA8" stroke-opacity=".5" stroke-width="2"/>', "#6E8796"),
+    basket: svgBg('<g stroke="#000" stroke-opacity=".06">' + Array.apply(null, Array(14)).map(function (_, i) { return '<line x1="0" y1="' + (i * 10) + '" x2="400" y2="' + (i * 10) + '"/>'; }).join("") + '</g><rect x="10" y="10" width="380" height="120" ' + L + '/><line x1="200" y1="10" x2="200" y2="130" ' + L + '/><circle cx="200" cy="70" r="20" ' + L + '/><rect x="10" y="48" width="60" height="44" ' + L + '/><rect x="330" y="48" width="60" height="44" ' + L + '/><path d="M10 22 A 80 48 0 0 1 10 118" ' + L + ' transform="translate(30 0)"/><path d="M390 22 A 80 48 0 0 0 390 118" ' + L + ' transform="translate(-30 0)"/>', "#B5652E"),
+    ippica: svgBg('<rect x="30" y="20" width="340" height="100" rx="50" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="10"/><rect x="30" y="20" width="340" height="100" rx="50" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1.5"/><line x1="300" y1="14" x2="300" y2="34" stroke="#fff" stroke-opacity=".8" stroke-width="2"/>', "#4E7A3B")
+  };
+
   function renderStrategie() {
     var cat = data.catalog || [];
     if (!cat.length) { $("strategie").innerHTML = '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'; return; }
-    $("strategie").innerHTML = ["tennis", "calcio", "hockey", "basket", "ippica"].map(function (sport) {
+    var nCat = data.catalogo && data.catalogo.strategies ? data.catalogo.strategies.length : 0;
+    var tabs = '<div class="chips sporttabs" role="tablist">' + STRAT_SPORTS.map(function (sp) {
+      return '<button class="chip" type="button" role="tab" data-ssport="' + sp + '" aria-pressed="' + (sp === stratSport) + '">' + EMOJI[sp] + ' ' + NAME[sp] + '</button>';
+    }).join("") + '</div>';
+    var count = cat.filter(function (s) { return s.sport === stratSport; }).length + (stratSport === "calcio" ? nCat : 0);
+    var hero = '<div class="hero" style="background-image:linear-gradient(90deg,rgba(10,16,18,.72),rgba(10,16,18,.2)),' + HERO[stratSport] + ';">'
+      + '<div class="ht">' + EMOJI[stratSport] + ' ' + NAME[stratSport] + '</div><div class="hs">' + count + ' strategie</div></div>';
+    $("strategie").innerHTML = tabs + hero + [stratSport].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) {
         var id = "sw-" + s.id;
         return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>'
@@ -661,8 +693,8 @@
           + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
           + (hidden.has(s.id) ? "" : " checked") + ' aria-label="Mostra i segnali di ' + esc(s.name) + '"><span class="slider"></span></span></div>';
       }).join("");
-      return rows ? '<h2 class="sectiontitle">' + EMOJI[sport] + ' ' + NAME[sport] + '</h2><div class="card">' + rows + '</div>' : "";
-    }).join("") + catalogoHtml() + ((data.esclusi || []).length
+      return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2><div class="note" style="margin-bottom:10px;">L\'interruttore mostra o nasconde i segnali di quella strategia nella lista "Segnali". I dati non si cancellano e le notifiche Telegram non cambiano.</div><div class="card">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
+    }).join("") + (stratSport === "calcio" ? catalogoHtml() : "") + ((data.esclusi || []).length
       ? '<h2 class="sectiontitle">Cosa non copriamo, di proposito</h2><div class="card">'
         + data.esclusi.map(function (e) {
           return '<div class="test"><div class="tn">' + esc(e.title) + '</div><div class="tt">' + esc(e.short || e.long)
@@ -677,6 +709,10 @@
   var CAT_KEY = "segnalatore.catalogo";
   var catSel = (function () { try { return JSON.parse(localStorage.getItem(CAT_KEY) || "{}"); } catch (e) { return {}; } })();
   function saveCatSel() { try { localStorage.setItem(CAT_KEY, JSON.stringify(catSel)); } catch (e) {} }
+  // strategie del catalogo attivate nei segnali (spente di partenza: le sceglie l'utente)
+  var CATON_KEY = "segnalatore.catalogo.on";
+  var catOn = (function () { try { return new Set(JSON.parse(localStorage.getItem(CATON_KEY) || "[]")); } catch (e) { return new Set(); } })();
+  function saveCatOn() { try { localStorage.setItem(CATON_KEY, JSON.stringify(Array.from(catOn))); } catch (e) {} }
   function catKey(s) { return catSel[s.id] && s.grid[catSel[s.id]] ? catSel[s.id] : s.default; }
   function cellHtml(c, big) {
     var n = c[0], MIN = 30;
@@ -700,15 +736,21 @@
     if (!c || !c.strategies) return "";
     var groups = [];
     c.strategies.forEach(function (s) { if (groups.indexOf(s.group) < 0) groups.push(s.group); });
-    return '<h2 class="sectiontitle">⚽ Catalogo calcio live <span class="tm live">⚙ PERSONALIZZABILI</span></h2>'
-      + '<div class="note" style="margin-bottom:10px;">' + c.strategies.length + ' strategie dalle tue liste e dalla community. Tocca una strategia, poi ⚙ per regolarla: i numeri si aggiornano sullo storico (' + c.matches + ' partite).</div>'
+    return '<div class="note" style="margin:22px 0 4px;">Le strategie qui sotto si regolano: "… altro", poi ⚙ Personalizza. La barra "Storico" usa le tue impostazioni (' + c.matches + ' partite). L\'interruttore le attiva nei tuoi segnali; il motore live di queste strategie è in arrivo, per ora conta lo storico.</div>'
       + groups.map(function (g) {
         var items = c.strategies.filter(function (s) { return s.group === g; });
-        return '<details class="card catgroup"><summary><b>' + esc(g) + '</b> <span class="k">· ' + items.length + '</span></summary>'
+        return '<h2 class="sectiontitle">' + esc(g) + '</h2><div class="card">'
           + items.map(function (s) {
-            return '<button class="catrow" type="button" data-cat="' + esc(s.id) + '"><span class="nm">' + esc(s.name) + (catSel[s.id] && catSel[s.id] !== s.default ? ' <span class="tm top">⚙ TUA</span>' : "") + '</span>'
-              + '<span class="ds">' + esc(s.pick) + '</span><span class="ds">' + cellHtml(s.grid[catKey(s)], false) + '</span></button>';
-          }).join("") + '</details>';
+            var cell = s.grid[catKey(s)], id = "cat-" + s.id;
+            var st = { n: cell[0], roi: cell[3], wins: Math.round((cell[1] || 0) * cell[0]) };
+            return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>' + tmTag("live")
+              + (catSel[s.id] && catSel[s.id] !== s.default ? '<span class="tm top">⚙ TUA</span>' : "")
+              + '<div class="ds">' + esc(s.pick) + (cell[0] ? ' · strike ' + Math.round(cell[1] * 100) + '% · quota ~' + it(cell[2], 2) : "")
+              + '<button class="more" type="button" data-cat="' + esc(s.id) + '">… altro</button></div>'
+              + perfBar("Storico", st) + '</div>'
+              + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-caton="' + esc(s.id) + '"' + (catOn.has(s.id) ? " checked" : "")
+              + ' aria-label="Attiva nei segnali ' + esc(s.name) + '"><span class="slider"></span></span></div>';
+          }).join("") + '</div>';
       }).join("")
       + '<details class="card catgroup"><summary><b>In osservazione</b> <span class="k">· ' + c.waiting.length + ' · angoli, cartellini, pressione</span></summary><div class="ds" style="padding:8px 0;">Lo storico non ha questi dati: si registrano dal vivo e i numeri arrivano col tempo.</div>'
       + c.waiting.map(function (w) { return '<div class="ds">• ' + esc(w) + '</div>'; }).join("") + '</details>'
@@ -741,10 +783,10 @@
     $("catsliders").addEventListener("input", function (e) {
       var r = e.target.closest("input[type=range]"); if (!r) return;
       idx[Number(r.dataset.i)] = Number(r.value);
-      catSel[s.id] = idx.join("_"); saveCatSel(); draw();
+      catSel[s.id] = idx.join("_"); saveCatSel(); draw(); renderStrategie();
     });
     $("catreset").addEventListener("click", function () {
-      idx = s.default.split("_").map(Number); delete catSel[s.id]; saveCatSel();
+      idx = s.default.split("_").map(Number); delete catSel[s.id]; saveCatSel(); renderStrategie();
       $("catsliders").querySelectorAll("input").forEach(function (r, i) { r.value = idx[i]; });
       draw();
     });
@@ -1197,6 +1239,8 @@
     if (data) renderFeed();
   });
   $("strategie").addEventListener("change", function (e) {
+    var co = e.target.closest("input[data-caton]");
+    if (co) { if (co.checked) catOn.add(co.dataset.caton); else catOn.delete(co.dataset.caton); saveCatOn(); return; }
     var sw = e.target.closest("input[data-strategy]"); if (!sw) return;
     if (sw.checked) hidden.delete(sw.dataset.strategy); else hidden.add(sw.dataset.strategy);
     saveHidden();
@@ -1206,6 +1250,8 @@
     var b = e.target.closest("button[data-more]"); if (b && data) renderDetail(b.dataset.more);
     var x = e.target.closest("button[data-escluso]"); if (x && data) renderEscluso(x.dataset.escluso);
     var c = e.target.closest("button[data-cat]"); if (c && data) renderCat(c.dataset.cat);
+    var sp = e.target.closest("button[data-ssport]");
+    if (sp && data) { stratSport = sp.dataset.ssport; try { localStorage.setItem(SPORT_KEY, stratSport); } catch (er) {} renderStrategie(); window.scrollTo(0, 0); }
   });
   $("back").addEventListener("click", function () { show("strategie"); });
   $("feed").addEventListener("click", function (e) {
