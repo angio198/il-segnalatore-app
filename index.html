@@ -180,7 +180,22 @@
   .tavf{border:none;border-radius:999px;background:var(--accent);color:#12181A;font:inherit;font-size:0.66rem;font-weight:800;padding:3px 8px;cursor:pointer;}
   .ptext{font-size:0.95rem;line-height:1.45;margin:10px 0 4px;white-space:pre-wrap;overflow-wrap:anywhere;}
   .post.mine{border-color:color-mix(in srgb, var(--accent) 45%, var(--line));}
-  .sportpick .chip[aria-pressed="true"]{border-color:var(--accent);}
+  .sportpick{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;}
+  /* selettore: nazione, sport, campionato, squadra (menu orizzontali) */
+  .welcome{text-align:center;margin:8px 0 6px;} .welcome img{border-radius:16px;}
+  .pkstep{font-size:0.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin:16px 2px 6px;}
+  .hscroll{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none;scroll-snap-type:x proximity;}
+  .hscroll::-webkit-scrollbar{display:none;}
+  .ptile{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:76px;max-width:96px;padding:10px 8px;
+    border:1.5px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);font:inherit;font-size:0.74rem;font-weight:700;cursor:pointer;text-align:center;line-height:1.15;}
+  .ptile.on{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 16%, var(--surface));box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);}
+  .ptile .pflag{font-size:1.6rem;line-height:1;}
+  .psport{width:40px;height:40px;display:grid;place-items:center;} .psport .ico{width:34px;height:34px;}
+  .ptile .tlogo{width:38px;height:42px;font-size:13px;margin:0;vertical-align:0;} .ptile .tlogo.round{width:40px;height:40px;}
+  .lgb{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:0.9rem;letter-spacing:-.02em;}
+  .lgb-calcio{background:linear-gradient(135deg,#1F7A45,#0E3B22);} .lgb-tennis{background:linear-gradient(135deg,#C9D52B,#5E7A12);}
+  .lgb-basket{background:linear-gradient(135deg,#E8812F,#8A3B0E);} .lgb-hockey{background:linear-gradient(135deg,#2F6FD6,#12305E);}
+  .pkfree{display:flex;gap:8px;margin-top:6px;} .pkfree .meinput{flex:1;padding:8px 12px;}
   /* reazioni, commenti, segnalazioni */
   .sbar{display:flex;align-items:center;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);}
   .rbtn{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink-soft);font:inherit;font-size:0.78rem;font-weight:800;
@@ -717,6 +732,10 @@
   <div id="occhioclassifica"></div>
   <h2 class="sectiontitle">Le mie giocate</h2>
   <div id="diariobets"></div>
+</main>
+
+<main class="view" id="view-benvenuto" hidden>
+  <div id="benvenuto"></div>
 </main>
 
 <main class="view" id="view-profilo" hidden>
@@ -1522,9 +1541,9 @@
   }
 
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "benvenuto"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
-    $("tabbar").hidden = !unlocked;
+    $("tabbar").hidden = !unlocked || view === "benvenuto";
     // la barra della schedina: in tutte le pagine tranne il blocco e la schedina stessa
     $("slipbar").hidden = !unlocked || view === "schedina" || !slip.legs.length;
     $("topright").hidden = !unlocked;
@@ -1778,41 +1797,80 @@
   }
   function myAvatar(size) { return avOf(me, size); }
   // in modifica si lavora su una copia (meEdit): si salva solo con "Salva", e i ridisegni non perdono il testo
-  // Profilazione (come all'iscrizione, richiesta utente 02/10): nazione, sport, squadre e tennisti preferiti
-  // (anagrafica.js). Servono a ordinare Partite, consigliati della Home e sfide della settimana.
+  // Profilazione (richiesta utente 02/10): si chiede alla prima apertura dell'app (view-benvenuto) e si cambia
+  // dalla matita del Diario. Un solo percorso: nazione, sport -> campionato -> squadra (o tennista), ogni passo un
+  // menu orizzontale. Dati in anagrafica.js. Serve a ordinare Partite, consigliati della Home e sfide.
   var A = window.ANAGRAFICA, SPORTS = ["calcio", "tennis", "basket", "hockey", "ippica"];
-  var FAV_MAX = 5;
-  function newPrefs(src) {
-    var c = (src && src.country) || A.guessCountry();
-    var fav = {}; SPORTS.forEach(function (k) { fav[k] = ((src && src.fav && src.fav[k]) || []).slice(); });
-    return { country: c, sports: ((src && src.sports) || A.PAESI[c].sports).slice(), fav: fav, q: {} };
+  function newPick(src) {
+    return { country: (src && src.country) || A.guessCountry(), sport: (src && src.sport) || null, league: (src && src.league) || null,
+             team: (src && src.team) || null, free: "" };
   }
-  var pick = newPrefs(null);
-  function favLabel(k) { return k === "tennis" ? "Tennisti preferiti" : "Squadre preferite · " + NAME[k]; }
-  function prefsHtml(st) {
-    var h = '<div class="melabel">Nazione</div><div class="chips" style="flex-wrap:wrap;">' + Object.keys(A.PAESI).map(function (c) {
-      return '<button class="chip" type="button" data-country="' + c + '" aria-pressed="' + (st.country === c) + '">' + A.PAESI[c].flag + ' ' + esc(A.PAESI[c].name) + '</button>';
+  var pick = newPick(null);
+  function compById(id) { return A.COMPS.filter(function (c) { return c.id === id; })[0]; }
+  function lgBadge(c) {
+    var w = c.label.replace(/[^A-Za-z0-9 ]/g, " ").trim().split(/\s+/), ab = w.length > 1 ? w[0][0] + w[1][0] : w[0].slice(0, 2);
+    return '<span class="lgb lgb-' + c.sport + '">' + esc(ab.toUpperCase()) + '</span>';
+  }
+  function leaguesFor(st) {
+    var P0 = A.PAESI[st.country] || A.PAESI.XX, all = A.LEGHE[st.sport] || [];
+    return P0.leagues.filter(function (id) { return all.indexOf(id) >= 0; }).concat(all.filter(function (id) { return P0.leagues.indexOf(id) < 0; }));
+  }
+  function pickerHtml(st) {
+    var h = '<div class="pkstep">Nazione</div><div class="hscroll">' + Object.keys(A.PAESI).map(function (c) {
+      return '<button class="ptile' + (st.country === c ? " on" : "") + '" type="button" data-pkcountry="' + c + '"><span class="pflag">' + A.PAESI[c].flag + '</span><span>' + esc(A.PAESI[c].name) + '</span></button>';
     }).join("") + '</div>'
-      + '<div class="melabel">Sport che segui</div><div class="chips" style="flex-wrap:wrap;">' + SPORTS.map(function (k) {
-        return '<button class="chip" type="button" data-sport="' + k + '" aria-pressed="' + (st.sports.indexOf(k) >= 0) + '">' + ic(k) + ' ' + NAME[k] + '</button>';
+      + '<div class="pkstep">Il tuo sport</div><div class="hscroll">' + SPORTS.map(function (k) {
+        return '<button class="ptile' + (st.sport === k ? " on" : "") + '" type="button" data-pksport="' + k + '"><span class="psport">' + ic(k) + '</span><span>' + NAME[k] + '</span></button>';
       }).join("") + '</div>';
-    st.sports.filter(function (k) { return k !== "ippica"; }).forEach(function (k) {
-      var list = k === "tennis" ? A.TENNISTI : A.SQUADRE[k] || [], raw = (st.q[k] || "").trim(), q = raw.toLowerCase();
-      var hits = q.length >= 2 ? list.filter(function (n) { return n.toLowerCase().indexOf(q) >= 0 && st.fav[k].indexOf(n) < 0; }).slice(0, 6) : [];
-      h += '<div class="melabel">' + favLabel(k) + ' <span class="k">(fino a ' + FAV_MAX + ')</span></div>'
-        + '<div class="favchips">' + st.fav[k].map(function (n) {
-          return '<button class="favchip" type="button" data-favdel="' + esc(n) + '" data-favsport="' + k + '">' + teamLogo(n, k) + '<span translate="no">' + esc(n) + '</span>' + ic("x") + '</button>';
-        }).join("") + '</div>'
-        + (st.fav[k].length < FAV_MAX ? '<input class="meinput" type="text" data-favq="' + k + '" value="' + esc(st.q[k] || "") + '" placeholder="' + (k === "tennis" ? "Cerca un tennista" : "Cerca una squadra") + '" translate="no">'
-          + '<div class="favhits" data-favhits="' + k + '">' + favHits(st, k, list, hits, raw) + '</div>' : "");
-    });
+    if (st.sport && (A.LEGHE[st.sport] || []).length) {
+      h += '<div class="pkstep">' + (st.sport === "tennis" ? "Il circuito" : "Il campionato") + '</div><div class="hscroll">' + leaguesFor(st).map(function (id) {
+        var c = compById(id); if (!c) return "";
+        return '<button class="ptile' + (st.league === id ? " on" : "") + '" type="button" data-pkleague="' + id + '">' + lgBadge(c) + '<span>' + esc(c.label) + '</span></button>';
+      }).join("") + '</div>';
+    }
+    if (st.league) {
+      var teams = A.SQUADRE[st.league] || [], tennis = st.sport === "tennis";
+      if (st.team && teams.indexOf(st.team) < 0) teams = [st.team].concat(teams);
+      h += '<div class="pkstep">' + (tennis ? "Il tuo tennista" : "La tua squadra") + '</div><div class="hscroll teams">' + teams.map(function (n) {
+        return '<button class="ptile' + (st.team === n ? " on" : "") + '" type="button" data-pkteam="' + esc(n) + '">' + teamLogo(n, st.sport) + '<span translate="no">' + esc(n) + '</span></button>';
+      }).join("") + '</div>'
+        + '<div class="pkfree"><input class="meinput" type="text" maxlength="40" data-pkfree="1" value="' + esc(st.free || "") + '" placeholder="' + (tennis ? "Non c'è? Scrivi il nome" : "Non c'è? Scrivi la squadra") + '" translate="no">'
+        + '<button class="chip" type="button" data-pkfreeadd="1">Aggiungi</button></div>';
+    }
     return h;
   }
-  function favHits(st, k, list, hits, raw) {
-    var q = raw.toLowerCase();
-    return hits.map(function (n) {
-      return '<button class="chip" type="button" data-favadd="' + esc(n) + '" data-favsport="' + k + '">' + teamLogo(n, k) + ' <span translate="no">' + esc(n) + '</span></button>';
-    }).join("") + (q.length >= 2 && !hits.some(function (n) { return n.toLowerCase() === q; }) ? '<button class="chip" type="button" data-favadd="' + esc(raw) + '" data-favsport="' + k + '">+ <span translate="no">' + esc(raw) + '</span></button>' : "");
+  // un tocco nel selettore: true se era suo (chi chiama ridisegna)
+  function pickerClick(st, b) {
+    var d = b.dataset;
+    if (d.pkcountry) { st.country = d.pkcountry; return true; }
+    if (d.pksport) { if (st.sport !== d.pksport) { st.sport = d.pksport; st.league = null; st.team = null; } return true; }
+    if (d.pkleague) { if (st.league !== d.pkleague) { st.league = d.pkleague; st.team = null; } return true; }
+    if (d.pkteam) { st.team = st.team === d.pkteam ? null : d.pkteam; return true; }
+    if (d.pkfreeadd) {
+      var v = (st.free || "").trim();
+      if (v.length >= 2 && !checkText(v)) { st.team = v.slice(0, 40); st.free = ""; }
+      return true;
+    }
+    return false;
+  }
+  function commitPick(st) {
+    me.country = st.country; me.sport = st.sport; me.league = st.sport ? st.league : null; me.team = st.league ? st.team : null;
+    me.sports = st.sport ? [st.sport] : [];
+    me.fav = {}; if (me.sport && me.team) me.fav[me.sport] = [me.team];
+  }
+  function favLine() {
+    if (!me.sport) return "";
+    var c = me.league && compById(me.league);
+    return '<div class="mefavs">' + (A.PAESI[me.country] ? '<span class="mefav">' + A.PAESI[me.country].flag + '</span>' : "")
+      + '<span class="mefav">' + ic(me.sport) + ' ' + NAME[me.sport] + (c ? ' · ' + esc(c.label) : "") + '</span>'
+      + (me.team ? '<span class="mefav">' + teamLogo(me.team, me.sport) + '<span translate="no">' + esc(me.team) + '</span></span>' : "") + '</div>';
+  }
+  function renderBenvenuto() {
+    $("benvenuto").innerHTML = '<div class="welcome"><img src="icon-192.png" alt="" width="64" height="64"><h1 class="dtitle" style="margin:8px 0 2px;">Benvenuto in StatSight</h1>'
+      + '<div class="k">Raccontaci cosa segui: mettiamo in primo piano il tuo campionato e la tua squadra, e ti proponiamo le sfide giuste. Si cambia quando vuoi dal Diario.</div></div>'
+      + pickerHtml(pick)
+      + '<button class="primary block" type="button" data-pkgo="1" style="margin-top:16px;"' + (pick.sport ? "" : " disabled") + '>Inizia</button>'
+      + '<button class="linkbtn" type="button" data-pkskip="1" style="display:block;margin:10px auto;">Salta, lo faccio dopo</button>';
   }
   // squadre e tennisti preferiti, piu' la nazionale del paese scelto: per "Per te" nelle Partite
   function normName(s) {
@@ -1835,9 +1893,8 @@
     });
   }
   function startEdit() {
-    var p = newPrefs(me);
-    meEdit = { name: me.name || "", bio: me.bio || "", pic: me.pic, seed: me.seed, country: p.country, sports: p.sports, fav: p.fav, q: {},
-               base: me.seed.split("-")[0], more: [1, 2, 3, 4, 5, 6, 7] };
+    meEdit = Object.assign(newPick(me), { name: me.name || "", bio: me.bio || "", pic: me.pic, seed: me.seed,
+               base: me.seed.split("-")[0], more: [1, 2, 3, 4, 5, 6, 7] });
     renderProfilo();
   }
   // pronostici da mostrare nello storico: singole una per una, multiple e sistemi come una riga sola
@@ -1871,7 +1928,7 @@
         + '<label class="melabel" for="mename">Nome</label><input id="mename" class="meinput" maxlength="24" value="' + esc(d.name) + '" placeholder="Come ti vedono gli altri" translate="no">'
         + '<label class="melabel" for="mebio">Bio</label><textarea id="mebio" class="meinput" maxlength="160" rows="3" placeholder="Due righe su di te: sport preferiti, come giochi">' + esc(d.bio) + '</textarea>'
         + '<div class="k" id="mebion" style="text-align:right;">' + d.bio.length + '/160</div>'
-        + prefsHtml(d)
+        + '<div class="melabel">Cosa segui</div>' + pickerHtml(d)
         + '<div class="duo" style="margin-top:8px;"><button class="chip" type="button" data-meannulla="1" style="justify-content:center;">Annulla</button>'
         + '<button class="primary" type="button" data-mesalva="1">' + ic("check") + ' Salva</button></div></div>';
     } else {
@@ -1880,16 +1937,14 @@
         + '<div class="mewho"><div class="dtitle" style="margin:0;" translate="no">' + esc(me.name || "Il tuo profilo") + '</div>'
         + '<div class="pnick">' + ic("eye") + ' ' + esc(title) + ' · livello ' + R2.level + '</div>'
         + '<div class="k">' + won + ' vinti su ' + closed.length + (streak > 1 ? ' · serie di ' + streak : "") + '</div>'
-        + (me.sports ? '<div class="mefavs">' + (A.PAESI[me.country] ? '<span class="mefav">' + A.PAESI[me.country].flag + '</span>' : "")
-          + [].concat.apply([], Object.keys(me.fav || {}).map(function (k) { return me.fav[k].map(function (n) { return '<span class="mefav">' + teamLogo(n, k) + '<span translate="no">' + esc(n) + '</span></span>'; }); })).join("") + '</div>' : "")
+        + favLine()
         + '</div>'
         + '<button class="iconbtn" type="button" data-meedit="1" aria-label="Modifica il profilo">' + ic("pen") + '</button></div>'
         + (me.bio ? '<div class="mebio" translate="no">' + esc(me.bio) + '</div>'
           : '<button class="linkbtn mebio empty" type="button" data-meedit="1">' + ic("pen") + ' Scrivi la tua bio</button>')
         + heroesHtml(R2)
         + '<button class="coinbtn" type="button" data-megioca="1"><span class="cc">' + ic("coin") + '</span><span class="ct"><b>' + R2.coins + '</b> monete<span>Scegli le partite e fai il tuo pronostico</span></span>' + ic("chev") + '</button>'
-        + (me.sports ? "" : '<div class="card sportpick"><b>Raccontaci cosa segui</b><div class="k">Così ti mettiamo in primo piano i tuoi campionati, la tua squadra e i tuoi tennisti, e le sfide giuste. Si cambia quando vuoi dalla matita.</div>'
-          + prefsHtml(pick) + '<button class="primary" type="button" data-mesports="1" style="width:100%;margin-top:12px;"' + (pick.sports.length ? "" : " disabled") + '>Fatto</button></div>');
+        + (me.sport ? "" : '<button class="card sportpick" type="button" data-meedit="1">' + ic("star") + ' <b>Scegli il tuo sport e la tua squadra</b><span class="k">Mettiamo in primo piano il tuo campionato e le sfide giuste.</span></button>');
     }
     $("profilo").innerHTML = html;
   }
@@ -2071,7 +2126,14 @@
     var a = Math.abs(h) % 360, b = (a + 140 + Math.abs(h >> 8) % 80) % 360;
     var words = s.replace(/\b(fc|ac|sc|cf|afc|cd|sd|fk|sk|if|bk|club|de|del|la|el)\b\.?/gi, " ").trim().split(/\s+/).filter(Boolean);
     var ini = sport === "tennis" ? (words[words.length - 1] || s).slice(0, 2) : words.length > 1 ? words[0][0] + words[1][0] : (words[0] || s).slice(0, 2);
-    return '<span class="tlogo' + (sport === "tennis" ? " round" : "") + '" aria-hidden="true" style="background:linear-gradient(135deg,hsl(' + a + ' 68% 46%) 0 52%,hsl(' + b + ' 60% 32%) 52% 100%)">' + esc(ini.toUpperCase()) + '</span>';
+    // colori sociali (anagrafica.js) e disegno: strisce, a meta', diagonale o pieno. Mai lo stemma vero.
+    var C = window.ANAGRAFICA && window.ANAGRAFICA.COLORI[s];
+    var c1 = C ? C[0] : "hsl(" + a + " 68% 46%)", c2 = C ? C[1] : "hsl(" + b + " 60% 32%)", kind = C ? C[2] : ["d", "h", "s", "d"][Math.abs(h >> 4) % 4];
+    var bg = kind === "s" ? "repeating-linear-gradient(90deg," + c1 + " 0 22%," + c2 + " 22% 44%)"
+      : kind === "h" ? "linear-gradient(90deg," + c1 + " 50%," + c2 + " 50%)"
+      : kind === "p" ? c1 : "linear-gradient(135deg," + c1 + " 0 52%," + c2 + " 52% 100%)";
+    var light = C && /^#(F|E[89A-F])/i.test(c1) && kind === "p";
+    return '<span class="tlogo' + (sport === "tennis" ? " round" : "") + '" aria-hidden="true" style="background:' + bg + (light ? ";color:#111" : "") + '">' + esc(ini.toUpperCase()) + '</span>';
   }
   function shortComp(c) {
     return String(c || "").replace(/\s+20\d\d$/, "").replace(/^(atp|wta|itf|challenger)\s+(men|women)\s+(singles|doubles)\s+·\s+/i, "").replace(/\s+-\s+qualification$/i, " (q)");
@@ -2738,18 +2800,15 @@
   });
 
   // il tuo profilo: modifica, foto, avatar, occhio sullo storico, monete -> partite
+  // ridisegno che non perde la posizione dei menu orizzontali del selettore
+  function keepScroll(box, fn) {
+    var pos = Array.prototype.map.call(box.querySelectorAll(".hscroll"), function (x) { return x.scrollLeft; });
+    fn();
+    Array.prototype.forEach.call(box.querySelectorAll(".hscroll"), function (x, i) { if (pos[i]) x.scrollLeft = pos[i]; });
+  }
   $("profilo").addEventListener("input", function (e) {
-    var fq = e.target.closest("[data-favq]");
-    if (fq) {
-      // ricerca della squadra/tennista: si aggiornano solo i suggerimenti, cosi' la tastiera resta aperta
-      var st = meEdit || pick, k = fq.dataset.favq, raw = fq.value.trim(), q = raw.toLowerCase();
-      st.q[k] = fq.value;
-      var list = k === "tennis" ? A.TENNISTI : A.SQUADRE[k] || [];
-      var hits = q.length >= 2 ? list.filter(function (n) { return n.toLowerCase().indexOf(q) >= 0 && st.fav[k].indexOf(n) < 0; }).slice(0, 6) : [];
-      var box = $("profilo").querySelector('[data-favhits="' + k + '"]'); if (box) box.innerHTML = favHits(st, k, list, hits, raw);
-      return;
-    }
     if (!meEdit) return;
+    if (e.target.dataset.pkfree) { meEdit.free = e.target.value; return; }
     if (e.target.id === "mename") meEdit.name = e.target.value;
     if (e.target.id === "mebio") { meEdit.bio = e.target.value; $("mebion").textContent = meEdit.bio.length + "/160"; }
   });
@@ -2759,46 +2818,38 @@
     var ds = b.dataset;
     if (ds.megioca) { show("diario"); window.scrollTo(0, 0); return; }
     if (ds.meedit) { startEdit(); return; }
-    var st = meEdit || pick;
-    if (ds.country) { st.country = ds.country; if (!meEdit) st.sports = A.PAESI[ds.country].sports.slice(); renderProfilo(); return; }
-    if (ds.sport) {
-      var i = st.sports.indexOf(ds.sport);
-      if (i >= 0) st.sports.splice(i, 1); else st.sports.push(ds.sport);
-      renderProfilo(); return;
-    }
-    if (ds.favadd) {
-      var fl = st.fav[ds.favsport];
-      if (fl.length < FAV_MAX && fl.indexOf(ds.favadd) < 0 && !checkText(ds.favadd)) fl.push(ds.favadd.slice(0, 40));
-      st.q[ds.favsport] = ""; renderProfilo(); return;
-    }
-    if (ds.favdel) { st.fav[ds.favsport] = st.fav[ds.favsport].filter(function (n) { return n !== ds.favdel; }); renderProfilo(); return; }
-    if (ds.mesports) {
-      me.country = pick.country; me.sports = pick.sports.slice(); me.fav = pick.fav; saveMe();
-      renderProfilo(); renderBacheca(); renderDiario(); renderOcchio(); return;
-    }
     if (!meEdit) return;
+    if (pickerClick(meEdit, b)) { keepScroll($("profilo"), renderProfilo); return; }
     if (ds.mefoto) { $("fotoinput").click(); return; }
     if (ds.menofoto) { meEdit.pic = null; renderProfilo(); return; }
     if (ds.meseed) {
       if (ds.meseed === "nuovi") meEdit.more = meEdit.more.map(function (i) { return i + 7; });
       else { meEdit.seed = ds.meseed; meEdit.pic = null; }
-      renderProfilo(); return;
+      keepScroll($("profilo"), renderProfilo); return;
     }
     if (ds.meannulla) { meEdit = false; renderProfilo(); return; }
     if (ds.mesalva) {
       var why = checkText(meEdit.name) || checkText(meEdit.bio);
       if (why && why !== "lungo") { alert(MOD_MSG[why]); return; }
-      var old = { name: me.name, bio: me.bio, pic: me.pic, seed: me.seed };
-      me.name = meEdit.name.trim().slice(0, 24); me.bio = meEdit.bio.trim().slice(0, 160); me.pic = meEdit.pic; me.seed = meEdit.seed; me.sports = meEdit.sports.slice(); me.country = meEdit.country; me.fav = meEdit.fav;
-      if (!saveMe()) { Object.assign(me, old); alert("La foto non entra nella memoria del telefono: provane un'altra."); return; }
-      meEdit = false; renderProfilo(); renderOcchio(); renderBacheca();
+      var old = JSON.parse(JSON.stringify(me));
+      me.name = meEdit.name.trim().slice(0, 24); me.bio = meEdit.bio.trim().slice(0, 160); me.pic = meEdit.pic; me.seed = meEdit.seed;
+      commitPick(meEdit); me.onboarded = true;
+      if (!saveMe()) { Object.keys(me).forEach(function (k) { delete me[k]; }); Object.assign(me, old); alert("La foto non entra nella memoria del telefono: provane un'altra."); return; }
+      meEdit = false; renderAll();
     }
+  });
+  // prima apertura: benvenuto con il selettore (nazione, sport, campionato, squadra)
+  $("benvenuto").addEventListener("input", function (e) { if (e.target.dataset.pkfree) pick.free = e.target.value; });
+  $("benvenuto").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    if (pickerClick(pick, b)) { keepScroll($("benvenuto"), renderBenvenuto); return; }
+    if (b.dataset.pkgo) { commitPick(pick); me.onboarded = true; saveMe(); if (data) renderAll(); show("segnali"); window.scrollTo(0, 0); return; }
+    if (b.dataset.pkskip) { me.onboarded = true; saveMe(); show("segnali"); }
   });
   $("fotoinput").addEventListener("change", function () {
     var f = this.files && this.files[0]; this.value = "";
     if (f && /^image\//.test(f.type)) loadPhoto(f);
   });
-
   // Team StatSight: profilo, segui, filtro della bacheca
   ["bacheca", "persona", "occhioclassifica", "occhiolevel"].forEach(function (id) {
     $(id).addEventListener("input", function (e) {
@@ -2835,7 +2886,8 @@
       lastIv = env.iv;
       storeSet(password);
       renderAll();
-      if (!$("view-lock").hidden) show("segnali");  // l'app si apre sui segnali
+      // l'app si apre sui segnali; la prima volta col benvenuto (nazione, sport, campionato, squadra)
+      if (!$("view-lock").hidden) { if (me.onboarded || me.sport) show("segnali"); else { renderBenvenuto(); show("benvenuto"); } }
       msg.textContent = "";
     } catch (e) {
       if (window.console) console.error(e);
