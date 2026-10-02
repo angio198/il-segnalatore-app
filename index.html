@@ -8,6 +8,8 @@
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>StatSight</title>
+<script src="i18n_en.js"></script>
+<script src="i18n.js"></script>
 <script>
   // Tema prima di disegnare la pagina (niente lampo bianco): scuro di base, scelta in Impostazioni.
   (function () {
@@ -549,6 +551,11 @@
     <button class="chip" type="button" data-tema="auto">Automatico</button>
   </div>
   <div class="note" style="margin-top:10px;">"Automatico" segue l'impostazione del telefono.</div>
+  <h2 class="sectiontitle">Lingua</h2>
+  <div class="chips" id="linguachips" role="group" aria-label="Lingua">
+    <button class="chip" type="button" data-lingua="it">Italiano</button>
+    <button class="chip" type="button" data-lingua="en">English</button>
+  </div>
   <h2 class="sectiontitle">Piano</h2>
   <div class="chips" id="pianochips" role="group" aria-label="Piano">
     <button class="chip" type="button" data-piano="full">StatSight Full</button>
@@ -1993,6 +2000,11 @@
   $("temachips").addEventListener("click", function (e) {
     var b = e.target.closest("[data-tema]"); if (!b) return;
     window.setTema(b.dataset.tema); paintTema();
+  });
+  // lingua (i18n.js): la pagina si ricarica nella lingua scelta
+  document.querySelectorAll("#linguachips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.lingua === window.getLingua())); });
+  $("linguachips").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-lingua]"); if (b && b.dataset.lingua !== window.getLingua()) window.setLingua(b.dataset.lingua);
   });
   $("today").addEventListener("click", function (e) {
     var c = e.target.closest("[data-idx]"); if (c && data) renderSignal(Number(c.dataset.idx));
