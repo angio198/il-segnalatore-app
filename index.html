@@ -7,7 +7,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Segnalatore Live</title>
+<title>StatSight</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
   :root{
@@ -93,6 +93,23 @@
   .betform{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
   .betform label{font-weight:600;font-size:0.86rem;margin-top:4px;}
   .betform select,.betform input{font:inherit;font-size:1rem;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%;}
+  .lvbar{height:6px;border-radius:99px;background:rgba(255,255,255,.25);margin:8px 0 6px;overflow:hidden;}
+  .lvbar div{height:100%;background:#F2C14E;border-radius:99px;}
+  .badges{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  .badge{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;}
+  .badge .bi{font-size:1.5rem;} .badge .bn{font-weight:700;font-size:0.88rem;margin-top:4px;} .badge .bd{font-size:0.76rem;color:var(--ink-soft);}
+  .badge.locked{opacity:.4;filter:grayscale(1);}
+  .radarhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+  .radarwrap{overflow-x:auto;margin:0 -16px;padding:0 16px;}
+  .rt{border-collapse:collapse;font-size:0.8rem;white-space:nowrap;min-width:100%;}
+  .rt th{font-size:0.7rem;color:var(--ink-soft);font-weight:600;text-align:center;padding:6px 8px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);}
+  .rt td{text-align:center;padding:7px 8px;border-bottom:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;}
+  .rt td.l,.rt th.l{text-align:left;font-family:inherit;}
+  .rt td.l b{font-weight:600;} .rt td.mn{color:var(--bad);font-weight:700;} .rt td.sc{font-weight:700;}
+  .rt td.warm{background:color-mix(in srgb, #E8862A 22%, transparent);} .rt td.hot{background:color-mix(in srgb, var(--bad) 25%, transparent);}
+  .rt tr[data-ev]{cursor:pointer;}
+  @media (orientation: landscape){ .rotate{display:none;} }
+  .warnbadge{flex:none;width:18px;height:18px;border-radius:50%;background:#E8B021;color:#1A1A1A;font-weight:800;font-size:12px;line-height:18px;text-align:center;margin-top:2px;}
   .chips.sporttabs{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0;margin:-8px 0 10px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;}
   .sporttabs::-webkit-scrollbar{display:none;}
   .sporttabs .chip{flex:none;}
@@ -177,6 +194,8 @@
   .tm.top{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
   .strat .tm + .tm{margin-left:4px;vertical-align:2px;}
   .strat .nm + .tm{margin-left:6px;vertical-align:2px;}
+  .todayline{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font-size:0.82rem;color:var(--ink-soft);padding:8px 2px 12px;border-bottom:1px solid var(--line);margin-bottom:12px;cursor:pointer;}
+  .todayline b{color:var(--ink);}
   .todaycard .best{display:flex;align-items:baseline;gap:10px;margin:2px 0 4px;}
   .todaycard .big{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;}
   .feedcard .extra{margin-top:8px;display:flex;flex-direction:column;gap:4px;font-size:0.82rem;color:var(--ink-soft);}
@@ -279,7 +298,8 @@
   .tab[aria-current="page"]{color:var(--accent-strong);}
   @media (prefers-color-scheme: dark){.tab[aria-current="page"]{color:var(--accent);}}
 
-  @media (min-width:600px){
+  /* colonna stretta solo su schermi alti (computer, tablet); il telefono in orizzontale usa tutta la larghezza (Radar) */
+  @media (min-width:600px) and (min-height:560px){
     body{max-width:480px;margin-inline:auto;box-shadow:0 0 0 1px var(--line);}
     .tabbar{max-width:480px;margin-inline:auto;}
   }
@@ -296,12 +316,10 @@
       <path d="M18 32L22 18H26L30 32" stroke="var(--ink)" stroke-width="1.6" stroke-linejoin="round"/>
       <line x1="15" y1="32" x2="33" y2="32" stroke="var(--ink)" stroke-width="1.6"/>
     </svg>
-    Il Segnalatore
+    StatSight
     <button class="led" id="led" type="button" hidden aria-label="Stato del sistema"><span class="dot"></span><span id="ledtext">online</span></button>
   </div>
   <div class="topright" id="topright" hidden>
-    <div class="asof" id="asof"></div>
-    <button class="iconbtn" id="refresh" type="button" aria-label="Aggiorna i dati">↻</button>
     <button class="iconbtn" id="logout" type="button" aria-label="Esci e dimentica la password">⎋</button>
   </div>
 </div>
@@ -319,11 +337,11 @@
 
 <main class="view" id="view-stato" hidden>
   <button class="back" type="button" data-back="segnali">‹ Segnali</button>
-  <div class="eyebrow">Stato del sistema</div>
+  <div class="eyebrow">Stato del servizio</div>
   <div class="card" id="health"></div>
   <div class="eyebrow" style="margin-top:22px;">Segnali di oggi</div>
   <div class="statuscards" id="status"></div>
-  <div class="note">Il numero a destra è quanti segnali sono usciti <b>oggi</b>, non un punteggio. "In raccolta" vuol dire che il motore gira ma non ha ancora pubblicato nessun segnale.</div>
+  <div class="note">Il numero a destra è quanti segnali sono usciti <b>oggi</b>. "Scansionando" vuol dire che stiamo controllando le partite, ma oggi nessuna regola ha ancora fatto scattare un trigger.</div>
 </main>
 
 <main class="view" id="view-segnale" hidden>
@@ -332,10 +350,6 @@
 </main>
 
 <main class="view" id="view-segnali" hidden>
-  <div class="chips" id="topchips" style="margin-bottom:8px;">
-    <button class="chip" type="button" id="top5btn" aria-pressed="false">⭐ Solo le top 5</button>
-  </div>
-  <div class="filternote" id="top5note" hidden><span id="top5text"></span></div>
   <div class="chips" id="timechips" role="group" aria-label="Filtra per momento" style="margin-bottom:8px;">
     <button class="chip" type="button" data-when="all" aria-pressed="true">Tutti</button>
     <button class="chip" type="button" data-when="subito" aria-pressed="false">⚡ Da giocare subito</button>
@@ -353,6 +367,7 @@
     <span id="filtertext"></span>
     <button class="linkbtn" id="showall" type="button">Mostra tutto</button>
   </div>
+  <div id="today"></div>
   <div id="feed"></div>
 </main>
 
@@ -371,9 +386,7 @@
 </main>
 
 <main class="view" id="view-diario" hidden>
-  <div class="eyebrow">Il mio occhio</div>
-  <div id="diariokpi"></div>
-  <h2 class="sectiontitle">Partite live adesso</h2>
+  <h2 class="sectiontitle" style="margin-top:4px;">Partite live adesso</h2>
   <div class="chips" id="diariochips" role="group" aria-label="Filtra per sport">
     <button class="chip" type="button" data-dsport="all" aria-pressed="true">Tutte</button>
     <button class="chip" type="button" data-dsport="calcio" aria-pressed="false">⚽ Calcio</button>
@@ -381,8 +394,28 @@
   </div>
   <div id="diarioevents"></div>
   <div class="note" style="margin-bottom:10px;">Partita che non c'è? Scrivi al bot: <b>/giocata Croazia-Italia U19 Under 1,5 2,00</b> (la quota alla fine). Per quelle l'esito lo scrivi tu con /esito.</div>
+</main>
+
+<main class="view" id="view-occhio" hidden>
+  <div id="occhiolevel"></div>
+  <div class="eyebrow" style="margin-top:18px;">Il mio occhio</div>
+  <div id="diariokpi"></div>
+  <h2 class="sectiontitle">Badge</h2>
+  <div id="occhiobadges"></div>
+  <h2 class="sectiontitle">Classifica</h2>
+  <div class="note">La classifica con gli altri utenti arriva con l'app pubblica: serve un server con gli account. Qui vedrai la tua posizione per settimana, mese e sport.</div>
   <h2 class="sectiontitle">Le mie giocate</h2>
   <div id="diariobets"></div>
+</main>
+
+<main class="view" id="view-radar" hidden>
+  <div class="radarhead"><div class="eyebrow" style="margin:0;">Radar live</div><span class="k" id="radarage"></span></div>
+  <div class="note rotate">Gira il telefono in orizzontale per vedere tutte le colonne.</div>
+  <div class="chips" id="radarchips" role="group" aria-label="Sport" style="margin:8px 0;">
+    <button class="chip" type="button" data-rsport="calcio" aria-pressed="true">⚽ Calcio</button>
+    <button class="chip" type="button" data-rsport="tennis" aria-pressed="false">🎾 Tennis</button>
+  </div>
+  <div class="radarwrap" id="radar"></div>
 </main>
 
 <main class="view" id="view-catalogo" hidden>
@@ -397,8 +430,10 @@
 
 <nav class="tabbar" id="tabbar" hidden>
   <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic">≡</span>Segnali</button>
-  <button class="tab" type="button" data-view="diario"><span class="ic">✎</span>Diario</button>
   <button class="tab" type="button" data-view="strategie"><span class="ic">⚙</span>Strategie</button>
+  <button class="tab" type="button" data-view="diario"><span class="ic">✎</span>Diario</button>
+  <button class="tab" type="button" data-view="radar"><span class="ic">◎</span>Radar</button>
+  <button class="tab" type="button" data-view="occhio"><span class="ic">👁</span>Il mio occhio</button>
 </nav>
 
 <script>
@@ -423,7 +458,7 @@
   // Pulsante "Solo le top 5": le 5 strategie col rendimento storico piu' alto, scelte dai dati a ogni
   // aggiornamento (signals/app_export.top_strategies). Vale solo qui; ricordato su questo telefono.
   var TOP_KEY = "segnalatore.top5";
-  var top5On = loadTop();
+  var top5On = false;  // "Top 5 / Top 10" ora e' una vista della scheda Strategie, non un filtro dei segnali
 
   function loadHidden() {
     try { return new Set(JSON.parse(localStorage.getItem(FILTER_KEY) || "[]")); } catch (e) { return new Set(); }
@@ -497,17 +532,31 @@
     var led = ledState();
     $("led").className = "led " + led.cls;
     $("ledtext").textContent = led.text;
-    var dot = function (ok) { return '<span class="dot" style="background:var(' + (ok ? "--good" : "--bad") + ')"></span>'; };
-    $("health").innerHTML = '<div class="verdict" style="margin-bottom:8px;">' + esc(led.why) + ' Ultimo aggiornamento dei dati: ' + whenLabel(new Date(data.generated_at).getTime() / 1000) + '.</div>'
-      + (data.health || []).map(function (h) {
-        return '<div class="hrow">' + dot(h.ok) + '<div class="hb"><div class="hn">' + esc(h.name) + '</div><div class="ht">' + esc(h.text) + '</div></div></div>';
-      }).join("");
+    // Per chi usa l'app contano solo tre cose: arrivano i segnali, arrivano le notifiche, i dati live sono freschi.
+    // I dettagli tecnici (quale processo, quanti minuti) restano a noi nei log e nel guardiano.
+    var hb = data.heartbeat ? new Date(data.heartbeat).getTime() : new Date(data.generated_at).getTime();
+    var stale = (Date.now() - hb) / 60000 > 90;
+    function bad(re) { return (data.health || []).filter(function (h) { return re.test(h.name) && !h.ok; }); }
+    var rows = [
+      { n: "Segnali", ok: !stale && !bad(/Publisher/).length,
+        warn: bad(/Publisher/).map(function (h) { return h.name.replace("Publisher ", ""); }),
+        good: "Arrivano regolarmente.", badTxt: "Ritardi sui segnali di " },
+      { n: "Notifiche", ok: !stale && !bad(/Notifiche|Bot/).length, warn: [],
+        good: "Partono regolarmente.", badTxt: "Le notifiche possono arrivare in ritardo." },
+      { n: "Dati live", ok: !stale && !bad(/Registratore/).length, warn: [],
+        good: "Quote e statistiche aggiornate.", badTxt: "Stiamo riscontrando ritardi dai fornitori dei dati." }
+    ];
+    $("health").innerHTML = rows.map(function (r) {
+      var txt = r.ok ? r.good : (stale ? "Nessun dato nuovo da più di un'ora." : r.badTxt + (r.warn.length ? r.warn.join(", ") + "." : ""));
+      return '<div class="hrow">' + (r.ok ? '<span class="dot" style="background:var(--good)"></span>' : '<span class="warnbadge" aria-label="attenzione">!</span>')
+        + '<div class="hb"><div class="hn">' + esc(r.n) + '</div><div class="ht">' + esc(txt) + '</div></div></div>';
+    }).join("");
     $("status").innerHTML = ["tennis", "ippica", "calcio", "hockey", "basket"].filter(function (s) { return data.status[s]; }).map(function (s) {
       var st = data.status[s];
       var on = st.state === "attivo";
       return '<div class="scard"><div class="icon" aria-hidden="true">' + EMOJI[s] + '</div>'
         + '<div class="body"><div class="sport">' + NAME[s] + '</div><div class="sub">' + esc(st.sub) + '</div></div>'
-        + '<span class="pill ' + (on ? "on" : "warm") + '">' + (on ? "ATTIVO" : "IN RACCOLTA") + '</span>'
+        + '<span class="pill ' + (on ? "on" : "warm") + '">' + (on ? "ATTIVO" : "SCANSIONANDO") + '</span>'
         + '<div class="count" aria-label="segnali oggi">' + st.today + '</div></div>';
     }).join("");
   }
@@ -572,10 +621,6 @@
         } else {
           html += '<div><span class="k">Risultato: </span><b>' + esc(out.result) + '</b></div>';
         }
-        if (sig && sig.kind === "signal" && sig.odds) {
-          var gain = out.hit ? (sig.odds - 1) * 10 : -10;
-          html += '<div><span class="k">Con 10 € puntati: </span><b class="' + (gain >= 0 ? "pos" : "neg") + '">' + money(gain) + '</b></div>';
-        }
         html += '</div>';
       }
       if (out.extra && out.extra.length) {
@@ -590,36 +635,20 @@
   }
 
   // Riquadro "Oggi": la quota piu' alta vinta oggi, sempre insieme al conto completo del giorno
-  // (vinti e persi, con 10 € a segnale). Rispetta il filtro per sport e le strategie nascoste.
+  // (vinti e persi). Rispetta il filtro per sport e le strategie nascoste.
   function todayCard() {
     var res = (data.today_results || []).filter(function (r) { return (filter === "all" || r.sport === filter) && on(r.strategy) && whenOk(r.timing); });
     if (!res.length) return "";
     var best = res.filter(function (r) { return r.hit && r.odds; }).sort(function (a, b) { return b.odds - a.odds; })[0];
-    var priced = res.filter(function (r) { return r.odds; });
-    var pnl = priced.reduce(function (s, r) { return s + (r.hit ? (r.odds - 1) * 10 : -10); }, 0);
     var wins = res.filter(function (r) { return r.hit; }).length;
     var idx = best ? data.feed.findIndex(function (f) { return f.key && f.key === best.key && f.kind !== "outcome"; }) : -1;
     if (best && idx < 0) idx = data.feed.findIndex(function (f) { return f.key && f.key === best.key; });
-    var head = '<div class="top"><span aria-hidden="true">📅</span><span class="cat">Oggi</span><span class="time">' + res.length + (res.length === 1 ? " esito" : " esiti") + '</span></div>';
-    var body = best
-      ? '<div class="best"><span class="k">Quota più alta vinta</span><span class="big pos">' + it(best.odds, 2) + '</span></div>'
-        + '<div class="event">' + EMOJI[best.sport] + ' ' + esc(best.event) + '</div>'
-        + '<div class="meta">' + esc(best.pick) + (best.strategy ? " · " + esc(best.strategy) : "") + '</div>'
-      : '<div class="event">Nessun segnale vinto oggi, per ora.</div>';
-    var tally = '<div class="meta">Oggi ' + wins + ' vinti su ' + res.length
-      + (priced.length ? ' · con 10 € a segnale <b class="' + (pnl >= 0 ? "pos" : "neg") + '">' + money(pnl) + '</b>'
-        + (priced.length < res.length ? ' (' + priced.length + ' con quota)' : "") : "") + '</div>';
-    return '<div class="card todaycard' + (idx >= 0 ? ' feedcard" data-idx="' + idx : "") + '">' + head + body + tally + '</div>';
+    // riga compatta fra i filtri (niente soldi: non e' un invito a giocare, e' il conto onesto della giornata)
+    return '<div class="todayline' + (idx >= 0 ? '" data-idx="' + idx : "") + '"><span>📅 <b>Oggi</b> ' + wins + ' vinti · ' + (res.length - wins) + ' persi</span>'
+      + (best ? '<span>quota più alta vinta <b class="pos">' + it(best.odds, 2) + '</b>' + (idx >= 0 ? ' ›' : "") + '</span>' : "") + '</div>';
   }
 
   function renderFeed() {
-    var ids = topIds();
-    $("top5btn").setAttribute("aria-pressed", String(top5On));
-    $("top5note").hidden = !top5On;
-    $("top5text").textContent = !ids.length
-      ? "Nessuna strategia ha ancora " + ((data.top5 && data.top5.min_cases) || 100) + " casi: niente da mostrare."
-      : "Le " + ids.length + " col rendimento storico più alto (almeno " + data.top5.min_cases + " casi), "
-        + "scelte dai dati a ogni aggiornamento: " + ids.map(nameOf).join(" · ") + ".";
     var n = Array.from(hidden).filter(known).length;
     $("filternote").hidden = n === 0;
     $("filtertext").textContent = n === 1 ? "Filtro attivo: 1 strategia nascosta" : "Filtro attivo: " + n + " strategie nascoste";
@@ -646,7 +675,8 @@
         + '<div class="meta">' + esc(f.prob_label) + ' ' + f.prob + '% · Quota ' + it(f.odds, 2) + (f.strategy ? " · " + esc(f.strategy) : "") + '</div>'
         + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml + '</div>';
     }).filter(Boolean);
-    $("feed").innerHTML = todayCard() + (cards.length ? cards.join("")
+    $("today").innerHTML = todayCard();
+    $("feed").innerHTML = (cards.length ? cards.join("")
       : '<div class="note">Nessun segnale per questo filtro, per ora.' + (top5On ? ' È attivo "Solo le top 5".' : '')
         + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>');
   }
@@ -676,24 +706,41 @@
     var cat = data.catalog || [];
     if (!cat.length) { $("strategie").innerHTML = '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'; return; }
     var nCat = data.catalogo && data.catalogo.strategies ? data.catalogo.strategies.length : 0;
-    var tabs = '<div class="chips sporttabs" role="tablist">' + STRAT_SPORTS.map(function (sp) {
-      return '<button class="chip" type="button" role="tab" data-ssport="' + sp + '" aria-pressed="' + (sp === stratSport) + '">' + EMOJI[sp] + ' ' + NAME[sp] + '</button>';
-    }).join("") + '</div>';
+    var TOPS = { top5: 5, top10: 10 };
+    if (!HERO[stratSport] && !TOPS[stratSport]) stratSport = "calcio";
+    var tabs = '<div class="chips sporttabs" role="tablist">'
+      + ["top5", "top10"].map(function (t) {
+        return '<button class="chip" type="button" role="tab" data-ssport="' + t + '" aria-pressed="' + (t === stratSport) + '">' + (t === "top5" ? "⭐ Top 5" : "Top 10") + '</button>';
+      }).join("")
+      + STRAT_SPORTS.map(function (sp) {
+        return '<button class="chip" type="button" role="tab" data-ssport="' + sp + '" aria-pressed="' + (sp === stratSport) + '">' + EMOJI[sp] + ' ' + NAME[sp] + '</button>';
+      }).join("") + '</div>';
+    function row(s, withSport) {
+      var id = "sw-" + s.id, rank = topIds().indexOf(s.id);
+      return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + (withSport ? EMOJI[s.sport] + " " : "") + esc(s.name) + '</label>'
+        + (s.retired ? '<span class="tm spenta">SPENTA DAL ' + esc(s.retired) + '</span>' : tmTag(s.timing))
+        + (rank >= 0 && rank < 5 ? '<span class="tm top">⭐ TOP 5</span>' : rank >= 5 ? '<span class="tm top">TOP 10</span>' : "")
+        + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
+        + perfBar("Storico", s.detail && s.detail.stats) + perfBar("Ultimi 3 giorni", s.recent) + '</div>'
+        + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
+        + (hidden.has(s.id) ? "" : " checked") + ' aria-label="Mostra i segnali di ' + esc(s.name) + '"><span class="slider"></span></span></div>';
+    }
+    var NOTE = '<div class="note" style="margin-bottom:10px;">L\'interruttore mostra o nasconde i segnali di quella strategia nella lista "Segnali". I dati non si cancellano e le notifiche Telegram non cambiano.</div>';
+    if (TOPS[stratSport]) {
+      var top = topIds().slice(0, TOPS[stratSport]).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(Boolean);
+      $("strategie").innerHTML = tabs
+        + '<div class="hero" style="background-image:linear-gradient(120deg,#3B2F0B,#8A6A14 60%,#C9A227);"><div class="ht">⭐ Top ' + TOPS[stratSport] + '</div><div class="hs">Le strategie col rendimento storico più alto, tutti gli sport (almeno ' + ((data.top5 && data.top5.min_cases) || 100) + ' casi)</div></div>'
+        + (top.length ? '<h2 class="sectiontitle">In classifica</h2>' + NOTE + '<div class="card">' + top.map(function (s) { return row(s, true); }).join("") + '</div>'
+          : '<div class="note" style="margin-top:14px;">Nessuna strategia ha ancora abbastanza casi per entrare in classifica.</div>')
+        + (top.length < TOPS[stratSport] && top.length ? '<div class="note" style="margin-top:10px;">Solo ' + top.length + ' strategie hanno abbastanza casi, per ora.</div>' : "");
+      return;
+    }
     var count = cat.filter(function (s) { return s.sport === stratSport; }).length + (stratSport === "calcio" ? nCat : 0);
     var hero = '<div class="hero" style="background-image:linear-gradient(90deg,rgba(10,16,18,.72),rgba(10,16,18,.2)),' + HERO[stratSport] + ';">'
       + '<div class="ht">' + EMOJI[stratSport] + ' ' + NAME[stratSport] + '</div><div class="hs">' + count + ' strategie</div></div>';
     $("strategie").innerHTML = tabs + hero + [stratSport].map(function (sport) {
-      var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) {
-        var id = "sw-" + s.id;
-        return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>'
-          + (s.retired ? '<span class="tm spenta">SPENTA DAL ' + esc(s.retired) + '</span>' : tmTag(s.timing))
-          + (topIds().indexOf(s.id) >= 0 ? '<span class="tm top">⭐ TOP 5</span>' : "")
-          + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
-          + perfBar("Storico", s.detail && s.detail.stats) + perfBar("Ultimi 3 giorni", s.recent) + '</div>'
-          + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
-          + (hidden.has(s.id) ? "" : " checked") + ' aria-label="Mostra i segnali di ' + esc(s.name) + '"><span class="slider"></span></span></div>';
-      }).join("");
-      return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2><div class="note" style="margin-bottom:10px;">L\'interruttore mostra o nasconde i segnali di quella strategia nella lista "Segnali". I dati non si cancellano e le notifiche Telegram non cambiano.</div><div class="card">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
+      var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) { return row(s, false); }).join("");
+      return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2>' + NOTE + '<div class="card">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
     }).join("") + (stratSport === "calcio" ? catalogoHtml() : "") + ((data.esclusi || []).length
       ? '<h2 class="sectiontitle">Cosa non copriamo, di proposito</h2><div class="card">'
         + data.esclusi.map(function (e) {
@@ -795,7 +842,8 @@
     window.scrollTo(0, 0);
   }
 
-  function money(v) { return (v >= 0 ? "+" : "−") + it(Math.abs(v), Math.abs(v) >= 100 ? 0 : 1) + " €"; }
+  // unita' di posta (1 = una giocata), mai euro: niente cifre in denaro nell'app
+  function money(v) { return (v >= 0 ? "+" : "−") + it(Math.abs(v), Math.abs(v) >= 100 ? 0 : 1) + " u"; }
   function dayLabel(ts, long) {
     var d = new Date(ts * 1000);
     return long ? String(d.getFullYear()) : String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0");
@@ -865,7 +913,7 @@
       + (s.live.n >= 30 ? ', rendimento ' + pct(s.live.roi) : ' (troppo pochi per una percentuale)') + '.</div>' : "";
     var charts = "";
     if (d.curve && d.curve.length >= 2) {
-      charts += '<div class="chart"><h3>Quanto avresti in tasca puntando 1 € ogni volta</h3>' + lineChart(d.curve)
+      charts += '<div class="chart"><h3>Andamento cumulato (1 unità per segnale)</h3>' + lineChart(d.curve)
         + '<div class="cap">Guadagno cumulato caso dopo caso. Sotto la linea tratteggiata sei in perdita.</div></div>';
     }
     if (d.bars && d.bars.length >= 2) {
@@ -1008,7 +1056,7 @@
   }
 
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     $("tabbar").hidden = !unlocked;
     $("topright").hidden = !unlocked;
@@ -1021,9 +1069,7 @@
   }
 
   function renderAll() {
-    var g = new Date(data.generated_at);
-    $("asof").innerHTML = "Dati aggiornati<br>" + whenLabel(g.getTime() / 1000);
-    renderStatus(); renderFeed(); renderStrategie(); renderDiario();
+    renderStatus(); renderFeed(); renderStrategie(); renderDiario(); renderOcchio(); renderRadar();
   }
 
   // ---------------------------------------------------------------- Diario delle giocate a occhio
@@ -1031,7 +1077,7 @@
   // encode_payload) e il bot fotografa minuto, punteggio e statistiche di quel momento.
   var dsport = "all", curEvent = null;
   var GROUPS = { calcio: ["1X2", "Doppia chance", "Prossimo gol", "Under/Over", "Goal/NoGoal"], tennis: ["Vincente"] };
-  function oddsTxt(n) { return it(n, 2); }
+  function oddsTxt(n) { return typeof n === "number" ? it(n, 2) : "–"; }  // una quota puo' mancare (lato senza prezzo)
   function estMinute(e) {
     if (e.sport !== "calcio" || e.minute == null) return "";
     if (e.ht) return "Intervallo";
@@ -1072,6 +1118,87 @@
         + '<div class="meta">' + (b.minute != null ? b.minute + "' · " : "") + esc(b.score || "") + (b.reason ? ' · “' + esc(b.reason) + '”' : "") + '</div></div>';
     }).join("") : '<div class="note">Nessuna giocata salvata.</div>';
   }
+
+  // ---------------------------------------------------------------- Il mio occhio: livello e badge
+  // Calcolati qui dalle giocate del diario (niente server ancora). Premiano la costanza e l'occhio
+  // (vincere piu' di quanto dicevano le quote), mai i soldi.
+  var LEVELS = [[0, "Esordiente"], [5, "Osservatore"], [15, "Analista"], [30, "Scout"], [60, "Stratega"], [100, "Occhio di falco"], [200, "Leggenda"]];
+  function renderOcchio() {
+    var dz = data.diario;
+    if (!dz) { $("occhiolevel").innerHTML = ""; $("occhiobadges").innerHTML = ""; return; }
+    var bets = dz.bets || [], s = dz.summary;
+    var closed = bets.filter(function (b) { return b.result === 0 || b.result === 1; });
+    var lvl = 0;
+    LEVELS.forEach(function (l, i) { if (s.n >= l[0]) lvl = i; });
+    var next = LEVELS[lvl + 1], cur = LEVELS[lvl][0];
+    var prog = next ? (s.n - cur) / (next[0] - cur) : 1;
+    $("occhiolevel").innerHTML = '<div class="hero" style="background-image:linear-gradient(120deg,#0F2A33,#1F5560 60%,#2E8A8A);min-height:96px;">'
+      + '<div class="hs">Livello ' + (lvl + 1) + '</div><div class="ht">👁 ' + LEVELS[lvl][1] + '</div>'
+      + '<div class="lvbar"><div style="width:' + Math.round(prog * 100) + '%"></div></div>'
+      + '<div class="hs">' + (next ? s.n + ' / ' + next[0] + ' giocate chiuse per "' + next[1] + '"' : "Livello massimo") + '</div></div>';
+    var sports = new Set(bets.map(function (b) { return b.sport; }).filter(function (x) { return x !== "libero"; }));
+    var streak = 0, best = 0;
+    closed.slice().reverse().forEach(function (b) { streak = b.result === 1 ? streak + 1 : 0; best = Math.max(best, streak); });
+    var BADGES = [
+      ["🎯", "Prima giocata", "Salva la tua prima giocata", bets.length >= 1],
+      ["📒", "Costante", "10 giocate chiuse", s.n >= 10],
+      ["📚", "Archivio", "50 giocate chiuse", s.n >= 50],
+      ["💥", "Colpo d'occhio", "Una vinta a quota 3,00 o più", closed.some(function (b) { return b.result === 1 && b.odds >= 3; })],
+      ["🔥", "Serie di 3", "Tre vinte di fila", best >= 3],
+      ["🌍", "Due sport", "Giocate su calcio e tennis", sports.size >= 2],
+      ["🦅", "Occhio vero", "Più vinte di quanto dicevano le quote, su almeno 30", s.n >= 30 && s.won > s.expected]
+    ];
+    $("occhiobadges").innerHTML = '<div class="badges">' + BADGES.map(function (b) {
+      return '<div class="badge' + (b[3] ? "" : " locked") + '"><div class="bi">' + b[0] + '</div><div class="bn">' + esc(b[1]) + '</div><div class="bd">' + esc(b[2]) + '</div></div>';
+    }).join("") + '</div>';
+  }
+
+  // ---------------------------------------------------------------- Radar: tutte le partite live in una tabella
+  var rsport = "calcio";
+  var RADAR_COLS = ["Tiri in porta", "Tiri", "xG", "Angoli", "Possesso", "Attacchi pericolosi", "Rossi"];
+  function domCell(h, a, isPct) {
+    if (h == null || a == null) return '<td class="k">–</td>';
+    var nh = parseFloat(h), na = parseFloat(a), cls = "";
+    // come lo scanner di InPlayGuru: colore quando una squadra domina (almeno 3 e almeno 2,6 volte l'altra)
+    if (!isPct && (nh >= 3 || na >= 3) && (nh >= 2.6 * Math.max(na, 0.01) || na >= 2.6 * Math.max(nh, 0.01))) cls = (Math.max(nh, na) >= 3.6 * Math.max(Math.min(nh, na), 0.01) && Math.max(nh, na) >= 4) ? "hot" : "warm";
+    var fmt = function (v) { return typeof v === "number" && v % 1 ? it(v, 2) : esc(v); };
+    return '<td class="' + cls + '">' + fmt(h) + ' <span class="k">-</span> ' + fmt(a) + '</td>';
+  }
+  function renderRadar() {
+    var dz = data.diario;
+    var evs = ((dz && dz.events) || []).filter(function (e) { return e.sport === rsport; });
+    $("radarage").textContent = dz ? "dati di " + ageTxt(dz.at) : "";
+    if (!evs.length) { $("radar").innerHTML = '<div class="note">Nessuna partita live in questo momento.</div>'; return; }
+    var html = '<table class="rt"><thead><tr>';
+    if (rsport === "calcio") {
+      evs.sort(function (a, b) { return (b.minute || 0) - (a.minute || 0); });
+      html += '<th>Min</th><th class="l">Partita</th><th>Ris.</th>' + RADAR_COLS.map(function (c) { return '<th>' + c + '</th>'; }).join("") + '</tr></thead><tbody>'
+        + evs.map(function (e) {
+          var st = {}; (e.stats || []).forEach(function (r) { st[r[0]] = r; });
+          return '<tr data-ev="' + esc(e.sport + ":" + e.id) + '"><td class="mn">' + esc(estMinute(e) || "–") + '</td><td class="l"><b>' + esc(e.home) + '</b><br><b>' + esc(e.away) + '</b><div class="k">' + esc(e.league) + '</div></td>'
+            + '<td class="sc">' + esc(scoreTxt(e)) + '</td>'
+            + RADAR_COLS.map(function (c) { var r = st[c]; return r ? domCell(r[1], r[2], c === "Possesso") : '<td class="k">–</td>'; }).join("") + '</tr>';
+        }).join("");
+    } else {
+      html += '<th class="l">Partita</th><th>Set</th><th>Game</th><th>Serve</th><th>Quote</th><th>Punti al servizio</th><th>Punti in risposta</th><th>Ace</th><th>Doppi falli</th></tr></thead><tbody>'
+        + evs.map(function (e) {
+          var st = {}; (e.stats || []).forEach(function (r) { st[r[0]] = r; });
+          function c2(k) { var r = st[k]; return r ? '<td>' + esc(r[1]) + ' <span class="k">-</span> ' + esc(r[2]) + '</td>' : '<td class="k">–</td>'; }
+          return '<tr data-ev="' + esc(e.sport + ":" + e.id) + '"><td class="l"><b>' + esc(e.home) + '</b><br><b>' + esc(e.away) + '</b><div class="k">' + esc(e.league) + '</div></td>'
+            + '<td class="sc">' + esc(e.sets || "–") + '</td><td>' + esc((e.games || []).join(" ") || "–") + '</td><td>' + (e.serve ? (e.serve === 1 ? "● -" : "- ●") : "–") + '</td>'
+            + '<td>' + (e.o1 || e.o2 ? oddsTxt(e.o1) + ' / ' + oddsTxt(e.o2) : "–") + '</td>'
+            + c2("Punti vinti al servizio") + c2("Punti vinti in risposta") + c2("Ace") + c2("Doppi falli") + '</tr>';
+        }).join("");
+    }
+    $("radar").innerHTML = html + '</tbody></table>';
+  }
+  $("radarchips").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip"); if (!b) return;
+    rsport = b.dataset.rsport;
+    $("radarchips").querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
+    if (data) renderRadar();
+  });
+  $("radar").addEventListener("click", function (e) { var r = e.target.closest("tr[data-ev]"); if (r && data) renderGiocata(r.dataset.ev); });
 
   function choiceLabel(e, code, choice) {
     if (e.sport === "tennis") { var o = code === "W1" ? e.o1 : e.o2; return (code === "W1" ? e.home : e.away) + (o ? " (Betfair " + oddsTxt(o) + ")" : ""); }
@@ -1200,11 +1327,13 @@
     try {
       var env = await fetchEnvelope();
       data = await decrypt(env, password);
+      lastIv = env.iv;
       storeSet(password);
       renderAll();
       if (!$("view-lock").hidden) show("segnali");  // l'app si apre sui segnali
       msg.textContent = "";
     } catch (e) {
+      if (window.console) console.error(e);
       show("lock");
       if (e && e.code === "nodata") msg.textContent = "Non ci sono ancora dati caricati. Riprova tra qualche minuto.";
       else if (e && e.code === "network") msg.textContent = "Dati non raggiungibili. Controlla la connessione e riprova.";
@@ -1216,7 +1345,21 @@
   }
 
   $("lockform").addEventListener("submit", function (e) { e.preventDefault(); load($("pw").value, true); });
-  $("refresh").addEventListener("click", function () { var pw = storeGet(); if (pw) load(pw, false); });
+  // Aggiornamento automatico: ogni 30 s si controlla se ci sono dati nuovi (decifrati solo se cambiano),
+  // e subito quando l'app torna in primo piano. Niente tasto "aggiorna": i dati sono sempre gli ultimi.
+  var lastIv = null;
+  async function poll() {
+    var pw = storeGet();
+    if (!pw || !data || document.hidden) return;
+    try {
+      var env = await fetchEnvelope();
+      if (env.iv === lastIv) return;
+      var fresh = await decrypt(env, pw);
+      lastIv = env.iv; data = fresh; renderAll();
+    } catch (e) { /* rete assente: si riprova al giro dopo */ }
+  }
+  setInterval(poll, 30000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) poll(); });
   $("logout").addEventListener("click", function () { storeSet(null); data = null; $("pw").value = ""; show("lock"); });
   $("tabbar").addEventListener("click", function (e) { var b = e.target.closest(".tab"); if (b) show(b.dataset.view); });
   $("timechips").addEventListener("click", function (e) {
@@ -1225,13 +1368,9 @@
     document.querySelectorAll("#timechips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
     if (data) renderFeed();
   });
-  $("top5btn").addEventListener("click", function () {
-    top5On = !top5On;
-    saveTop();
-    $("top5btn").setAttribute("aria-pressed", String(top5On));
-    if (data) renderFeed();
+  $("today").addEventListener("click", function (e) {
+    var c = e.target.closest("[data-idx]"); if (c && data) renderSignal(Number(c.dataset.idx));
   });
-  $("top5btn").setAttribute("aria-pressed", String(top5On));
   $("chips").addEventListener("click", function (e) {
     var b = e.target.closest(".chip"); if (!b) return;
     filter = b.dataset.filter;
