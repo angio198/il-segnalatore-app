@@ -700,7 +700,14 @@ window.I18N_EN = {
   "Nuovo livello": "New level", "Avanti": "Next", "NUOVO": "NEW",
   "Premio della settimana": "Weekly reward", "tocca per aprire": "tap to open", "# settimane": "# weeks",
   "Lega Argento": "Silver league", "Lega Oro": "Gold league", "Lega Platino": "Platinum league", "Lega Diamante": "Diamond league", "Lega Elite": "Elite league",
-  "Cassa aperta": "Chest opened", "Cassa aperta: le monete sono tue": "Chest opened: the coins are yours"
+  "Cassa aperta": "Chest opened", "Cassa aperta: le monete sono tue": "Chest opened: the coins are yours",
+  // ---------------------------------------------------------------- Partite: giorni, preferiti, ordine, formato quote
+  "Giorno": "Day", "TUTTI": "ALL", "OGGI": "TODAY", "DOM": "SUN", "LUN": "MON", "MAR": "TUE", "MER": "WED", "GIO": "THU", "VEN": "FRI", "SAB": "SAT",
+  "Ordina per": "Sort by", "Orario": "Time", "Campionato": "League", "Quota della favorita": "Favourite's odds",
+  "⭐ Preferiti": "⭐ Favourites", "Aggiungi ai preferiti": "Add to favourites", "Togli dai preferiti": "Remove from favourites",
+  "Nessuna partita preferita: tocca la stella accanto a una partita o a un campionato.": "No favourite matches: tap the star next to a match or a league.",
+  "Formato quote": "Odds format", "Decimale #": "Decimal #", "Frazionario #/#": "Fractional #/#", "Americano #": "American #",
+  "Cambia solo come vedi le quote: punti, monete e classifiche si calcolano sempre sulla quota decimale.": "It only changes how you see the odds: points, coins and leaderboards are always worked out on decimal odds."
 };
 
 // parole fisse dentro i messaggi dei bot (con nomi propri attorno): sostituzioni puntuali
