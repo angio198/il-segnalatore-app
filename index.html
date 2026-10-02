@@ -93,6 +93,13 @@
   .betform{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
   .betform label{font-weight:600;font-size:0.86rem;margin-top:4px;}
   .betform select,.betform input{font:inherit;font-size:1rem;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%;}
+  .catgroup summary{cursor:pointer;list-style:none;font-size:0.92rem;}
+  .catgroup summary::-webkit-details-marker{display:none;}
+  .catgroup summary::before{content:"▸ ";color:var(--ink-soft);} .catgroup[open] summary::before{content:"▾ ";}
+  .catrow{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;font:inherit;color:inherit;background:none;border:none;border-top:1px solid var(--line);padding:10px 0;margin-top:8px;cursor:pointer;}
+  .catrow .nm{font-weight:700;font-size:0.9rem;} .catrow .ds,.catgroup .ds{font-size:0.8rem;color:var(--ink-soft);}
+  .slrow{margin-bottom:14px;} .slh{display:flex;justify-content:space-between;gap:10px;font-size:0.86rem;margin-bottom:4px;}
+  .slrow input[type=range]{width:100%;accent-color:var(--accent-strong);}
   #diariobets .pickrow{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:0.88rem;}
   #diariobets .meta{font-size:0.8rem;color:var(--ink-soft);margin-top:4px;}
   .demo{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;padding:3px 8px;border-radius:999px;background:var(--accent);color:#12181A;font-weight:600;}
@@ -374,6 +381,11 @@
   <div id="diariobets"></div>
 </main>
 
+<main class="view" id="view-catalogo" hidden>
+  <button class="back" type="button" data-back="strategie">‹ Strategie</button>
+  <div id="catalogo"></div>
+</main>
+
 <main class="view" id="view-giocata" hidden>
   <button class="back" type="button" data-back="diario">‹ Diario</button>
   <div id="giocata"></div>
@@ -650,13 +662,95 @@
           + (hidden.has(s.id) ? "" : " checked") + ' aria-label="Mostra i segnali di ' + esc(s.name) + '"><span class="slider"></span></span></div>';
       }).join("");
       return rows ? '<h2 class="sectiontitle">' + EMOJI[sport] + ' ' + NAME[sport] + '</h2><div class="card">' + rows + '</div>' : "";
-    }).join("") + ((data.esclusi || []).length
+    }).join("") + catalogoHtml() + ((data.esclusi || []).length
       ? '<h2 class="sectiontitle">Cosa non copriamo, di proposito</h2><div class="card">'
         + data.esclusi.map(function (e) {
           return '<div class="test"><div class="tn">' + esc(e.title) + '</div><div class="tt">' + esc(e.short || e.long)
             + '<button class="more" type="button" data-escluso="' + esc(e.id) + '">… altro</button></div></div>';
         }).join("") + '</div>'
       : "");
+  }
+
+  // ---------------------------------------------------------------- Catalogo calcio live con le barre
+  // research/calcio_catalogo.py calcola sullo storico ogni combinazione delle barre: qui si legge e basta.
+  // Le scelte delle barre restano su questo telefono (localStorage); le notifiche con le tue soglie arrivano col deploy.
+  var CAT_KEY = "segnalatore.catalogo";
+  var catSel = (function () { try { return JSON.parse(localStorage.getItem(CAT_KEY) || "{}"); } catch (e) { return {}; } })();
+  function saveCatSel() { try { localStorage.setItem(CAT_KEY, JSON.stringify(catSel)); } catch (e) {} }
+  function catKey(s) { return catSel[s.id] && s.grid[catSel[s.id]] ? catSel[s.id] : s.default; }
+  function cellHtml(c, big) {
+    var n = c[0], MIN = 30;
+    if (!n) return '<span class="k">nessun caso nello storico</span>';
+    var roi = n >= MIN ? '<b class="' + (c[3] >= 0 ? "pos" : "neg") + '">' + pct(c[3]) + '</b>' : '<span class="k">pochi casi</span>';
+    if (!big) return n + ' casi · strike ' + Math.round(c[1] * 100) + '% · quota ~' + it(c[2], 2) + ' · ' + roi;
+    return '<div class="kpis"><div class="kpi"><div class="v">' + n + '</div><div class="l">volte nello storico</div></div>'
+      + '<div class="kpi"><div class="v">' + Math.round(c[1] * 100) + '%</div><div class="l">strike</div></div>'
+      + '<div class="kpi"><div class="v">' + it(c[2], 2) + '</div><div class="l">quota media</div></div></div>'
+      + '<div class="kpis" style="grid-template-columns:1fr;"><div class="kpi"><div class="v">' + (n >= MIN ? '<span class="' + (c[3] >= 0 ? "pos" : "neg") + '">' + pct(c[3]) + '</span>' : "—") + '</div><div class="l">rendimento stimato' + (n >= MIN ? "" : " (servono almeno 30 casi)") + '</div></div></div>';
+  }
+  function catVerdict(c) {
+    if (!c[0]) return "Nessun caso con queste impostazioni.";
+    if (c[0] < 30) return "Pochi casi: non dice ancora niente.";
+    if (c[4] >= 2) return "Nello storico ha battuto il prezzo giusto. Da verificare dal vivo: con tante combinazioni possibili, qualcuna esce bene anche per caso.";
+    if (c[4] <= -2) return "Nello storico è andata peggio del prezzo giusto.";
+    return "Nello storico succede quanto dice il prezzo giusto: dopo il margine del bookmaker perde.";
+  }
+  function catalogoHtml() {
+    var c = data.catalogo;
+    if (!c || !c.strategies) return "";
+    var groups = [];
+    c.strategies.forEach(function (s) { if (groups.indexOf(s.group) < 0) groups.push(s.group); });
+    return '<h2 class="sectiontitle">⚽ Catalogo calcio live <span class="tm live">⚙ PERSONALIZZABILI</span></h2>'
+      + '<div class="note" style="margin-bottom:10px;">' + c.strategies.length + ' strategie dalle tue liste e dalla community. Tocca una strategia, poi ⚙ per regolarla: i numeri si aggiornano sullo storico (' + c.matches + ' partite).</div>'
+      + groups.map(function (g) {
+        var items = c.strategies.filter(function (s) { return s.group === g; });
+        return '<details class="card catgroup"><summary><b>' + esc(g) + '</b> <span class="k">· ' + items.length + '</span></summary>'
+          + items.map(function (s) {
+            return '<button class="catrow" type="button" data-cat="' + esc(s.id) + '"><span class="nm">' + esc(s.name) + (catSel[s.id] && catSel[s.id] !== s.default ? ' <span class="tm top">⚙ TUA</span>' : "") + '</span>'
+              + '<span class="ds">' + esc(s.pick) + '</span><span class="ds">' + cellHtml(s.grid[catKey(s)], false) + '</span></button>';
+          }).join("") + '</details>';
+      }).join("")
+      + '<details class="card catgroup"><summary><b>In osservazione</b> <span class="k">· ' + c.waiting.length + ' · angoli, cartellini, pressione</span></summary><div class="ds" style="padding:8px 0;">Lo storico non ha questi dati: si registrano dal vivo e i numeri arrivano col tempo.</div>'
+      + c.waiting.map(function (w) { return '<div class="ds">• ' + esc(w) + '</div>'; }).join("") + '</details>'
+      + '<details class="card catgroup"><summary><b>Escluse</b> <span class="k">· perché</span></summary>'
+      + Object.keys(c.excluded).map(function (k) { return '<div class="ds" style="margin-top:8px;"><b>' + esc(k) + '</b>: ' + esc(c.excluded[k].join(", ")) + '</div>'; }).join("") + '</details>';
+  }
+  function renderCat(id) {
+    var s = data.catalogo.strategies.find(function (x) { return x.id === id; });
+    if (!s) return;
+    var idx = catKey(s).split("_").map(Number);
+    function draw() {
+      var key = idx.join("_"), cell = s.grid[key];
+      $("catnums").innerHTML = cellHtml(cell, true) + '<div class="verdict">' + esc(catVerdict(cell)) + '</div>';
+      s.params.forEach(function (p, i) { $("catv" + i).textContent = p.labels[idx[i]]; });
+      $("catreset").hidden = key === s.default;
+    }
+    $("catalogo").innerHTML = '<h1 class="dtitle">' + esc(s.name) + '</h1>'
+      + '<div class="dsub">⚽ ' + esc(s.group) + ' · LIVE</div>'
+      + '<div class="facts"><div><span class="k">Cosa giochi: </span><b>' + esc(s.pick) + '</b></div>'
+      + '<div><span class="k">Da dove viene: </span>' + esc(s.origin) + '</div>'
+      + (s.note ? '<div><span class="k">' + esc(s.note) + '</span></div>' : "") + '</div>'
+      + '<button class="primary" type="button" id="catgear" style="width:100%;margin-bottom:12px;">⚙ Personalizza</button>'
+      + '<div id="catsliders" hidden>' + s.params.map(function (p, i) {
+        return '<div class="slrow"><div class="slh"><span>' + esc(p.label) + '</span><b id="catv' + i + '"></b></div>'
+          + '<input type="range" min="0" max="' + (p.values.length - 1) + '" step="1" value="' + idx[i] + '" data-i="' + i + '" aria-label="' + esc(p.label) + '"></div>';
+      }).join("") + '<button class="linkbtn" type="button" id="catreset">Torna alla regola standard</button></div>'
+      + '<div id="catnums"></div>'
+      + '<div class="note">Le tue impostazioni restano su questo telefono. Le notifiche con le tue soglie arriveranno con l\'app pubblica. ' + esc(data.catalogo.method) + '</div>';
+    $("catgear").addEventListener("click", function () { var p = $("catsliders"); p.hidden = !p.hidden; });
+    $("catsliders").addEventListener("input", function (e) {
+      var r = e.target.closest("input[type=range]"); if (!r) return;
+      idx[Number(r.dataset.i)] = Number(r.value);
+      catSel[s.id] = idx.join("_"); saveCatSel(); draw();
+    });
+    $("catreset").addEventListener("click", function () {
+      idx = s.default.split("_").map(Number); delete catSel[s.id]; saveCatSel();
+      $("catsliders").querySelectorAll("input").forEach(function (r, i) { r.value = idx[i]; });
+      draw();
+    });
+    draw();
+    show("catalogo");
+    window.scrollTo(0, 0);
   }
 
   function money(v) { return (v >= 0 ? "+" : "−") + it(Math.abs(v), Math.abs(v) >= 100 ? 0 : 1) + " €"; }
@@ -872,13 +966,13 @@
   }
 
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     $("tabbar").hidden = !unlocked;
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario" }[view] || view;
+    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie" }[view] || view;
     document.querySelectorAll(".tab").forEach(function (t) {
       if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -1111,6 +1205,7 @@
   $("strategie").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-more]"); if (b && data) renderDetail(b.dataset.more);
     var x = e.target.closest("button[data-escluso]"); if (x && data) renderEscluso(x.dataset.escluso);
+    var c = e.target.closest("button[data-cat]"); if (c && data) renderCat(c.dataset.cat);
   });
   $("back").addEventListener("click", function () { show("strategie"); });
   $("feed").addEventListener("click", function (e) {
