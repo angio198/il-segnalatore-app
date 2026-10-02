@@ -155,6 +155,22 @@
   .lbpts{font-weight:900;font-variant-numeric:tabular-nums;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 10px;}
   .lbrow svg{border-radius:12px;}
   .meav{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--accent);color:#fff;flex:none;}
+  /* reazioni, commenti, segnalazioni */
+  .sbar{display:flex;align-items:center;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);}
+  .rbtn{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink-soft);font:inherit;font-size:0.78rem;font-weight:800;
+    padding:5px 9px;border-radius:999px;cursor:pointer;transition:transform .15s;}
+  .rbtn .ico{width:17px;height:17px;}
+  .rbtn.on{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--ink);transform:scale(1.08);}
+  .rbtn.cm{margin-left:auto;} .rbtn.rp{padding:5px 7px;opacity:.7;}
+  .repbox{margin-top:8px;padding:10px;border-radius:12px;background:var(--bg);border:1px solid var(--line);} .repbox .chips{margin-top:6px;flex-wrap:wrap;}
+  .reported{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:0.84rem;color:var(--ink-soft);}
+  .clist{margin-top:8px;display:flex;flex-direction:column;gap:8px;}
+  .crow{display:flex;gap:8px;align-items:flex-start;font-size:0.84rem;} .crow .avatar{border-radius:10px;}
+  .cbody{flex:1;min-width:0;background:var(--bg);border-radius:4px 14px 14px 14px;padding:7px 10px;}
+  .cwho{display:flex;align-items:center;gap:6px;} .ctext{overflow-wrap:anywhere;margin-top:2px;}
+  .cdel{margin-left:auto;background:none;border:none;cursor:pointer;padding:2px;opacity:.6;color:var(--ink-soft);} .cdel .ico{width:15px;height:15px;}
+  .cform{display:flex;gap:8px;margin-top:8px;} .cform .meinput{flex:1;padding:8px 12px;} .cform .primary{flex:none;width:auto;padding:0 14px;}
+  .cmsg{color:var(--bad);font-size:0.8rem;font-weight:700;margin-top:4px;}
   /* il tuo profilo */
   .chips.subtabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;} .chips.subtabs .chip{flex:none;}
   img.mypic{object-fit:cover;}
@@ -535,6 +551,8 @@
     <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4.2" fill="url(#g-amber)" stroke="none"/><path d="M4 20.5c.8-4.3 4-6.5 8-6.5s7.2 2.2 8 6.5z" fill="url(#g-green)" stroke="none"/></symbol>
     <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" fill="none" stroke="#8A9499" stroke-width="1.5"/><circle cx="12" cy="12" r="3.2" fill="#8A9499" stroke="none"/><path d="M4 4l16 16" stroke="#C0392B" stroke-width="2"/></symbol>
     <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3.5l1.5-2.5h6L16.5 8H20v11H4z"/><circle cx="12" cy="13.2" r="3.4"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H10l-4.5 3.5V16H4z" fill="url(#g-blue)" stroke="none"/><path d="M8 9.5h8M8 12.5h5" stroke="#fff" stroke-width="1.6"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 21V4"/><path d="M6 4.5h11l-2.5 4 2.5 4H6" fill="url(#g-red)" stroke="none"/></symbol>
     <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
     <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 5l8 13H4z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 19L4 6h16z" fill="currentColor" stroke="none"/></symbol>
@@ -738,6 +756,7 @@
 </nav>
 
 <script src="regole.js"></script>
+<script src="moderazione.js"></script>
 <script>
 (function () {
   "use strict";
@@ -1543,10 +1562,104 @@
   function resTag(r) { return r == null ? '<span class="k">' + ic("clock") + ' in attesa</span>' : r === 1 ? '<span class="pos">' + ic("check") + ' vinta</span>' : r === 0 ? '<span class="neg">' + ic("x") + ' persa</span>' : '<span class="k">nulla</span>'; }
   function postCard(x) {
     var p = personaOf(x.p); if (!p) return "";
+    var pid = "t:" + x.p + ":" + Math.round(x.ts);
+    if (social.hidden[pid]) return reportedCard(pid);
     return '<div class="card post"><button class="phead" type="button" data-persona="' + p.id + '">' + avatar(p.id, 40)
       + '<span class="pwho"><b>' + esc(p.name) + ' · ' + esc(p.nick) + '</b>' + teamBadge() + '</span><span class="time">' + whenLabel(x.ts) + '</span></button>'
       + '<div class="pev">' + EMOJI[x.sport] + ' ' + esc(x.event) + '<span class="k"> · ' + esc(shortComp(x.comp || "")) + '</span></div>'
-      + '<div class="pickrow"><span><b>' + esc(x.label) + '</b> @ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div></div>';
+      + '<div class="pickrow"><span><b>' + esc(x.label) + '</b> @ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div>' + socialBar(pid) + '</div>';
+  }
+
+  // ---------------------------------------------------------------- Reazioni, commenti, segnalazioni (02/10)
+  // Sotto ogni pronostico: reazioni fisse, commenti col filtro (app/moderazione.json, lo stesso del bot delle
+  // segnalazioni signals/moderazione.py) e "segnala". Oggi tutto su questo telefono; col server i commenti li
+  // vedono tutti, le segnalazioni vanno al bot (regole in docs/moderazione.md).
+  var SOCIAL_KEY = "statsight.social";
+  var social = (function () {
+    try { var s = JSON.parse(localStorage.getItem(SOCIAL_KEY)); if (s && s.c) return s; } catch (e) {}
+    return { r: {}, c: {}, rep: [], hidden: {} };
+  })();
+  function saveSocial() { try { localStorage.setItem(SOCIAL_KEY, JSON.stringify(social)); } catch (e) {} }
+  var REACTIONS = [["fuoco", "flame", "Bella giocata"], ["occhio", "eye", "Occhio"], ["coraggio", "bolt", "Coraggiosa"], ["seguo", "handshake", "La seguo anch'io"]];
+  var openComments = new Set(), drafts = {}, reporting = null, commentMsg = {};
+  var MOD = window.StatSightMod;   // moderazione.js
+  function checkText(text) { return MOD.check(text); }
+  var MOD_MSG = {
+    rete: "Non riesco a controllare il testo: riprova fra poco.",
+    lungo: "Massimo 280 caratteri.",
+    contatti: "Niente link, numeri di telefono o contatti esterni: qui si parla delle giocate.",
+    vendita: "Niente vendita di pronostici o gruppi: su StatSight non si vendono dritte.",
+    linguaggio: "Ci sono parole offensive o volgari: riscrivilo.",
+    fretta: "Piano: aspetta qualche secondo fra un commento e l'altro.",
+    troppi: "Hai raggiunto il massimo di commenti per oggi."
+  };
+  function reasonsHtml(id, kind) {
+    var M = (MOD.rules() && MOD.rules().motivi_segnalazione) || { offensivo: "Offensivo o d'odio", spam: "Spam o vendita di pronostici", inadatto: "Contenuto inadatto", altro: "Altro" };
+    return '<div class="repbox"><div class="k">Perché lo segnali?</div><div class="chips">' + Object.keys(M).map(function (k) {
+      return '<button class="chip" type="button" data-repwhy="' + k + '" data-repid="' + esc(id) + '" data-repkind="' + kind + '">' + esc(M[k]) + '</button>';
+    }).join("") + '<button class="chip" type="button" data-repcancel="1">Annulla</button></div></div>';
+  }
+  function reportedCard(id) {
+    return '<div class="card post reported">' + ic("flag") + ' <span>Hai segnalato questo contenuto: non lo vedi più e lo controlliamo.</span> '
+      + '<button class="linkbtn" type="button" data-unreport="' + esc(id) + '">Annulla</button></div>';
+  }
+  function socialBar(pid) {
+    var mine = social.r[pid], cs = social.c[pid] || [], open = openComments.has(pid);
+    var html = '<div class="sbar">' + REACTIONS.map(function (r) {
+      return '<button class="rbtn' + (mine === r[0] ? " on" : "") + '" type="button" data-react="' + r[0] + '" data-pid="' + esc(pid) + '" aria-label="' + esc(r[2]) + '" title="' + esc(r[2]) + '">'
+        + ic(r[1]) + (mine === r[0] ? '<span>1</span>' : "") + '</button>';
+    }).join("")
+      + '<button class="rbtn cm' + (open ? " on" : "") + '" type="button" data-comments="' + esc(pid) + '" aria-label="Commenti">' + ic("chat") + '<span>' + cs.length + '</span></button>'
+      + '<button class="rbtn rp" type="button" data-report="' + esc(pid) + '" data-kind="post" aria-label="Segnala">' + ic("flag") + '</button></div>';
+    if (reporting && reporting.id === pid) html += reasonsHtml(pid, "post");
+    if (!open) return html;
+    html += '<div class="clist">' + cs.map(function (c) {
+      if (social.hidden[c.id]) return '<div class="crow k">' + ic("flag") + ' Commento segnalato. <button class="linkbtn" type="button" data-unreport="' + esc(c.id) + '">Annulla</button></div>';
+      return '<div class="crow">' + (c.mine ? myAvatar(28) : avatar(c.who || "x", 28)) + '<div class="cbody"><div class="cwho"><b translate="no">' + esc(c.mine ? (me.name || "Tu") : c.who) + '</b> <span class="k">' + whenLabel(c.ts) + '</span>'
+        + (c.mine ? '<button class="cdel" type="button" data-cdel="' + esc(c.id) + '" data-pid="' + esc(pid) + '" aria-label="Elimina">' + ic("trash") + '</button>'
+                  : '<button class="cdel" type="button" data-report="' + esc(c.id) + '" data-kind="comment" aria-label="Segnala">' + ic("flag") + '</button>') + '</div>'
+        + '<div class="ctext" translate="no">' + esc(c.text) + '</div>' + (reporting && reporting.id === c.id ? reasonsHtml(c.id, "comment") : "") + '</div></div>';
+    }).join("") + '</div>'
+      + '<div class="cform"><input class="meinput" type="text" maxlength="280" placeholder="Scrivi un commento" data-cin="' + esc(pid) + '" value="' + esc(drafts[pid] || "") + '">'
+      + '<button class="primary" type="button" data-csend="' + esc(pid) + '" aria-label="Invia">' + ic("send") + '</button></div>'
+      + (commentMsg[pid] ? '<div class="cmsg">' + esc(commentMsg[pid]) + '</div>' : "")
+      + '<div class="k" style="font-size:0.72rem;margin-top:4px;">Rispetto, niente link né vendita di pronostici. Ogni commento si può segnalare.</div>';
+    return html;
+  }
+  function rerenderSocial() {
+    renderBacheca();
+    if (!$("view-persona").hidden && curPersona) renderPersona(curPersona, true);
+  }
+  function socialClick(e) {
+    var b = e.target.closest("button"); if (!b) return false;
+    var d = b.dataset, now = nowS();
+    if (d.react) { social.r[d.pid] = social.r[d.pid] === d.react ? undefined : d.react; saveSocial(); rerenderSocial(); return true; }
+    if (d.comments) { if (openComments.has(d.comments)) openComments.delete(d.comments); else openComments.add(d.comments); rerenderSocial(); return true; }
+    if (d.report) { reporting = reporting && reporting.id === d.report ? null : { id: d.report, kind: d.kind }; rerenderSocial(); return true; }
+    if (d.repcancel) { reporting = null; rerenderSocial(); return true; }
+    if (d.repwhy) {
+      social.rep.push({ id: d.repid, kind: d.repkind, reason: d.repwhy, ts: now });   // col server: va al bot delle segnalazioni
+      social.hidden[d.repid] = 1; reporting = null; saveSocial(); rerenderSocial(); return true;
+    }
+    if (d.unreport) {
+      delete social.hidden[d.unreport];
+      social.rep = social.rep.filter(function (r) { return r.id !== d.unreport; }); saveSocial(); rerenderSocial(); return true;
+    }
+    if (d.cdel) { social.c[d.pid] = (social.c[d.pid] || []).filter(function (c) { return c.id !== d.cdel; }); saveSocial(); rerenderSocial(); return true; }
+    if (d.csend) {
+      var pid = d.csend, text = (drafts[pid] || "").trim();
+      if (!text) return true;
+      var all = [].concat.apply([], Object.keys(social.c).map(function (k) { return social.c[k]; })).filter(function (c) { return c.mine; });
+      var last = all.reduce(function (m, c) { return Math.max(m, c.ts); }, 0);
+      var lim = (MOD.rules() && MOD.rules().limiti) || { commenti_al_giorno: 30, secondi_fra_commenti: 10 };
+      var why = checkText(text)
+        || (now - last < lim.secondi_fra_commenti ? "fretta" : null)
+        || (all.filter(function (c) { return dayKey(c.ts) === dayKey(now); }).length >= lim.commenti_al_giorno ? "troppi" : null);
+      if (why) { commentMsg[pid] = MOD_MSG[why]; rerenderSocial(); return true; }
+      (social.c[pid] = social.c[pid] || []).push({ id: "c" + Math.round(now * 1000), ts: now, text: text, mine: true });
+      drafts[pid] = ""; delete commentMsg[pid]; saveSocial(); rerenderSocial(); return true;
+    }
+    return false;
   }
   function renderBacheca() {
     var P = data.personaggi;
@@ -1560,8 +1673,10 @@
       + '<button type="button" data-bview="seguiti" aria-pressed="' + (bview === "seguiti") + '">Seguiti <span class="cnt">' + follows.size + '</span></button></div>'
       + (feed.length ? feed.map(postCard).join("") : '<div class="note">' + (bview === "seguiti" ? "Non segui ancora nessuno: tocca un personaggio e premi Segui." : "Nessuna giocata, per ora.") + '</div>');
   }
-  function renderPersona(id) {
+  var curPersona = null;
+  function renderPersona(id, stay) {
     var p = personaOf(id); if (!p) return;
+    curPersona = id;
     var on = follows.has(p.id), wr = p.n ? Math.round(p.w / p.n * 100) : null;
     $("persona").innerHTML = '<div class="pcard">' + avatar(p.id, 88) + '<div><div class="dtitle" style="margin:0;">' + esc(p.name) + '</div><div class="pnick">' + esc(p.nick) + '</div>'
       + teamBadge() + ' <span class="k">' + esc(PAESI[p.country] || p.country) + '</span></div></div>'
@@ -1576,7 +1691,7 @@
       + '<h2 class="sectiontitle">Ultime giocate</h2>' + ((p.last || []).length ? p.last.map(postCard).join("") : '<div class="note">Ancora nessuna giocata.</div>')
       + '<div class="note" style="margin-top:10px;">I personaggi del Team StatSight sono della casa: giocano con una regola fissa, scritta qui sopra, alle quote vere di quel momento. I risultati non sono aggiustati.</div>';
     show("persona");
-    window.scrollTo(0, 0);
+    if (!stay) window.scrollTo(0, 0);
   }
   // ---------------------------------------------------------------- Il tuo profilo (richiesta utente 02/10)
   // Foto (dal telefono, rimpicciolita) o avatar disegnato, nome, bio, storico dei pronostici visibile o nascosto
@@ -2351,6 +2466,8 @@
     }
     if (ds.meannulla) { meEdit = false; renderProfilo(); return; }
     if (ds.mesalva) {
+      var why = checkText(meEdit.name) || checkText(meEdit.bio);
+      if (why && why !== "lungo") { alert(MOD_MSG[why]); return; }
       var old = { name: me.name, bio: me.bio, pic: me.pic, seed: me.seed };
       me.name = meEdit.name.trim().slice(0, 24); me.bio = meEdit.bio.trim().slice(0, 160); me.pic = meEdit.pic; me.seed = meEdit.seed;
       if (!saveMe()) { Object.assign(me, old); alert("La foto non entra nella memoria del telefono: provane un'altra."); return; }
@@ -2364,8 +2481,16 @@
 
   // Team StatSight: profilo, segui, filtro della bacheca
   ["bacheca", "persona", "occhioclassifica"].forEach(function (id) {
+    $(id).addEventListener("input", function (e) {
+      var t = e.target.closest("[data-cin]"); if (t) drafts[t.dataset.cin] = t.value;
+    });
+    $(id).addEventListener("keydown", function (e) {
+      var t = e.target.closest("[data-cin]");
+      if (t && e.key === "Enter") { var s = t.parentNode.querySelector("[data-csend]"); if (s) s.click(); }
+    });
     $(id).addEventListener("click", function (e) {
       if (!data) return;
+      if (socialClick(e)) return;
       var f = e.target.closest("[data-follow]");
       if (f) { var pid = f.dataset.follow; if (follows.has(pid)) follows.delete(pid); else follows.add(pid); saveFollows(); renderBacheca(); renderPersona(pid); return; }
       var v = e.target.closest("[data-bview]"); if (v) { bview = v.dataset.bview; renderBacheca(); return; }
