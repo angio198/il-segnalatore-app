@@ -595,6 +595,46 @@
   .starbtn.on .ico{filter:drop-shadow(0 1px 2px rgba(196,138,0,.45));}
   .comphead .starbtn{margin-left:auto;padding:0 2px;}
   .comphead .starbtn .ico{width:17px;height:17px;}
+  /* Notifiche (03/10) */
+  .navcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;}
+  .navcard > .ico{width:26px;height:26px;} .navcard > span{flex:1;display:flex;flex-direction:column;}
+  .nrow{padding:12px 0;border-bottom:1px solid var(--line);} .nrow:last-child{border-bottom:none;}
+  .nrow .nhead{display:flex;align-items:center;gap:10px;} .nrow .nhead .nm{flex:1;font-weight:700;font-size:0.92rem;}
+  .nrow .chips{margin-top:8px;} .nrow .chips .chip{font-size:0.74rem;padding:4px 10px;}
+  .nrow.off .chips,.nrow.off .nprev{opacity:.45;}
+  .nprev{margin-top:8px;font-size:0.78rem;color:var(--ink-soft);display:flex;gap:6px;align-items:flex-start;}
+  .nprev .ico{flex:none;margin-top:1px;}
+  /* Le mie leghe (03/10) */
+  .legachips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:8px -16px 10px;padding:0 16px 2px;} .legachips .chip{flex:none;white-space:nowrap;}
+  .lgrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);} .lgrow:last-child{border-bottom:none;}
+  .lgrow .lgt{flex:1;min-width:0;display:flex;flex-direction:column;} .lgrow .lgt span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .lgpick{display:flex;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line);font-size:0.9rem;cursor:pointer;}
+  .lgpick input{width:20px;height:20px;accent-color:var(--accent);flex:none;} .lgpick .k{margin-left:auto;}
+  .lgsearch{margin:6px 0 4px;}
+  /* Campionati (03/10) */
+  .camprow{display:flex;align-items:center;gap:10px;width:100%;padding:10px 2px;border:none;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;}
+  .camprow:last-child{border-bottom:none;} .camprow .flag{font-size:1.15rem;line-height:1;} .camprow .cn{flex:1;min-width:0;} .camprow .cn small{display:block;color:var(--ink-soft);font-size:0.74rem;}
+  .camprow .k{font-variant-numeric:tabular-nums;}
+  .campcountry{font-size:0.74rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:14px 2px 4px;display:flex;align-items:center;gap:6px;}
+  #campq{margin:4px 0 6px;}
+  /* Sfide a tema e album (03/10) */
+  .thcard{display:flex;gap:12px;align-items:flex-start;}
+  .thcard .thic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb, var(--accent) 18%, transparent);flex:none;}
+  .thcard .thic .ico{width:26px;height:26px;color:var(--accent-strong);}
+  .thcard .tht{flex:1;min-width:0;} .thcard .lprog{margin-top:6px;}
+  .thprize{display:inline-flex;align-items:center;gap:4px;font-weight:800;font-size:0.82rem;color:var(--accent-strong);}
+  .albumcard{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 10px;text-align:left;font:inherit;color:inherit;cursor:pointer;}
+  .albumcard .ast{display:flex;} .albumcard .ast .tlogo{margin-right:-8px;box-shadow:0 0 0 2px var(--surface);}
+  .albumcard > span:nth-child(2){flex:1;display:flex;flex-direction:column;}
+  .alhead{display:flex;align-items:center;gap:8px;margin:18px 2px 8px;} .alhead b{flex:1;font-size:1rem;}
+  .albar{height:6px;border-radius:999px;background:var(--line);overflow:hidden;margin:0 2px 10px;} .albar div{height:100%;background:linear-gradient(90deg,#FFD866,#E8812F);}
+  .stickers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;}
+  .sticker{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0;}
+  .sticker .tlogo{width:40px;height:40px;font-size:0.9rem;}
+  .sticker span.sn{font-size:0.68rem;font-weight:700;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+  .sticker.off{background:var(--bg-alt);} .sticker.off .tlogo{filter:grayscale(1) brightness(.55);opacity:.45;} .sticker.off span.sn{color:var(--ink-soft);font-weight:600;}
+  .sticker.got{border-color:color-mix(in srgb, #E8A800 60%, var(--line));box-shadow:inset 0 0 0 1px rgba(255,216,102,.25);}
+  .aldone{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#2A1A00;background:linear-gradient(120deg,#FFD866,#E8812F);border-radius:999px;padding:2px 8px;}
   /* colonna stretta solo su schermi alti (computer, tablet); il telefono in orizzontale usa tutta la larghezza (Radar) */
   @media (min-width:600px) and (min-height:560px){
     body{max-width:480px;margin-inline:auto;box-shadow:0 0 0 1px var(--line);}
@@ -629,6 +669,7 @@
     <symbol id="i-exit" viewBox="0 0 24 24"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></symbol>
     <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z" fill="url(#g-gold)" stroke="#B57F00" stroke-width="1.2"/></symbol>
     <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2.5" fill="#FFFFFF" stroke="#9AA4AE" stroke-width="1"/><path d="M4 7.5a2.5 2.5 0 0 1 2.5-2.5h11A2.5 2.5 0 0 1 20 7.5V10H4z" fill="url(#g-red)" stroke="none"/><path d="M8.5 3v4M15.5 3v4" stroke="#5B6670" stroke-width="1.8"/><path d="M8 13.5h2M11 13.5h2M14 13.5h2M8 16.5h2M11 16.5h2" stroke="#9AA4AE" stroke-width="1.6"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M12 3.2c3.5 0 6 2.6 6 6.2v3.8l1.8 3.1H4.2L6 13.2V9.4c0-3.6 2.5-6.2 6-6.2z" fill="url(#g-amber)" stroke="#B5650A" stroke-width="1.1"/><path d="M9.6 18.6a2.5 2.5 0 0 0 4.8 0" fill="#7A4B1E" stroke="#7A4B1E" stroke-width="1"/><circle cx="17.6" cy="5.6" r="2.6" fill="#E5322D" stroke="none"/></symbol>
     <symbol id="i-staro" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="url(#g-gold)" stroke="#C48A00" stroke-width="1.2"/></symbol>
     <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4" stroke="#C48A00" stroke-width="1.8"/><path d="M8 4h8v5a4 4 0 0 1-8 0z" fill="url(#g-gold)" stroke="#C48A00" stroke-width="1.2"/><path d="M11 12.6h2V17h-2z" fill="#E9A800" stroke="none"/><path d="M9.5 17h5v3.5h-5z" fill="#7A4B1E" stroke="none"/><path d="M8 20.5h8" stroke="#5C3816" stroke-width="1.6"/></symbol>
@@ -722,6 +763,7 @@
     <button class="chip" type="button" data-filter="hockey" aria-pressed="false"><svg class="ico"><use href="#i-hockey"/></svg> Hockey</button>
     <button class="chip" type="button" data-filter="basket" aria-pressed="false"><svg class="ico"><use href="#i-basket"/></svg> Basket</button>
   </div>
+  <div class="chips legachips" id="legachips" role="group" aria-label="Le mie leghe" hidden></div>
   <div class="filternote" id="filternote" hidden>
     <span id="filtertext"></span>
     <button class="linkbtn" id="showall" type="button">Mostra tutto</button>
@@ -766,6 +808,8 @@
     <button class="chip" type="button" data-oddsfmt="us">Americano +150</button>
   </div>
   <div class="note" style="margin-top:10px;">Cambia solo come vedi le quote: punti, monete e classifiche si calcolano sempre sulla quota decimale.</div>
+  <h2 class="sectiontitle">Notifiche</h2>
+  <button class="card navcard" type="button" id="notifbtn"><svg class="ico"><use href="#i-bell"/></svg><span><b>Notifiche delle strategie</b><span class="k">Quali strategie e cosa mostrare nel messaggio</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <h2 class="sectiontitle">Piano</h2>
   <div class="chips" id="pianochips" role="group" aria-label="Piano">
     <button class="chip" type="button" data-piano="full">StatSight Full</button>
@@ -774,6 +818,31 @@
   <div class="note" style="margin-top:10px;">Con "Gratuito" vedi l'app come la vedrà chi non è abbonato: xG, attacchi pericolosi, possesso, statistiche al servizio e le strategie che le usano sono coperti dal lucchetto. Gli abbonamenti veri arrivano con l'app pubblica.</div>
   <h2 class="sectiontitle">Informativa</h2>
   <div id="informativa"></div>
+</main>
+
+<main class="view" id="view-album" hidden>
+  <button class="back" type="button" data-back="profilo">‹ Profilo</button>
+  <h1 class="dtitle">Album delle squadre</h1>
+  <div id="album"></div>
+</main>
+
+<main class="view" id="view-campionati" hidden>
+  <button class="back" type="button" data-back="diario">‹ Partite</button>
+  <h1 class="dtitle">Campionati</h1>
+  <input id="campq" class="meinput" type="search" placeholder="Cerca un paese o un campionato" autocomplete="off">
+  <div id="campionati"></div>
+</main>
+
+<main class="view" id="view-leghe" hidden>
+  <button class="back" type="button" id="leghe-back">‹ Indietro</button>
+  <h1 class="dtitle">Le mie leghe</h1>
+  <div id="leghe"></div>
+</main>
+
+<main class="view" id="view-notifiche" hidden>
+  <button class="back" type="button" data-back="impostazioni">‹ Impostazioni</button>
+  <h1 class="dtitle">Notifiche</h1>
+  <div id="notifiche"></div>
 </main>
 
 <main class="view" id="view-diario" hidden>
@@ -1088,8 +1157,11 @@
     var n = Array.from(hidden).filter(known).length;
     $("filternote").hidden = n === 0;
     $("filtertext").textContent = n === 1 ? "Filtro attivo: 1 strategia nascosta" : "Filtro attivo: " + n + " strategie nascoste";
+    paintLegaChips();
+    var G = activeGroup(), skippedG = 0;
     var html = data.feed.map(function (f, i) {
       if (filter !== "all" && f.sport !== filter) return "";
+      if (G && !sigInGroup(f, G)) { skippedG++; return ""; }
       if (!whenOk(f.timing)) return "";
       var extra = (f.extra || []).filter(function (e) { return on(e.strategy); });
       var hasMain = f.kind === "signal" || (f.kind === "outcome" && f.detail);
@@ -1114,13 +1186,16 @@
     // segnali delle strategie con le barre accese su questo telefono, in ordine di tempo con gli altri
     var list = data.feed.map(function (f, i) { return { ts: f.ts, html: html[i] }; }).filter(function (x) { return x.html; });
     if (whenOk("live")) {
-      catLiveItems().forEach(function (x) { if (filter === "all" || filter === x.sport) list.push({ ts: x.ts, html: catLiveCard(x) }); });
+      catLiveItems().forEach(function (x) {
+        if (G && !sigInGroup({ sport: x.sport, event: (x.m.r || []).join(" v "), cat: x.m.lv || "" }, G)) return;
+        if (filter === "all" || filter === x.sport) list.push({ ts: x.ts, html: catLiveCard(x) });
+      });
       list.sort(function (a, b) { return b.ts - a.ts; });
     }
     var cards = list.map(function (x) { return x.html; });
     $("today").innerHTML = todayCard();
     $("feed").innerHTML = (cards.length ? cards.join("")
-      : '<div class="note">Nessun segnale per questo filtro, per ora.' + (top5On ? ' È attivo "Solo le top 5".' : '')
+      : '<div class="note">Nessun segnale per questo filtro, per ora.' + (G ? ' È attivo il gruppo "' + esc(G.name) + '".' : '') + (top5On ? ' È attivo "Solo le top 5".' : '')
         + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>');
   }
 
@@ -1176,7 +1251,7 @@
     var NOTE = '<div class="note" style="margin-bottom:10px;">L\'interruttore mostra o nasconde i segnali di quella strategia nella lista "Segnali". I dati non si cancellano e le notifiche Telegram non cambiano.</div>';
     if (TOPS[stratSport]) {
       var top = topIds().slice(0, TOPS[stratSport]).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(Boolean);
-      $("strategie").innerHTML = tabs
+      $("strategie").innerHTML = tabs + legheCard()
         + '<div class="hero" style="background-image:linear-gradient(120deg,#3B2F0B,#8A6A14 60%,#C9A227);"><div class="ht">' + ic("star") + ' Top ' + TOPS[stratSport] + '</div><div class="hs">Le strategie col rendimento storico più alto, tutti gli sport (almeno ' + ((data.top5 && data.top5.min_cases) || 100) + ' casi)</div></div>'
         + (top.length ? '<h2 class="sectiontitle">In classifica</h2>' + NOTE + '<div class="card">' + top.map(function (s) { return row(s, true); }).join("") + '</div>'
           : '<div class="note" style="margin-top:14px;">Nessuna strategia ha ancora abbastanza casi per entrare in classifica.</div>')
@@ -1186,7 +1261,7 @@
     var count = cat.filter(function (s) { return s.sport === stratSport; }).length + nCat;
     var hero = '<div class="hero" style="background-image:linear-gradient(90deg,rgba(10,16,18,.72),rgba(10,16,18,.2)),' + HERO[stratSport] + ';">'
       + '<div class="ht">' + EMOJI[stratSport] + ' ' + NAME[stratSport] + '</div><div class="hs">' + count + ' strategie</div></div>';
-    $("strategie").innerHTML = tabs + hero + [stratSport].map(function (sport) {
+    $("strategie").innerHTML = tabs + legheCard() + hero + [stratSport].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) { return row(s, false); }).join("");
       return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2>' + NOTE + '<div class="card">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
     }).join("") + catalogoHtml(stratSport) + (stratSport === "ippica" ? esteroHtml() : "");
@@ -1621,7 +1696,7 @@
   }
 
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "benvenuto"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "benvenuto", "notifiche", "leghe", "campionati", "album"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     $("tabbar").hidden = !unlocked || view === "benvenuto";
     // la barra della schedina: in tutte le pagine tranne il blocco e la schedina stessa
@@ -1629,7 +1704,7 @@
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
+    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario", campionati: "diario", album: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
     document.querySelectorAll(".tab").forEach(function (t) {
       if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -2027,6 +2102,7 @@
         + (me.bio ? '<div class="mebio" translate="no">' + esc(me.bio) + '</div>'
           : '<button class="linkbtn mebio empty" type="button" data-meedit="1">' + ic("pen") + ' Scrivi la tua bio</button>')
         + heroesHtml(R2) + chestHtml(R2)
+        + albumCard(R2)
         + '<button class="coinbtn" type="button" data-megioca="1"><span class="cc">' + ic("coin") + '</span><span class="ct"><b>' + R2.coins + '</b> monete<span>Scegli le partite e fai il tuo pronostico</span></span>' + ic("chev") + '</button>'
         + (me.sport ? "" : '<button class="card sportpick" type="button" data-meedit="1">' + ic("star") + ' <b>Scegli il tuo sport e la tua squadra</b><span class="k">Mettiamo in primo piano il tuo campionato e le sfide giuste.</span></button>');
     }
@@ -2281,7 +2357,9 @@
     $("nlive").textContent = live.length; $("npre").textContent = pre.length;
     document.querySelectorAll("#dviewchips [data-dview]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.dview === dview)); });
     var evs = dview === "live" ? live : pre;
-    var isPre = dview === "pre", html = "";
+    var isPre = dview === "pre", html = "", G = activeGroup();
+    if (G) evs = evs.filter(function (e) { return evInGroup(e, G); });
+    html += legaChipsHtml();
     if (isPre) {   // striscia dei giorni: solo quelli che ci sono nei dati
       var days = {}, today = dayOf(nowS());
       pre.forEach(function (e) { if (e.start) { var d = dayOf(e.start); days[d] = (days[d] || 0) + 1; } });
@@ -2317,10 +2395,20 @@
       return dsort === "ora" ? (a.start || 0) - (b.start || 0) || compRank(b) - compRank(a)
         : favOdds(a) - favOdds(b) || (a.start || 0) - (b.start || 0);
     }
-    if (dview === "live") evs.sort(function (a, b) {
-      return (favSet.has(b.id) - favSet.has(a.id)) || (dsort !== "camp" ? bySort(a, b) : 0)
-        || (compRank(b) - compRank(a)) || (a.comp > b.comp ? 1 : a.comp < b.comp ? -1 : 0);
-    });
+    if (dview === "live") {
+      // campionato scelto (da Campionati o dalla striscia del pre-partita): vale anche qui, con "Tutti" per toglierlo
+      if (dcomp !== "all" && dcomp !== "pref" && evs.some(function (e) { return compKey(e) === dcomp; })) {
+        var e1 = evs.filter(function (e) { return compKey(e) === dcomp; })[0];
+        html += '<div class="chips compchips"><button class="chip" type="button" data-dcomp="all" aria-pressed="false">Tutti</button>'
+          + '<button class="chip" type="button" aria-pressed="true">' + EMOJI[e1.sport] + ' ' + esc(shortComp(e1.comp)) + '</button></div>';
+        evs = evs.filter(function (e) { return compKey(e) === dcomp; });
+        favSet = new Set();
+      }
+      evs.sort(function (a, b) {
+        return (favSet.has(b.id) - favSet.has(a.id)) || (dsort !== "camp" ? bySort(a, b) : 0)
+          || (compRank(b) - compRank(a)) || (a.comp > b.comp ? 1 : a.comp < b.comp ? -1 : 0);
+      });
+    }
     else {
       // pre-partita a gruppi per campionato (prima i campionati con piu' partite), dentro in ordine d'orario;
       // in alto i campionati come filtri, con la bandiera
@@ -2333,8 +2421,9 @@
       if (dcomp !== "all" && dcomp !== "pref" && !cnt[dcomp]) dcomp = "all";
       if (keys.length > 1 || nPref) {
         html += '<div class="chips compchips">' + ['<button class="chip" type="button" data-dcomp="all" aria-pressed="' + (dcomp === "all") + '">🔥 Tutti <span class="k">' + evs.length + '</span></button>',
-                                                    '<button class="chip" type="button" data-dcomp="pref" aria-pressed="' + (dcomp === "pref") + '">⭐ Preferiti <span class="k">' + nPref + '</span></button>']
-          .concat(keys.slice(0, 12).map(function (k) {
+                                                    '<button class="chip" type="button" data-dcomp="pref" aria-pressed="' + (dcomp === "pref") + '">⭐ Preferiti <span class="k">' + nPref + '</span></button>',
+                                                    '<button class="chip" type="button" data-campi="1">🌍 Tutti i campionati <span class="k">' + keys.length + '</span></button>']
+          .concat(keys.slice(0, 12).concat(keys.indexOf(dcomp) >= 12 ? [dcomp] : []).map(function (k) {
             var e0 = evs.find(function (e) { return e.sport + "|" + e.comp === k; });
             return '<button class="chip" type="button" data-dcomp="' + esc(k) + '" aria-pressed="' + (dcomp === k) + '">' + flagOf(e0) + ' ' + esc(shortComp(e0.comp)) + ' <span class="k">' + cnt[k] + '</span></button>';
           })).join("") + '</div>';
@@ -2350,7 +2439,7 @@
       });
     }
     if (dview === "pre" && dcomp !== "all") favSet = new Set();
-    if (!evs.length) html += '<div class="note">' + (dcomp === "pref" ? "Nessuna partita preferita: tocca la stella accanto a una partita o a un campionato."
+    if (!evs.length) html += '<div class="note">' + (G ? 'Nessuna partita in questa vista per il gruppo "' + esc(G.name) + '".' : dcomp === "pref" ? "Nessuna partita preferita: tocca la stella accanto a una partita o a un campionato."
       : dview === "live" ? "Nessuna partita in corso con quote in questo momento." : "Nessuna partita in programma con quote nelle prossime 24 ore.") + '</div>';
     var lastComp = null;
     evs.forEach(function (e) {
@@ -2582,6 +2671,9 @@
   $("diarioevents").addEventListener("click", function (ev) {
     var dc = ev.target.closest("button[data-dcomp]");
     if (dc) { dcomp = dc.dataset.dcomp; renderDiario(); return; }
+    var lg = ev.target.closest("button[data-lega]");
+    if (lg) { setLega(lg.dataset.lega); return; }
+    if (ev.target.closest("button[data-campi]")) { openCampionati(); return; }
     var dd = ev.target.closest("button[data-dday]");
     if (dd) { dday = dd.dataset.dday === "all" ? "all" : Number(dd.dataset.dday); renderDiario(); return; }
     var so = ev.target.closest("button[data-dsort]");
@@ -2691,11 +2783,11 @@
   // esito; una multipla o un sistema = un pronostico con la sua quota)
   function pronostici() {
     var dz = data.diario || {}, out = [];
-    (dz.bets || []).forEach(function (b) { out.push({ key: "b" + b.id, ts: b.created_at, odds: b.odds, result: b.result, sport: b.sport, ev: b.sport + ":" + (b.event_id || b.event), code: b.code || "" }); });
+    (dz.bets || []).forEach(function (b) { out.push({ key: "b" + b.id, ts: b.created_at, odds: b.odds, result: b.result, sport: b.sport, ev: b.sport + ":" + (b.event_id || b.event), code: b.code || "", event: b.event }); });
     allSlips().forEach(function (s) {
-      if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, ts: s.created_at, odds: l.odds, result: l.result, sport: l.sport, ev: l.sport + ":" + l.event_id, code: l.code, comp: l.comp }); });
+      if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, ts: s.created_at, odds: l.odds, result: l.result, sport: l.sport, ev: l.sport + ":" + l.event_id, code: l.code, comp: l.comp, event: l.event }); });
       else out.push({ key: "s" + s.id, ts: s.created_at, odds: s.odds || 1, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null, points: s.points,
-                      sport: "multi", ev: "s" + s.id, code: s.mode, legs: s.legs.length });
+                      sport: "multi", ev: "s" + s.id, code: s.mode, legs: s.legs.length, events: s.legs.map(function (l) { return { sport: l.sport, event: l.event }; }) });
     });
     out.forEach(function (b) { b.jolly = jolly.used[b.key] || null; });
     return out;
@@ -2726,7 +2818,7 @@
   }
   function rewardState(list) {
     var closed = list.filter(function (b) { return b.result === 0 || b.result === 1; }).sort(function (a, b) { return a.ts - b.ts; });
-    var perDay = {}, seenEvent = {}, xp = 0, weeks = {}, perDayLeague = {}, season = { pts: 0, n: 0 }, coins = COINS.welcome, chWeeks = {}, prizes = {};
+    var perDay = {}, seenEvent = {}, xp = 0, weeks = {}, perDayLeague = {}, season = { pts: 0, n: 0 }, coins = COINS.welcome, chWeeks = {}, prizes = {}, thMonths = {};
     closed.forEach(function (b) {
       b._xp = 0;
       if (b.odds >= 1.3 && !seenEvent[b.ev]) {
@@ -2745,6 +2837,11 @@
           wk.pts += p; wk.n += 1;
           var cc = b.comp && A.compOf(b.comp);                  // sfide della settimana per competizione
           if (cc) { var cw = chWeeks[w] || (chWeeks[w] = {}), cr = cw[cc.id] || (cw[cc.id] = { pts: 0, n: 0 }); cr.pts += p; cr.n += 1; }
+          var mk = monthKey(b.ts);                               // sfide a tema del mese
+          THEMES.forEach(function (t) {
+            if (!themeHit(t, b, cc)) return;
+            var tm = thMonths[mk] || (thMonths[mk] = {}), tr = tm[t.id] || (tm[t.id] = { pts: 0, n: 0 }); tr.pts += p; tr.n += 1;
+          });
           if (b.ts >= SEASON.start && b.ts <= SEASON.end) { season.pts += p; season.n += 1; }
         }
       }
@@ -2767,6 +2864,13 @@
         coins += c; (prizes[w] = prizes[w] || { coins: 0, tier: null }).coins += c;
       });
     });
+    var curMonth = monthKey(nowS()), themesWon = [];
+    Object.keys(thMonths).map(Number).sort().forEach(function (m) {   // premi delle sfide a tema dei mesi chiusi
+      if (m >= curMonth) return;
+      THEMES.forEach(function (t) { var r = thMonths[m][t.id]; var c = r ? themePrize(t, r) : 0; if (c) { coins += c; themesWon.push([m, t.id, c]); } });
+    });
+    var album = albumState(list);                                     // album delle squadre completi
+    coins += album.done.length * ALBUM_COINS;
     coins -= jolly.spent;
     var chest = chestOf(prizes, thisWeek);   // i premi delle settimane chiuse arrivano in una cassa da aprire
     coins -= chest.coins;
@@ -2779,7 +2883,7 @@
     if (!season.n) sTier = 0;
     return { closed: closed, xp: xp, level: level, inLevel: left, need: xpNeeded(level), tier: tier, bestTier: Math.max(best, tier),
              week: cur, zone: zone, weeks: weeks, season: season, round: played, sTier: sTier, perWeek: perWeek, coins: coins,
-             ch: chWeeks[thisWeek] || {}, chest: chest };
+             ch: chWeeks[thisWeek] || {}, chest: chest, month: curMonth, themes: thMonths[curMonth] || {}, themesWon: themesWon, album: album };
   }
   // ---------------------------------------------------------------- Sfide della settimana (richiesta utente 02/10)
   // Una sfida per competizione (Sfida Champions, Sfida Serie A, Sfida Nations, Sfida ATP...): contano i pronostici
@@ -2787,6 +2891,46 @@
   // settimana: 3 pronostici e punti positivi = 25 monete; 5 pronostici e almeno +3 = 50. Classifica con il Team.
   var CH = { base: [3, 0, 25], top: [5, 3, 50] };
   function challengePrize(r) { return r.n >= CH.top[0] && r.pts >= CH.top[1] ? CH.top[2] : r.n >= CH.base[0] && r.pts > CH.base[1] ? CH.base[2] : 0; }
+  // ---------------------------------------------------------------- Sfide a tema del mese (idea Omada, 03/10)
+  // Durano un mese di calendario (ora italiana). Contano i pronostici della lega (quota >= 1,50, primi 10 al
+  // giorno) che rientrano nel tema. Premio a fine mese, in monete guadagnate: base = n pronostici e punti positivi,
+  // top = piu' pronostici e almeno quei punti. Regole uguali in server/rewards.py.
+  var THEMES = [
+    { id: "mese", name: "Sfida del mese", desc: "Tutti i pronostici del mese.", icon: "calendar", base: [10, 0, 40], top: [20, 5, 100] },
+    { id: "europa", name: "Notti europee", desc: "Champions, Europa e Conference League.", icon: "trophy", comps: ["ucl", "uel", "uecl"], base: [3, 0, 30], top: [6, 3, 60] },
+    { id: "tennis", name: "Tennis Challenge", desc: "Tutti i pronostici sul tennis.", icon: "tennis", sport: "tennis", base: [5, 0, 30], top: [10, 3, 60] }
+  ];
+  var MESI = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
+  function monthKey(ts) { var d = new Date(ts * 1000); return d.getFullYear() * 12 + d.getMonth(); }
+  function themeHit(t, b, cc) {
+    if (t.sport) return b.sport === t.sport;
+    if (t.comps) return !!cc && t.comps.indexOf(cc.id) >= 0;
+    return true;
+  }
+  function themePrize(t, r) { return r.n >= t.top[0] && r.pts >= t.top[1] ? t.top[2] : r.n >= t.base[0] && r.pts > t.base[1] ? t.base[2] : 0; }
+  // ---------------------------------------------------------------- Album delle squadre (idea Omada, 03/10)
+  // Una figurina per squadra (o tennista) delle liste di anagrafica.js: si sblocca con un pronostico su una sua
+  // partita, aperto o chiuso. Album completo = badge e 100 monete. Figurine disegnate da noi (teamLogo: colori
+  // sociali e iniziali, mai lo stemma vero).
+  var ALBUM_COINS = 100;
+  function albumLeagues() { return A.LEGHE.calcio.concat(A.LEGHE.tennis).filter(function (id) { return A.SQUADRE[id] && A.SQUADRE[id].length; }); }
+  function stickerKey(name, tennis) { var w = normName(name).split(" "); return tennis ? w[w.length - 1] : normName(name); }
+  function albumState(list) {
+    var seen = [];
+    list.forEach(function (b) {
+      (b.events || [{ sport: b.sport, event: b.event }]).forEach(function (x) { if (x.event) seen.push({ sport: x.sport, txt: " " + normName(x.event) + " " }); });
+    });
+    var have = {}, done = [];
+    albumLeagues().forEach(function (id) {
+      var tennis = A.LEGHE.tennis.indexOf(id) >= 0, sport = tennis ? "tennis" : "calcio", teams = A.SQUADRE[id];
+      have[id] = teams.filter(function (t) {
+        var k = stickerKey(t, tennis);
+        return k.length >= 3 && seen.some(function (x) { return x.sport === sport && x.txt.indexOf(" " + k + " ") >= 0; });
+      });
+      if (have[id].length === teams.length) done.push(id);
+    });
+    return { have: have, done: done };
+  }
   function challengesHtml(R2) {
     var P0 = A.PAESI[me.country || A.guessCountry()] || A.PAESI.XX, mySports = me.sports || P0.sports;
     var ids = {};
@@ -2859,6 +3003,58 @@
       }).join("") + '</div>'
       + '<div class="k" style="margin-top:6px;">Un jolly si mette su un pronostico ancora aperto, da "Le mie giocate". Al massimo un\'Assicurazione e un Raddoppio a settimana.</div>';
   }
+  // ---- interfaccia delle sfide a tema (Il mio occhio) e dell'album (Profilo)
+  function themesHtml(R2) {
+    var d = new Date(nowS() * 1000), end = new Date(d.getFullYear(), d.getMonth() + 1, 1).getTime() / 1000, left = Math.max(0, end - nowS());
+    var dd = Math.floor(left / 86400), hh = Math.floor(left % 86400 / 3600), mese = MESI[d.getMonth()];
+    return '<h2 class="sectiontitle">Sfide a tema</h2>'
+      + '<div class="k" style="margin:-4px 2px 8px;">' + ic("clock") + ' ' + mese + ' · terminano tra ' + dd + 'g ' + hh + 'h · premio a fine mese</div>'
+      + THEMES.map(function (t) {
+        var r = R2.themes[t.id] || { n: 0, pts: 0 }, prize = themePrize(t, r);
+        var nPct = Math.min(100, r.n / t.top[0] * 100), pPct = Math.max(0, Math.min(100, r.pts / t.top[1] * 100));
+        var wins = R2.themesWon.filter(function (x) { return x[1] === t.id; }).length;
+        return '<div class="card thcard"><span class="thic">' + ic(t.icon) + '</span><div class="tht"><b>' + esc(t.name) + '</b>'
+          + '<div class="k">' + esc(t.desc) + (wins ? ' · vinta ' + wins + (wins === 1 ? " volta" : " volte") : "") + '</div>'
+          + '<div class="lprog"><span>Pronostici ' + r.n + '/' + t.top[0] + '</span><div class="lvbar"><div style="width:' + nPct.toFixed(0) + '%"></div></div>'
+          + '<span>Punti ' + signed(r.pts) + '/+' + t.top[1] + '</span><div class="lvbar"><div style="width:' + pPct.toFixed(0) + '%"></div></div></div>'
+          + '<div class="k" style="margin-top:6px;">' + (prize >= t.top[2] ? '<span class="thprize">' + ic("coin") + ' ' + t.top[2] + '</span> premio pieno raggiunto'
+            : prize ? '<span class="thprize">' + ic("coin") + ' ' + t.base[2] + '</span> già tuoi; con ' + t.top[0] + ' pronostici e +' + t.top[1] + ' punti diventano ' + t.top[2]
+            : 'Servono ' + t.base[0] + ' pronostici e punti positivi per ' + t.base[2] + ' monete (' + t.top[2] + ' con ' + t.top[0] + ' e +' + t.top[1] + ')') + '</div></div></div>';
+      }).join("")
+      + '<div class="k" style="margin-top:6px;">Contano i pronostici della lega (quota 1,50 o più, i primi 10 al giorno). Le monete arrivano a fine mese.</div>';
+  }
+  function albumName(id) { var c = A.COMPS.filter(function (x) { return x.id === id; })[0]; return c ? c.label : id.toUpperCase(); }
+  function albumOrder() {
+    var P0 = A.PAESI[me.country || A.guessCountry()] || A.PAESI.XX, first = [me.league].concat(P0.leagues, A.BIG);
+    return albumLeagues().slice().sort(function (a, b) {
+      var ia = first.indexOf(a), ib = first.indexOf(b);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
+  }
+  function albumCard(R2) {
+    var tot = 0, got = 0, last = [];
+    albumLeagues().forEach(function (id) {
+      tot += A.SQUADRE[id].length; got += R2.album.have[id].length;
+      R2.album.have[id].forEach(function (t) { if (last.length < 4) last.push([t, A.LEGHE.tennis.indexOf(id) >= 0 ? "tennis" : "calcio"]); });
+    });
+    return '<button class="card albumcard" type="button" data-album="1"><span class="ast">' + (last.length ? last.map(function (x) { return teamLogo(x[0], x[1]); }).join("") : ic("layers")) + '</span>'
+      + '<span><b>Album delle squadre</b><span class="k">' + got + ' figurine su ' + tot + (R2.album.done.length ? ' · ' + R2.album.done.length + (R2.album.done.length === 1 ? " album completo" : " album completi") : "") + '</span></span>' + ic("chev") + '</button>';
+  }
+  function renderAlbum() {
+    var R2 = rewardState(pronostici());
+    $("album").innerHTML = '<div class="note" style="margin-bottom:6px;">Ogni pronostico su una partita sblocca la figurina delle due squadre (o dei due tennisti). Album completo: badge e ' + ALBUM_COINS + ' monete. Le figurine sono disegnate da noi con i colori sociali, non sono gli stemmi ufficiali.</div>'
+      + albumOrder().map(function (id) {
+        var teams = A.SQUADRE[id], have = R2.album.have[id], tennis = A.LEGHE.tennis.indexOf(id) >= 0, done = R2.album.done.indexOf(id) >= 0;
+        return '<div class="alhead"><b>' + esc(albumName(id)) + '</b>' + (done ? '<span class="aldone">' + ic("check") + ' completo · +' + ALBUM_COINS + '</span>' : '<span class="k">' + have.length + '/' + teams.length + '</span>') + '</div>'
+          + '<div class="albar"><div style="width:' + (have.length / teams.length * 100).toFixed(0) + '%"></div></div>'
+          + '<div class="stickers">' + teams.map(function (t) {
+            var on = have.indexOf(t) >= 0;
+            return '<div class="sticker ' + (on ? "got" : "off") + '" title="' + esc(t) + '">' + teamLogo(t, tennis ? "tennis" : "calcio") + '<span class="sn" translate="no">' + esc(t) + '</span></div>';
+          }).join("") + '</div>';
+      }).join("");
+  }
+  $("profilo").addEventListener("click", function (e) { if (e.target.closest("[data-album]") && data) { renderAlbum(); show("album"); window.scrollTo(0, 0); } });
+
   // ---------------------------------------------------------------- Grafica "addictive" (richiesta utente 03/10)
   // Pallini rossi sulle schede con le novita' (esiti nuovi, post nuovi dei seguiti, cassa da aprire), pioggia di
   // monete quando un pronostico risulta vinto, coriandoli al passaggio di livello, cassa del premio di fine
@@ -3091,12 +3287,12 @@
       + '<div class="banner">' + ic("trend") + '<span>Più positivo della settimana</span><b>' + (R2.week.n ? signed(R2.week.pts) + " · tu" : "—") + '</b></div>'
       + '<div class="banner">' + ic("flame") + '<span>Serie più lunga</span><b>' + bestStreak + " · tu" + '</b></div>'
       + '</div><div class="k" style="margin:6px 2px 12px;font-size:0.76rem;">Con l\'app pubblica qui compaiono i migliori fra tutti gli utenti.</div>'
-      + chestHtml(R2) + ladderHtml(R2) + challengesHtml(R2) + jollyShopHtml(R2)
+      + chestHtml(R2) + ladderHtml(R2) + challengesHtml(R2) + themesHtml(R2) + jollyShopHtml(R2)
       + '<details class="card" style="margin-top:10px;"><summary><b>Come funziona</b></summary><div class="ds" style="margin-top:8px;line-height:1.5;">'
       + '<b>Stagione</b> (la lega che conta): segue il calendario della Premier League, ' + SEASON.rounds + ' giornate. Contano i pronostici a quota 1,50 o più, al massimo 10 al giorno: vinto = quota − 1, perso = −1. La lega dipende dai punti medi a settimana: Argento da 0, Oro da +0,5, Platino da +1, Diamante da +2, Elite da +3 (dall\'Oro in su almeno 3 pronostici a settimana). Con l\'app pubblica: classifica fra tutti, promozioni e retrocessioni a fine stagione.<br>'
       + '<b>Settimana:</b> stesse regole, da lunedì a domenica. Con almeno 10 pronostici e +3 punti si sale, con meno di 5 o −3 punti si scende.<br>'
       + '<b>Esperienza:</b> 5 XP per pronostico chiuso più 10 XP per ogni punto di quota sopra 1 se lo vinci (massimo 50). Sotto quota 1,30 niente XP; un pronostico per partita; al giorno i primi 10 valgono pieno, dall\'11 al 20 la metà, poi niente.<br>'
-      + '<b>Monete:</b> 100 di benvenuto, 10 per ogni pronostico chiuso che dà XP più 10 se vinto, 50 a ogni livello, e a fine settimana un premio secondo la lega (da 10 in Bronzo a 150 in Elite) più quelli delle sfide per competizione (25 o 50 ciascuna). Servono solo per i jolly: non si comprano e non valgono soldi.</div></details>';
+      + '<b>Monete:</b> 100 di benvenuto, 10 per ogni pronostico chiuso che dà XP più 10 se vinto, 50 a ogni livello, e a fine settimana un premio secondo la lega (da 10 in Bronzo a 150 in Elite) più quelli delle sfide per competizione (25 o 50 ciascuna); a fine mese i premi delle sfide a tema (da 30 a 100); 100 per ogni album delle squadre completo. Servono solo per i jolly: non si comprano e non valgono soldi.</div></details>';
 
     $("occhioclassifica").innerHTML = team().length ? leaderboardHtml(R2)
       : '<div class="note">La classifica arriva con il prossimo aggiornamento dei dati.</div>';
@@ -3141,7 +3337,12 @@
                            ["next", "Veggente", "Vinto un prossimo gol", wonOn(/^P[12N]$/)], ["one", "Classico", "Vinto un 1X2", wonOn(/^[1X2]$/)],
                            ["target", "Cecchino", "Vinto un risultato esatto", wonOn(/^CS/)]]],
       ["Leghe", LEAGUES.slice(1).map(function (l, i) { return ["shield", l[0], "Raggiungi la lega " + l[0] + " (settimana o stagione)", R2.bestTier >= i + 1 || R2.sTier >= i + 1]; })],
-      ["Livelli", [5, 10, 20, 30].map(function (lv) { return ["star", "Livello " + lv, "Raggiungi il livello " + lv, R2.level >= lv]; })]
+      ["Livelli", [5, 10, 20, 30].map(function (lv) { return ["star", "Livello " + lv, "Raggiungi il livello " + lv, R2.level >= lv]; })],
+      ["Sfide a tema", THEMES.map(function (t) { return [t.icon, t.name, "Premio pieno in un mese: " + t.top[0] + " pronostici e +" + t.top[1] + " punti",
+        R2.themesWon.some(function (x) { return x[1] === t.id && x[2] === t.top[2]; })]; })],
+      ["Album", albumLeagues().filter(function (id) { return A.PAESI.IT.leagues.concat(A.BIG).indexOf(id) >= 0 || R2.album.done.indexOf(id) >= 0; }).map(function (id) {
+        return ["layers", "Album " + albumName(id), "Tutte le figurine dell'album", R2.album.done.indexOf(id) >= 0];
+      })]
     ];
     var got = 0, tot = 0;
     B.forEach(function (g) { g[1].forEach(function (b) { tot++; if (b[3]) got++; }); });
@@ -3318,6 +3519,249 @@
     oddsFmt = b.dataset.oddsfmt; try { localStorage.setItem(ODDSFMT_KEY, oddsFmt); } catch (er) {}
     paintQuote(); if (data) renderAll();
   });
+  // ---------------------------------------------------------------- Campionati (richiesta 03/10, idea BetMines)
+  // Da Partite, "Tutti i campionati": in alto i principali (coppe del giorno, campionati del tuo paese, grandi
+  // campionati: anagrafica.js), poi tutti per paese, con la ricerca per paese o per campionato. Si sceglie e
+  // si torna alle partite filtrate su quel campionato.
+  var COUNTRY = { "🇬🇧": "Regno Unito", "🏴󠁧󠁢󠁳󠁣󠁴󠁿": "Scozia", "🏴󠁧󠁢󠁷󠁬󠁳󠁿": "Galles", "🏴󠁧󠁢󠁥󠁮󠁧󠁿": "Inghilterra", "🇧🇷": "Brasile", "🇦🇷": "Argentina",
+    "🇨🇴": "Colombia", "🇪🇨": "Ecuador", "🇨🇱": "Cile", "🇵🇪": "Perù", "🇺🇾": "Uruguay", "🇵🇾": "Paraguay", "🇲🇽": "Messico", "🇺🇸": "Stati Uniti",
+    "🇸🇪": "Svezia", "🇳🇴": "Norvegia", "🇩🇰": "Danimarca", "🇫🇮": "Finlandia", "🇮🇸": "Islanda", "🇮🇪": "Irlanda", "🇪🇸": "Spagna", "🇵🇹": "Portogallo",
+    "🇫🇷": "Francia", "🇩🇪": "Germania", "🇳🇱": "Paesi Bassi", "🇧🇪": "Belgio", "🇨🇭": "Svizzera", "🇦🇹": "Austria", "🇮🇹": "Italia", "🇬🇷": "Grecia",
+    "🇹🇷": "Turchia", "🇨🇿": "Repubblica Ceca", "🇸🇰": "Slovacchia", "🇸🇮": "Slovenia", "🇵🇱": "Polonia", "🇭🇷": "Croazia", "🇷🇸": "Serbia",
+    "🇭🇺": "Ungheria", "🇷🇴": "Romania", "🇧🇬": "Bulgaria", "🇺🇦": "Ucraina", "🇱🇹": "Lituania", "🇱🇻": "Lettonia", "🇪🇪": "Estonia", "🇮🇱": "Israele",
+    "🇩🇿": "Algeria", "🇲🇦": "Marocco", "🇹🇳": "Tunisia", "🇪🇬": "Egitto", "🇯🇴": "Giordania", "🇸🇦": "Arabia Saudita", "🇯🇵": "Giappone", "🇨🇳": "Cina",
+    "🇰🇷": "Corea del Sud", "🇦🇺": "Australia", "🇪🇺": "Coppe europee", "🌎": "Americhe", "🌏": "Asia", "🌍": "Mondo", "🤝": "Amichevoli" };
+  function countryOf(e) { var f = flagOf(e); return COUNTRY[f] || (e.sport === "tennis" ? "Tennis" : "Altri"); }
+  function campList() {
+    var by = {}, out = [];
+    evList().forEach(function (e) {
+      if (!e.live && e.start && e.start <= nowS()) return;     // pre-partita gia' iniziate: fuori, come in Partite
+      var k = compKey(e);
+      if (!by[k]) { by[k] = { key: k, e: e, n: 0, live: 0, pre: 0, country: countryOf(e), label: campLabel(e) }; out.push(by[k]); }
+      by[k].n++; if (e.live) by[k].live++; else by[k].pre++;
+    });
+    return out;
+  }
+  function campLabel(e) { var cc = A.compOf(e.comp); return cc && cc.sport !== "tennis" ? cc.label : shortComp(e.comp || NAME[e.sport]); }
+  function campRank(c) {
+    var P0 = A.PAESI[me.country || A.guessCountry()] || A.PAESI.XX, cc = A.compOf(c.e.comp);
+    if (!cc) return -1;
+    var i = A.SPOT.indexOf(cc.id), j = P0.leagues.indexOf(cc.id), b = A.BIG.indexOf(cc.id);
+    return i >= 0 ? 900 - i : j >= 0 ? 800 - j : b >= 0 ? 500 - b : -1;
+  }
+  function campRow(c) {
+    return '<button class="camprow" type="button" data-camp="' + esc(c.key) + '"><span class="flag">' + flagOf(c.e) + '</span>'
+      + '<span class="cn"><b>' + esc(c.label) + '</b><small>' + esc(c.country) + (c.live ? " · " + c.live + " live" : "") + '</small></span>'
+      + '<span class="k">' + c.n + '</span>' + ic("chev") + '</button>';
+  }
+  function renderCampionati() {
+    var all = campList(), q = ($("campq").value || "").trim().toLowerCase();
+    var list = q ? all.filter(function (c) { return c.label.toLowerCase().indexOf(q) >= 0 || c.country.toLowerCase().indexOf(q) >= 0 || (c.e.comp || "").toLowerCase().indexOf(q) >= 0; }) : all;
+    var top = q ? [] : all.filter(function (c) { return campRank(c) >= 0; }).sort(function (a, b) { return campRank(b) - campRank(a); }).slice(0, 8);
+    var countries = {};
+    list.forEach(function (c) { (countries[c.country] = countries[c.country] || []).push(c); });
+    var names = Object.keys(countries).sort(function (a, b) { return a.localeCompare(b, "it"); });
+    $("campionati").innerHTML = (top.length ? '<h2 class="sectiontitle">Principali</h2><div class="card">' + top.map(campRow).join("") + '</div>' : "")
+      + (names.length ? '<h2 class="sectiontitle">' + (q ? "Risultati" : "Per paese") + '</h2>' + names.map(function (n) {
+        var cs = countries[n].sort(function (a, b) { return b.n - a.n; });
+        return '<div class="campcountry"><span>' + flagOf(cs[0].e) + '</span> ' + esc(n) + '</div><div class="card">' + cs.map(campRow).join("") + '</div>';
+      }).join("") : '<div class="note">' + (all.length ? "Nessun campionato con questo nome." : "Nessuna partita con quote, per ora.") + '</div>');
+  }
+  function openCampionati() { $("campq").value = ""; renderCampionati(); show("campionati"); window.scrollTo(0, 0); }
+  $("campq").addEventListener("input", function () { if (data) renderCampionati(); });
+  $("campionati").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-camp]"); if (!b || !data) return;
+    var c = campList().filter(function (x) { return x.key === b.dataset.camp; })[0]; if (!c) return;
+    dcomp = c.key; dday = "all"; if (c.pre) dview = "pre"; else dview = "live";
+    renderDiario(); show("diario"); window.scrollTo(0, 0);
+  });
+
+  // ---------------------------------------------------------------- Le mie leghe (richiesta 03/10, idea BetMines)
+  // Gruppi di campionati con un nome ("Weekend", "Coppe"...), scelti fra quelli visti nei dati e quelli
+  // dell'anagrafica (anagrafica.js). Un gruppo attivo filtra i segnali e le partite. Sul telefono:
+  // statsight.gruppileghe; col server va sull'account. Chiave di un campionato: id dell'anagrafica se lo conosce,
+  // se no "sport|nome" come arriva nei dati.
+  var GL_KEY = "statsight.gruppileghe";
+  var gl = (function () { try { var g = JSON.parse(localStorage.getItem(GL_KEY)); if (g && Array.isArray(g.groups)) return g; } catch (e) {} return { groups: [], active: null }; })();
+  var glEdit = null, glBack = "strategie", glQuery = "";
+  function saveGl() { try { localStorage.setItem(GL_KEY, JSON.stringify(gl)); } catch (e) {} }
+  function activeGroup() { return gl.groups.filter(function (g) { return g.id === gl.active; })[0] || null; }
+  function compKeyOf(sport, name) { var c = A.compOf(name); return c ? c.id : sport + "|" + name; }
+  function compLabel(key) {
+    var c = A.COMPS.filter(function (x) { return x.id === key; })[0];
+    return c ? c.label : shortComp(key.split("|").slice(1).join("|"));
+  }
+  function evInGroup(e, G) { return G.comps.indexOf(compKeyOf(e.sport, e.comp)) >= 0; }
+  function reEsc(t) { return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  // i segnali non hanno sempre il campionato: si cerca nel testo (nome dell'anagrafica o nome com'e' nei dati)
+  function sigInGroup(f, G) {
+    if (f.comp && G.comps.indexOf(compKeyOf(f.sport, f.comp)) >= 0) return true;
+    var txt = [f.comp, f.cat, f.event, f.text].filter(Boolean).join(" \n ");
+    return G.comps.some(function (k) {
+      var c = A.COMPS.filter(function (x) { return x.id === k; })[0];
+      if (c) return (!f.sport || c.sport === f.sport) && (c.re.test(txt) || new RegExp("(^|[^\\w])" + reEsc(c.label) + "([^\\w]|$)", "i").test(txt));
+      var p = k.split("|");
+      return p[0] === f.sport && p[1] && txt.toLowerCase().indexOf(p.slice(1).join("|").toLowerCase()) >= 0;
+    });
+  }
+  function legaChipsHtml() {
+    if (!gl.groups.length) return "";
+    return '<div class="chips legachips" role="group" aria-label="Le mie leghe" style="margin:0 -16px 8px;">'
+      + '<button class="chip" type="button" data-lega="" aria-pressed="' + !gl.active + '">' + ic("layers") + ' Tutte le leghe</button>'
+      + gl.groups.map(function (g) { return '<button class="chip" type="button" data-lega="' + esc(g.id) + '" aria-pressed="' + (gl.active === g.id) + '">' + esc(g.name) + ' <span class="k">' + g.comps.length + '</span></button>'; }).join("")
+      + '<button class="chip" type="button" data-lega="#edit">' + ic("pen") + ' Modifica</button></div>';
+  }
+  function paintLegaChips() { var box = $("legachips"); box.hidden = !gl.groups.length; box.innerHTML = gl.groups.length ? legaChipsHtml().replace(/^<div[^>]*>|<\/div>$/g, "") : ""; }
+  function setLega(id) {
+    if (id === "#edit") { openLeghe(curView() === "diario" ? "diario" : curView() === "segnali" ? "segnali" : "strategie"); return; }
+    gl.active = id || null; saveGl(); renderFeed(); renderDiario();
+  }
+  function legheCard() {
+    return '<button class="card navcard" type="button" data-leghe="1" style="margin-top:6px;">' + ic("layers") + '<span><b>Le mie leghe</b><span class="k">'
+      + (gl.groups.length ? gl.groups.map(function (g) { return esc(g.name); }).join(" · ") : "Raggruppa i campionati che segui e filtra segnali e partite") + '</span></span>' + ic("chev") + '</button>';
+  }
+  // campionati da scegliere: quelli nei dati di oggi (con quante partite), poi tutti quelli dell'anagrafica
+  function legheChoices() {
+    var seen = {}, out = [];
+    evList().forEach(function (e) {
+      var k = compKeyOf(e.sport, e.comp);
+      if (!seen[k]) { seen[k] = { key: k, sport: e.sport, label: A.compOf(e.comp) ? compLabel(k) : shortComp(e.comp), n: 0, today: true }; out.push(seen[k]); }
+      seen[k].n++;
+    });
+    A.COMPS.forEach(function (c) { if (!seen[c.id]) { seen[c.id] = { key: c.id, sport: c.sport, label: c.label, n: 0, today: false }; out.push(seen[c.id]); } });
+    return out;
+  }
+  function openLeghe(back) { glBack = back || "strategie"; glEdit = null; glQuery = ""; renderLeghe(); show("leghe"); window.scrollTo(0, 0); }
+  function renderLeghe() {
+    var html;
+    if (!glEdit) {
+      html = '<div class="note" style="margin-bottom:10px;">Metti insieme i campionati che segui (per esempio "Weekend": Serie A, Premier, LaLiga). Scegli il gruppo sopra i segnali o le partite e vedi solo quelli.</div>'
+        + (gl.groups.length ? '<div class="card">' + gl.groups.map(function (g) {
+          return '<div class="lgrow"><span class="lgt"><b>' + esc(g.name) + '</b><span class="k">' + g.comps.map(compLabel).map(esc).join(", ") + '</span></span>'
+            + '<button class="iconbtn" type="button" data-gledit="' + esc(g.id) + '" aria-label="Modifica il gruppo">' + ic("pen") + '</button>'
+            + '<button class="iconbtn" type="button" data-gldel="' + esc(g.id) + '" aria-label="Elimina il gruppo">' + ic("trash") + '</button></div>';
+        }).join("") + '</div>' : '<div class="note">Nessun gruppo, per ora.</div>')
+        + '<button class="primary" type="button" data-glnew="1" style="width:100%;margin-top:12px;">' + ic("layers") + ' Nuovo gruppo</button>';
+    } else {
+      var ch = legheChoices(), q = glQuery.trim().toLowerCase();
+      var list = ch.filter(function (c) { return !q || c.label.toLowerCase().indexOf(q) >= 0 || (NAME[c.sport] || "").toLowerCase().indexOf(q) >= 0 || glEdit.comps.indexOf(c.key) >= 0; });
+      function pick(c) {
+        return '<label class="lgpick"><input type="checkbox" data-glpick="' + esc(c.key) + '"' + (glEdit.comps.indexOf(c.key) >= 0 ? " checked" : "") + '>'
+          + EMOJI[c.sport] + '<span>' + esc(c.label) + '</span>' + (c.n ? '<span class="k">' + c.n + (c.n === 1 ? " partita" : " partite") + '</span>' : "") + '</label>';
+      }
+      var today = list.filter(function (c) { return c.today; }), other = list.filter(function (c) { return !c.today; });
+      html = '<label class="melabel" for="glname">Nome del gruppo</label><input id="glname" class="meinput" maxlength="24" value="' + esc(glEdit.name) + '" placeholder="Per esempio: Weekend">'
+        + '<label class="melabel" for="glq">Campionati <span class="k">· ' + glEdit.comps.length + ' scelti</span></label><input id="glq" class="meinput lgsearch" type="search" value="' + esc(glQuery) + '" placeholder="Cerca un campionato o uno sport">'
+        + (today.length ? '<h2 class="sectiontitle">Nei dati di oggi</h2><div class="card">' + today.map(pick).join("") + '</div>' : "")
+        + (other.length ? '<h2 class="sectiontitle">Altri campionati</h2><div class="card">' + other.map(pick).join("") + '</div>' : "")
+        + (!list.length ? '<div class="note">Nessun campionato con questo nome.</div>' : "")
+        + '<div class="note" id="glmsg" role="alert" hidden></div>'
+        + '<div class="duo" style="margin-top:12px;"><button class="chip" type="button" data-glcancel="1" style="justify-content:center;">Annulla</button>'
+        + '<button class="primary" type="button" data-glsave="1">' + ic("check") + ' Salva</button></div>';
+    }
+    $("leghe").innerHTML = html;
+  }
+  $("leghe-back").addEventListener("click", function () { if (glEdit) { glEdit = null; renderLeghe(); } else { show(glBack); if (glBack === "strategie") renderStrategie(); } });
+  $("leghe").addEventListener("input", function (e) {
+    if (e.target.id === "glname" && glEdit) glEdit.name = e.target.value;
+    if (e.target.id === "glq" && glEdit) {
+      glQuery = e.target.value; var pos = e.target.selectionStart; renderLeghe();
+      var q = $("glq"); q.focus(); try { q.setSelectionRange(pos, pos); } catch (er) {}
+    }
+  });
+  $("leghe").addEventListener("change", function (e) {
+    var c = e.target.closest("input[data-glpick]"); if (!c || !glEdit) return;
+    var k = c.dataset.glpick, i = glEdit.comps.indexOf(k);
+    if (c.checked && i < 0) glEdit.comps.push(k); else if (!c.checked && i >= 0) glEdit.comps.splice(i, 1);
+    var lab = document.querySelector('label[for="glq"] .k'); if (lab) lab.textContent = "· " + glEdit.comps.length + " scelti";
+  });
+  $("leghe").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.glnew) { glEdit = { id: null, name: "", comps: [] }; glQuery = ""; renderLeghe(); return; }
+    if (b.dataset.gledit) { var g = gl.groups.filter(function (x) { return x.id === b.dataset.gledit; })[0]; if (g) { glEdit = { id: g.id, name: g.name, comps: g.comps.slice() }; glQuery = ""; renderLeghe(); } return; }
+    if (b.dataset.gldel) {
+      gl.groups = gl.groups.filter(function (x) { return x.id !== b.dataset.gldel; });
+      if (gl.active === b.dataset.gldel) gl.active = null;
+      saveGl(); renderLeghe(); renderFeed(); renderDiario(); return;
+    }
+    if (b.dataset.glcancel) { glEdit = null; renderLeghe(); return; }
+    if (b.dataset.glsave) {
+      var name = glEdit.name.trim(), msg = $("glmsg");
+      var err = !name ? "Scrivi un nome per il gruppo." : !glEdit.comps.length ? "Scegli almeno un campionato." : null;
+      if (err) { msg.textContent = err; msg.hidden = false; return; }
+      if (glEdit.id) gl.groups.forEach(function (x) { if (x.id === glEdit.id) { x.name = name; x.comps = glEdit.comps; } });
+      else { var id = "g" + Date.now().toString(36); gl.groups.push({ id: id, name: name, comps: glEdit.comps }); gl.active = id; }
+      saveGl(); glEdit = null; renderLeghe(); renderFeed(); renderDiario(); renderStrategie();
+    }
+  });
+  $("strategie").addEventListener("click", function (e) { if (e.target.closest("[data-leghe]") && data) openLeghe("strategie"); });
+  $("legachips").addEventListener("click", function (e) { var b = e.target.closest("button[data-lega]"); if (b && data) setLega(b.dataset.lega); });
+
+  // ---------------------------------------------------------------- Notifiche (richiesta 03/10, idea BetMines)
+  // Per ogni strategia accesa e per "Le tue barre": notifica si'/no e cosa mostrare nel messaggio. Oggi sono solo
+  // preferenze su questo telefono (statsight.notifiche); le notifiche vere partono col server (docs/piano_server.md).
+  var NOTIF_KEY = "statsight.notifiche";
+  var NOTIF_FIELDS = [["roi", "Rendimento"], ["win", "% vinti"], ["n", "Numero partite"], ["odds", "Quota"]];
+  var NOTIF_DEFAULT = ["roi", "win", "odds"];
+  var notif = (function () { try { var n = JSON.parse(localStorage.getItem(NOTIF_KEY)); if (n && typeof n === "object") return n; } catch (e) {} return {}; })();
+  function saveNotif() { try { localStorage.setItem(NOTIF_KEY, JSON.stringify(notif)); } catch (e) {} }
+  function notifOf(key) { var n = notif[key]; return { on: n ? n.on !== false : true, show: n && n.show ? n.show : NOTIF_DEFAULT.slice() }; }
+  // le strategie che oggi mandano segnali: le nostre accese (non nascoste, non spente) e le tue barre accese
+  function notifItems() {
+    var ours = (data.catalog || []).filter(function (s) { return !s.retired && !hidden.has(s.id) && !catLocked(s.id); }).map(function (s) {
+      var st = (s.detail && s.detail.stats) || {};
+      return { key: "s:" + s.id, sport: s.sport, name: s.name, st: { n: st.n || 0, roi: st.n >= 30 ? st.roi : null, win: st.n ? (st.wins || 0) / st.n : null, odds: null } };
+    });
+    var bars = [];
+    ["calcio", "tennis", "basket", "hockey"].forEach(function (sp) {
+      var c = catOf(sp);
+      ((c && c.strategies) || []).forEach(function (s) {
+        if (!catOn.has(s.id) || catLocked(s.id)) return;
+        var cell = s.grid[catKey(s)] || [0];
+        bars.push({ key: "b:" + s.id, sport: sp, name: s.name, st: { n: cell[0], roi: cell[0] >= 30 ? cell[3] : null, win: cell[0] ? cell[1] : null, odds: cell[2] || null } });
+      });
+    });
+    return { ours: ours, bars: bars };
+  }
+  function notifPreview(x, cfg) {
+    var parts = [], st = x.st;
+    cfg.show.forEach(function (f) {
+      if (f === "roi" && st.roi != null) parts.push("rendimento " + pct(st.roi));
+      if (f === "win" && st.win != null) parts.push(Math.round(st.win * 100) + "% vinti");
+      if (f === "n" && st.n) parts.push(st.n + " partite");
+      if (f === "odds") parts.push("quota " + (st.odds ? oddsTxt(st.odds) : "del segnale"));
+    });
+    return parts.join(" · ");
+  }
+  function notifRow(x) {
+    var cfg = notifOf(x.key), id = "nt-" + x.key.replace(/[^a-z0-9_-]/gi, "_"), prev = notifPreview(x, cfg);
+    return '<div class="nrow' + (cfg.on ? "" : " off") + '"><div class="nhead">' + EMOJI[x.sport] + '<label class="nm" for="' + id + '">' + esc(x.name) + '</label>'
+      + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-notif="' + esc(x.key) + '"' + (cfg.on ? " checked" : "") + ' aria-label="Notifica di ' + esc(x.name) + '"><span class="slider"></span></span></div>'
+      + '<div class="chips" role="group" aria-label="Cosa mostrare">' + NOTIF_FIELDS.map(function (f) {
+        return '<button class="chip" type="button" data-nfield="' + f[0] + '" data-nkey="' + esc(x.key) + '" aria-pressed="' + (cfg.show.indexOf(f[0]) >= 0) + '"' + (cfg.on ? "" : " disabled") + '>' + f[1] + '</button>';
+      }).join("") + '</div>'
+      + '<div class="nprev">' + ic("bell") + '<span>' + esc(NAME[x.sport] + " · " + x.name) + (prev ? " · " + esc(prev) : "") + '</span></div></div>';
+  }
+  function renderNotifiche() {
+    var L = notifItems();
+    $("notifiche").innerHTML = '<div class="note" style="margin-bottom:10px;">Scegli da quali strategie vuoi la notifica e cosa leggere nel messaggio. Le notifiche sul telefono arrivano con l\'app pubblica; intanto le tue scelte restano salvate qui.</div>'
+      + '<h2 class="sectiontitle">Le nostre strategie</h2>'
+      + (L.ours.length ? '<div class="card">' + L.ours.map(notifRow).join("") + '</div>' : '<div class="note">Nessuna strategia accesa: accendile nella scheda Strategie.</div>')
+      + '<h2 class="sectiontitle">Le tue barre</h2>'
+      + (L.bars.length ? '<div class="card">' + L.bars.map(notifRow).join("") + '</div>' : '<div class="note">Nessuna barra accesa: in Strategie apri un catalogo e accendi le combinazioni che vuoi seguire.</div>');
+  }
+  $("notifbtn").addEventListener("click", function () { if (data) { renderNotifiche(); show("notifiche"); window.scrollTo(0, 0); } });
+  $("notifiche").addEventListener("change", function (e) {
+    var t = e.target.closest("input[data-notif]"); if (!t) return;
+    var k = t.dataset.notif, cfg = notifOf(k); cfg.on = t.checked; notif[k] = cfg; saveNotif(); renderNotifiche();
+  });
+  $("notifiche").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-nfield]"); if (!b) return;
+    var k = b.dataset.nkey, f = b.dataset.nfield, cfg = notifOf(k), i = cfg.show.indexOf(f);
+    if (i >= 0) cfg.show.splice(i, 1); else cfg.show = NOTIF_FIELDS.map(function (x) { return x[0]; }).filter(function (x) { return x === f || cfg.show.indexOf(x) >= 0; });
+    notif[k] = cfg; saveNotif(); renderNotifiche();
+  });
+
   $("settingsbtn").addEventListener("click", function () { paintTema(); paintPiano(); paintQuote(); if (data) renderInformativa(); show("impostazioni"); });
   $("pianochips").addEventListener("click", function (e) {
     var b = e.target.closest("[data-piano]"); if (!b) return;
