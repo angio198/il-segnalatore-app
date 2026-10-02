@@ -129,6 +129,22 @@
   .segbar .cnt{font-size:0.75rem;opacity:.75;font-variant-numeric:tabular-nums;}
   .dot.live{width:8px;height:8px;border-radius:50%;background:var(--bad);display:inline-block;box-shadow:0 0 0 3px color-mix(in srgb, var(--bad) 25%, transparent);}
   .comphead{font-size:0.74rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-soft);margin:14px 2px 6px;display:flex;align-items:center;gap:6px;}
+  /* divisioni della settimana e jolly (Il mio occhio) */
+  .ladder{display:flex;flex-direction:column;gap:6px;}
+  .lrow{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);opacity:.75;}
+  .lrow.up{opacity:.55;}
+  .lrow.me{opacity:1;background:linear-gradient(120deg,var(--ld),var(--lc));color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(0,0,0,.25);}
+  .lrow.me .k,.lrow.me span{color:#fff;}
+  .lshield .ico{width:30px;height:30px;}
+  .lbody{flex:1;min-width:0;} .lname{font-weight:800;font-size:0.95rem;}
+  .lprog{display:grid;grid-template-columns:auto 1fr;gap:4px 8px;align-items:center;margin-top:6px;font-size:0.76rem;}
+  .lprog .lvbar{background:rgba(255,255,255,.3);}
+  .lprog .lvbar div{background:#fff;}
+  .coinbar{display:flex;align-items:center;gap:6px;margin:0 2px 10px;font-size:0.95rem;}
+  .coinbar .ico{width:22px;height:22px;}
+  .badge.jolly .bi .ico{width:30px;height:30px;}
+  .jollyrow{margin:6px 0 2px;} .jollyrow .chip{font-size:0.78rem;padding:5px 10px;}
+  .jollytag{display:inline-flex;align-items:center;gap:5px;margin:6px 0 2px;font-size:0.76rem;font-weight:700;color:var(--accent-strong);}
   .comphead.pre{color:var(--ink);font-size:0.78rem;background:linear-gradient(90deg,color-mix(in srgb, var(--accent) 16%, transparent),transparent);border-left:3px solid var(--accent);border-radius:6px;padding:6px 8px;}
   .comphead .flag{font-size:1.05rem;line-height:1;}
   .compchips{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px 6px;padding:0 16px 4px;scrollbar-width:none;}
@@ -419,6 +435,7 @@
     <linearGradient id="g-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5AA9FF"/><stop offset="1" stop-color="#2F6FD6"/></linearGradient>
     <linearGradient id="g-amber" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC14D"/><stop offset="1" stop-color="#EE8A12"/></linearGradient>
     <linearGradient id="g-green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#45D483"/><stop offset="1" stop-color="#1E9E5A"/></linearGradient>
+    <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="url(#g-gold)" stroke="#B57F00" stroke-width="1.2"/><circle cx="12" cy="12" r="6.6" fill="none" stroke="#FFF1B0" stroke-width="1.1"/><path d="M12 8.2v7.6M14.4 9.6c-.5-.7-1.4-1-2.4-1-1.3 0-2.3.7-2.3 1.7 0 2.3 4.9 1.2 4.9 3.5 0 1-1.1 1.8-2.6 1.8-1 0-2-.4-2.5-1.2" fill="none" stroke="#8A5D00" stroke-width="1.5"/></symbol>
     <symbol id="i-calcio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="#FFFFFF" stroke="#1C1C1C" stroke-width="1.3"/><path d="M12 7.6l3.7 2.7-1.4 4.3H9.7l-1.4-4.3z" fill="#1C1C1C" stroke="#1C1C1C" stroke-width="1"/><path d="M12 2.6v5M15.7 10.3l4.7-1.5M14.3 14.6l2.9 3.9M9.7 14.6l-2.9 3.9M8.3 10.3L3.6 8.8" stroke="#1C1C1C" stroke-width="1.2"/><path d="M9.6 2.9l2.4 1.5 2.4-1.5M20.4 9.6l-.4 2.9 1.6 2M17.6 19.6l-2.6-.4-1.7 2.3M6.4 19.6l2.6-.4 1.7 2.3M3.6 9.6l.4 2.9-1.6 2" fill="#1C1C1C" stroke="#1C1C1C" stroke-width="1"/></symbol>
     <symbol id="i-tennis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="url(#g-tennis)" stroke="#8FA614" stroke-width="1"/><path d="M5.6 5.4c3.2 3.5 3.2 9.7 0 13.2M18.4 5.4c-3.2 3.5-3.2 9.7 0 13.2" stroke="#FFFFFF" stroke-width="1.8"/></symbol>
     <symbol id="i-ippica" viewBox="0 0 24 24"><path d="M7 4.2C4.9 6.1 4 8.6 4 11.5 4 16.4 7.6 20 12 20s8-3.6 8-8.5c0-2.9-.9-5.4-3-7.3" stroke="#8A6A2E" stroke-width="4.2"/><path d="M7 4.2C4.9 6.1 4 8.6 4 11.5 4 16.4 7.6 20 12 20s8-3.6 8-8.5c0-2.9-.9-5.4-3-7.3" stroke="url(#g-gold)" stroke-width="2.6"/><path d="M5.6 9v.1M18.4 9v.1M6.6 14.4v.1M17.4 14.4v.1M12 19.9v.1" stroke="#6B4F1D" stroke-width="1.6"/></symbol>
@@ -1698,15 +1715,30 @@
     if (!dz) { $("diariobets").innerHTML = ""; return; }
     var slips = dz.slips || [], olds = dz.bets || [];
     function res(x) { return x == null ? '<span class="k">' + ic("clock") + ' in attesa</span>' : x === 1 ? '<span class="pos">' + ic("check") + ' vinta</span>' : x === 0 ? '<span class="neg">' + ic("x") + ' persa</span>' : '<span class="k">' + ic("minus") + ' nulla</span>'; }
+    // jolly: quello messo, oppure i pulsanti se il pronostico e' ancora aperto
+    function jollyRow(key, open) {
+      var used = jolly.used[key];
+      if (used) return '<div class="jollytag">' + ic(JOLLY[used].icon) + ' ' + esc(JOLLY[used].name) + '</div>';
+      if (!open) return "";
+      var btns = Object.keys(JOLLY).filter(function (t) { return (jolly.inv[t] || 0) > 0 && !jollyThisWeek(t); }).map(function (t) {
+        return '<button class="chip" type="button" data-usejolly="' + t + '" data-key="' + esc(key) + '">' + ic(JOLLY[t].icon) + ' ' + esc(JOLLY[t].name) + '</button>';
+      });
+      return btns.length ? '<div class="chips jollyrow">' + btns.join("") + '</div>' : "";
+    }
     var html = slips.map(function (s) {
       var head = s.mode === "singole" ? "Singole" : s.mode === "multipla" ? "Multipla" : "Sistema " + s.k + "/" + s.n;
       var state = s.resolved_at ? (s.won === 1 ? '<span class="pos">' + ic("check") + ' ' + (s.points >= 0 ? "+" : "") + it(s.points, 2) + '</span>' : s.won === 0 ? '<span class="neg">' + ic("x") + ' ' + it(s.points, 2) + '</span>' : '<span class="k">nulla</span>') : '<span class="k">' + ic("clock") + ' in corso</span>';
       return '<div class="card"><div class="head"><span class="title">' + esc(head) + (s.odds ? " @ " + oddsTxt(s.odds) : "") + '</span><span class="n">#' + s.id + ' · ' + whenLabel(s.created_at) + '</span></div>'
-        + s.legs.map(function (l) { return '<div class="pickrow"><span>' + EMOJI[l.sport] + ' ' + esc(l.event) + ' · <b>' + esc(l.label) + '</b> @ ' + oddsTxt(l.odds) + '</span>' + res(l.result) + '</div>'; }).join("")
+        + s.legs.map(function (l, i) {
+          return '<div class="pickrow"><span>' + EMOJI[l.sport] + ' ' + esc(l.event) + ' · <b>' + esc(l.label) + '</b> @ ' + oddsTxt(l.odds) + '</span>' + res(l.result) + '</div>'
+            + (s.mode === "singole" ? jollyRow("s" + s.id + "-" + i, l.result == null) : "");
+        }).join("")
+        + (s.mode !== "singole" ? jollyRow("s" + s.id, !s.resolved_at) : "")
         + '<div class="meta">' + state + (s.reason ? ' · “' + esc(s.reason) + '”' : "") + (s.note ? " · " + esc(s.note) : "") + '</div></div>';
     }).join("") + olds.map(function (b) {
       return '<div class="card"><div class="head"><span class="title">' + esc(b.event) + '</span><span class="n">#' + b.id + ' · ' + whenLabel(b.created_at) + '</span></div>'
         + '<div class="pickrow"><span><b>' + esc(b.pick || "giocata libera") + '</b> @ ' + oddsTxt(b.odds) + '</span>' + res(b.result) + '</div>'
+        + jollyRow("b" + b.id, b.result == null)
         + '<div class="meta">' + (b.minute != null ? b.minute + "' · " : "") + esc(b.score || "") + (b.reason ? ' · “' + esc(b.reason) + '”' : "") + (b.note ? " · " + esc(b.note) : "") + '</div></div>';
     }).join("");
     $("diariobets").innerHTML = html || '<div class="note">Nessun pronostico salvato.</div>';
@@ -1819,18 +1851,42 @@
   // esito; una multipla o un sistema = un pronostico con la sua quota)
   function pronostici() {
     var dz = data.diario || {}, out = [];
-    (dz.bets || []).forEach(function (b) { out.push({ ts: b.created_at, odds: b.odds, result: b.result, sport: b.sport, ev: b.sport + ":" + (b.event_id || b.event), code: b.code || "" }); });
+    (dz.bets || []).forEach(function (b) { out.push({ key: "b" + b.id, ts: b.created_at, odds: b.odds, result: b.result, sport: b.sport, ev: b.sport + ":" + (b.event_id || b.event), code: b.code || "" }); });
     (dz.slips || []).forEach(function (s) {
-      if (s.mode === "singole") s.legs.forEach(function (l) { out.push({ ts: s.created_at, odds: l.odds, result: l.result, sport: l.sport, ev: l.sport + ":" + l.event_id, code: l.code }); });
-      else out.push({ ts: s.created_at, odds: s.odds || 1, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null, points: s.points,
+      if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, ts: s.created_at, odds: l.odds, result: l.result, sport: l.sport, ev: l.sport + ":" + l.event_id, code: l.code }); });
+      else out.push({ key: "s" + s.id, ts: s.created_at, odds: s.odds || 1, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null, points: s.points,
                       sport: "multi", ev: "s" + s.id, code: s.mode, legs: s.legs.length });
     });
+    out.forEach(function (b) { b.jolly = jolly.used[b.key] || null; });
     return out;
   }
-  function leaguePoints(b) { return b.points != null ? b.points : b.result === 1 ? b.odds - 1 : b.result === 0 ? -1 : 0; }
+  // ---------------------------------------------------------------- Monete e jolly (richiesta utente 02/10)
+  // Le monete si GUADAGNANO e basta (mai comprate, mai cambiate in soldi): servono a prendere i jolly.
+  // Assicurazione: un pronostico perso non toglie punti. Raddoppio: un pronostico vinto vale il doppio dei punti.
+  // Si mettono solo su pronostici ancora aperti, al massimo uno per tipo a settimana. Oggi tutto su questo telefono;
+  // con l'app pubblica le stesse regole girano sul server (docs/sistema_rewarding.md).
+  var JOLLY_KEY = "statsight.jolly";
+  var JOLLY = { assic: { name: "Assicurazione", cost: 150, icon: "shield", desc: "Se il pronostico va male non perdi punti lega." },
+                radd: { name: "Raddoppio", cost: 100, icon: "bolt", desc: "Se il pronostico vince, i punti lega raddoppiano." } };
+  var COINS = { welcome: 100, closed: 10, won: 10, level: 50, week: [10, 20, 40, 60, 100, 150] };
+  var jolly = (function () {
+    try { var j = JSON.parse(localStorage.getItem(JOLLY_KEY)); if (j && j.used) return j; } catch (e) {}
+    return { inv: { assic: 0, radd: 0 }, spent: 0, used: {}, usedAt: {} };
+  })();
+  function saveJolly() { try { localStorage.setItem(JOLLY_KEY, JSON.stringify(jolly)); } catch (e) {} }
+  function jollyThisWeek(type) {
+    var w = weekKey(nowS());
+    return Object.keys(jolly.used).some(function (k) { return jolly.used[k] === type && weekKey(jolly.usedAt[k] || 0) === w; });
+  }
+  function leaguePoints(b) {
+    var p = b.points != null ? b.points : b.result === 1 ? b.odds - 1 : b.result === 0 ? -1 : 0;
+    if (b.jolly === "assic" && b.result === 0) return 0;
+    if (b.jolly === "radd" && b.result === 1) return p * 2;
+    return p;
+  }
   function rewardState(list) {
     var closed = list.filter(function (b) { return b.result === 0 || b.result === 1; }).sort(function (a, b) { return a.ts - b.ts; });
-    var perDay = {}, seenEvent = {}, xp = 0, weeks = {}, perDayLeague = {}, season = { pts: 0, n: 0 };
+    var perDay = {}, seenEvent = {}, xp = 0, weeks = {}, perDayLeague = {}, season = { pts: 0, n: 0 }, coins = COINS.welcome;
     closed.forEach(function (b) {
       b._xp = 0;
       if (b.odds >= 1.3 && !seenEvent[b.ev]) {
@@ -1839,6 +1895,7 @@
         var f = n <= 10 ? 1 : n <= 20 ? 0.5 : 0;
         b._xp = Math.round((5 + (b.result === 1 ? Math.min(50, 10 * (Math.min(b.odds, 6) - 1)) : 0)) * f);
         xp += b._xp;
+        if (f > 0) coins += COINS.closed + (b.result === 1 ? COINS.won : 0);
       }
       if (b.odds >= 1.5) {
         var dk = dayKey(b.ts), nd = (perDayLeague[dk] = (perDayLeague[dk] || 0) + 1);
@@ -1851,7 +1908,7 @@
       }
     });
     var level = 1, left = xp;
-    while (left >= xpNeeded(level)) { left -= xpNeeded(level); level++; }
+    while (left >= xpNeeded(level)) { left -= xpNeeded(level); level++; coins += COINS.level; }
     var tier = 0, best = 0, thisWeek = weekKey(nowS());
     Object.keys(weeks).map(Number).sort().forEach(function (w) {
       if (w >= thisWeek) return;
@@ -1859,7 +1916,9 @@
       if (r.n >= 10 && r.pts >= 3) tier = Math.min(LEAGUES.length - 1, tier + 1);
       else if (r.n < 5 || r.pts <= -3) tier = Math.max(0, tier - 1);
       best = Math.max(best, tier);
+      if (r.n >= 5) coins += COINS.week[tier];  // premio di fine settimana secondo la lega raggiunta
     });
+    coins -= jolly.spent;
     var cur = weeks[thisWeek] || { pts: 0, n: 0 };
     var zone = cur.n >= 10 && cur.pts >= 3 ? "up" : (cur.n < 5 || cur.pts <= -3) ? (tier > 0 ? "down" : "stay") : "stay";
     var played = Math.max(1, Math.min(SEASON.rounds, Math.ceil((Math.min(nowS(), SEASON.end) - SEASON.start) / (7 * 86400))));
@@ -1868,7 +1927,37 @@
     if (sTier >= 2 && season.n < 3 * played) sTier = 1;            // dall'Oro in su serve anche costanza
     if (!season.n) sTier = 0;
     return { closed: closed, xp: xp, level: level, inLevel: left, need: xpNeeded(level), tier: tier, bestTier: Math.max(best, tier),
-             week: cur, zone: zone, weeks: weeks, season: season, round: played, sTier: sTier, perWeek: perWeek };
+             week: cur, zone: zone, weeks: weeks, season: season, round: played, sTier: sTier, perWeek: perWeek, coins: coins };
+  }
+  // Scala delle divisioni della settimana (come la League di Omada): dove sei, cosa serve per salire, quanto manca.
+  function ladderHtml(R2) {
+    var end = weekKey(nowS()) / 1000 + 7 * 86400, left = Math.max(0, end - nowS());
+    var dd = Math.floor(left / 86400), hh = Math.floor(left % 86400 / 3600);
+    var w = R2.week, nPct = Math.min(100, w.n / 10 * 100), pPct = Math.max(0, Math.min(100, w.pts / 3 * 100));
+    return '<h2 class="sectiontitle">Divisioni della settimana</h2>'
+      + '<div class="k" style="margin:-4px 2px 8px;">' + ic("clock") + ' Termina tra ' + dd + 'g ' + hh + 'h</div>'
+      + '<div class="ladder">' + LEAGUES.map(function (l, i) { return [l, i]; }).reverse().map(function (x) {
+        var l = x[0], i = x[1], me = i === R2.tier;
+        return '<div class="lrow' + (me ? " me" : i > R2.tier ? " up" : "") + '" style="--lc:' + l[2] + ';--ld:' + l[1] + ';">'
+          + '<span class="lshield"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.1 8.2-7.5 9.5-4.4-1.3-7.5-4.9-7.5-9.5V6z" fill="' + l[2] + '" stroke="' + (me ? "#fff" : l[1]) + '" stroke-width="1.4"/>'
+          + '<path d="M12 7.2l1.4 2.9 3.2.4-2.3 2.2.6 3.2-2.9-1.6-2.9 1.6.6-3.2-2.3-2.2 3.2-.4z" fill="#fff" fill-opacity=".85" stroke="none"/></svg></span><div class="lbody"><div class="lname">' + esc(l[0]) + (me ? ' <span class="tm top">TU SEI QUI</span>' : "") + '</div>'
+          + (me ? '<div class="lprog"><span>Pronostici ' + w.n + '/10</span><div class="lvbar"><div style="width:' + nPct.toFixed(0) + '%"></div></div>'
+                + '<span>Punti ' + signed(w.pts) + '/+3</span><div class="lvbar"><div style="width:' + pPct.toFixed(0) + '%"></div></div></div>'
+              : '<div class="k">Premio di fine settimana: ' + COINS.week[i] + ' monete</div>') + '</div></div>';
+      }).join("") + '</div>'
+      + '<div class="k" style="margin:6px 2px 0;">Per salire: almeno 10 pronostici e +3 punti entro domenica. Con meno di 5 pronostici o −3 punti si scende. Il premio in monete arriva a fine settimana (con almeno 5 pronostici).</div>';
+  }
+  // Negozio dei jolly: si comprano con le monete guadagnate, mai con soldi veri.
+  function jollyShopHtml(R2) {
+    return '<h2 class="sectiontitle">Jolly</h2>'
+      + '<div class="coinbar">' + ic("coin") + ' <b>' + R2.coins + '</b> monete <span class="k">· si guadagnano coi pronostici, non si comprano</span></div>'
+      + '<div class="badges">' + Object.keys(JOLLY).map(function (t) {
+        var j = JOLLY[t], can = R2.coins >= j.cost;
+        return '<div class="badge jolly"><div class="bi">' + ic(j.icon) + '</div><div class="bn">' + esc(j.name) + ' <span class="k">· ne hai ' + (jolly.inv[t] || 0) + '</span></div>'
+          + '<div class="bd">' + esc(j.desc) + '</div><button class="primary" type="button" data-buyjolly="' + t + '"' + (can ? "" : " disabled") + ' style="width:100%;margin-top:8px;">'
+          + ic("coin") + ' ' + j.cost + '</button></div>';
+      }).join("") + '</div>'
+      + '<div class="k" style="margin-top:6px;">Un jolly si mette su un pronostico ancora aperto, da "Le mie giocate". Al massimo un\'Assicurazione e un Raddoppio a settimana.</div>';
   }
   function signed(x) { return (x >= 0 ? "+" : "") + it(x, 1); }
   function renderOcchio() {
@@ -1899,10 +1988,12 @@
       + '<div class="hs">' + R2.week.n + (R2.week.n === 1 ? ' pronostico · ' : ' pronostici · ') + signed(R2.week.pts) + ' · ' + (R2.zone === "up" ? "zona promozione" : R2.zone === "down" ? "zona retrocessione" : "salvezza") + '</div></div>'
       + '</div>'
       + (R2.zone === "down" ? '<button class="primary" type="button" disabled style="width:100%;margin-top:8px;">' + ic("play") + ' Guarda un video e salvati (con l\'app pubblica)</button>' : "")
+      + ladderHtml(R2) + jollyShopHtml(R2)
       + '<details class="card" style="margin-top:10px;"><summary><b>Come funziona</b></summary><div class="ds" style="margin-top:8px;line-height:1.5;">'
       + '<b>Stagione</b> (la lega che conta): segue il calendario della Premier League, ' + SEASON.rounds + ' giornate. Contano i pronostici a quota 1,50 o più, al massimo 10 al giorno: vinto = quota − 1, perso = −1. La lega dipende dai punti medi a settimana: Argento da 0, Oro da +0,5, Platino da +1, Diamante da +2, Elite da +3 (dall\'Oro in su almeno 3 pronostici a settimana). Con l\'app pubblica: classifica fra tutti, promozioni e retrocessioni a fine stagione.<br>'
       + '<b>Settimana:</b> stesse regole, da lunedì a domenica. Con almeno 10 pronostici e +3 punti si sale, con meno di 5 o −3 punti si scende.<br>'
-      + '<b>Esperienza:</b> 5 XP per pronostico chiuso più 10 XP per ogni punto di quota sopra 1 se lo vinci (massimo 50). Sotto quota 1,30 niente XP; un pronostico per partita; al giorno i primi 10 valgono pieno, dall\'11 al 20 la metà, poi niente.</div></details>';
+      + '<b>Esperienza:</b> 5 XP per pronostico chiuso più 10 XP per ogni punto di quota sopra 1 se lo vinci (massimo 50). Sotto quota 1,30 niente XP; un pronostico per partita; al giorno i primi 10 valgono pieno, dall\'11 al 20 la metà, poi niente.<br>'
+      + '<b>Monete:</b> 100 di benvenuto, 10 per ogni pronostico chiuso che dà XP più 10 se vinto, 50 a ogni livello, e a fine settimana un premio secondo la lega (da 10 in Bronzo a 150 in Elite). Servono solo per i jolly: non si comprano e non valgono soldi.</div></details>';
 
     var n = closed.length, expected = closed.reduce(function (s2, b) { return s2 + 1 / b.odds; }, 0);
     var roi = n ? closed.reduce(function (s2, b) { return s2 + leaguePoints(b); }, 0) / n : null, MIN = 30;
@@ -1955,6 +2046,23 @@
       }).join("") + '</div>';
     }).join("");
   }
+
+  // jolly: comprarli con le monete (Il mio occhio) e metterli su un pronostico aperto (Le mie giocate)
+  $("occhiolevel").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-buyjolly]"); if (!b || !data) return;
+    var t = b.dataset.buyjolly, coins = rewardState(pronostici()).coins;
+    if (coins < JOLLY[t].cost) return;
+    jolly.inv[t] = (jolly.inv[t] || 0) + 1; jolly.spent += JOLLY[t].cost; saveJolly();
+    renderOcchio(); renderMyBets();
+  });
+  $("diariobets").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-usejolly]"); if (!b || !data) return;
+    var t = b.dataset.usejolly, key = b.dataset.key;
+    var p = pronostici().filter(function (x) { return x.key === key; })[0];
+    if (!p || p.result != null || jolly.used[key] || !(jolly.inv[t] > 0) || jollyThisWeek(t)) return;
+    jolly.inv[t] -= 1; jolly.used[key] = t; jolly.usedAt[key] = nowS(); saveJolly();
+    renderOcchio(); renderMyBets();
+  });
 
   async function load(password, fromForm) {
     var btn = $("unlock"), msg = $("lockmsg");
