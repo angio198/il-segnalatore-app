@@ -834,7 +834,7 @@
     var n = Array.from(hidden).filter(known).length;
     $("filternote").hidden = n === 0;
     $("filtertext").textContent = n === 1 ? "Filtro attivo: 1 strategia nascosta" : "Filtro attivo: " + n + " strategie nascoste";
-    var cards = data.feed.map(function (f, i) {
+    var html = data.feed.map(function (f, i) {
       if (filter !== "all" && f.sport !== filter) return "";
       if (!whenOk(f.timing)) return "";
       var extra = (f.extra || []).filter(function (e) { return on(e.strategy); });
@@ -856,7 +856,14 @@
         + '<div class="pickrow"><span>Indicazione: <b>' + esc(f.pick) + '</b></span>' + ev + '</div>'
         + '<div class="meta">' + esc(f.prob_label) + ' ' + f.prob + '% · Quota ' + it(f.odds, 2) + (f.strategy ? " · " + esc(f.strategy) : "") + '</div>'
         + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml + '</div>';
-    }).filter(Boolean);
+    });
+    // segnali delle strategie con le barre accese su questo telefono, in ordine di tempo con gli altri
+    var list = data.feed.map(function (f, i) { return { ts: f.ts, html: html[i] }; }).filter(function (x) { return x.html; });
+    if (whenOk("live")) {
+      catLiveItems().forEach(function (x) { if (filter === "all" || filter === x.sport) list.push({ ts: x.ts, html: catLiveCard(x) }); });
+      list.sort(function (a, b) { return b.ts - a.ts; });
+    }
+    var cards = list.map(function (x) { return x.html; });
     $("today").innerHTML = todayCard();
     $("feed").innerHTML = (cards.length ? cards.join("")
       : '<div class="note">Nessun segnale per questo filtro, per ora.' + (top5On ? ' È attivo "Solo le top 5".' : '')
@@ -989,12 +996,62 @@
   var PREMIUM_CAT = ["ltd_xg", "lay_dog_lucky", "lead_vs_xg", "xg_diff_win", "snore", "next_pressing", "serve_dominance",
                      "first_serve_bad", "dominio_servizio"];
   function catLocked(id) { return !isFull() && PREMIUM_CAT.indexOf(id) >= 0; }
+  // Motore live (signals/catalogo_live.py): prova dal vivo OGNI combinazione delle barre; qui si prende la tua.
+  var LIVE_SPORTS = ["tennis"];
+  function liveOf(sport) { return data && data.catalogo_live && data.catalogo_live[sport]; }
+  function liveCell(sport, s, key) {
+    var L = liveOf(sport), c = L && L.stats && L.stats[s.id] && L.stats[s.id][key];
+    return c ? { n: c[0], wins: c[1], roi: c[0] ? c[2] / c[0] : null } : { n: 0, wins: 0 };
+  }
+  function catLiveItems() {
+    var out = [];
+    LIVE_SPORTS.forEach(function (sp) {
+      var L = liveOf(sp), c = catOf(sp);
+      if (!L || !c || !c.strategies) return;
+      c.strategies.forEach(function (s) {
+        if (!catOn.has(s.id) || catLocked(s.id)) return;
+        var key = catKey(s);
+        (L.recent || []).forEach(function (m) {
+          var i = m.t[s.id] && m.t[s.id][key];
+          if (i == null) return;
+          var k = m.k[i];
+          out.push({ sport: sp, s: s, m: m, ts: k[0], side: k[1], odds: k[2], score: k[3] });
+        });
+      });
+    });
+    return out;
+  }
+  function catLiveCard(x) {
+    var done = x.m.w === 1 || x.m.w === 2, hit = done && x.m.w === x.side, sc = x.score.split(" ");
+    return '<div class="card feedcard" data-catlive="' + esc(x.s.id) + '"><div class="top"><span aria-hidden="true">' + EMOJI[x.sport] + '</span><span class="cat">' + esc(x.m.lv || NAME[x.sport]) + '</span>'
+      + tmTag("live") + '<span class="time">' + whenLabel(x.ts) + '</span></div>'
+      + '<div class="event">' + esc(x.m.r.join(" v ")) + '</div>'
+      + '<div class="pickrow"><span>' + (done ? ic(hit ? "check" : "x", hit ? "pos" : "neg") + " " : "") + 'Indicazione: <b>' + esc(x.m.r[x.side - 1]) + '</b></span>'
+      + (done ? '<span class="ev ' + (hit ? "pos" : "neg") + '">' + (hit ? "VINTO" : "PERSO") + '</span>' : "") + '</div>'
+      + '<div class="meta">Quota ' + it(x.odds, 2) + ' · set ' + esc(sc[0]) + ', game ' + esc(sc[1] || "") + ' · ' + esc(x.s.name) + '</div>'
+      + '<span class="badge info">LE TUE BARRE</span></div>';
+  }
+  function liveHtml(sport, s, key) {
+    var L = liveOf(sport);
+    if (!L) return "";
+    var c = liveCell(sport, s, key), since = L.since ? dayLabel(L.since) : "oggi";
+    var head = '<h2 class="sectiontitle">Dal vivo</h2>';
+    var how = '<div class="note">Dal ' + since + ': tutte le partite in cui la regola è scattata con queste impostazioni, segnalate o no, alla quota Betfair di quel momento meno il 5% sulle vincite.</div>';
+    if (!c.n) return head + '<div class="note">Nessuna partita finita con queste impostazioni, per ora.</div>' + how;
+    var enough = c.n >= 30;
+    return head + '<div class="kpis"><div class="kpi"><div class="v">' + c.n + '</div><div class="l">partite finite</div></div>'
+      + '<div class="kpi"><div class="v">' + Math.round(c.wins / c.n * 100) + '%</div><div class="l">vinte</div></div>'
+      + '<div class="kpi"><div class="v ' + (enough ? (c.roi >= 0 ? "pos" : "neg") : "") + '">' + (enough ? pct(c.roi) : "—") + '</div><div class="l">' + (enough ? "rendimento" : "servono 30 casi") + '</div></div></div>' + how;
+  }
   function catalogoHtml(sport) {
     var c = catOf(sport);
     if (!c || !c.strategies) return "";
     var groups = [];
     c.strategies.forEach(function (s) { if (groups.indexOf(s.group) < 0) groups.push(s.group); });
-    return '<div class="note" style="margin:22px 0 4px;">Le strategie qui sotto si regolano: "… altro", poi Personalizza. La barra "Storico" usa le tue impostazioni (' + c.matches + ' partite). L\'interruttore le attiva nei tuoi segnali; il motore live di queste strategie è in arrivo, per ora conta lo storico.</div>'
+    var live = !!liveOf(sport);
+    return '<div class="note" style="margin:22px 0 4px;">Le strategie qui sotto si regolano: "… altro", poi Personalizza. La barra "Storico" usa le tue impostazioni (' + c.matches + ' partite)'
+      + (live ? ', la barra "Dal vivo" le partite seguite in diretta. L\'interruttore le attiva nella lista Segnali con le tue impostazioni (con qualche minuto di ritardo; le notifiche sul telefono arrivano con l\'app pubblica).</div>'
+        : '. L\'interruttore le attiva nei tuoi segnali; il motore live di queste strategie è in arrivo, per ora conta lo storico.</div>')
       + groups.map(function (g) {
         var items = c.strategies.filter(function (s) { return s.group === g; });
         return '<h2 class="sectiontitle">' + esc(g) + '</h2><div class="card">'
@@ -1010,7 +1067,7 @@
               + (catSel[s.id] && catSel[s.id] !== s.default ? '<span class="tm top">TUA</span>' : "")
               + '<div class="ds">' + esc(s.pick) + (cell[0] ? ' · strike ' + Math.round(cell[1] * 100) + '% · quota ~' + it(cell[2], 2) : "")
               + '<button class="more" type="button" data-cat="' + esc(s.id) + '">… altro</button></div>'
-              + perfBar("Storico", st) + '</div>'
+              + perfBar("Storico", st) + (live ? perfBar("Dal vivo", liveCell(sport, s, catKey(s))) : "") + '</div>'
               + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-caton="' + esc(s.id) + '"' + (catOn.has(s.id) ? " checked" : "")
               + ' aria-label="Attiva nei segnali ' + esc(s.name) + '"><span class="slider"></span></span></div>';
           }).join("") + '</div>';
@@ -1038,7 +1095,7 @@
     var idx = catKey(s).split("_").map(Number);
     function draw() {
       var key = idx.join("_"), cell = s.grid[key];
-      $("catnums").innerHTML = cellHtml(cell, true) + '<div class="verdict">' + esc(catVerdict(cell)) + '</div>';
+      $("catnums").innerHTML = cellHtml(cell, true) + '<div class="verdict">' + esc(catVerdict(cell)) + '</div>' + liveHtml(cs, s, key);
       s.params.forEach(function (p, i) { $("catv" + i).textContent = p.labels[idx[i]]; });
       $("catreset").hidden = key === s.default;
     }
@@ -1053,7 +1110,9 @@
           + '<input type="range" min="0" max="' + (p.values.length - 1) + '" step="1" value="' + idx[i] + '" data-i="' + i + '" aria-label="' + esc(p.label) + '"></div>';
       }).join("") + '<button class="linkbtn" type="button" id="catreset">Torna alla regola standard</button></div>'
       + '<div id="catnums"></div>'
-      + '<div class="note">Le tue impostazioni restano su questo telefono. Le notifiche con le tue soglie arriveranno con l\'app pubblica. ' + esc(method) + '</div>';
+      + '<div class="note">Le tue impostazioni restano su questo telefono. '
+      + (liveOf(cs) ? 'Con l\'interruttore acceso (scheda Strategie) i segnali con le tue impostazioni compaiono nella lista Segnali; le notifiche sul telefono arriveranno con l\'app pubblica. '
+        : 'Le notifiche con le tue soglie arriveranno con l\'app pubblica. ') + esc(method) + '</div>';
     $("catgear").addEventListener("click", function () { var p = $("catsliders"); p.hidden = !p.hidden; });
     $("catsliders").addEventListener("input", function (e) {
       var r = e.target.closest("input[type=range]"); if (!r) return;
@@ -1867,7 +1926,7 @@
   });
   $("strategie").addEventListener("change", function (e) {
     var co = e.target.closest("input[data-caton]");
-    if (co) { if (co.checked) catOn.add(co.dataset.caton); else catOn.delete(co.dataset.caton); saveCatOn(); return; }
+    if (co) { if (co.checked) catOn.add(co.dataset.caton); else catOn.delete(co.dataset.caton); saveCatOn(); renderFeed(); return; }
     var sw = e.target.closest("input[data-strategy]"); if (!sw) return;
     if (sw.checked) hidden.delete(sw.dataset.strategy); else hidden.add(sw.dataset.strategy);
     saveHidden();
@@ -1883,6 +1942,7 @@
   $("back").addEventListener("click", function () { show("strategie"); });
   $("feed").addEventListener("click", function (e) {
     var c = e.target.closest(".feedcard[data-idx]"); if (c && data) renderSignal(Number(c.dataset.idx));
+    var cl = e.target.closest(".feedcard[data-catlive]"); if (cl && data) renderCat(cl.dataset.catlive);
   });
   $("segnale").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-more]"); if (b && data) renderDetail(b.dataset.more);
