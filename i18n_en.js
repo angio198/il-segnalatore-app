@@ -560,6 +560,17 @@ window.I18N_EN = {
   "turno dopo, stesso campionato": "next round, same league", "partita dopo delle stesse squadre": "next match of the same teams",
   "uscito davvero": "actually happened", "quote stimate": "estimated odds", "Partite \"fortunate\"": "\"Lucky\" matches",
 
+  // ---------------------------------------------------------------- corse estere
+  "Corse estere": "Foreign races", "Favorito nelle corse estere": "Favourite in foreign races", "Ultime corse": "Latest races",
+  "Le riunioni estere che SNAI propone ogni giorno (Francia, Gran Bretagna, Irlanda, Svezia, Stati Uniti, Australia e altre): # riunioni seguite finora. Il modello del bot conosce solo i cavalli italiani, quindi qui per ora c'è il termine di paragone: il favorito.": "The foreign meetings SNAI offers every day (France, Great Britain, Ireland, Sweden, United States, Australia and others): # meetings followed so far. The bot's model only knows Italian horses, so for now here is the benchmark: the favourite.",
+  "Il cavallo con la quota fissa SNAI più bassa 15-20 minuti prima del via. Rendimento a quella quota (il margine del bookmaker è già dentro). Ogni strategia sulle estere dovrà fare meglio di lui.": "The horse with the lowest SNAI fixed odds 15-20 minutes before the off. Return at those odds (the bookmaker's margin is already included). Every strategy on foreign races will have to beat it.",
+  "Francia": "France", "Gran Bretagna": "Great Britain", "Irlanda": "Ireland", "Svezia": "Sweden", "Norvegia": "Norway",
+  "Danimarca": "Denmark", "Finlandia": "Finland", "Germania": "Germany", "Belgio": "Belgium", "Olanda": "Netherlands",
+  "Svizzera": "Switzerland", "Spagna": "Spain", "Stati Uniti": "United States", "Brasile": "Brazil", "Cile": "Chile",
+  "Nuova Zelanda": "New Zealand", "Sudafrica": "South Africa", "Corea del Sud": "South Korea", "Giappone": "Japan",
+  "Malesia": "Malaysia", "Emirati": "Emirates", "vinto": "won", "perso": "lost", "nullo": "void", "senza esito": "no result",
+  "corsa #": "race #", "a #": "at #", "In attesa di esito: #": "Awaiting result: #",
+
   // ---------------------------------------------------------------- ippica (scheda delle nostre strategie)
   "Trotto": "Trotting", "Galoppo": "Flat racing", "Modello": "Model"
 };
