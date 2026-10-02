@@ -586,6 +586,14 @@ window.I18N_EN = {
   "I personaggi del Team StatSight sono della casa: giocano con una regola fissa, scritta qui sopra, alle quote vere di quel momento. I risultati non sono aggiustati.": "The Team StatSight characters belong to the house: they play a fixed rule, written above, at the real odds of that moment. Results are not adjusted.",
   "Classifica della settimana con il Team StatSight. Con l'app pubblica ci saranno anche gli altri utenti.": "This week's leaderboard with Team StatSight. With the public app other users will be here too.",
   "Tu": "You",
+  // Home del Diario
+  "Home": "Home", "‹ Diario": "‹ Diary", "Benvenuto nella Home": "Welcome to your Home",
+  "Qui vedi le giocate di chi segui, e le tue. Comincia dal Team StatSight: i personaggi della casa, ognuno con la sua strategia, a quote vere e con i risultati non aggiustati.": "Here you see the picks of the people you follow, and yours. Start with Team StatSight: the house characters, each with their own strategy, at real odds and with unadjusted results.",
+  "Consigliati per te": "Suggested for you", "scegli i tuoi sport qui sopra per consigli migliori": "choose your sports above for better suggestions",
+  "scelti sui tuoi sport: *": "based on your sports: *", "Segui tutti e #": "Follow all #", "Le ultime giocate del Team": "Latest Team picks",
+  "+ Segui": "+ Follow", "nuovo": "new", "# vinti": "# won", "# punti": "# points", "La Home arriva con il prossimo aggiornamento dei dati.": "Your Home arrives with the next data update.",
+  "Quali sport segui?": "Which sports do you follow?", "Ti consigliamo chi gioca gli stessi sport. Si cambia quando vuoi dalla matita.": "We'll suggest people who play the same sports. Change it anytime with the pencil.",
+  "Fatto": "Done", "Sport che segui": "Sports you follow", "# vinti su #": "# won of #", "serie di #": "streak of #",
   // reazioni, commenti, segnalazioni
   "Bella giocata": "Nice pick", "Occhio": "Sharp eye", "Coraggiosa": "Bold", "La seguo anch'io": "I'm on it too",
   "Commenti": "Comments", "Segnala": "Report", "Elimina": "Delete", "Invia": "Send", "Scrivi un commento": "Write a comment",
