@@ -1537,7 +1537,7 @@
   }
 
   function renderAll() {
-    renderStatus(); renderFeed(); renderStrategie(); renderDiario(); renderOcchio(); renderRadar(); renderBacheca(); renderProfilo();
+    settleMySlips(); renderStatus(); renderFeed(); renderStrategie(); renderDiario(); renderOcchio(); renderRadar(); renderBacheca(); renderProfilo();
   }
 
   // ---------------------------------------------------------------- Team StatSight (signals/personaggi.py)
@@ -1728,7 +1728,9 @@
         + '<div class="k" style="margin:10px 0 4px;">Consigliati per te · ' + esc(prefTxt) + '</div>'
         + top.map(suggestRow).join("")
         + '<button class="primary" type="button" data-followall="' + top.map(function (p) { return p.id; }).join(",") + '" style="width:100%;margin-top:10px;">Segui tutti e ' + top.length + '</button></div>'
-        + '<h2 class="sectiontitle">Le ultime giocate del Team</h2>' + (P.feed || []).slice(0, 10).map(postCard).join("");
+        + '<h2 class="sectiontitle">Le ultime giocate</h2>'
+        + histItems().map(function (x) { return Object.assign({ mine: true }, x); }).concat((P.feed || []).slice(0, 10))
+          .sort(function (a, b) { return b.ts - a.ts; }).slice(0, 20).map(function (x) { return x.mine ? myPostCard(x) : postCard(x); }).join("");
     } else {
       var mine = histItems().map(function (x) { return Object.assign({ mine: true }, x); });
       var feed = (P.feed || []).filter(function (x) { return follows.has(x.p); }).concat(mine).sort(function (a, b) { return b.ts - a.ts; }).slice(0, 40);
@@ -1841,7 +1843,7 @@
   // pronostici da mostrare nello storico: singole una per una, multiple e sistemi come una riga sola
   function histItems() {
     var dz = data.diario || {}, out = [];
-    (dz.slips || []).forEach(function (s) {
+    allSlips().forEach(function (s) {
       if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, text: s.reason, ts: s.created_at, sport: l.sport, event: l.event, label: l.label, odds: l.odds, result: l.result }); });
       else out.push({ key: "s" + s.id, text: s.reason, ts: s.created_at, sport: "multi", event: (s.mode === "multipla" ? "Multipla" : "Sistema " + s.k + "/" + s.n) + " · " + s.legs.length + " partite", label: "",
                       odds: s.odds, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null });
@@ -2088,7 +2090,7 @@
     $("nlive").textContent = live.length; $("npre").textContent = pre.length;
     document.querySelectorAll("#dviewchips [data-dview]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.dview === dview)); });
     var evs = dview === "live" ? live : pre;
-    var html = '<div class="k" style="margin:4px 2px 8px;font-size:0.76rem;">' + ic("clock") + ' Quote di ' + ageTxt(dz.at) + ' · alla conferma il bot riprende quelle del momento</div>';
+    var html = '<div class="k" style="margin:4px 2px 8px;font-size:0.76rem;">' + ic("clock") + ' Quote di ' + ageTxt(dz.at) + ' · valgono queste quote</div>';
     var isPre = dview === "pre";
     // ordine personale (anagrafica.js): coppe e nazionali del giorno in primo piano, poi i campionati del tuo
     // paese, poi i grandi campionati; gli sport che non segui in fondo. Sopra tutto "Per te": tue squadre,
@@ -2204,7 +2206,7 @@
     refreshSlip();
     var n = slip.legs.length, r = regole();
     if (slip.mode === "sistema" && (slip.k < 2 || slip.k >= n)) slip.k = Math.max(2, Math.min(n - 1, slip.k || 2));
-    var errs = r ? Regole.validate(r.markets, slip.mode, slip.mode === "sistema" ? slip.k : null, slip.legs, nowS()) : [];
+    var errs = (r ? Regole.validate(r.markets, slip.mode, slip.mode === "sistema" ? slip.k : null, slip.legs, nowS()) : []).concat(appSlipErrors());
     var tot = Regole.totalOdds(slip.mode, slip.k, slip.legs.map(function (l) { return l.odds; }));
     var html = '<h1 class="dtitle">Schedina</h1>';
     if (!n) { $("schedina").innerHTML = html + '<div class="note">La schedina è vuota: tocca una quota nelle partite del Diario.</div>'; return; }
@@ -2220,24 +2222,114 @@
       var e = evById(l.event);
       return '<div class="leg"><div class="lt"><div class="le">' + EMOJI[l.sport] + ' ' + esc(l.ename) + (l.live ? ' <b class="livetag">LIVE</b>' : "") + '</div>'
         + '<div class="lp">' + esc(l.label) + (l.src === "s" ? ' <span class="stima">stima</span>' : "") + '</div>'
-        + (e ? "" : '<div class="k">Partita non più in lista: il bot ricontrolla la quota.</div>') + '</div>'
+        + (e ? "" : '<div class="k">Partita non più in lista: toglila dalla schedina.</div>') + '</div>'
         + '<div class="lo">' + oddsTxt(l.odds) + '</div><button class="iconbtn sm" type="button" data-del="' + i + '" aria-label="Togli">' + ic("x") + '</button></div>';
     }).join("") + '</div>';
     html += '<div class="slipsum"><span>' + (slip.mode === "singole" ? n + " pronostici singoli" : slip.mode === "multipla" ? "Quota totale" : "Quota media delle combinazioni") + '</span><b>' + (tot ? oddsTxt(tot) : "") + '</b></div>';
     if (errs.length) html += '<div class="sliperr">' + errs.map(function (x) { return '<div>' + ic("alert") + ' ' + esc(x) + '</div>'; }).join("") + '</div>';
-    var payload = slipPayload(), bot = (data.diario && data.diario.bot) || "Ilsegna_latorebot";
-    var url = payload.length <= 64 ? "https://t.me/" + encodeURIComponent(bot) + "?start=" + payload
-      : "https://t.me/" + encodeURIComponent(bot) + "?text=" + encodeURIComponent("/schedina " + payload);
-    html += '<a class="primary block' + (errs.length ? " disabled" : "") + '" id="slipgo" href="' + (errs.length ? "#" : url) + '">' + ic("send") + ' Conferma pronostico</a>'
-      + '<div class="k" style="margin-top:8px;">Si apre Telegram sul bot: premi <b>Avvia</b>' + (payload.length > 64 ? " o <b>Invia</b>" : "") + '. Il bot riprende le quote di quell\'istante, controlla il regolamento e salva. Nessun soldo in gioco: valgono punti, livelli e lega.</div>'
-      + '<button class="linkbtn" type="button" id="slipcopy">' + ic("copy") + ' Copia il codice</button> <button class="linkbtn" type="button" id="slipclear">' + ic("trash") + ' Svuota</button>';
+    html += '<label class="melabel" for="sliptext">Scrivi qualcosa (facoltativo)</label>'
+      + '<textarea id="sliptext" class="meinput" maxlength="280" rows="3" placeholder="Perché la giochi? Chi ti segue lo vede nella Home insieme al pronostico" translate="no">' + esc(slipText) + '</textarea>'
+      + (slipMsg ? '<div class="cmsg">' + esc(slipMsg) + '</div>' : "")
+      + '<button class="primary block" type="button" id="slipgo"' + (errs.length ? " disabled" : "") + ' style="margin-top:10px;">' + ic("send") + ' Pubblica il pronostico</button>'
+      + '<div class="k" style="margin-top:8px;">Vale la quota che vedi (dati di ' + ageTxt((data.diario && data.diario.at) || nowS()) + '). Lo chiudiamo noi con il risultato della partita, con lo stesso regolamento dei bookmaker. Nessun soldo in gioco: valgono punti, livelli e lega.</div>'
+      + '<button class="linkbtn" type="button" id="slipclear">' + ic("trash") + ' Svuota</button>';
     $("schedina").innerHTML = html;
+  }
+
+  // ---------------------------------------------------------------- Schedine salvate sul telefono (02/10)
+  // Si confermano nell'app, senza Telegram (richiesta utente). Valgono le quote dei dati (aggiornati ogni 10 min);
+  // le chiude l'app con gli esiti esportati dal server (signals/schedine.export_esiti, stesso codice delle
+  // schedine del bot). Live: quote al massimo di 5 minuti fa; se fra la quota e la giocata c'e' stato un gol,
+  // l'esito e' nullo (come "scommessa accettata dopo l'evento" dei bookmaker). Col server si riprezza al momento.
+  var MYSLIPS_KEY = "statsight.schedine_app", LIVE_MAX_AGE = 300, GIVE_UP = 4 * 86400;
+  var mySlips = (function () { try { return JSON.parse(localStorage.getItem(MYSLIPS_KEY)) || []; } catch (e) { return []; } })();
+  var slipText = "", slipMsg = "";
+  function saveMySlips() { try { localStorage.setItem(MYSLIPS_KEY, JSON.stringify(mySlips)); } catch (e) {} }
+  function allSlips() { return mySlips.concat((data.diario && data.diario.slips) || []).sort(function (a, b) { return b.created_at - a.created_at; }); }
+  function appSlipErrors() {
+    var out = [], age = nowS() - ((data.diario && data.diario.at) || 0);
+    slip.legs.forEach(function (l) {
+      var e = evById(l.event);
+      if (!e || !e.mk[l.code]) out.push("Partita o quota non più disponibile: " + l.ename + ". Toglila dalla schedina.");
+      else if (!e.live && e.start && e.start <= nowS()) out.push("La partita è già iniziata: " + l.ename + ". La quota pre-partita non vale più.");
+      else if (e.live && age > LIVE_MAX_AGE) out.push("Quote live di più di 5 minuti fa (" + l.ename + "): aspetta il prossimo aggiornamento.");
+    });
+    return out;
+  }
+  function scoreOf(s) { var m = /(\d+)\D+(\d+)/.exec(s || ""); return m ? [Number(m[1]), Number(m[2])] : null; }
+  function scoreAt(g, ts) { var s = null; g.forEach(function (x) { if (x[0] <= ts) s = [x[1], x[2]]; }); return s; }
+  function legResult(l, created) {
+    var E = data.diario && data.diario.esiti, x = E && E.ev && E.ev[String(l.event_id)], r = regole();
+    if (!x || !r) return null;
+    var base = scoreOf(l.score);
+    if (l.live && l.sport === "calcio" && x.g && base) {            // gol fra la quota vista e la giocata: nulla
+      var at = scoreAt(x.g, created);
+      if (at && (at[0] !== base[0] || at[1] !== base[1])) return -1;
+    }
+    var i = r.order[l.sport] ? r.order[l.sport].indexOf(l.code) : -1, ch = i >= 0 ? x.r[i] : ".";
+    if (ch === "?") {                                                // prossimo gol: chi segna dopo la giocata
+      base = base || (x.g ? scoreAt(x.g, created) : null) || (x.g ? [0, 0] : null);
+      if (!base) return null;
+      var who = null;
+      (x.g || []).some(function (y) {
+        if (y[0] <= created || y[1] + y[2] <= base[0] + base[1]) return false;
+        who = y[1] > base[0] ? "P1" : "P2"; return true;
+      });
+      if (!who && x.f && x.f > created) who = "PN";
+      return who ? Number(who === l.code) : null;
+    }
+    return ch === "1" ? 1 : ch === "0" ? 0 : ch === "-" ? -1 : null;
+  }
+  function settleMySlips() {
+    if (!data || !data.diario) return;
+    var changed = false, now = nowS();
+    mySlips.forEach(function (s) {
+      if (s.resolved_at) return;
+      s.legs.forEach(function (l) {
+        if (l.result != null) return;
+        var res = legResult(l, s.created_at);
+        if (res == null && now - s.created_at > GIVE_UP) { res = -1; s.note = "esito non trovato in 4 giorni: nulla"; }
+        if (res != null) { l.result = res; changed = true; }
+      });
+      var legs = s.legs.map(function (l) { return [l.odds, l.result]; }), out = null;
+      if (s.mode === "singole") {
+        if (s.legs.every(function (l) { return l.result != null; })) {
+          var pts = s.legs.reduce(function (t, l) { return t + (l.result === 1 ? l.odds - 1 : l.result === 0 ? -1 : 0); }, 0);
+          out = { points: Math.round(pts * 10000) / 10000, won: pts > 0 };
+        }
+      } else out = Regole.settle(s.mode, s.k, legs);
+      if (out) { s.points = out.points; s.won = out.won == null ? null : out.won ? 1 : 0; s.resolved_at = now; changed = true; }
+    });
+    if (changed) saveMySlips();
+  }
+  function publishSlip() {
+    var r = regole();
+    refreshSlip();
+    var errs = (r ? Regole.validate(r.markets, slip.mode, slip.mode === "sistema" ? slip.k : null, slip.legs, nowS()) : []).concat(appSlipErrors());
+    var text = slipText.trim(), why = text ? checkText(text) : null;
+    if (errs.length) { slipMsg = errs[0]; renderSchedina(); return; }
+    if (why) { slipMsg = MOD_MSG[why]; renderSchedina(); return; }
+    var now = nowS(), n = mySlips.length ? Math.max.apply(null, mySlips.map(function (s) { return Number(String(s.id).slice(1)) || 0; })) + 1 : 1;
+    var legs = slip.legs.map(function (l) {
+      var e = evById(l.event), st = (e && e.st) || {};
+      return { event_id: l.event, sport: l.sport, code: l.code, label: l.label, event: l.ename, comp: (e && e.comp) || "", odds: l.odds,
+               src: l.src, live: l.live ? 1 : 0, minute: st.minute != null ? st.minute : null, score: e && e.live ? (st.score || null) : null, result: null };
+    });
+    mySlips.push({ id: "L" + n, created_at: now, mode: slip.mode, k: slip.mode === "sistema" ? slip.k : null, n: legs.length,
+                   odds: Regole.totalOdds(slip.mode, slip.k, legs.map(function (l) { return l.odds; })), points: null, won: null,
+                   resolved_at: null, reason: text || null, note: null, legs: legs });
+    saveMySlips();
+    slip.legs = []; slip.mode = "singole"; saveSlip(); paintSlipBar();
+    slipText = ""; slipMsg = ""; bview = "home";
+    renderAll(); renderSchedina();
+    show("profilo");
+    var b = $("bacheca"); if (b) b.scrollIntoView();
   }
 
   function renderMyBets() {
     var dz = data.diario;
     if (!dz) { $("diariobets").innerHTML = ""; return; }
-    var slips = dz.slips || [], olds = dz.bets || [];
+    var slips = allSlips(), olds = dz.bets || [];
     function res(x) { return x == null ? '<span class="k">' + ic("clock") + ' in attesa</span>' : x === 1 ? '<span class="pos">' + ic("check") + ' vinta</span>' : x === 0 ? '<span class="neg">' + ic("x") + ' persa</span>' : '<span class="k">' + ic("minus") + ' nulla</span>'; }
     // jolly: quello messo, oppure i pulsanti se il pronostico e' ancora aperto
     function jollyRow(key, open) {
@@ -2294,15 +2386,9 @@
     var m = ev.target.closest("[data-mode]"); if (m) { slip.mode = m.dataset.mode; saveSlip(); paintSlipBar(); renderSchedina(); return; }
     var k = ev.target.closest("[data-k]"); if (k) { slip.k = Number(k.dataset.k); saveSlip(); paintSlipBar(); renderSchedina(); return; }
     if (ev.target.closest("#slipclear")) { slip.legs = []; slip.mode = "singole"; saveSlip(); paintSlipBar(); renderSchedina(); return; }
-    if (ev.target.closest("#slipcopy")) {
-      var code = "/schedina " + slipPayload();
-      try { navigator.clipboard.writeText(code); ev.target.closest("#slipcopy").innerHTML = ic("check") + " Copiato"; } catch (er) { window.prompt("Codice", code); }
-      return;
-    }
-    var go = ev.target.closest("#slipgo");
-    if (go && go.classList.contains("disabled")) { ev.preventDefault(); return; }
-    if (go) { setTimeout(function () { slip.legs = []; slip.mode = "singole"; saveSlip(); paintSlipBar(); renderSchedina(); }, 1500); }
+    if (ev.target.closest("#slipgo")) publishSlip();
   });
+  $("schedina").addEventListener("input", function (ev) { if (ev.target.id === "sliptext") { slipText = ev.target.value; slipMsg = ""; } });
 
   // ---------------------------------------------------------------- Radar: tutte le partite live in una tabella
   var rsport = "calcio";
@@ -2376,7 +2462,7 @@
   function pronostici() {
     var dz = data.diario || {}, out = [];
     (dz.bets || []).forEach(function (b) { out.push({ key: "b" + b.id, ts: b.created_at, odds: b.odds, result: b.result, sport: b.sport, ev: b.sport + ":" + (b.event_id || b.event), code: b.code || "" }); });
-    (dz.slips || []).forEach(function (s) {
+    allSlips().forEach(function (s) {
       if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, ts: s.created_at, odds: l.odds, result: l.result, sport: l.sport, ev: l.sport + ":" + l.event_id, code: l.code, comp: l.comp }); });
       else out.push({ key: "s" + s.id, ts: s.created_at, odds: s.odds || 1, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null, points: s.points,
                       sport: "multi", ev: "s" + s.id, code: s.mode, legs: s.legs.length });
