@@ -129,6 +129,33 @@
   .segbar .cnt{font-size:0.75rem;opacity:.75;font-variant-numeric:tabular-nums;}
   .dot.live{width:8px;height:8px;border-radius:50%;background:var(--bad);display:inline-block;box-shadow:0 0 0 3px color-mix(in srgb, var(--bad) 25%, transparent);}
   .comphead{font-size:0.74rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-soft);margin:14px 2px 6px;display:flex;align-items:center;gap:6px;}
+  /* Team StatSight: bacheca, profilo, classifica */
+  .avatar{flex:none;display:block;}
+  .teambadge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:800;letter-spacing:.05em;padding:2px 7px 2px 3px;border-radius:999px;
+    background:linear-gradient(90deg,#E8812F,#1F7A45);color:#fff;margin-left:6px;vertical-align:1px;white-space:nowrap;}
+  .teambadge img{border-radius:50%;}
+  .teamhead{display:flex;flex-direction:column;gap:2px;margin:4px 2px 8px;} .teamhead b{font-size:1.05rem;}
+  .teamrow{display:flex;gap:10px;overflow-x:auto;margin:0 -16px;padding:4px 16px 8px;scrollbar-width:none;}
+  .tav{flex:none;display:flex;flex-direction:column;align-items:center;gap:4px;width:64px;background:none;border:none;color:inherit;font:inherit;cursor:pointer;padding:0;}
+  .tav span{font-size:0.66rem;text-align:center;line-height:1.15;color:var(--ink-soft);}
+  .tav svg{border-radius:18px;}
+  .tav.on svg{outline:3px solid var(--accent);outline-offset:2px;}
+  .post .phead{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;color:inherit;font:inherit;text-align:left;cursor:pointer;padding:0;}
+  .post .pwho{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;row-gap:3px;font-size:0.86rem;}
+  .post .pwho .teambadge{margin-left:0;}
+  .post .time{font-size:0.72rem;color:var(--ink-soft);flex:none;}
+  .post .pev{margin:8px 0 2px;font-size:0.84rem;}
+  .pcard{display:flex;gap:14px;align-items:center;margin:4px 0;} .pcard svg{border-radius:26px;}
+  .pnick{font-weight:800;color:var(--accent-strong);margin:2px 0 6px;}
+  .lb{display:flex;flex-direction:column;}
+  .lbrow{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--line);cursor:pointer;}
+  .lbrow.me{background:color-mix(in srgb, var(--accent) 16%, transparent);border-radius:10px;cursor:default;}
+  .lbpos{width:30px;text-align:center;font-weight:900;font-style:italic;font-size:1.15rem;}
+  .lbname{flex:1;min-width:0;font-weight:700;font-size:0.86rem;display:flex;flex-wrap:wrap;align-items:center;row-gap:2px;}
+  .lbpts{font-weight:900;font-variant-numeric:tabular-nums;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 10px;}
+  .lbrow svg{border-radius:12px;}
+  .meav{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--accent);color:#fff;flex:none;}
+  .lbme{position:sticky;bottom:64px;margin-top:8px;box-shadow:0 6px 18px rgba(0,0,0,.3);border-radius:12px;background:var(--bg);}
   /* divisioni della settimana e jolly (Il mio occhio) */
   .ladder{display:flex;flex-direction:column;gap:6px;}
   .lrow{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);opacity:.75;}
@@ -586,6 +613,7 @@
 <main class="view" id="view-diario" hidden>
   <div class="chips subtabs" role="tablist">
     <button class="chip" type="button" data-sub="diario" aria-pressed="true"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
+    <button class="chip" type="button" data-sub="bacheca" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Bacheca</button>
     <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
   <div class="segbar" id="dviewchips" role="tablist">
@@ -604,6 +632,7 @@
 <main class="view" id="view-occhio" hidden>
   <div class="chips subtabs" role="tablist">
     <button class="chip" type="button" data-sub="diario" aria-pressed="false"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
+    <button class="chip" type="button" data-sub="bacheca" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Bacheca</button>
     <button class="chip" type="button" data-sub="occhio" aria-pressed="true"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
   <div id="occhiolevel"></div>
@@ -612,9 +641,23 @@
   <h2 class="sectiontitle">Badge</h2>
   <div id="occhiobadges"></div>
   <h2 class="sectiontitle">Classifica</h2>
-  <div class="note">La classifica con gli altri utenti arriva con l'app pubblica: serve un server con gli account. Qui vedrai la tua posizione per settimana, mese e sport.</div>
+  <div id="occhioclassifica"></div>
   <h2 class="sectiontitle">Le mie giocate</h2>
   <div id="diariobets"></div>
+</main>
+
+<main class="view" id="view-bacheca" hidden>
+  <div class="chips subtabs" role="tablist">
+    <button class="chip" type="button" data-sub="diario" aria-pressed="false"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
+    <button class="chip" type="button" data-sub="bacheca" aria-pressed="true"><svg class="ico"><use href="#i-handshake"/></svg> Bacheca</button>
+    <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
+  </div>
+  <div id="bacheca"></div>
+</main>
+
+<main class="view" id="view-persona" hidden>
+  <button class="back" type="button" data-back="bacheca">‹ Bacheca</button>
+  <div id="persona"></div>
 </main>
 
 <main class="view" id="view-radar" hidden>
@@ -974,7 +1017,7 @@
   }
 
   // Corse estere dell'ippica (signals/ippica_estero.py): il favorito alla quota fissa SNAI, con il conto per paese.
-  var PAESI = { FR: "Francia", GB: "Gran Bretagna", IE: "Irlanda", SE: "Svezia", NO: "Norvegia", DK: "Danimarca", FI: "Finlandia",
+  var PAESI = { IT: "Italia", PL: "Polonia", PT: "Portogallo", FR: "Francia", GB: "Gran Bretagna", IE: "Irlanda", SE: "Svezia", NO: "Norvegia", DK: "Danimarca", FI: "Finlandia",
     DE: "Germania", BE: "Belgio", NL: "Olanda", AT: "Austria", CH: "Svizzera", ES: "Spagna", US: "Stati Uniti", CA: "Canada",
     AR: "Argentina", UY: "Uruguay", BR: "Brasile", CL: "Cile", AU: "Australia", NZ: "Nuova Zelanda", ZA: "Sudafrica",
     KR: "Corea del Sud", JP: "Giappone", HK: "Hong Kong", SG: "Singapore", MY: "Malesia", AE: "Emirati" };
@@ -1402,7 +1445,7 @@
   }
 
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "bacheca", "persona"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     $("tabbar").hidden = !unlocked;
     // la barra della schedina: in tutte le pagine tranne il blocco e la schedina stessa
@@ -1410,14 +1453,102 @@
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario", schedina: "diario" }[view] || view;
+    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario", schedina: "diario", bacheca: "diario", persona: "diario" }[view] || view;
     document.querySelectorAll(".tab").forEach(function (t) {
       if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
   }
 
   function renderAll() {
-    renderStatus(); renderFeed(); renderStrategie(); renderDiario(); renderOcchio(); renderRadar();
+    renderStatus(); renderFeed(); renderStrategie(); renderDiario(); renderOcchio(); renderRadar(); renderBacheca();
+  }
+
+  // ---------------------------------------------------------------- Team StatSight (signals/personaggi.py)
+  // Personaggi della casa, dichiarati col badge: un pronostico al giorno ciascuno con la sua regola, quote vere.
+  // "Segui" vale su questo telefono; con l'app pubblica si seguiranno anche gli utenti veri.
+  var FOLLOW_KEY = "statsight.seguiti";
+  var follows = (function () { try { return new Set(JSON.parse(localStorage.getItem(FOLLOW_KEY) || "[]")); } catch (e) { return new Set(); } })();
+  function saveFollows() { try { localStorage.setItem(FOLLOW_KEY, JSON.stringify(Array.from(follows))); } catch (e) {} }
+  var bview = "tutti";
+  function team() { return (data && data.personaggi && data.personaggi.profiles) || []; }
+  function personaOf(id) { return team().filter(function (p) { return p.id === id; })[0]; }
+  // avatar disegnato da noi (niente foto): pelle, capelli, occhiali, cappellino e sfondo dal nome
+  function avatar(seed, size) {
+    var h = 0; for (var i = 0; i < seed.length; i++) h = (h * 33 + seed.charCodeAt(i)) >>> 0;
+    function pick(arr, k) { return arr[(h >>> k) % arr.length]; }
+    var bg = pick(["#E8812F", "#1F7A45", "#2F6FD6", "#C0392B", "#8E44AD", "#16A085", "#D4A520", "#2C3E50"], 0);
+    var skin = pick(["#F5D0B0", "#E8B48E", "#C68A62", "#9C6644", "#6F4A32"], 3);
+    var hair = pick(["#1C1C1C", "#4A2F1D", "#8B5A2B", "#D9B26F", "#B33A1E", "#6E6E6E"], 6);
+    var style = (h >>> 9) % 4, glasses = (h >>> 12) % 3 === 0, cap = (h >>> 14) % 4 === 0, beard = (h >>> 16) % 4 === 0;
+    var s = size || 44;
+    return '<svg class="avatar" width="' + s + '" height="' + s + '" viewBox="0 0 64 64" aria-hidden="true">'
+      + '<rect width="64" height="64" rx="18" fill="' + bg + '"/>'
+      + '<path d="M14 64c2-12 9-18 18-18s16 6 18 18z" fill="#fff" fill-opacity=".9"/>'
+      + '<path d="M26 44h12v6a6 6 0 0 1-12 0z" fill="' + skin + '"/>'
+      + '<ellipse cx="32" cy="30" rx="13" ry="15" fill="' + skin + '"/>'
+      + (style === 0 ? '<path d="M19 28c0-11 7-15 13-15s13 4 13 15c-3-5-8-7-13-7s-10 2-13 7z" fill="' + hair + '"/>'
+        : style === 1 ? '<path d="M18 32c-1-13 6-19 14-19s15 6 14 19l-3-7c-3 2-8 3-11 3s-8-1-11-3z" fill="' + hair + '"/>'
+        : style === 2 ? '<path d="M18 36c-2-15 5-23 14-23s16 8 14 23c-1-6-2-9-3-11-5 2-17 2-22 0-1 2-2 5-3 11z" fill="' + hair + '"/><path d="M18 36c0 8 2 14 4 16l-2-16zM46 36c0 8-2 14-4 16l2-16z" fill="' + hair + '"/>'
+        : '<path d="M20 25c2-8 7-11 12-11s10 3 12 11c-4-2-8-3-12-3s-8 1-12 3z" fill="' + hair + '"/>')
+      + (cap ? '<path d="M17 25c1-9 8-13 15-13s14 4 15 13z" fill="#141414"/><path d="M30 25h22c0 3-2 4-5 4H30z" fill="#141414"/><circle cx="32" cy="17" r="2.5" fill="' + bg + '"/>' : "")
+      + '<circle cx="27" cy="31" r="1.8" fill="#1C1C1C"/><circle cx="37" cy="31" r="1.8" fill="#1C1C1C"/>'
+      + (glasses ? '<circle cx="27" cy="31" r="4.5" fill="none" stroke="#1C1C1C" stroke-width="1.6"/><circle cx="37" cy="31" r="4.5" fill="none" stroke="#1C1C1C" stroke-width="1.6"/><path d="M31.5 31h1" stroke="#1C1C1C" stroke-width="1.6"/>' : "")
+      + (beard ? '<path d="M21 34c1 9 6 12 11 12s10-3 11-12c-3 4-7 5-11 5s-8-1-11-5z" fill="' + hair + '" fill-opacity=".85"/>' : "")
+      + '<path d="M28 38c2 2 6 2 8 0" fill="none" stroke="#1C1C1C" stroke-width="1.6" stroke-linecap="round"/></svg>';
+  }
+  function teamBadge() { return '<span class="teambadge"><img src="icon-192.png" alt="" width="12" height="12"> TEAM STATSIGHT</span>'; }
+  function resTag(r) { return r == null ? '<span class="k">' + ic("clock") + ' in attesa</span>' : r === 1 ? '<span class="pos">' + ic("check") + ' vinta</span>' : r === 0 ? '<span class="neg">' + ic("x") + ' persa</span>' : '<span class="k">nulla</span>'; }
+  function postCard(x) {
+    var p = personaOf(x.p); if (!p) return "";
+    return '<div class="card post"><button class="phead" type="button" data-persona="' + p.id + '">' + avatar(p.id, 40)
+      + '<span class="pwho"><b>' + esc(p.name) + ' · ' + esc(p.nick) + '</b>' + teamBadge() + '</span><span class="time">' + whenLabel(x.ts) + '</span></button>'
+      + '<div class="pev">' + EMOJI[x.sport] + ' ' + esc(x.event) + '<span class="k"> · ' + esc(shortComp(x.comp || "")) + '</span></div>'
+      + '<div class="pickrow"><span><b>' + esc(x.label) + '</b> @ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div></div>';
+  }
+  function renderBacheca() {
+    var P = data.personaggi;
+    if (!P || !P.profiles) { $("bacheca").innerHTML = '<div class="note">La bacheca arriva con il prossimo aggiornamento dei dati.</div>'; return; }
+    var feed = (P.feed || []).filter(function (x) { return bview === "tutti" || follows.has(x.p); });
+    $("bacheca").innerHTML = '<div class="teamhead"><b>Team StatSight</b><span class="k">i personaggi della casa: un pronostico al giorno ciascuno, con la sua strategia, a quote vere</span></div>'
+      + '<div class="teamrow">' + P.profiles.map(function (p) {
+        return '<button class="tav' + (follows.has(p.id) ? " on" : "") + '" type="button" data-persona="' + p.id + '">' + avatar(p.id, 52) + '<span>' + esc(p.nick) + '</span></button>';
+      }).join("") + '</div>'
+      + '<div class="segbar" style="margin:10px 0;"><button type="button" data-bview="tutti" aria-pressed="' + (bview === "tutti") + '">Tutti</button>'
+      + '<button type="button" data-bview="seguiti" aria-pressed="' + (bview === "seguiti") + '">Seguiti <span class="cnt">' + follows.size + '</span></button></div>'
+      + (feed.length ? feed.map(postCard).join("") : '<div class="note">' + (bview === "seguiti" ? "Non segui ancora nessuno: tocca un personaggio e premi Segui." : "Nessuna giocata, per ora.") + '</div>');
+  }
+  function renderPersona(id) {
+    var p = personaOf(id); if (!p) return;
+    var on = follows.has(p.id), wr = p.n ? Math.round(p.w / p.n * 100) : null;
+    $("persona").innerHTML = '<div class="pcard">' + avatar(p.id, 88) + '<div><div class="dtitle" style="margin:0;">' + esc(p.name) + '</div><div class="pnick">' + esc(p.nick) + '</div>'
+      + teamBadge() + ' <span class="k">' + esc(PAESI[p.country] || p.country) + '</span></div></div>'
+      + '<button class="primary" type="button" data-follow="' + p.id + '" style="width:100%;margin:12px 0;">' + (on ? ic("check") + " Segui già" : "Segui") + '</button>'
+      + '<div class="facts"><div><span class="k">Strategia: </span><b>' + esc(p.desc) + '</b></div></div>'
+      + '<div class="kpis"><div class="kpi"><div class="v">' + p.n + '</div><div class="l">pronostici chiusi</div></div>'
+      + '<div class="kpi"><div class="v">' + (wr == null ? "—" : wr + "%") + '</div><div class="l">vinti</div></div>'
+      + '<div class="kpi"><div class="v ' + (p.pts >= 0 ? "pos" : "neg") + '">' + signed(p.pts) + '</div><div class="l">punti</div></div></div>'
+      + '<div class="kpis"><div class="kpi"><div class="v ' + (p.wpts >= 0 ? "pos" : "neg") + '">' + signed(p.wpts) + '</div><div class="l">punti questa settimana</div></div>'
+      + '<div class="kpi"><div class="v">' + p.best + '</div><div class="l">serie migliore</div></div>'
+      + '<div class="kpi"><div class="v">' + p.open + '</div><div class="l">in attesa</div></div></div>'
+      + '<h2 class="sectiontitle">Ultime giocate</h2>' + ((p.last || []).length ? p.last.map(postCard).join("") : '<div class="note">Ancora nessuna giocata.</div>')
+      + '<div class="note" style="margin-top:10px;">I personaggi del Team StatSight sono della casa: giocano con una regola fissa, scritta qui sopra, alle quote vere di quel momento. I risultati non sono aggiustati.</div>';
+    show("persona");
+    window.scrollTo(0, 0);
+  }
+  // classifica della settimana: tu in mezzo al Team StatSight, stessi punti lega (vinto = quota − 1, perso = −1)
+  function leaderboardHtml(R2) {
+    var rows = team().map(function (p) { return { id: p.id, name: p.name + " · " + p.nick, pts: p.wpts, n: p.wn }; });
+    rows.push({ id: null, name: "Tu", pts: R2.week.pts, n: R2.week.n });
+    rows.sort(function (a, b) { return b.pts - a.pts || b.n - a.n; });
+    var meIdx = rows.findIndex(function (r) { return r.id === null; });
+    function row(r, i) {
+      return '<div class="lbrow' + (r.id ? "" : " me") + '"' + (r.id ? ' data-persona="' + r.id + '"' : "") + '><span class="lbpos">' + (i + 1) + '</span>'
+        + (r.id ? avatar(r.id, 36) : '<span class="meav">' + ic("eye") + '</span>') + '<span class="lbname">' + esc(r.name) + (r.id ? teamBadge() : "") + '</span>'
+        + '<span class="lbpts ' + (r.pts >= 0 ? "pos" : "neg") + '">' + signed(r.pts) + '</span></div>';
+    }
+    return '<div class="lb">' + rows.map(row).join("") + '</div>'
+      + '<div class="lbme">' + row(rows[meIdx], meIdx) + '</div>'
+      + '<div class="k" style="margin-top:6px;">Classifica della settimana con il Team StatSight. Con l\'app pubblica ci saranno anche gli altri utenti.</div>';
   }
 
   // ---------------------------------------------------------------- Diario: partite live e pre-partita, schedina
@@ -1995,6 +2126,8 @@
       + '<b>Esperienza:</b> 5 XP per pronostico chiuso più 10 XP per ogni punto di quota sopra 1 se lo vinci (massimo 50). Sotto quota 1,30 niente XP; un pronostico per partita; al giorno i primi 10 valgono pieno, dall\'11 al 20 la metà, poi niente.<br>'
       + '<b>Monete:</b> 100 di benvenuto, 10 per ogni pronostico chiuso che dà XP più 10 se vinto, 50 a ogni livello, e a fine settimana un premio secondo la lega (da 10 in Bronzo a 150 in Elite). Servono solo per i jolly: non si comprano e non valgono soldi.</div></details>';
 
+    $("occhioclassifica").innerHTML = team().length ? leaderboardHtml(R2)
+      : '<div class="note">La classifica arriva con il prossimo aggiornamento dei dati.</div>';
     var n = closed.length, expected = closed.reduce(function (s2, b) { return s2 + 1 / b.odds; }, 0);
     var roi = n ? closed.reduce(function (s2, b) { return s2 + leaguePoints(b); }, 0) / n : null, MIN = 30;
     var open = list.filter(function (b) { return b.result == null; }).length;
@@ -2062,6 +2195,17 @@
     if (!p || p.result != null || jolly.used[key] || !(jolly.inv[t] > 0) || jollyThisWeek(t)) return;
     jolly.inv[t] -= 1; jolly.used[key] = t; jolly.usedAt[key] = nowS(); saveJolly();
     renderOcchio(); renderMyBets();
+  });
+
+  // Team StatSight: profilo, segui, filtro della bacheca
+  ["bacheca", "persona", "occhioclassifica"].forEach(function (id) {
+    $(id).addEventListener("click", function (e) {
+      if (!data) return;
+      var f = e.target.closest("[data-follow]");
+      if (f) { var pid = f.dataset.follow; if (follows.has(pid)) follows.delete(pid); else follows.add(pid); saveFollows(); renderBacheca(); renderPersona(pid); return; }
+      var v = e.target.closest("[data-bview]"); if (v) { bview = v.dataset.bview; renderBacheca(); return; }
+      var p = e.target.closest("[data-persona]"); if (p) renderPersona(p.dataset.persona);
+    });
   });
 
   async function load(password, fromForm) {
