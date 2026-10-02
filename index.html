@@ -1006,7 +1006,7 @@
                 + '<div class="ds">' + esc(s.pick) + ' · usa statistiche di StatSight Full<button class="more" type="button" data-cat="' + esc(s.id) + '">… altro</button></div></div>'
                 + '<span class="switch"><input type="checkbox" role="switch" disabled aria-label="Serve StatSight Full"><span class="slider"></span></span></div>';
             }
-            return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>' + tmTag("live")
+            return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>' + tmTag(c.timing || "live")
               + (catSel[s.id] && catSel[s.id] !== s.default ? '<span class="tm top">TUA</span>' : "")
               + '<div class="ds">' + esc(s.pick) + (cell[0] ? ' · strike ' + Math.round(cell[1] * 100) + '% · quota ~' + it(cell[2], 2) : "")
               + '<button class="more" type="button" data-cat="' + esc(s.id) + '">… altro</button></div>'
@@ -1043,7 +1043,7 @@
       $("catreset").hidden = key === s.default;
     }
     $("catalogo").innerHTML = '<h1 class="dtitle">' + esc(s.name) + '</h1>'
-      + '<div class="dsub">' + EMOJI[cs] + ' ' + esc(s.group) + ' · LIVE</div>'
+      + '<div class="dsub">' + EMOJI[cs] + ' ' + esc(s.group) + ' · ' + (catOf(cs).timing === "prepartita" ? "PRE-PARTITA" : "LIVE") + '</div>'
       + '<div class="facts"><div><span class="k">Cosa giochi: </span><b>' + esc(s.pick) + '</b></div>'
       + '<div><span class="k">Da dove viene: </span>' + esc(s.origin) + '</div>'
       + (s.note ? '<div><span class="k">' + esc(s.note) + '</span></div>' : "") + '</div>'
