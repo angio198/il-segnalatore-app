@@ -127,6 +127,13 @@
   .segbar .cnt{font-size:0.75rem;opacity:.75;font-variant-numeric:tabular-nums;}
   .dot.live{width:8px;height:8px;border-radius:50%;background:var(--bad);display:inline-block;box-shadow:0 0 0 3px color-mix(in srgb, var(--bad) 25%, transparent);}
   .comphead{font-size:0.74rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-soft);margin:14px 2px 6px;display:flex;align-items:center;gap:6px;}
+  .comphead.pre{color:var(--ink);font-size:0.78rem;background:linear-gradient(90deg,color-mix(in srgb, var(--accent) 16%, transparent),transparent);border-left:3px solid var(--accent);border-radius:6px;padding:6px 8px;}
+  .comphead .flag{font-size:1.05rem;line-height:1;}
+  .compchips{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px 6px;padding:0 16px 4px;scrollbar-width:none;}
+  .compchips .chip{white-space:nowrap;flex:none;}
+  .tlogo{display:inline-grid;place-items:center;width:20px;height:22px;margin-right:6px;vertical-align:-5px;color:#fff;font-size:8.5px;font-weight:800;letter-spacing:-0.02em;
+    clip-path:polygon(0 0,100% 0,100% 62%,50% 100%,0 62%);text-shadow:0 1px 1px rgba(0,0,0,.35);}
+  .tlogo.round{clip-path:none;border-radius:50%;width:20px;height:20px;vertical-align:-4px;}
   /* due righe: orario, squadre e punteggio sopra; le quote sotto, larghe (i nomi non si tagliano) */
   .evline{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:6px;}
   .evmain{grid-column:1 / -1;display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:6px;font:inherit;color:inherit;background:none;border:none;text-align:left;cursor:pointer;padding:2px;min-width:0;}
@@ -388,6 +395,7 @@
   }
   .tab .ic{font-size:1.25rem;line-height:1;}
   .tab[aria-current="page"]{color:var(--accent-strong);}
+  .tab:not([aria-current="page"]) .ic .ico{opacity:.5;filter:saturate(.55);}
   :root[data-dark="1"] .tab[aria-current="page"]{color:var(--accent);}
 
   /* colonna stretta solo su schermi alti (computer, tablet); il telefono in orizzontale usa tutta la larghezza (Radar) */
@@ -400,25 +408,34 @@
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="i-calcio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.6l3.7 2.7-1.4 4.3H9.7l-1.4-4.3z"/><path d="M12 3v4.6M15.7 10.3l4.5-1.4M14.3 14.6l2.8 3.8M9.7 14.6l-2.8 3.8M8.3 10.3L3.8 8.9"/></symbol>
-    <symbol id="i-tennis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.7 5.6c3.1 3.4 3.1 9.4 0 12.8M18.3 5.6c-3.1 3.4-3.1 9.4 0 12.8"/></symbol>
-    <symbol id="i-ippica" viewBox="0 0 24 24"><path d="M7 4.2C4.9 6.1 4 8.6 4 11.5 4 16.4 7.6 20 12 20s8-3.6 8-8.5c0-2.9-.9-5.4-3-7.3"/><path d="M8.7 5.6c-1.4 1.5-2.1 3.4-2.1 5.7 0 3.5 2.4 6.1 5.4 6.1s5.4-2.6 5.4-6.1c0-2.3-.7-4.2-2.1-5.7"/><path d="M6.2 9v.1M17.8 9v.1M7.6 14v.1M16.4 14v.1"/></symbol>
-    <symbol id="i-hockey" viewBox="0 0 24 24"><path d="M5 3l7.6 13.4h6.9a1.6 1.6 0 0 1 0 3.2H11.2L3.4 4"/><ellipse cx="6.5" cy="19.2" rx="3" ry="1.3"/></symbol>
-    <symbol id="i-basket" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.7 5.6c2.4 2 3.8 4.2 3.8 6.4s-1.4 4.4-3.8 6.4M18.3 5.6c-2.4 2-3.8 4.2-3.8 6.4s1.4 4.4 3.8 6.4"/></symbol>
-    <symbol id="i-segnali" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6.5 5 13 2.5-6.5h4"/></symbol>
-    <symbol id="i-strategie" viewBox="0 0 24 24"><path d="M4 7h9.5M18.5 7H20M4 17h3.5M12.5 17H20"/><circle cx="16" cy="7" r="2.3"/><circle cx="10" cy="17" r="2.3"/></symbol>
-    <symbol id="i-diario" viewBox="0 0 24 24"><path d="M5.5 3.5h13v17l-2.2-1.5-2.1 1.5-2.2-1.5-2.2 1.5-2.1-1.5-2.2 1.5z"/><path d="M9 8.5h6M9 12.5h4"/></symbol>
-    <symbol id="i-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6.2-6.2"/></symbol>
-    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <!-- icone a colori (richiesta utente 02/10: "troppo minimal e senza colori"): colori fissi nei disegni -->
+    <linearGradient id="g-tennis" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EEFF6A"/><stop offset="1" stop-color="#B7D21C"/></linearGradient>
+    <linearGradient id="g-basket" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFA24C"/><stop offset="1" stop-color="#E0661A"/></linearGradient>
+    <linearGradient id="g-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE27A"/><stop offset="1" stop-color="#E9A800"/></linearGradient>
+    <linearGradient id="g-flame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC531"/><stop offset="1" stop-color="#F0441E"/></linearGradient>
+    <linearGradient id="g-red" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF6B6B"/><stop offset="1" stop-color="#D93A3A"/></linearGradient>
+    <linearGradient id="g-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5AA9FF"/><stop offset="1" stop-color="#2F6FD6"/></linearGradient>
+    <linearGradient id="g-amber" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC14D"/><stop offset="1" stop-color="#EE8A12"/></linearGradient>
+    <linearGradient id="g-green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#45D483"/><stop offset="1" stop-color="#1E9E5A"/></linearGradient>
+    <symbol id="i-calcio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="#FFFFFF" stroke="#1C1C1C" stroke-width="1.3"/><path d="M12 7.6l3.7 2.7-1.4 4.3H9.7l-1.4-4.3z" fill="#1C1C1C" stroke="#1C1C1C" stroke-width="1"/><path d="M12 2.6v5M15.7 10.3l4.7-1.5M14.3 14.6l2.9 3.9M9.7 14.6l-2.9 3.9M8.3 10.3L3.6 8.8" stroke="#1C1C1C" stroke-width="1.2"/><path d="M9.6 2.9l2.4 1.5 2.4-1.5M20.4 9.6l-.4 2.9 1.6 2M17.6 19.6l-2.6-.4-1.7 2.3M6.4 19.6l2.6-.4 1.7 2.3M3.6 9.6l.4 2.9-1.6 2" fill="#1C1C1C" stroke="#1C1C1C" stroke-width="1"/></symbol>
+    <symbol id="i-tennis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="url(#g-tennis)" stroke="#8FA614" stroke-width="1"/><path d="M5.6 5.4c3.2 3.5 3.2 9.7 0 13.2M18.4 5.4c-3.2 3.5-3.2 9.7 0 13.2" stroke="#FFFFFF" stroke-width="1.8"/></symbol>
+    <symbol id="i-ippica" viewBox="0 0 24 24"><path d="M7 4.2C4.9 6.1 4 8.6 4 11.5 4 16.4 7.6 20 12 20s8-3.6 8-8.5c0-2.9-.9-5.4-3-7.3" stroke="#8A6A2E" stroke-width="4.2"/><path d="M7 4.2C4.9 6.1 4 8.6 4 11.5 4 16.4 7.6 20 12 20s8-3.6 8-8.5c0-2.9-.9-5.4-3-7.3" stroke="url(#g-gold)" stroke-width="2.6"/><path d="M5.6 9v.1M18.4 9v.1M6.6 14.4v.1M17.4 14.4v.1M12 19.9v.1" stroke="#6B4F1D" stroke-width="1.6"/></symbol>
+    <symbol id="i-hockey" viewBox="0 0 24 24"><path d="M5 2.6l7.6 13.4h6.9a1.8 1.8 0 0 1 0 3.6H11.2L3.2 3.6z" fill="#D49A5A" stroke="#7A4B1E" stroke-width="1.1"/><path d="M13.2 16h3.4v3.6h-3.4z" fill="#1C1C1C" stroke="none"/><ellipse cx="6.3" cy="19.6" rx="3.3" ry="1.5" fill="#1C1C1C" stroke="#555" stroke-width=".8"/></symbol>
+    <symbol id="i-basket" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="url(#g-basket)" stroke="#7A3510" stroke-width="1"/><path d="M2.6 12h18.8M12 2.6v18.8M5.6 5.4c2.5 2 4 4.3 4 6.6s-1.5 4.6-4 6.6M18.4 5.4c-2.5 2-4 4.3-4 6.6s1.5 4.6 4 6.6" stroke="#5C260A" stroke-width="1.2"/></symbol>
+    <symbol id="i-segnali" viewBox="0 0 24 24"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="url(#g-red)" stroke="none"/><path d="M4.5 12.5h3l2.2-5.5 4.4 10.5 2.2-5h3.2" stroke="#FFFFFF" stroke-width="2"/></symbol>
+    <symbol id="i-strategie" viewBox="0 0 24 24"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="url(#g-blue)" stroke="none"/><path d="M5.5 8.5h7.5M17.5 8.5h1M5.5 15.5h2.5M12 15.5h6.5" stroke="#FFFFFF" stroke-width="1.9"/><circle cx="15.2" cy="8.5" r="2.2" fill="#FFFFFF" stroke="none"/><circle cx="10" cy="15.5" r="2.2" fill="#FFFFFF" stroke="none"/></symbol>
+    <symbol id="i-diario" viewBox="0 0 24 24"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="url(#g-amber)" stroke="none"/><path d="M7 5.5h10v13l-1.7-1.1-1.6 1.1-1.7-1.1-1.7 1.1-1.6-1.1L7 18.5z" fill="#FFFFFF" stroke="none"/><path d="M9.3 9h5.4M9.3 12.2h3.6" stroke="#EE8A12" stroke-width="1.5"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 24 24"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="url(#g-green)" stroke="none"/><circle cx="12" cy="12" r="6.8" stroke="#FFFFFF" stroke-width="1.5" stroke-opacity=".7"/><circle cx="12" cy="12" r="3.6" stroke="#FFFFFF" stroke-width="1.5" stroke-opacity=".85"/><path d="M12 12l5-5" stroke="#FFFFFF" stroke-width="2"/><circle cx="15.4" cy="9.6" r="1.3" fill="#FFFFFF" stroke="none"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" fill="#FFFFFF" stroke="#2F6FD6" stroke-width="1.5"/><circle cx="12" cy="12" r="3.6" fill="url(#g-blue)" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="#10202E" stroke="none"/></symbol>
     <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="6.6"/><path d="M12 2.6v2.8M12 18.6v2.8M21.4 12h-2.8M5.4 12H2.6M18.6 5.4l-2 2M7.4 16.6l-2 2M18.6 18.6l-2-2M7.4 7.4l-2-2"/></symbol>
     <symbol id="i-exit" viewBox="0 0 24 24"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></symbol>
-    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z"/></symbol>
-    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/></symbol>
-    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></symbol>
-    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20.5h7M10 17h4v3.5h-4z"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z" fill="url(#g-gold)" stroke="#B57F00" stroke-width="1.2"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2.5" fill="#FFFFFF" stroke="#9AA4AE" stroke-width="1"/><path d="M4 7.5a2.5 2.5 0 0 1 2.5-2.5h11A2.5 2.5 0 0 1 20 7.5V10H4z" fill="url(#g-red)" stroke="none"/><path d="M8.5 3v4M15.5 3v4" stroke="#5B6670" stroke-width="1.8"/><path d="M8 13.5h2M11 13.5h2M14 13.5h2M8 16.5h2M11 16.5h2" stroke="#9AA4AE" stroke-width="1.6"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="url(#g-gold)" stroke="#C48A00" stroke-width="1.2"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4" stroke="#C48A00" stroke-width="1.8"/><path d="M8 4h8v5a4 4 0 0 1-8 0z" fill="url(#g-gold)" stroke="#C48A00" stroke-width="1.2"/><path d="M11 12.6h2V17h-2z" fill="#E9A800" stroke="none"/><path d="M9.5 17h5v3.5h-5z" fill="#7A4B1E" stroke="none"/><path d="M8 20.5h8" stroke="#5C3816" stroke-width="1.6"/></symbol>
     <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 7.5-7.5M15 7.5h5.5V13"/></symbol>
-    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.1 0-3.4 2.5-5.2 3.5-8.4 1.9 1.4 2.4 3.1 2.4 4.6 1.2-.6 2-2 2-3.6 2.6 2 5.1 4.4 5.1 7.6 0 3.4-2.6 5.9-6.5 5.9z"/></symbol>
-    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.6-3.1 8.2-7.5 9.5-4.4-1.3-7.5-4.9-7.5-9.5V6z"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.1 0-3.4 2.5-5.2 3.5-8.4 1.9 1.4 2.4 3.1 2.4 4.6 1.2-.6 2-2 2-3.6 2.6 2 5.1 4.4 5.1 7.6 0 3.4-2.6 5.9-6.5 5.9z" fill="url(#g-flame)" stroke="#C2361A" stroke-width="1.1"/><path d="M12 20c-1.8 0-3-1.2-3-2.9 0-1.6 1.2-2.5 1.8-4 1 .8 1.3 1.6 1.3 2.4.6-.3 1-.9 1-1.7 1.2 1 2 2.1 2 3.5 0 1.6-1.3 2.7-3.1 2.7z" fill="#FFE27A" stroke="none"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.6-3.1 8.2-7.5 9.5-4.4-1.3-7.5-4.9-7.5-9.5V6z" fill="url(#g-blue)" stroke="#1F4FA0" stroke-width="1.1"/><path d="M8.8 12l2.3 2.3 4.4-4.6" stroke="#FFFFFF" stroke-width="1.9"/></symbol>
     <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z"/></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
@@ -451,13 +468,7 @@
 
 <div class="topbar">
   <div class="brand">
-    <svg width="20" height="22" viewBox="0 0 48 40" fill="none" aria-hidden="true">
-      <circle class="ring" cx="24" cy="14" r="9" stroke="var(--accent)" stroke-width="1.6"/>
-      <circle class="ring" cx="24" cy="14" r="9" stroke="var(--accent)" stroke-width="1.6"/>
-      <circle cx="24" cy="14" r="3.4" fill="var(--accent)"/>
-      <path d="M18 32L22 18H26L30 32" stroke="var(--ink)" stroke-width="1.6" stroke-linejoin="round"/>
-      <line x1="15" y1="32" x2="33" y2="32" stroke="var(--ink)" stroke-width="1.6"/>
-    </svg>
+    <img src="icon-192.png" width="26" height="26" alt="" style="border-radius:7px;flex:none;">
     StatSight
     <button class="led" id="led" type="button" hidden aria-label="Stato del sistema"><span class="dot"></span><span id="ledtext">online</span></button>
   </div>
@@ -1475,6 +1486,47 @@
       + (v[2] === "s" ? '<span class="stima">stima</span>' : "") + '</button>';
   }
 
+  // ---------------------------------------------------------------- Pre-partita colorato (richiesta utente 02/10)
+  // Qui, e solo qui, si usano le emoji: bandiera del campionato e un logo nostro per squadra (due colori e
+  // iniziali, dal nome: niente stemmi veri, sono marchi). Idea presa dalle app di pronostici tipo Betswall.
+  var FLAGS = [
+    [/northern irish|nifl/i, "🇬🇧"], [/scottish|scotland/i, "🏴󠁧󠁢󠁳󠁣󠁴󠁿"], [/welsh|wales/i, "🏴󠁧󠁢󠁷󠁬󠁳󠁿"],
+    [/english|premier league|championship|league one|league two|fa cup|efl/i, "🏴󠁧󠁢󠁥󠁮󠁧󠁿"],
+    [/brazil|curitiba/i, "🇧🇷"], [/argentin/i, "🇦🇷"], [/colombia/i, "🇨🇴"], [/ecuador/i, "🇪🇨"], [/chile/i, "🇨🇱"],
+    [/peru/i, "🇵🇪"], [/urugua/i, "🇺🇾"], [/paragua/i, "🇵🇾"], [/mexic/i, "🇲🇽"],
+    [/\busa\b|\bus open|mls|columbus|templeton|american/i, "🇺🇸"],
+    [/swed/i, "🇸🇪"], [/norw/i, "🇳🇴"], [/danish|denmark/i, "🇩🇰"], [/finn/i, "🇫🇮"], [/iceland/i, "🇮🇸"],
+    [/irish|ireland/i, "🇮🇪"], [/spanish|spain|la liga|\besp\b|baza/i, "🇪🇸"], [/portug|porto|quinta do lago/i, "🇵🇹"],
+    [/french|france|ligue 1|ligue 2|\bfra\b|reims|mouilleron/i, "🇫🇷"], [/german|bundesliga/i, "🇩🇪"],
+    [/dutch|eredivisie|eerste/i, "🇳🇱"], [/belgi/i, "🇧🇪"], [/swiss/i, "🇨🇭"], [/austria/i, "🇦🇹"],
+    [/italia|italy|serie a|serie b|serie c|coppa italia|bari/i, "🇮🇹"], [/greek|greece/i, "🇬🇷"],
+    [/turk|adana/i, "🇹🇷"], [/czech/i, "🇨🇿"], [/slovak/i, "🇸🇰"], [/sloven/i, "🇸🇮"], [/polish|poland/i, "🇵🇱"],
+    [/croat/i, "🇭🇷"], [/serbi/i, "🇷🇸"], [/hungar/i, "🇭🇺"], [/romania/i, "🇷🇴"], [/bulgar/i, "🇧🇬"],
+    [/ukrain/i, "🇺🇦"], [/lithuan/i, "🇱🇹"], [/latvia/i, "🇱🇻"], [/eston/i, "🇪🇪"], [/israel/i, "🇮🇱"],
+    [/alger/i, "🇩🇿"], [/morocc/i, "🇲🇦"], [/tunis/i, "🇹🇳"], [/egypt/i, "🇪🇬"], [/jordan/i, "🇯🇴"],
+    [/saudi/i, "🇸🇦"], [/japan|tokyo|j1|j2/i, "🇯🇵"], [/chin|beijing|shanghai|wuhan|jingshan/i, "🇨🇳"],
+    [/korea|seoul/i, "🇰🇷"], [/australia|a-league/i, "🇦🇺"],
+    [/uefa|champions league|europa|conference/i, "🇪🇺"], [/concacaf|conmebol|libertadores|sudamericana/i, "🌎"],
+    [/afc\b|asian/i, "🌏"], [/caf\b|africa/i, "🌍"], [/world cup|fifa/i, "🌍"], [/friendl|amichevol/i, "🤝"]
+  ];
+  function flagOf(e) {
+    var c = e.comp || "";
+    for (var i = 0; i < FLAGS.length; i++) if (FLAGS[i][0].test(c)) return FLAGS[i][1];
+    return e.sport === "tennis" ? "🎾" : "⚽";
+  }
+  function teamLogo(name, sport) {
+    var h = 0, s = String(name || "?");
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+    var a = Math.abs(h) % 360, b = (a + 140 + Math.abs(h >> 8) % 80) % 360;
+    var words = s.replace(/\b(fc|ac|sc|cf|afc|cd|sd|fk|sk|if|bk|club|de|del|la|el)\b\.?/gi, " ").trim().split(/\s+/).filter(Boolean);
+    var ini = sport === "tennis" ? (words[words.length - 1] || s).slice(0, 2) : words.length > 1 ? words[0][0] + words[1][0] : (words[0] || s).slice(0, 2);
+    return '<span class="tlogo' + (sport === "tennis" ? " round" : "") + '" aria-hidden="true" style="background:linear-gradient(135deg,hsl(' + a + ' 68% 46%) 0 52%,hsl(' + b + ' 60% 32%) 52% 100%)">' + esc(ini.toUpperCase()) + '</span>';
+  }
+  function shortComp(c) {
+    return String(c || "").replace(/\s+20\d\d$/, "").replace(/^(atp|wta|itf|challenger)\s+(men|women)\s+(singles|doubles)\s+·\s+/i, "").replace(/\s+-\s+qualification$/i, " (q)");
+  }
+  var dcomp = "all";
+
   function renderDiario() {
     var dz = data.diario;
     renderMyBets();
@@ -1487,19 +1539,44 @@
     $("nlive").textContent = live.length; $("npre").textContent = pre.length;
     document.querySelectorAll("#dviewchips [data-dview]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.dview === dview)); });
     var evs = dview === "live" ? live : pre;
-    if (dview === "live") evs.sort(function (a, b) { return a.sport === b.sport ? (a.comp > b.comp ? 1 : -1) : (a.sport > b.sport ? 1 : -1); });
-    else evs.sort(function (a, b) { return (a.start || 0) - (b.start || 0); });
     var html = '<div class="k" style="margin:4px 2px 8px;font-size:0.76rem;">' + ic("clock") + ' Quote di ' + ageTxt(dz.at) + ' · alla conferma il bot riprende quelle del momento</div>';
+    var isPre = dview === "pre";
+    if (dview === "live") evs.sort(function (a, b) { return a.sport === b.sport ? (a.comp > b.comp ? 1 : -1) : (a.sport > b.sport ? 1 : -1); });
+    else {
+      // pre-partita a gruppi per campionato (prima i campionati con piu' partite), dentro in ordine d'orario;
+      // in alto i campionati come filtri, con la bandiera
+      var cnt = {}, first = {};
+      evs.forEach(function (e) { var k = e.sport + "|" + e.comp; cnt[k] = (cnt[k] || 0) + 1; first[k] = Math.min(first[k] || Infinity, e.start || 0); });
+      var keys = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a] || first[a] - first[b]; });
+      if (dcomp !== "all" && !cnt[dcomp]) dcomp = "all";
+      if (keys.length > 1) {
+        html += '<div class="chips compchips">' + ['<button class="chip" type="button" data-dcomp="all" aria-pressed="' + (dcomp === "all") + '">🔥 Tutti <span class="k">' + evs.length + '</span></button>']
+          .concat(keys.slice(0, 12).map(function (k) {
+            var e0 = evs.find(function (e) { return e.sport + "|" + e.comp === k; });
+            return '<button class="chip" type="button" data-dcomp="' + esc(k) + '" aria-pressed="' + (dcomp === k) + '">' + flagOf(e0) + ' ' + esc(shortComp(e0.comp)) + ' <span class="k">' + cnt[k] + '</span></button>';
+          })).join("") + '</div>';
+      }
+      if (dcomp !== "all") evs = evs.filter(function (e) { return e.sport + "|" + e.comp === dcomp; });
+      evs.sort(function (a, b) {
+        var ka = a.sport + "|" + a.comp, kb = b.sport + "|" + b.comp;
+        return ka === kb ? (a.start || 0) - (b.start || 0) : keys.indexOf(ka) - keys.indexOf(kb);
+      });
+    }
     if (!evs.length) html += '<div class="note">' + (dview === "live" ? "Nessuna partita in corso con quote in questo momento." : "Nessuna partita in programma con quote nelle prossime 24 ore.") + '</div>';
     var lastComp = null;
     evs.forEach(function (e) {
       var comp = e.sport + "|" + e.comp;
-      if (comp !== lastComp) { html += '<div class="comphead">' + EMOJI[e.sport] + ' ' + esc(e.comp || NAME[e.sport]) + '</div>'; lastComp = comp; }
+      if (comp !== lastComp) {
+        html += isPre ? '<div class="comphead pre"><span class="flag">' + flagOf(e) + '</span> ' + esc(e.comp || NAME[e.sport]) + '</div>'
+          : '<div class="comphead">' + EMOJI[e.sport] + ' ' + esc(e.comp || NAME[e.sport]) + '</div>';
+        lastComp = comp;
+      }
       var q = quickCodes(e), labels = e.sport === "calcio" ? ["1", "X", "2"] : ["1", "2"];
       var nm = Object.keys(e.mk).length;
       html += '<div class="evline"><button class="evmain" type="button" data-open="' + e.id + '">'
         + '<span class="evtime">' + (e.live ? '<b class="livetag">' + esc(estMinute(e) || "LIVE") + '</b>' : esc(startLabel(e.start))) + '</span>'
-        + '<span class="evteams"><span>' + pname(e, 1) + '</span><span>' + pname(e, 2) + '</span></span>'
+        + '<span class="evteams">' + (isPre ? '<span>' + teamLogo(e.home, e.sport) + pname(e, 1) + '</span><span>' + teamLogo(e.away, e.sport) + pname(e, 2) + '</span>'
+          : '<span>' + pname(e, 1) + '</span><span>' + pname(e, 2) + '</span>') + '</span>'
         + '<span class="evscore">' + esc(scoreTxt(e)) + '</span></button>'
         + '<span class="evodds">' + q.map(function (c, i) { return tile(e, c, labels[i]); }).join("") + '</span>'
         + '<button class="evmore" type="button" data-open="' + e.id + '">+' + Math.max(0, nm - q.length) + '</button></div>';
@@ -1605,6 +1682,8 @@
   }
 
   $("diarioevents").addEventListener("click", function (ev) {
+    var dc = ev.target.closest("button[data-dcomp]");
+    if (dc) { dcomp = dc.dataset.dcomp; renderDiario(); return; }
     var t = ev.target.closest("button.otile[data-code]");
     if (t) { var e = evById(Number(t.dataset.ev)); if (e) { toggleLeg(e, t.dataset.code); renderDiario(); } return; }
     var o = ev.target.closest("[data-open]"); if (o) { curTab = null; renderGiocata(o.dataset.open); }
