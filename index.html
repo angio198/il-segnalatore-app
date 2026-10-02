@@ -24,7 +24,9 @@
     apply();
   })();
 </script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
 <style>
   :root{
     --bg:#EEF1EC; --bg-alt:#E3E8E0; --surface:#FFFFFF;
@@ -41,15 +43,17 @@
     --good:#6FBE92; --bad:#E08268; color-scheme:dark;
   }
   *{box-sizing:border-box;}
+  .ico{width:1.15em;height:1.15em;vertical-align:-0.2em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;display:inline-block;}
+  .tab .ic .ico{width:22px;height:22px;}
   [hidden]{display:none!important;}
   html,body{height:100%;margin:0;}
   body{
     background:var(--bg);color:var(--ink);
-    font-family:'Source Sans 3',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-family:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
     line-height:1.45;display:flex;flex-direction:column;overflow:hidden;
   }
-  h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
-  .mono{font-family:'IBM Plex Mono',ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums;}
+  h1,h2,h3{font-family:'Archivo',system-ui,sans-serif;font-stretch:87.5%;font-weight:800;letter-spacing:-0.01em;font-weight:600;margin:0;text-wrap:balance;}
+  .mono{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-variant-numeric:tabular-nums;}
   button{font-family:inherit;}
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
@@ -58,13 +62,13 @@
     display:flex;align-items:center;justify-content:space-between;gap:12px;
     border-bottom:1px solid var(--line);background:var(--surface);
   }
-  .brand{display:flex;align-items:center;gap:9px;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:1.05rem;}
+  .brand{display:flex;align-items:center;gap:9px;font-family:'Archivo',system-ui,sans-serif;font-stretch:87.5%;font-weight:800;letter-spacing:-0.01em;font-weight:600;font-size:1.05rem;}
   .brand .ring{transform-origin:24px 14px;animation:pulse 3.4s ease-in-out infinite;}
   .brand .ring:nth-child(2){animation-delay:.5s;}
   @keyframes pulse{0%{opacity:.55;transform:scale(0.9);}60%{opacity:0;transform:scale(1.35);}100%{opacity:0;transform:scale(1.35);}}
   @media (prefers-reduced-motion: reduce){.brand .ring{animation:none;opacity:.35;}}
   .topright{display:flex;align-items:center;gap:10px;}
-  .asof{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);text-align:right;line-height:1.35;}
+  .asof{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:10.5px;color:var(--ink-soft);text-align:right;line-height:1.35;}
   .iconbtn{
     background:none;border:1px solid var(--line);border-radius:999px;color:var(--ink);
     width:34px;height:34px;display:grid;place-items:center;font-size:1rem;cursor:pointer;flex:none;
@@ -73,7 +77,7 @@
   .view{flex:1;overflow-y:auto;padding:18px 16px calc(env(safe-area-inset-bottom,0px) + 84px);-webkit-overflow-scrolling:touch;}
   .view[hidden]{display:none!important;}
 
-  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px;}
+  .eyebrow{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 10px;}
   .sectiontitle{font-size:1.05rem;margin:26px 0 12px;}
   .note{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:0.85rem;color:var(--ink-soft);line-height:1.5;}
   .gap{margin-bottom:26px;}
@@ -97,13 +101,13 @@
   .evrow{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;}
   .evrow .lg{font-size:0.74rem;color:var(--ink-soft);}
   .evrow .tm2{font-weight:700;font-size:0.92rem;}
-  .evrow .sc{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:1rem;white-space:nowrap;text-align:right;}
+  .evrow .sc{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-weight:600;font-size:1rem;white-space:nowrap;text-align:right;}
   .evrow .mn{font-size:0.74rem;color:var(--live,var(--accent-strong));font-weight:700;}
-  .bigscore{font-family:'IBM Plex Mono',monospace;font-size:2rem;font-weight:600;text-align:center;margin:6px 0 2px;}
+  .bigscore{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:2rem;font-weight:600;text-align:center;margin:6px 0 2px;}
   .bigmin{text-align:center;color:var(--ink-soft);font-size:0.85rem;margin-bottom:14px;}
   .stt{width:100%;border-collapse:collapse;font-size:0.86rem;margin-bottom:16px;}
   .stt td{padding:6px 4px;border-bottom:1px solid var(--line);}
-  .stt td:first-child,.stt td:last-child{font-family:'IBM Plex Mono',monospace;width:22%;}
+  .stt td:first-child,.stt td:last-child{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;width:22%;}
   .stt td:first-child{text-align:left;} .stt td:last-child{text-align:right;} .stt td:nth-child(2){text-align:center;color:var(--ink-soft);}
   .betform{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
   .betform label{font-weight:600;font-size:0.86rem;margin-top:4px;}
@@ -115,6 +119,72 @@
   .badgegroup{font-weight:700;font-size:0.85rem;margin:14px 0 8px;}
   .serving{font-size:0.8em;}
   .chips.subtabs{margin-bottom:10px;}
+  /* Diario stile bookmaker */
+  .segbar{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:10px;}
+  .segbar button{font:inherit;font-weight:700;font-size:0.88rem;border:none;border-radius:9px;padding:9px 6px;background:none;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+  .segbar button[aria-pressed="true"]{background:var(--ink);color:var(--bg);}
+  :root[data-dark="1"] .segbar button[aria-pressed="true"]{background:var(--accent);color:#12181A;}
+  .segbar .cnt{font-size:0.75rem;opacity:.75;font-variant-numeric:tabular-nums;}
+  .dot.live{width:8px;height:8px;border-radius:50%;background:var(--bad);display:inline-block;box-shadow:0 0 0 3px color-mix(in srgb, var(--bad) 25%, transparent);}
+  .comphead{font-size:0.74rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-soft);margin:14px 2px 6px;display:flex;align-items:center;gap:6px;}
+  /* due righe: orario, squadre e punteggio sopra; le quote sotto, larghe (i nomi non si tagliano) */
+  .evline{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:6px;}
+  .evmain{grid-column:1 / -1;display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:6px;font:inherit;color:inherit;background:none;border:none;text-align:left;cursor:pointer;padding:2px;min-width:0;}
+  .evtime{font-size:0.72rem;color:var(--ink-soft);line-height:1.2;}
+  .livetag{color:var(--bad);font-weight:800;font-size:0.78rem;}
+  .evteams{display:flex;flex-direction:column;gap:2px;font-size:0.84rem;font-weight:600;min-width:0;}
+  .evteams span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .evscore{font-weight:800;font-size:0.9rem;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .evodds{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;}
+  .evodds .otile{padding:6px 2px;}
+  .evmore{font:inherit;font-size:0.72rem;font-weight:700;color:var(--accent-strong);background:none;border:none;cursor:pointer;padding:4px 2px;}
+  .otile{position:relative;font:inherit;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:8px 4px;cursor:pointer;text-align:center;min-width:0;display:flex;flex-direction:column;align-items:center;gap:1px;}
+  .otile .ol{font-size:0.7rem;color:var(--ink-soft);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .otile .ov{font-weight:800;font-size:0.95rem;font-variant-numeric:tabular-nums;}
+  .otile.sel{background:var(--accent);border-color:var(--accent);color:#12181A;}
+  .otile.sel .ol{color:#12181A;}
+  .otile.off{opacity:.45;cursor:default;}
+  .otile .tr{position:absolute;top:2px;right:3px;line-height:0;}
+  .otile .tr .ico{width:9px;height:9px;}
+  .otile .tr.up{color:var(--good);} .otile .tr.down{color:var(--bad);}
+  .otile.sel .tr.up,.otile.sel .tr.down{color:#12181A;}
+  .stima{font-size:0.6rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--teal);}
+  .otile .stima{line-height:1;}
+  .matchhead{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:8px 0 14px;}
+  .matchhead .mt{font-weight:800;font-size:1rem;text-align:center;}
+  .matchhead .ms{font-weight:800;font-size:1.6rem;text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .matchhead .mm{font-size:0.78rem;color:var(--bad);font-weight:700;}
+  .chips.mtabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:6px 0 10px;}
+  .chips.mtabs::-webkit-scrollbar{display:none;} .chips.mtabs .chip{flex:none;}
+  .mgroup{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px;}
+  .mtitle{font-weight:700;font-size:0.85rem;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .ogrid{display:grid;gap:6px;}
+  .stt tr.locked td{color:var(--ink-soft);}
+  .stt tr.locked td:first-child,.stt tr.locked td:last-child,.rt td.locked .blur{filter:blur(4px);user-select:none;}
+  .rt td.locked{color:var(--ink-soft);} .rt td.locked .ico{width:12px;height:12px;margin-left:4px;}
+  .upsell{font-size:0.8rem;color:var(--ink-soft);background:color-mix(in srgb, var(--accent) 12%, transparent);border-radius:10px;padding:8px 10px;margin:-6px 0 12px;}
+  .slipbar{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 70px);z-index:20;display:flex;justify-content:space-between;align-items:center;gap:10px;font:inherit;font-size:0.88rem;border:none;border-radius:12px;padding:12px 14px;background:var(--accent);color:#12181A;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.25);}
+  .slipbar .go{font-weight:800;display:flex;align-items:center;gap:2px;}
+  @media (min-width:600px) and (min-height:560px){ .slipbar{max-width:456px;margin-inline:auto;} }
+  .slipcard{padding:4px 12px;}
+  .leg{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .leg:last-child{border-bottom:none;}
+  .leg .lt{flex:1;min-width:0;} .leg .le{font-size:0.78rem;color:var(--ink-soft);display:flex;align-items:center;gap:5px;}
+  .leg .lp{font-weight:700;font-size:0.9rem;} .leg .lo{font-weight:800;font-size:1rem;font-variant-numeric:tabular-nums;}
+  .iconbtn.sm{width:30px;height:30px;}
+  .slipsum{display:flex;justify-content:space-between;align-items:baseline;margin:10px 2px;font-size:0.9rem;}
+  .slipsum b{font-size:1.3rem;font-variant-numeric:tabular-nums;}
+  .sliperr{background:color-mix(in srgb, var(--bad) 12%, transparent);color:var(--bad);border-radius:10px;padding:8px 10px;font-size:0.84rem;display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+  .primary.block{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;width:100%;}
+  .primary.disabled{opacity:.45;cursor:not-allowed;}
+  .hero.season{min-height:118px;}
+  .strat.locked .nm,.strat.locked .ds{color:var(--ink-soft);}
+  .tm .ico{width:10px;height:10px;vertical-align:-1px;}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+  .hero.mini{min-height:96px;padding:12px;}
+  .hero.mini .ht{font-size:1.1rem;}
+  .badge .bi .ico{width:26px;height:26px;color:var(--accent-strong);}
+  .banner .ico{width:18px;height:18px;color:var(--accent-strong);}
   .lvbar{height:6px;border-radius:99px;background:rgba(255,255,255,.25);margin:8px 0 6px;overflow:hidden;}
   .lvbar div{height:100%;background:#F2C14E;border-radius:99px;}
   .badges{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
@@ -125,7 +195,7 @@
   .radarwrap{overflow-x:auto;margin:0 -16px;padding:0 16px;}
   .rt{border-collapse:collapse;font-size:0.8rem;white-space:nowrap;min-width:100%;}
   .rt th{font-size:0.7rem;color:var(--ink-soft);font-weight:600;text-align:center;padding:6px 8px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);}
-  .rt td{text-align:center;padding:7px 8px;border-bottom:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;}
+  .rt td{text-align:center;padding:7px 8px;border-bottom:1px solid var(--line);font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-variant-numeric:tabular-nums;}
   .rt td.l,.rt th.l{text-align:left;font-family:inherit;}
   .rt td.l b{font-weight:600;} .rt td.mn{color:var(--bad);font-weight:700;} .rt td.sc{font-weight:700;}
   .rt td.warm{background:color-mix(in srgb, #E8862A 22%, transparent);} .rt td.hot{background:color-mix(in srgb, var(--bad) 25%, transparent);}
@@ -147,14 +217,14 @@
   .slrow input[type=range]{width:100%;accent-color:var(--accent-strong);}
   #diariobets .pickrow{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:0.88rem;}
   #diariobets .meta{font-size:0.8rem;color:var(--ink-soft);margin-top:4px;}
-  .demo{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;padding:3px 8px;border-radius:999px;background:var(--accent);color:#12181A;font-weight:600;}
+  .demo{display:inline-block;font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:10.5px;letter-spacing:0.06em;padding:3px 8px;border-radius:999px;background:var(--accent);color:#12181A;font-weight:600;}
   .oddsbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:16px;}
   .oddsbox .oh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;font-size:0.78rem;color:var(--ink-soft);}
   .oddsbox .og{font-weight:700;font-size:0.82rem;margin:10px 0 6px;}
   .oddsgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
   .oddbtn{font:inherit;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:7px 4px;cursor:pointer;text-align:center;}
   .oddbtn .ol{display:block;font-size:0.72rem;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .oddbtn .ov{display:block;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:0.95rem;}
+  .oddbtn .ov{display:block;font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-weight:600;font-size:0.95rem;}
   .oddbtn[aria-pressed="true"]{border-color:var(--accent-strong);box-shadow:0 0 0 1px var(--accent-strong);}
   .oddsbox.tick .ov{opacity:.35;transition:opacity .2s;}
   .betform .primary{margin-top:8px;text-align:center;text-decoration:none;display:block;}
@@ -167,8 +237,8 @@
   .scard .body{flex:1;min-width:0;}
   .scard .sport{font-weight:700;font-size:0.98rem;}
   .scard .sub{color:var(--ink-soft);font-size:0.84rem;margin-top:2px;}
-  .scard .count{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:1.3rem;flex:none;min-width:34px;text-align:right;}
-  .pill{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.04em;padding:4px 9px;border-radius:999px;white-space:nowrap;flex:none;}
+  .scard .count{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-weight:600;font-size:1.3rem;flex:none;min-width:34px;text-align:right;}
+  .pill{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:10.5px;letter-spacing:0.04em;padding:4px 9px;border-radius:999px;white-space:nowrap;flex:none;}
   .pill.on{background:color-mix(in srgb, var(--good) 16%, transparent);color:var(--good);}
   .pill.warm{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
 
@@ -176,16 +246,16 @@
   .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:15px 16px;margin-bottom:10px;}
   .card .head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px;}
   .card .title{font-weight:700;font-size:0.92rem;}
-  .card .n{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--ink-soft);white-space:nowrap;}
-  .small-sample{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.04em;color:var(--accent-strong);margin-left:6px;}
+  .card .n{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.78rem;color:var(--ink-soft);white-space:nowrap;}
+  .small-sample{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:9.5px;letter-spacing:0.04em;color:var(--accent-strong);margin-left:6px;}
   .row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
   .row:last-child{margin-bottom:0;}
   .row .label{width:64px;flex:none;font-size:0.82rem;color:var(--ink-soft);}
   .track{flex:1;height:8px;background:var(--bg-alt);border-radius:5px;overflow:hidden;position:relative;}
   .track .fill{height:100%;border-radius:5px;position:absolute;top:0;}
   .track .zero{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--ink-soft);opacity:.45;}
-  .row .val{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;min-width:52px;text-align:right;flex:none;}
-  .roi{margin-top:7px;font-family:'IBM Plex Mono',monospace;font-size:0.82rem;font-weight:600;}
+  .row .val{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.8rem;min-width:52px;text-align:right;flex:none;}
+  .roi{margin-top:7px;font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.82rem;font-weight:600;}
   .pos{color:var(--good);} .neg{color:var(--bad);}
 
   /* feed */
@@ -198,17 +268,17 @@
   :root[data-dark="1"] .chip[aria-pressed="true"]{background:var(--accent);color:#12181A;border-color:var(--accent);}
   .feedcard .top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
   .feedcard .cat{font-size:0.78rem;color:var(--ink-soft);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .feedcard .time{font-family:'IBM Plex Mono',monospace;font-size:0.74rem;color:var(--ink-soft);flex:none;}
+  .feedcard .time{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.74rem;color:var(--ink-soft);flex:none;}
   .feedcard .event{font-weight:700;font-size:0.94rem;margin-bottom:8px;overflow-wrap:anywhere;}
   .feedcard .pickrow{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:0.88rem;}
-  .feedcard .ev{font-family:'IBM Plex Mono',monospace;font-size:0.85rem;font-weight:600;flex:none;}
-  .feedcard .meta{margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:0.76rem;color:var(--ink-soft);}
-  .badge{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.04em;padding:3px 8px;border-radius:999px;margin-top:9px;display:inline-block;}
+  .feedcard .ev{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.85rem;font-weight:600;flex:none;}
+  .feedcard .meta{margin-top:8px;font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.76rem;color:var(--ink-soft);}
+  .badge{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:9.5px;letter-spacing:0.04em;padding:3px 8px;border-radius:999px;margin-top:9px;display:inline-block;}
   .badge.valore{background:color-mix(in srgb, var(--good) 16%, transparent);color:var(--good);}
   .badge.lieve{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
   .badge.nessun{background:color-mix(in srgb, var(--bad) 14%, transparent);color:var(--bad);}
   .badge.info,.badge.prova{background:color-mix(in srgb, var(--teal) 14%, transparent);color:var(--teal);}
-  .tm{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.05em;font-weight:600;padding:2px 7px;border-radius:999px;flex:none;white-space:nowrap;}
+  .tm{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:9.5px;letter-spacing:0.05em;font-weight:600;padding:2px 7px;border-radius:999px;flex:none;white-space:nowrap;}
   .tm.live{background:color-mix(in srgb, var(--bad) 15%, transparent);color:var(--bad);}
   .tm.corsa{background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent-strong);}
   .tm.prepartita{background:color-mix(in srgb, var(--teal) 14%, transparent);color:var(--teal);}
@@ -219,7 +289,7 @@
   .todayline{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font-size:0.82rem;color:var(--ink-soft);padding:8px 2px 12px;border-bottom:1px solid var(--line);margin-bottom:12px;cursor:pointer;}
   .todayline b{color:var(--ink);}
   .todaycard .best{display:flex;align-items:baseline;gap:10px;margin:2px 0 4px;}
-  .todaycard .big{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;}
+  .todaycard .big{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;}
   .feedcard .extra{margin-top:8px;display:flex;flex-direction:column;gap:4px;font-size:0.82rem;color:var(--ink-soft);}
 
   /* filtro per strategia */
@@ -232,7 +302,7 @@
   .strat .txt{flex:1;min-width:0;}
   .strat .nm{font-weight:700;font-size:0.92rem;overflow-wrap:anywhere;}
   .strat .ds{font-size:0.82rem;color:var(--ink-soft);margin-top:2px;}
-  .strat .rc{font-family:'IBM Plex Mono',monospace;font-size:0.74rem;color:var(--ink-soft);margin-top:4px;}
+  .strat .rc{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.74rem;color:var(--ink-soft);margin-top:4px;}
   .switch{position:relative;flex:none;width:46px;height:28px;margin-top:2px;}
   .switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1;}
   .switch .slider{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:background .15s;}
@@ -251,18 +321,18 @@
   .prose{font-size:0.92rem;line-height:1.6;margin:0 0 18px;}
   .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px;}
   .kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;}
-  .kpi .v{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:1.05rem;font-variant-numeric:tabular-nums;}
+  .kpi .v{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-weight:600;font-size:1.05rem;font-variant-numeric:tabular-nums;}
   .kpi .l{font-size:0.72rem;color:var(--ink-soft);margin-top:2px;}
   .verdict{border-left:3px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0;padding:12px 14px;font-size:0.9rem;margin-bottom:18px;}
   .chart{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 12px 8px;margin-bottom:12px;}
-  .chart h3{font-family:'Source Sans 3',sans-serif;font-size:0.86rem;font-weight:700;margin-bottom:8px;}
+  .chart h3{font-family:'Archivo',system-ui,sans-serif;font-size:0.86rem;font-weight:700;margin-bottom:8px;}
   .chart svg{display:block;width:100%;height:auto;}
   .chart .cap{font-size:0.74rem;color:var(--ink-soft);margin-top:6px;}
   .src{font-size:0.76rem;color:var(--ink-soft);margin-top:4px;}
 
   /* led di stato accanto al nome */
   .led{display:inline-flex;align-items:center;gap:6px;margin-left:8px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);
-    background:var(--surface);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:600;color:var(--ink-soft);cursor:pointer;}
+    background:var(--surface);font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.7rem;font-weight:600;color:var(--ink-soft);cursor:pointer;}
   .led .dot{width:9px;height:9px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb, var(--good) 25%, transparent);}
   .led.warn .dot{background:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);}
   .led.down .dot{background:var(--bad);box-shadow:0 0 0 3px color-mix(in srgb, var(--bad) 25%, transparent);}
@@ -271,7 +341,7 @@
   .hrow .dot{width:9px;height:9px;border-radius:50%;flex:none;}
   .hrow .hb{flex:1;min-width:0;}
   .hrow .hn{font-weight:600;}
-  .hrow .ht{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ink-soft);margin-top:2px;}
+  .hrow .ht{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.72rem;color:var(--ink-soft);margin-top:2px;}
 
   /* barre dell'andamento nelle strategie */
   .perf{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:3px 8px;margin-top:8px;font-size:0.74rem;}
@@ -282,7 +352,7 @@
   .pfill,.pwin,.ploss{position:absolute;top:0;bottom:0;}
   .pwin{left:0;background:var(--good);}
   .ploss{background:var(--bad);opacity:.8;}
-  .pv{font-family:'IBM Plex Mono',monospace;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .pv{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap;font-variant-numeric:tabular-nums;}
 
   /* scheda del segnale */
   .feedcard{cursor:pointer;}
@@ -291,7 +361,7 @@
   .facts{display:flex;flex-direction:column;gap:6px;font-size:0.88rem;margin-bottom:16px;}
   .facts .k{color:var(--ink-soft);}
   details.raw summary{cursor:pointer;font-size:0.84rem;color:var(--accent-strong);font-weight:700;margin:14px 0 8px;}
-  details.raw pre{white-space:pre-wrap;overflow-wrap:anywhere;font-family:'IBM Plex Mono',monospace;font-size:0.76rem;
+  details.raw pre{white-space:pre-wrap;overflow-wrap:anywhere;font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.76rem;
     background:var(--bg-alt);border-radius:10px;padding:12px;margin:0;}
 
   /* calcio virtuale */
@@ -299,11 +369,11 @@
   .test:last-child{border-bottom:none;}
   .test .tn{font-weight:700;font-size:0.9rem;}
   .test .tt{font-size:0.84rem;color:var(--ink-soft);margin-top:3px;}
-  .test .tl{font-family:'IBM Plex Mono',monospace;font-size:0.76rem;margin-top:6px;display:flex;flex-direction:column;gap:3px;}
+  .test .tl{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.76rem;margin-top:6px;display:flex;flex-direction:column;gap:3px;}
   .vres{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 10px;align-items:baseline;font-size:0.84rem;}
-  .vres .w{font-family:'IBM Plex Mono',monospace;font-size:0.74rem;color:var(--ink-soft);white-space:nowrap;}
+  .vres .w{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:0.74rem;color:var(--ink-soft);white-space:nowrap;}
   .vres .p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .vres .s{font-family:'IBM Plex Mono',monospace;font-weight:600;}
+  .vres .s{font-family:'Archivo',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-weight:600;}
   .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:0.74rem;color:var(--ink-soft);margin-top:4px;}
   .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px;}
 
@@ -328,6 +398,56 @@
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-calcio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.6l3.7 2.7-1.4 4.3H9.7l-1.4-4.3z"/><path d="M12 3v4.6M15.7 10.3l4.5-1.4M14.3 14.6l2.8 3.8M9.7 14.6l-2.8 3.8M8.3 10.3L3.8 8.9"/></symbol>
+    <symbol id="i-tennis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.7 5.6c3.1 3.4 3.1 9.4 0 12.8M18.3 5.6c-3.1 3.4-3.1 9.4 0 12.8"/></symbol>
+    <symbol id="i-ippica" viewBox="0 0 24 24"><path d="M7 4.2C4.9 6.1 4 8.6 4 11.5 4 16.4 7.6 20 12 20s8-3.6 8-8.5c0-2.9-.9-5.4-3-7.3"/><path d="M8.7 5.6c-1.4 1.5-2.1 3.4-2.1 5.7 0 3.5 2.4 6.1 5.4 6.1s5.4-2.6 5.4-6.1c0-2.3-.7-4.2-2.1-5.7"/><path d="M6.2 9v.1M17.8 9v.1M7.6 14v.1M16.4 14v.1"/></symbol>
+    <symbol id="i-hockey" viewBox="0 0 24 24"><path d="M5 3l7.6 13.4h6.9a1.6 1.6 0 0 1 0 3.2H11.2L3.4 4"/><ellipse cx="6.5" cy="19.2" rx="3" ry="1.3"/></symbol>
+    <symbol id="i-basket" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.7 5.6c2.4 2 3.8 4.2 3.8 6.4s-1.4 4.4-3.8 6.4M18.3 5.6c-2.4 2-3.8 4.2-3.8 6.4s1.4 4.4 3.8 6.4"/></symbol>
+    <symbol id="i-segnali" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6.5 5 13 2.5-6.5h4"/></symbol>
+    <symbol id="i-strategie" viewBox="0 0 24 24"><path d="M4 7h9.5M18.5 7H20M4 17h3.5M12.5 17H20"/><circle cx="16" cy="7" r="2.3"/><circle cx="10" cy="17" r="2.3"/></symbol>
+    <symbol id="i-diario" viewBox="0 0 24 24"><path d="M5.5 3.5h13v17l-2.2-1.5-2.1 1.5-2.2-1.5-2.2 1.5-2.1-1.5-2.2 1.5z"/><path d="M9 8.5h6M9 12.5h4"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6.2-6.2"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="6.6"/><path d="M12 2.6v2.8M12 18.6v2.8M21.4 12h-2.8M5.4 12H2.6M18.6 5.4l-2 2M7.4 16.6l-2 2M18.6 18.6l-2-2M7.4 7.4l-2-2"/></symbol>
+    <symbol id="i-exit" viewBox="0 0 24 24"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20.5h7M10 17h4v3.5h-4z"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 7.5-7.5M15 7.5h5.5V13"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.1 0-3.4 2.5-5.2 3.5-8.4 1.9 1.4 2.4 3.1 2.4 4.6 1.2-.6 2-2 2-3.6 2.6 2 5.1 4.4 5.1 7.6 0 3.4-2.6 5.9-6.5 5.9z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.6-3.1 8.2-7.5 9.5-4.4-1.3-7.5-4.9-7.5-9.5V6z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.5 6.5 0 0 0 10 10z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.8l9 15.7H3z"/><path d="M12 10v4.4M12 17.2v.1"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3.5l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4.5h9.5a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9.5"/></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 20.5h16M6 20.5V9l6-4.5 6 4.5v11.5M9.5 20.5v-6h5v6"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M14.5 4.5c3-1.5 5-1 5-1s.5 2-1 5L13 14l-3-3z"/><path d="M10 11l-4 .5L4 14l4 1M13 14l-.5 4L10 20l-1-4"/><circle cx="15.5" cy="8.5" r="1.3"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/></symbol>
+    <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.5 4.5L12 6l2.5-1.5M9.5 19.5L12 18l2.5 1.5"/></symbol>
+    <symbol id="i-handshake" viewBox="0 0 24 24"><path d="M3 12l4-4 4 1 3-2 4 1 3 4-4 4-3-1-3 3-3-1z"/><path d="M11 9l-3 3 2 2"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 6l7 6-7 6zM13 6l7 6-7 6z"/></symbol>
+    <symbol id="i-one" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10.5 9l2-1.5V16"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9.5a1 1 0 0 0 1 1h3.5"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3.5L3 10.8l6.6 2.6L12.2 20l3-5.2z"/><path d="M9.6 13.4L21 3.5"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 5l8 13H4z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 19L4 6h16z" fill="currentColor" stroke="none"/></symbol>
+  </defs>
+</svg>
 
 <div class="topbar">
   <div class="brand">
@@ -342,8 +462,8 @@
     <button class="led" id="led" type="button" hidden aria-label="Stato del sistema"><span class="dot"></span><span id="ledtext">online</span></button>
   </div>
   <div class="topright" id="topright" hidden>
-    <button class="iconbtn" id="settingsbtn" type="button" aria-label="Impostazioni">⚙</button>
-    <button class="iconbtn" id="logout" type="button" aria-label="Esci e dimentica la password">⎋</button>
+    <button class="iconbtn" id="settingsbtn" type="button" aria-label="Impostazioni"><svg class="ico"><use href="#i-gear"/></svg></button>
+    <button class="iconbtn" id="logout" type="button" aria-label="Esci e dimentica la password"><svg class="ico"><use href="#i-exit"/></svg></button>
   </div>
 </div>
 
@@ -375,16 +495,16 @@
 <main class="view" id="view-segnali" hidden>
   <div class="chips" id="timechips" role="group" aria-label="Filtra per momento" style="margin-bottom:8px;">
     <button class="chip" type="button" data-when="all" aria-pressed="true">Tutti</button>
-    <button class="chip" type="button" data-when="subito" aria-pressed="false">⚡ Da giocare subito</button>
-    <button class="chip" type="button" data-when="pre" aria-pressed="false">📅 Pre-partita</button>
+    <button class="chip" type="button" data-when="subito" aria-pressed="false"><svg class="ico"><use href="#i-bolt"/></svg> Da giocare subito</button>
+    <button class="chip" type="button" data-when="pre" aria-pressed="false"><svg class="ico"><use href="#i-calendar"/></svg> Pre-partita</button>
   </div>
   <div class="chips" id="chips" role="group" aria-label="Filtra per sport">
     <button class="chip" type="button" data-filter="all" aria-pressed="true">Tutti</button>
-    <button class="chip" type="button" data-filter="tennis" aria-pressed="false">🎾 Tennis</button>
-    <button class="chip" type="button" data-filter="ippica" aria-pressed="false">🐎 Ippica</button>
-    <button class="chip" type="button" data-filter="calcio" aria-pressed="false">⚽ Calcio</button>
-    <button class="chip" type="button" data-filter="hockey" aria-pressed="false">🏒 Hockey</button>
-    <button class="chip" type="button" data-filter="basket" aria-pressed="false">🏀 Basket</button>
+    <button class="chip" type="button" data-filter="tennis" aria-pressed="false"><svg class="ico"><use href="#i-tennis"/></svg> Tennis</button>
+    <button class="chip" type="button" data-filter="ippica" aria-pressed="false"><svg class="ico"><use href="#i-ippica"/></svg> Ippica</button>
+    <button class="chip" type="button" data-filter="calcio" aria-pressed="false"><svg class="ico"><use href="#i-calcio"/></svg> Calcio</button>
+    <button class="chip" type="button" data-filter="hockey" aria-pressed="false"><svg class="ico"><use href="#i-hockey"/></svg> Hockey</button>
+    <button class="chip" type="button" data-filter="basket" aria-pressed="false"><svg class="ico"><use href="#i-basket"/></svg> Basket</button>
   </div>
   <div class="filternote" id="filternote" hidden>
     <span id="filtertext"></span>
@@ -404,7 +524,7 @@
 </main>
 
 <main class="view" id="view-virtuali" hidden>
-  <button class="back" type="button" data-back="strategie">‹ Strategie</button>
+  <button class="back" type="button" data-back="impostazioni">‹ Informativa</button>
   <div id="virtuali"></div>
 </main>
 
@@ -413,32 +533,43 @@
   <h1 class="dtitle">Impostazioni</h1>
   <h2 class="sectiontitle">Tema</h2>
   <div class="chips" id="temachips" role="group" aria-label="Tema">
-    <button class="chip" type="button" data-tema="scuro">🌙 Scuro</button>
-    <button class="chip" type="button" data-tema="chiaro">☀️ Chiaro</button>
+    <button class="chip" type="button" data-tema="scuro"><svg class="ico"><use href="#i-moon"/></svg> Scuro</button>
+    <button class="chip" type="button" data-tema="chiaro"><svg class="ico"><use href="#i-sun"/></svg> Chiaro</button>
     <button class="chip" type="button" data-tema="auto">Automatico</button>
   </div>
   <div class="note" style="margin-top:10px;">"Automatico" segue l'impostazione del telefono.</div>
+  <h2 class="sectiontitle">Piano</h2>
+  <div class="chips" id="pianochips" role="group" aria-label="Piano">
+    <button class="chip" type="button" data-piano="full">StatSight Full</button>
+    <button class="chip" type="button" data-piano="free">Gratuito</button>
+  </div>
+  <div class="note" style="margin-top:10px;">Con "Gratuito" vedi l'app come la vedrà chi non è abbonato: xG, attacchi pericolosi, possesso, statistiche al servizio e le strategie che le usano sono coperti dal lucchetto. Gli abbonamenti veri arrivano con l'app pubblica.</div>
+  <h2 class="sectiontitle">Informativa</h2>
+  <div id="informativa"></div>
 </main>
 
 <main class="view" id="view-diario" hidden>
   <div class="chips subtabs" role="tablist">
-    <button class="chip" type="button" data-sub="diario" aria-pressed="true">📡 Partite live</button>
-    <button class="chip" type="button" data-sub="occhio" aria-pressed="false">👁 Il mio occhio</button>
+    <button class="chip" type="button" data-sub="diario" aria-pressed="true"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
+    <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
-  <h2 class="sectiontitle" style="margin-top:4px;">Partite live adesso</h2>
+  <div class="segbar" id="dviewchips" role="tablist">
+    <button type="button" data-dview="live" aria-pressed="true"><span class="dot live"></span> Live <span class="cnt" id="nlive"></span></button>
+    <button type="button" data-dview="pre" aria-pressed="false"><svg class="ico"><use href="#i-calendar"/></svg> Pre-partita <span class="cnt" id="npre"></span></button>
+  </div>
   <div class="chips" id="diariochips" role="group" aria-label="Filtra per sport">
-    <button class="chip" type="button" data-dsport="all" aria-pressed="true">Tutte</button>
-    <button class="chip" type="button" data-dsport="calcio" aria-pressed="false">⚽ Calcio</button>
-    <button class="chip" type="button" data-dsport="tennis" aria-pressed="false">🎾 Tennis</button>
+    <button class="chip" type="button" data-dsport="all" aria-pressed="true">Tutti</button>
+    <button class="chip" type="button" data-dsport="calcio" aria-pressed="false"><svg class="ico"><use href="#i-calcio"/></svg> Calcio</button>
+    <button class="chip" type="button" data-dsport="tennis" aria-pressed="false"><svg class="ico"><use href="#i-tennis"/></svg> Tennis</button>
   </div>
   <div id="diarioevents"></div>
-  <div class="note" style="margin-bottom:10px;">Partita che non c'è? Scrivi al bot: <b>/giocata Croazia-Italia U19 Under 1,5 2,00</b> (la quota alla fine). Per quelle l'esito lo scrivi tu con /esito.</div>
+  <div class="note" style="margin:14px 0 10px;">Partita che non c'è? Scrivi al bot: <b>/giocata Croazia-Italia U19 Under 1,5 2,00</b> (la quota alla fine). Per quelle l'esito lo scrivi tu con /esito.</div>
 </main>
 
 <main class="view" id="view-occhio" hidden>
   <div class="chips subtabs" role="tablist">
-    <button class="chip" type="button" data-sub="diario" aria-pressed="false">📡 Partite live</button>
-    <button class="chip" type="button" data-sub="occhio" aria-pressed="true">👁 Il mio occhio</button>
+    <button class="chip" type="button" data-sub="diario" aria-pressed="false"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
+    <button class="chip" type="button" data-sub="occhio" aria-pressed="true"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
   <div id="occhiolevel"></div>
   <div class="eyebrow" style="margin-top:18px;">Il mio occhio</div>
@@ -455,8 +586,8 @@
   <div class="radarhead"><div class="eyebrow" style="margin:0;">Radar live</div><span class="k" id="radarage"></span></div>
   <div class="note rotate">Gira il telefono in orizzontale per vedere tutte le colonne.</div>
   <div class="chips" id="radarchips" role="group" aria-label="Sport" style="margin:8px 0;">
-    <button class="chip" type="button" data-rsport="calcio" aria-pressed="true">⚽ Calcio</button>
-    <button class="chip" type="button" data-rsport="tennis" aria-pressed="false">🎾 Tennis</button>
+    <button class="chip" type="button" data-rsport="calcio" aria-pressed="true"><svg class="ico"><use href="#i-calcio"/></svg> Calcio</button>
+    <button class="chip" type="button" data-rsport="tennis" aria-pressed="false"><svg class="ico"><use href="#i-tennis"/></svg> Tennis</button>
   </div>
   <div class="radarwrap" id="radar"></div>
 </main>
@@ -467,22 +598,31 @@
 </main>
 
 <main class="view" id="view-giocata" hidden>
-  <button class="back" type="button" data-back="diario">‹ Diario</button>
+  <button class="back" type="button" data-back="diario">‹ Partite</button>
   <div id="giocata"></div>
 </main>
 
+<main class="view" id="view-schedina" hidden>
+  <button class="back" type="button" data-back="diario">‹ Partite</button>
+  <div id="schedina"></div>
+</main>
+
+<button class="slipbar" id="slipbar" type="button" hidden><span id="slipbartxt"></span><span class="go">Apri <svg class="ico"><use href="#i-chev"/></svg></span></button>
+
 <nav class="tabbar" id="tabbar" hidden>
-  <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic">≡</span>Segnali</button>
-  <button class="tab" type="button" data-view="strategie"><span class="ic">⚙</span>Strategie</button>
-  <button class="tab" type="button" data-view="diario"><span class="ic">✎</span>Diario</button>
-  <button class="tab" type="button" data-view="radar"><span class="ic">◎</span>Radar</button>
+  <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic"><svg class="ico"><use href="#i-segnali"/></svg></span>Segnali</button>
+  <button class="tab" type="button" data-view="strategie"><span class="ic"><svg class="ico"><use href="#i-strategie"/></svg></span>Strategie</button>
+  <button class="tab" type="button" data-view="diario"><span class="ic"><svg class="ico"><use href="#i-diario"/></svg></span>Diario</button>
+  <button class="tab" type="button" data-view="radar"><span class="ic"><svg class="ico"><use href="#i-radar"/></svg></span>Radar</button>
 </nav>
 
+<script src="regole.js"></script>
 <script>
 (function () {
   "use strict";
   var PW_KEY = "segnalatore.pw";
-  var EMOJI = { tennis: "🎾", ippica: "🐎", calcio: "⚽", hockey: "🏒", basket: "🏀" };
+  function ic(n, cls) { return '<svg class="ico' + (cls ? " " + cls : "") + '" aria-hidden="true"><use href="#i-' + n + '"/></svg>'; }
+  var EMOJI = { tennis: ic("tennis"), ippica: ic("ippica"), calcio: ic("calcio"), hockey: ic("hockey"), basket: ic("basket") };
   var NAME = { tennis: "Tennis", ippica: "Ippica", calcio: "Calcio", hockey: "Hockey", basket: "Basket" };
   var TIER_LABEL = { valore: "VALORE", lieve: "LIEVE VALORE", nessun: "NESSUN VALORE", info: "INFORMATIVO", prova: "IN PROVA" };
   var FILTER_KEY = "segnalatore.filtri";
@@ -490,9 +630,9 @@
   // Live e corse (ippica a 15 minuti dal via) vanno giocati subito; i pre-partita valgono fino all'inizio.
   var TIMING_LABEL = { live: "LIVE", corsa: "CORSA", prepartita: "PRE-PARTITA" };
   var TIMING_NOTE = {
-    live: "⚡ Live: partita in corso, la quota cambia in fretta. Vale solo adesso.",
-    corsa: "🐎 Corsa: il via è pochi minuti dopo il segnale.",
-    prepartita: "📅 Pre-partita: vale fino all'inizio della partita, se la quota è ancora quella."
+    live: "Live: partita in corso, la quota cambia in fretta. Vale solo adesso.",
+    corsa: "Corsa: il via è pochi minuti dopo il segnale.",
+    prepartita: "Pre-partita: vale fino all'inizio della partita, se la quota è ancora quella."
   };
   function whenOk(t) { return when === "all" || (when === "pre" ? t === "prepartita" : t !== "prepartita"); }
   function tmTag(t) { return TIMING_LABEL[t] ? '<span class="tm ' + t + '">' + TIMING_LABEL[t] + '</span>' : ""; }
@@ -654,7 +794,7 @@
       html += '<div class="note gap">Esito non ancora disponibile: arriva a fine partita o corsa.</div>';
     } else {
       if (out.detail) {
-        html += '<div class="result ' + (out.hit ? "pos" : "neg") + '">' + (out.hit ? "✅ VINTO" : "❌ PERSO") + '</div><div class="facts">';
+        html += '<div class="result ' + (out.hit ? "pos" : "neg") + '">' + (out.hit ? ic("check") + " VINTO" : ic("x") + " PERSO") + '</div><div class="facts">';
         if (base.sport === "tennis") {
           var players = base.event.split(" v ");
           var pick = sig ? sig.pick : out.detail;
@@ -686,7 +826,7 @@
     var idx = best ? data.feed.findIndex(function (f) { return f.key && f.key === best.key && f.kind !== "outcome"; }) : -1;
     if (best && idx < 0) idx = data.feed.findIndex(function (f) { return f.key && f.key === best.key; });
     // riga compatta fra i filtri (niente soldi: non e' un invito a giocare, e' il conto onesto della giornata)
-    return '<div class="todayline' + (idx >= 0 ? '" data-idx="' + idx : "") + '"><span>📅 <b>Oggi</b> ' + wins + ' vinti · ' + (res.length - wins) + ' persi</span>'
+    return '<div class="todayline' + (idx >= 0 ? '" data-idx="' + idx : "") + '"><span>' + ic("calendar") + ' <b>Oggi</b> ' + wins + ' vinti · ' + (res.length - wins) + ' persi</span>'
       + (best ? '<span>quota più alta vinta <b class="pos">' + it(best.odds, 2) + '</b>' + (idx >= 0 ? ' ›' : "") + '</span>' : "") + '</div>';
   }
 
@@ -706,7 +846,7 @@
         + (f.kind !== "outcome" ? tmTag(f.timing) : "") + '<span class="time">' + whenLabel(f.ts) + '</span></div>'
         + '<div class="event">' + esc(f.event) + '</div>';
       if (f.kind === "outcome") {
-        var main = showMain ? '<div class="pickrow"><span>' + (f.hit ? "✅ " : "❌ ") + esc(f.detail) + '</span>'
+        var main = showMain ? '<div class="pickrow"><span>' + (f.hit ? ic("check", "pos") + " " : ic("x", "neg") + " ") + esc(f.detail) + '</span>'
           + '<span class="ev ' + (f.hit ? "pos" : "neg") + '">' + esc(f.result) + '</span></div>' : "";
         return '<div class="card feedcard" data-idx="' + i + '">' + top + main + extraHtml + '</div>';
       }
@@ -752,16 +892,21 @@
     if (!HERO[stratSport] && !TOPS[stratSport]) stratSport = "calcio";
     var tabs = '<div class="chips sporttabs" role="tablist">'
       + ["top5", "top10"].map(function (t) {
-        return '<button class="chip" type="button" role="tab" data-ssport="' + t + '" aria-pressed="' + (t === stratSport) + '">' + (t === "top5" ? "⭐ Top 5" : "Top 10") + '</button>';
+        return '<button class="chip" type="button" role="tab" data-ssport="' + t + '" aria-pressed="' + (t === stratSport) + '">' + (t === "top5" ? ic("star") + " Top 5" : "Top 10") + '</button>';
       }).join("")
       + STRAT_SPORTS.map(function (sp) {
         return '<button class="chip" type="button" role="tab" data-ssport="' + sp + '" aria-pressed="' + (sp === stratSport) + '">' + EMOJI[sp] + ' ' + NAME[sp] + '</button>';
       }).join("") + '</div>';
     function row(s, withSport) {
       var id = "sw-" + s.id, rank = topIds().indexOf(s.id);
+      if (catLocked(s.id)) {
+        return '<div class="strat locked"><div class="txt"><span class="nm">' + (withSport ? EMOJI[s.sport] + " " : "") + esc(s.name) + '</span><span class="tm spenta">' + ic("lock") + ' FULL</span>'
+          + '<div class="ds">' + esc(s.description) + '</div><div class="ds">Usa statistiche di StatSight Full: si sblocca con l\'abbonamento.</div></div>'
+          + '<span class="switch"><input type="checkbox" role="switch" disabled aria-label="Serve StatSight Full"><span class="slider"></span></span></div>';
+      }
       return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + (withSport ? EMOJI[s.sport] + " " : "") + esc(s.name) + '</label>'
         + (s.retired ? '<span class="tm spenta">SPENTA DAL ' + esc(s.retired) + '</span>' : tmTag(s.timing))
-        + (rank >= 0 && rank < 5 ? '<span class="tm top">⭐ TOP 5</span>' : rank >= 5 ? '<span class="tm top">TOP 10</span>' : "")
+        + (rank >= 0 && rank < 5 ? '<span class="tm top">TOP 5</span>' : rank >= 5 ? '<span class="tm top">TOP 10</span>' : "")
         + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
         + perfBar("Storico", s.detail && s.detail.stats) + perfBar("Ultimi 3 giorni", s.recent) + '</div>'
         + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
@@ -771,7 +916,7 @@
     if (TOPS[stratSport]) {
       var top = topIds().slice(0, TOPS[stratSport]).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(Boolean);
       $("strategie").innerHTML = tabs
-        + '<div class="hero" style="background-image:linear-gradient(120deg,#3B2F0B,#8A6A14 60%,#C9A227);"><div class="ht">⭐ Top ' + TOPS[stratSport] + '</div><div class="hs">Le strategie col rendimento storico più alto, tutti gli sport (almeno ' + ((data.top5 && data.top5.min_cases) || 100) + ' casi)</div></div>'
+        + '<div class="hero" style="background-image:linear-gradient(120deg,#3B2F0B,#8A6A14 60%,#C9A227);"><div class="ht">' + ic("star") + ' Top ' + TOPS[stratSport] + '</div><div class="hs">Le strategie col rendimento storico più alto, tutti gli sport (almeno ' + ((data.top5 && data.top5.min_cases) || 100) + ' casi)</div></div>'
         + (top.length ? '<h2 class="sectiontitle">In classifica</h2>' + NOTE + '<div class="card">' + top.map(function (s) { return row(s, true); }).join("") + '</div>'
           : '<div class="note" style="margin-top:14px;">Nessuna strategia ha ancora abbastanza casi per entrare in classifica.</div>')
         + (top.length < TOPS[stratSport] && top.length ? '<div class="note" style="margin-top:10px;">Solo ' + top.length + ' strategie hanno abbastanza casi, per ora.</div>' : "");
@@ -783,13 +928,31 @@
     $("strategie").innerHTML = tabs + hero + [stratSport].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) { return row(s, false); }).join("");
       return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2>' + NOTE + '<div class="card">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
-    }).join("") + catalogoHtml(stratSport) + ((data.esclusi || []).length
-      ? '<h2 class="sectiontitle">Cosa non copriamo, di proposito</h2><div class="card">'
+    }).join("") + catalogoHtml(stratSport);
+  }
+
+  // Informativa (Impostazioni): regolamento del Diario, fonti dei dati, cosa non copriamo, avvertenze.
+  // "Cosa non copriamo" prima stava in fondo a ogni pagina Strategie (richiesta utente 02/10: solo qui).
+  function renderInformativa() {
+    var html = '<details class="card"><summary><b>Regolamento del Diario</b></summary><div class="ds" style="margin-top:8px;line-height:1.55;">'
+      + '<b>Niente soldi:</b> i pronostici valgono punti, livelli e lega.<br>'
+      + '<b>Un esito per mercato:</b> toccare un altro esito dello stesso mercato sostituisce il primo. Sulla stessa partita non si tengono esiti che non possono vincere insieme (1 e X2, Goal e Under 1,5, vincente 1 e 1-2 in set).<br>'
+      + '<b>Singole, multipla, sistema:</b> multipla da 2 a 20 partite (vince se vincono tutte; quota = prodotto); sistema k su n da 3 a 10 partite, massimo 120 combinazioni (risultato = media delle combinazioni). In multipla e sistema una partita compare una volta sola.<br>'
+      + '<b>Live e pre-partita:</b> si possono combinare. Un esito pre-partita vale solo prima del via; un esito live solo con quota aggiornata da meno di 10 minuti (altrimenti è sospeso). Alla conferma il bot riprende la quota di quell\'istante: se è salita va bene, se è scesa fino al 10% anche, oltre la schedina va rifatta.<br>'
+      + '<b>Esito nullo:</b> partita rinviata o annullata, mercato annullato: vale quota 1,00.<br>'
+      + '<b>Calcio:</b> 90 minuti più recupero. Prossimo gol, segna casa/ospite e angoli sono quote stimate da noi (Betfair non le offre): si regolano sul punteggio e sugli angoli ufficiali del fornitore dei dati.<br>'
+      + '<b>Tennis:</b> vincente secondo Betfair (in caso di ritiro vince chi passa il turno); risultato in set e totale set per le partite al meglio dei 3 set.</div></details>'
+      + '<details class="card"><summary><b>Da dove vengono i dati</b></summary><div class="ds" style="margin-top:8px;line-height:1.55;">'
+      + 'Quote: Betfair Exchange (prezzo di punta migliore), registrate ogni minuto per il live e ogni 10 minuti per il pre-partita. Punteggi e statistiche: fornitori live di calcio e tennis. Le quote "stima" le calcoliamo noi dalle quote Betfair con un modello statistico. Lo storico delle strategie viene da migliaia di partite passate: è un conteggio, non una previsione.</div></details>';
+    if ((data.esclusi || []).length) {
+      html += '<details class="card"><summary><b>Cosa non copriamo, di proposito</b></summary>'
         + data.esclusi.map(function (e) {
           return '<div class="test"><div class="tn">' + esc(e.title) + '</div><div class="tt">' + esc(e.short || e.long)
             + '<button class="more" type="button" data-escluso="' + esc(e.id) + '">… altro</button></div></div>';
-        }).join("") + '</div>'
-      : "");
+        }).join("") + '</details>';
+    }
+    html += '<div class="note" style="margin-top:10px;">StatSight analizza dati sportivi: non accetta scommesse, non dà consigli personali e non garantisce risultati. Vietato ai minori di 18 anni. Se il gioco smette di essere un divertimento, fermati.</div>';
+    $("informativa").innerHTML = html;
   }
 
   // ---------------------------------------------------------------- Catalogo calcio live con le barre
@@ -822,20 +985,29 @@
     return "Nello storico succede quanto dice il prezzo giusto: dopo il margine del bookmaker perde.";
   }
   function catOf(sport) { return sport === "calcio" ? data.catalogo : data["catalogo_" + sport]; }
+  // strategie che si reggono su statistiche "Full" (xG, attacchi pericolosi, statistiche al servizio)
+  var PREMIUM_CAT = ["ltd_xg", "lay_dog_lucky", "lead_vs_xg", "xg_diff_win", "snore", "next_pressing", "serve_dominance",
+                     "first_serve_bad", "dominio_servizio"];
+  function catLocked(id) { return !isFull() && PREMIUM_CAT.indexOf(id) >= 0; }
   function catalogoHtml(sport) {
     var c = catOf(sport);
     if (!c || !c.strategies) return "";
     var groups = [];
     c.strategies.forEach(function (s) { if (groups.indexOf(s.group) < 0) groups.push(s.group); });
-    return '<div class="note" style="margin:22px 0 4px;">Le strategie qui sotto si regolano: "… altro", poi ⚙ Personalizza. La barra "Storico" usa le tue impostazioni (' + c.matches + ' partite). L\'interruttore le attiva nei tuoi segnali; il motore live di queste strategie è in arrivo, per ora conta lo storico.</div>'
+    return '<div class="note" style="margin:22px 0 4px;">Le strategie qui sotto si regolano: "… altro", poi Personalizza. La barra "Storico" usa le tue impostazioni (' + c.matches + ' partite). L\'interruttore le attiva nei tuoi segnali; il motore live di queste strategie è in arrivo, per ora conta lo storico.</div>'
       + groups.map(function (g) {
         var items = c.strategies.filter(function (s) { return s.group === g; });
         return '<h2 class="sectiontitle">' + esc(g) + '</h2><div class="card">'
           + items.map(function (s) {
-            var cell = s.grid[catKey(s)], id = "cat-" + s.id;
+            var cell = s.grid[catKey(s)], id = "cat-" + s.id, lock = catLocked(s.id);
             var st = { n: cell[0], roi: cell[3], wins: Math.round((cell[1] || 0) * cell[0]) };
+            if (lock) {
+              return '<div class="strat locked"><div class="txt"><span class="nm">' + esc(s.name) + '</span><span class="tm spenta">' + ic("lock") + ' FULL</span>'
+                + '<div class="ds">' + esc(s.pick) + ' · usa statistiche di StatSight Full<button class="more" type="button" data-cat="' + esc(s.id) + '">… altro</button></div></div>'
+                + '<span class="switch"><input type="checkbox" role="switch" disabled aria-label="Serve StatSight Full"><span class="slider"></span></span></div>';
+            }
             return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>' + tmTag("live")
-              + (catSel[s.id] && catSel[s.id] !== s.default ? '<span class="tm top">⚙ TUA</span>' : "")
+              + (catSel[s.id] && catSel[s.id] !== s.default ? '<span class="tm top">TUA</span>' : "")
               + '<div class="ds">' + esc(s.pick) + (cell[0] ? ' · strike ' + Math.round(cell[1] * 100) + '% · quota ~' + it(cell[2], 2) : "")
               + '<button class="more" type="button" data-cat="' + esc(s.id) + '">… altro</button></div>'
               + perfBar("Storico", st) + '</div>'
@@ -856,6 +1028,13 @@
     });
     if (!s) return;
     var method = catOf(cs).method;
+    if (catLocked(s.id)) {
+      $("catalogo").innerHTML = '<h1 class="dtitle">' + esc(s.name) + '</h1><div class="dsub">' + EMOJI[cs] + ' ' + esc(s.group) + '</div>'
+        + '<div class="upsell" style="margin:0 0 12px;">' + ic("lock") + ' Questa strategia usa statistiche di <b>StatSight Full</b> (xG, attacchi pericolosi, statistiche al servizio): numeri, barre e notifiche si sbloccano con l\'abbonamento.</div>'
+        + '<div class="facts"><div><span class="k">Cosa giochi: </span><b>' + esc(s.pick) + '</b></div><div><span class="k">Da dove viene: </span>' + esc(s.origin) + '</div></div>';
+      show("catalogo");
+      return;
+    }
     var idx = catKey(s).split("_").map(Number);
     function draw() {
       var key = idx.join("_"), cell = s.grid[key];
@@ -868,7 +1047,7 @@
       + '<div class="facts"><div><span class="k">Cosa giochi: </span><b>' + esc(s.pick) + '</b></div>'
       + '<div><span class="k">Da dove viene: </span>' + esc(s.origin) + '</div>'
       + (s.note ? '<div><span class="k">' + esc(s.note) + '</span></div>' : "") + '</div>'
-      + '<button class="primary" type="button" id="catgear" style="width:100%;margin-bottom:12px;">⚙ Personalizza</button>'
+      + '<button class="primary" type="button" id="catgear" style="width:100%;margin-bottom:12px;">' + ic("strategie") + ' Personalizza</button>'
       + '<div id="catsliders" hidden>' + s.params.map(function (p, i) {
         return '<div class="slrow"><div class="slh"><span>' + esc(p.label) + '</span><b id="catv' + i + '"></b></div>'
           + '<input type="range" min="0" max="' + (p.values.length - 1) + '" step="1" value="' + idx[i] + '" data-i="' + i + '" aria-label="' + esc(p.label) + '"></div>';
@@ -1105,13 +1284,15 @@
   }
 
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     $("tabbar").hidden = !unlocked;
+    // la barra della schedina: in tutte le pagine tranne il blocco e la schedina stessa
+    $("slipbar").hidden = !unlocked || view === "schedina" || !slip.legs.length;
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario" }[view] || view;
+    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario", schedina: "diario" }[view] || view;
     document.querySelectorAll(".tab").forEach(function (t) {
       if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -1121,92 +1302,388 @@
     renderStatus(); renderFeed(); renderStrategie(); renderDiario(); renderOcchio(); renderRadar();
   }
 
-  // ---------------------------------------------------------------- Diario delle giocate a occhio
-  // L'app non puo' scrivere dati: "Salva" apre il bot Telegram con /start <codice> (signals/diario.py
-  // encode_payload) e il bot fotografa minuto, punteggio e statistiche di quel momento.
-  var dsport = "all", curEvent = null;
-  var GROUPS = { calcio: ["1X2", "Doppia chance", "Prossimo gol", "Under/Over", "Goal/NoGoal"], tennis: ["Vincente"] };
+  // ---------------------------------------------------------------- Diario: partite live e pre-partita, schedina
+  // Partite e quote dall'archivio StatSight (signals/diario_eventi.py): quote Betfair vere dove ci sono, stime
+  // (Poisson dalle stesse quote) per prossimo gol, segna casa/ospite, angoli, totale set. Il regolamento e' in
+  // regole.js (lo stesso del bot, signals/regolamento.py). La schedina si conferma aprendo il bot Telegram:
+  // il bot riprende le quote di quel momento e la salva (signals/schedine.py).
+  var dview = "live", dsport = "all", curEvent = null, curTab = null;
+  var SLIP_KEY = "statsight.schedina", SEEN_KEY = "statsight.quoteviste";
+  var slip = (function () { try { return JSON.parse(localStorage.getItem(SLIP_KEY)) || { mode: "singole", k: 2, legs: [] }; } catch (e) { return { mode: "singole", k: 2, legs: [] }; } })();
+  var seenOdds = (function () { try { return JSON.parse(localStorage.getItem(SEEN_KEY)) || {}; } catch (e) { return {}; } })();
+  function saveSlip() { try { localStorage.setItem(SLIP_KEY, JSON.stringify(slip)); } catch (e) {} }
   function oddsTxt(n) { return typeof n === "number" ? it(n, 2) : "–"; }  // una quota puo' mancare (lato senza prezzo)
+  function ageTxt(ts) { var m = Math.round((Date.now() / 1000 - ts) / 60); return m <= 1 ? "adesso" : m + " min fa"; }
+  function nowS() { return Date.now() / 1000; }
+  function regole() { return (data.diario && data.diario.regole) || null; }
+  function evList() { return (data.diario && data.diario.v === 2 && data.diario.events) || []; }
+  function evById(id) { return evList().find(function (e) { return e.id === id; }); }
+  function mktOf(sport, code) { var r = regole(); return r && r.markets[sport] ? r.markets[sport][code] : null; }
   function estMinute(e) {
-    if (e.sport !== "calcio" || e.minute == null) return "";
-    if (e.ht) return "Intervallo";
-    var m = e.minute + Math.max(0, Math.floor((Date.now() / 1000 - e.ts) / 60));
-    return (m > 90 ? "90+" : "~" + m) + "'";
+    var st = e.st;
+    if (!st || e.sport !== "calcio" || st.minute == null) return "";
+    if (st.state === "HALF TIME BREAK") return "Intervallo";
+    var m = st.minute + Math.max(0, Math.floor((nowS() - st.ts) / 60));
+    return (m > 90 ? "90+" : m) + "'";
   }
   function scoreTxt(e) {
-    if (e.sport === "calcio") return (e.gh == null ? "–" : e.gh) + " - " + (e.ga == null ? "–" : e.ga);
-    return e.sets ? e.sets.replace(" - ", "-") + (e.game ? " · " + e.game.replace(" - ", "-") : "") : "";
+    var st = e.st;
+    if (!st) return "";
+    if (e.sport === "calcio") return st.score ? String(st.score).replace("-", " - ") : "";
+    var g = (st.games || []).slice(-1)[0];
+    return (st.sets ? st.sets.replace(" - ", "-") : "") + (g ? " · " + g.replace(".", "").replace(/\.\d+/g, "") : "");
   }
   // nome con la pallina accanto a chi sta servendo (tennis)
-  function pname(e, side) { return esc(side === 1 ? e.home : e.away) + (e.sport === "tennis" && e.serve === side ? ' <span class="serving" title="al servizio">🎾</span>' : ""); }
-  function ageTxt(ts) { var m = Math.round((Date.now() / 1000 - ts) / 60); return m <= 1 ? "adesso" : m + " min fa"; }
+  function pname(e, side) {
+    var serve = e.st && e.st.serve;
+    return esc(side === 1 ? e.home : e.away) + (e.sport === "tennis" && serve === side ? ' <span class="serving" title="al servizio">' + ic("tennis") + '</span>' : "");
+  }
+  function startLabel(ts) {
+    if (!ts) return "";
+    var d = new Date(ts * 1000), now = new Date(), t = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+    var tom = new Date(now); tom.setDate(now.getDate() + 1);
+    if (d.toDateString() === now.toDateString()) return "Oggi " + t;
+    if (d.toDateString() === tom.toDateString()) return "Domani " + t;
+    return String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0") + " " + t;
+  }
+  // freccia: rispetto all'ultima volta che hai visto questa quota su questo telefono, se no la tendenza
+  // dell'ultima mezz'ora registrata nell'archivio
+  function trendOf(e, code) {
+    var v = e.mk[code]; if (!v) return 0;
+    var key = e.id + ":" + code, prev = seenOdds[key];
+    if (typeof prev === "number" && prev !== v[0]) return v[0] > prev ? 1 : -1;
+    return v[1] || 0;
+  }
+  function rememberOdds() {
+    var keep = {};
+    evList().forEach(function (e) { Object.keys(e.mk).forEach(function (c) { keep[e.id + ":" + c] = e.mk[c][0]; }); });
+    seenOdds = keep;
+    try { localStorage.setItem(SEEN_KEY, JSON.stringify(keep)); } catch (er) {}
+  }
+  function legOf(e, code) {
+    var v = e.mk[code];
+    return { event: e.id, sport: e.sport, code: code, odds: v[0], src: v[2], fresh: v[3], live: !!e.live, start: e.start,
+             ename: e.home + " - " + e.away, label: legLabel(e, code) };
+  }
+  function legLabel(e, code) {
+    var r = regole(), m = mktOf(e.sport, code);
+    if (!m) return code;
+    var lab = m.label;
+    if (code === "1" || code === "W1" || code === "H1" || code === "P1") lab = e.home;
+    if (code === "2" || code === "W2" || code === "H2" || code === "P2") lab = e.away;
+    return (r.groups[m.group] || m.group) + ": " + lab;
+  }
+  function inSlip(id, code) { return slip.legs.some(function (l) { return l.event === id && l.code === code; }); }
+  function toggleLeg(e, code) {
+    var m = mktOf(e.sport, code); if (!m || !e.mk[code]) return;
+    var i = slip.legs.findIndex(function (l) { return l.event === e.id && l.code === code; });
+    if (i >= 0) slip.legs.splice(i, 1);
+    else {
+      // stesso mercato della stessa partita: il nuovo esito sostituisce il vecchio (regola 1)
+      slip.legs = slip.legs.filter(function (l) { var lm = mktOf(l.sport, l.code); return !(l.event === e.id && lm && lm.group === m.group); });
+      slip.legs.push(legOf(e, code));
+    }
+    var events = new Set(slip.legs.map(function (l) { return l.event; }));
+    if (slip.legs.length <= 1) slip.mode = "singole";
+    else if (slip.mode === "singole" && events.size === slip.legs.length && slip.legs.length === 2) slip.mode = "multipla";
+    saveSlip(); paintSlipBar();
+  }
+  function refreshSlip() {
+    // quote e stato degli esiti in schedina dai dati nuovi; se la partita non c'e' piu' resta com'era (il bot ricontrolla)
+    slip.legs.forEach(function (l) {
+      var e = evById(l.event);
+      if (e && e.mk[l.code]) { var v = e.mk[l.code]; l.odds = v[0]; l.fresh = v[3]; l.src = v[2]; l.live = !!e.live; l.start = e.start; }
+    });
+    saveSlip();
+  }
+  function paintSlipBar() {
+    var n = slip.legs.length, bar = $("slipbar");
+    bar.hidden = n === 0 || $("view-lock").hidden === false || $("view-schedina").hidden === false;
+    if (!n) return;
+    var tot = Regole.totalOdds(slip.mode, slip.k, slip.legs.map(function (l) { return l.odds; }));
+    $("slipbartxt").innerHTML = ic("diario") + ' <b>Schedina</b> · ' + n + (n === 1 ? " esito" : " esiti") + ' · ' + esc(slip.mode === "sistema" ? "sistema " + slip.k + "/" + n : slip.mode)
+      + (tot ? ' · quota <b>' + oddsTxt(tot) + '</b>' : "");
+  }
+
+  function quickCodes(e) { return e.sport === "calcio" ? ["1", "X", "2"] : ["W1", "W2"]; }
+  function tile(e, code, label) {
+    var v = e.mk[code];
+    if (!v) return '<span class="otile off"><span class="ol">' + esc(label) + '</span><span class="ov">–</span></span>';
+    var t = trendOf(e, code), stale = e.live ? nowS() - v[3] > Regole.LIMITS.live_fresh_s : (e.start && e.start <= nowS());
+    return '<button class="otile' + (inSlip(e.id, code) ? " sel" : "") + (stale ? " off" : "") + '" type="button" data-ev="' + e.id + '" data-code="' + esc(code) + '"' + (stale ? " disabled" : "") + '>'
+      + (t ? '<span class="tr ' + (t > 0 ? "up" : "down") + '">' + ic(t > 0 ? "up" : "down") + '</span>' : "")
+      + '<span class="ol">' + esc(label) + '</span><span class="ov">' + (stale ? ic("lock") : oddsTxt(v[0])) + '</span>'
+      + (v[2] === "s" ? '<span class="stima">stima</span>' : "") + '</button>';
+  }
 
   function renderDiario() {
     var dz = data.diario;
-    if (!dz) { $("diarioevents").innerHTML = '<div class="note">Diario non disponibile in questo aggiornamento.</div>'; $("diariokpi").innerHTML = ""; $("diariobets").innerHTML = ""; return; }
-    var s = dz.summary, MIN = 30;
-    $("diariokpi").innerHTML = '<div class="kpis">'
-      + '<div class="kpi"><div class="v">' + s.won + ' / ' + s.n + '</div><div class="l">vinte su chiuse</div></div>'
-      + '<div class="kpi"><div class="v">' + it(s.expected, 1) + '</div><div class="l">vinte attese dalle quote</div></div>'
-      + '<div class="kpi"><div class="v ' + (s.n >= MIN ? (s.roi >= 0 ? "pos" : "neg") : "") + '">' + (s.n >= MIN && s.roi != null ? pct(s.roi) : "—") + '</div><div class="l">rendimento' + (s.n >= MIN ? "" : " (da " + MIN + " giocate)") + '</div></div></div>'
-      + '<div class="verdict">' + (s.n === 0 ? "Ancora nessuna giocata chiusa. Scegli una partita live qui sotto e salva quello che giochi: dopo 50-100 giocate vediamo se il tuo occhio batte le quote."
-        : s.won > s.expected ? "Finora vinci più di quanto dicevano le quote (" + s.won + " contro " + it(s.expected, 1) + ")." + (s.n < MIN ? " Sono ancora poche giocate per dire che è occhio e non fortuna." : "")
-        : "Finora vinci meno o uguale a quanto dicevano le quote (" + s.won + " contro " + it(s.expected, 1) + ").") + (s.open ? " In attesa di esito: " + s.open + "." : "") + '</div>';
-
-    var evs = (dz.events || []).filter(function (e) { return dsport === "all" || e.sport === dsport; });
-    $("diarioevents").innerHTML = (evs.length ? '<div class="note" style="margin-bottom:10px;">Lista aggiornata ' + ageTxt(dz.at) + '. Punteggio e minuto veri li prende il bot quando salvi.</div>' : '<div class="note" style="margin-bottom:10px;">Nessuna partita live in questo momento (o PC spento).</div>')
-      + evs.map(function (e, i) {
-        return '<button class="card evrow" type="button" data-ev="' + esc(e.sport + ":" + e.id) + '"><span><div class="lg">' + EMOJI[e.sport] + ' ' + esc(e.league || NAME[e.sport]) + '</div>'
-          + '<div class="tm2">' + pname(e, 1) + '</div><div class="tm2">' + pname(e, 2) + '</div></span>'
-          + '<span><div class="sc">' + esc(scoreTxt(e)) + '</div><div class="mn">' + esc(estMinute(e) || (e.sport === "tennis" && e.o1 ? oddsTxt(e.o1) + " / " + oddsTxt(e.o2) : "LIVE")) + '</div></span></button>';
-      }).join("");
-
-    var mark = { 1: "✅", 0: "❌", "-1": "➖" };
-    $("diariobets").innerHTML = (dz.bets || []).length ? dz.bets.map(function (b) {
-      var state = b.result == null ? (b.note ? "⚠️ " + b.note : "⏳ in attesa") : (b.result === 1 ? "vinta" : b.result === 0 ? "persa" : "nulla");
-      return '<div class="card"><div class="head"><span class="title">' + (mark[b.result] || "⏳") + ' ' + esc(b.event) + '</span><span class="n">#' + b.id + ' · ' + whenLabel(b.created_at) + '</span></div>'
-        + '<div class="pickrow"><span><b>' + esc(b.pick || "giocata libera") + '</b> @ ' + oddsTxt(b.odds) + '</span><span class="ev ' + (b.result === 1 ? "pos" : b.result === 0 ? "neg" : "") + '">' + esc(state) + '</span></div>'
-        + '<div class="meta">' + (b.minute != null ? b.minute + "' · " : "") + esc(b.score || "") + (b.reason ? ' · “' + esc(b.reason) + '”' : "") + '</div></div>';
-    }).join("") : '<div class="note">Nessuna giocata salvata.</div>';
+    renderMyBets();
+    if (!dz) { $("diarioevents").innerHTML = '<div class="note">Diario non disponibile in questo aggiornamento.</div>'; return; }
+    if (dz.v !== 2) { $("diarioevents").innerHTML = '<div class="note">Le partite arrivano con il prossimo aggiornamento dei dati.</div>'; return; }
+    refreshSlip(); paintSlipBar();
+    var all = evList().filter(function (e) { return dsport === "all" || e.sport === dsport; });
+    // pre-partita gia' iniziate (i dati hanno qualche minuto): fuori dall'elenco, la quota pre-partita non vale piu'
+    var live = all.filter(function (e) { return e.live; }), pre = all.filter(function (e) { return !e.live && (!e.start || e.start > nowS()); });
+    $("nlive").textContent = live.length; $("npre").textContent = pre.length;
+    document.querySelectorAll("#dviewchips [data-dview]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.dview === dview)); });
+    var evs = dview === "live" ? live : pre;
+    if (dview === "live") evs.sort(function (a, b) { return a.sport === b.sport ? (a.comp > b.comp ? 1 : -1) : (a.sport > b.sport ? 1 : -1); });
+    else evs.sort(function (a, b) { return (a.start || 0) - (b.start || 0); });
+    var html = '<div class="k" style="margin:4px 2px 8px;font-size:0.76rem;">' + ic("clock") + ' Quote di ' + ageTxt(dz.at) + ' · alla conferma il bot riprende quelle del momento</div>';
+    if (!evs.length) html += '<div class="note">' + (dview === "live" ? "Nessuna partita in corso con quote in questo momento." : "Nessuna partita in programma con quote nelle prossime 24 ore.") + '</div>';
+    var lastComp = null;
+    evs.forEach(function (e) {
+      var comp = e.sport + "|" + e.comp;
+      if (comp !== lastComp) { html += '<div class="comphead">' + EMOJI[e.sport] + ' ' + esc(e.comp || NAME[e.sport]) + '</div>'; lastComp = comp; }
+      var q = quickCodes(e), labels = e.sport === "calcio" ? ["1", "X", "2"] : ["1", "2"];
+      var nm = Object.keys(e.mk).length;
+      html += '<div class="evline"><button class="evmain" type="button" data-open="' + e.id + '">'
+        + '<span class="evtime">' + (e.live ? '<b class="livetag">' + esc(estMinute(e) || "LIVE") + '</b>' : esc(startLabel(e.start))) + '</span>'
+        + '<span class="evteams"><span>' + pname(e, 1) + '</span><span>' + pname(e, 2) + '</span></span>'
+        + '<span class="evscore">' + esc(scoreTxt(e)) + '</span></button>'
+        + '<span class="evodds">' + q.map(function (c, i) { return tile(e, c, labels[i]); }).join("") + '</span>'
+        + '<button class="evmore" type="button" data-open="' + e.id + '">+' + Math.max(0, nm - q.length) + '</button></div>';
+    });
+    $("diarioevents").innerHTML = html;
   }
 
+  var PREMIUM_STATS = ["xG", "Attacchi pericolosi", "Possesso", "Punti vinti al servizio", "Punti vinti in risposta"];
+  var PLAN_KEY = "statsight.piano";
+  function isFull() { try { return (localStorage.getItem(PLAN_KEY) || "full") === "full"; } catch (e) { return true; } }
+  function lockedCell(label) { return !isFull() && PREMIUM_STATS.indexOf(label) >= 0; }
+
+  function renderGiocata(id) {
+    var e = evById(Number(id));
+    if (!e) return;
+    curEvent = e;
+    var r = regole(), tabs = r.tabs[e.sport].filter(function (t) {
+      return r.order[e.sport].some(function (c) { var m = r.markets[e.sport][c]; return m.tab === t && e.mk[c]; });
+    });
+    if (!curTab || tabs.indexOf(curTab) < 0) curTab = tabs[0];
+    var stats = ((e.st && e.st.stats) || []).map(function (s) {
+      var lock = lockedCell(s[0]);
+      return '<tr' + (lock ? ' class="locked"' : "") + '><td>' + (lock ? "88" : esc(s[1])) + '</td><td>' + esc(s[0]) + (lock ? " " + ic("lock") : "") + '</td><td>' + (lock ? "88" : esc(s[2])) + '</td></tr>';
+    }).join("");
+    var html = '<div class="dsub">' + EMOJI[e.sport] + ' ' + esc(e.comp || NAME[e.sport]) + (e.live ? ' · <b class="livetag">LIVE</b>' : " · " + esc(startLabel(e.start))) + '</div>'
+      + '<div class="matchhead"><div class="mt">' + pname(e, 1) + '</div><div class="ms">' + (e.live ? esc(scoreTxt(e) || "–") : "vs") + '<div class="mm">' + esc(estMinute(e)) + '</div></div><div class="mt">' + pname(e, 2) + '</div></div>'
+      + (stats ? '<table class="stt">' + stats + '</table>' + (!isFull() && /class="locked"/.test(stats) ? '<div class="upsell">' + ic("lock") + ' xG, attacchi pericolosi e possesso con <b>StatSight Full</b>.</div>' : "") : "")
+      + '<div class="chips mtabs" role="tablist">' + tabs.map(function (t) { return '<button class="chip" type="button" data-mtab="' + esc(t) + '" aria-pressed="' + (t === curTab) + '">' + esc(t) + '</button>'; }).join("") + '</div>';
+    var groups = [];
+    r.order[e.sport].forEach(function (c) { var m = r.markets[e.sport][c]; if (m.tab === curTab && e.mk[c] && groups.indexOf(m.group) < 0) groups.push(m.group); });
+    html += groups.map(function (g) {
+      var codes = r.order[e.sport].filter(function (c) { return r.markets[e.sport][c].group === g; });
+      var cols = codes.length === 3 ? 3 : codes.length > 3 ? 3 : 2;
+      var est = codes.some(function (c) { return e.mk[c] && e.mk[c][2] === "s"; });
+      return '<div class="mgroup"><div class="mtitle">' + esc(r.groups[g] || g) + (est ? ' <span class="stima">quote stimate</span>' : "") + '</div>'
+        + '<div class="ogrid" style="grid-template-columns:repeat(' + cols + ',minmax(0,1fr));">'
+        + codes.map(function (c) {
+          var lab = r.markets[e.sport][c].label;
+          if (c === "W1" || c === "P1") lab = e.home; if (c === "W2" || c === "P2") lab = e.away;
+          return tile(e, c, lab);
+        }).join("") + '</div></div>';
+    }).join("");
+    html += '<div class="note" style="margin-top:12px;">Tocca una quota per metterla in schedina. Quote Betfair; quelle con "stima" le calcoliamo dalle quote Betfair perché Betfair non offre quel mercato. Regole: Impostazioni › Informativa.</div>';
+    $("giocata").innerHTML = html;
+    show("giocata");
+  }
+
+  function slipPayload() {
+    var head = slip.mode === "singole" ? "S" : slip.mode === "multipla" ? "M" : "Y" + slip.k;
+    return head + slip.legs.map(function (l) { return "_" + l.event + "-" + l.code + "-" + Math.round(l.odds * 100); }).join("");
+  }
+  function renderSchedina() {
+    refreshSlip();
+    var n = slip.legs.length, r = regole();
+    if (slip.mode === "sistema" && (slip.k < 2 || slip.k >= n)) slip.k = Math.max(2, Math.min(n - 1, slip.k || 2));
+    var errs = r ? Regole.validate(r.markets, slip.mode, slip.mode === "sistema" ? slip.k : null, slip.legs, nowS()) : [];
+    var tot = Regole.totalOdds(slip.mode, slip.k, slip.legs.map(function (l) { return l.odds; }));
+    var html = '<h1 class="dtitle">Schedina</h1>';
+    if (!n) { $("schedina").innerHTML = html + '<div class="note">La schedina è vuota: tocca una quota nelle partite del Diario.</div>'; return; }
+    html += '<div class="chips" id="slipmode">' + ["singole", "multipla", "sistema"].map(function (m) {
+      return '<button class="chip" type="button" data-mode="' + m + '" aria-pressed="' + (slip.mode === m) + '">' + m[0].toUpperCase() + m.slice(1) + '</button>';
+    }).join("") + '</div>';
+    if (slip.mode === "sistema" && n >= 3) {
+      html += '<div class="k" style="margin:6px 0;">Partite per combinazione</div><div class="chips" id="slipk">';
+      for (var k = 2; k < n; k++) html += '<button class="chip" type="button" data-k="' + k + '" aria-pressed="' + (slip.k === k) + '">' + k + ' su ' + n + ' (' + Regole.combos(n, k) + ')</button>';
+      html += '</div>';
+    }
+    html += '<div class="card slipcard">' + slip.legs.map(function (l, i) {
+      var e = evById(l.event);
+      return '<div class="leg"><div class="lt"><div class="le">' + EMOJI[l.sport] + ' ' + esc(l.ename) + (l.live ? ' <b class="livetag">LIVE</b>' : "") + '</div>'
+        + '<div class="lp">' + esc(l.label) + (l.src === "s" ? ' <span class="stima">stima</span>' : "") + '</div>'
+        + (e ? "" : '<div class="k">Partita non più in lista: il bot ricontrolla la quota.</div>') + '</div>'
+        + '<div class="lo">' + oddsTxt(l.odds) + '</div><button class="iconbtn sm" type="button" data-del="' + i + '" aria-label="Togli">' + ic("x") + '</button></div>';
+    }).join("") + '</div>';
+    html += '<div class="slipsum"><span>' + (slip.mode === "singole" ? n + " pronostici singoli" : slip.mode === "multipla" ? "Quota totale" : "Quota media delle combinazioni") + '</span><b>' + (tot ? oddsTxt(tot) : "") + '</b></div>';
+    if (errs.length) html += '<div class="sliperr">' + errs.map(function (x) { return '<div>' + ic("alert") + ' ' + esc(x) + '</div>'; }).join("") + '</div>';
+    var payload = slipPayload(), bot = (data.diario && data.diario.bot) || "Ilsegna_latorebot";
+    var url = payload.length <= 64 ? "https://t.me/" + encodeURIComponent(bot) + "?start=" + payload
+      : "https://t.me/" + encodeURIComponent(bot) + "?text=" + encodeURIComponent("/schedina " + payload);
+    html += '<a class="primary block' + (errs.length ? " disabled" : "") + '" id="slipgo" href="' + (errs.length ? "#" : url) + '">' + ic("send") + ' Conferma pronostico</a>'
+      + '<div class="k" style="margin-top:8px;">Si apre Telegram sul bot: premi <b>Avvia</b>' + (payload.length > 64 ? " o <b>Invia</b>" : "") + '. Il bot riprende le quote di quell\'istante, controlla il regolamento e salva. Nessun soldo in gioco: valgono punti, livelli e lega.</div>'
+      + '<button class="linkbtn" type="button" id="slipcopy">' + ic("copy") + ' Copia il codice</button> <button class="linkbtn" type="button" id="slipclear">' + ic("trash") + ' Svuota</button>';
+    $("schedina").innerHTML = html;
+  }
+
+  function renderMyBets() {
+    var dz = data.diario;
+    if (!dz) { $("diariobets").innerHTML = ""; return; }
+    var slips = dz.slips || [], olds = dz.bets || [];
+    function res(x) { return x == null ? '<span class="k">' + ic("clock") + ' in attesa</span>' : x === 1 ? '<span class="pos">' + ic("check") + ' vinta</span>' : x === 0 ? '<span class="neg">' + ic("x") + ' persa</span>' : '<span class="k">' + ic("minus") + ' nulla</span>'; }
+    var html = slips.map(function (s) {
+      var head = s.mode === "singole" ? "Singole" : s.mode === "multipla" ? "Multipla" : "Sistema " + s.k + "/" + s.n;
+      var state = s.resolved_at ? (s.won === 1 ? '<span class="pos">' + ic("check") + ' ' + (s.points >= 0 ? "+" : "") + it(s.points, 2) + '</span>' : s.won === 0 ? '<span class="neg">' + ic("x") + ' ' + it(s.points, 2) + '</span>' : '<span class="k">nulla</span>') : '<span class="k">' + ic("clock") + ' in corso</span>';
+      return '<div class="card"><div class="head"><span class="title">' + esc(head) + (s.odds ? " @ " + oddsTxt(s.odds) : "") + '</span><span class="n">#' + s.id + ' · ' + whenLabel(s.created_at) + '</span></div>'
+        + s.legs.map(function (l) { return '<div class="pickrow"><span>' + EMOJI[l.sport] + ' ' + esc(l.event) + ' · <b>' + esc(l.label) + '</b> @ ' + oddsTxt(l.odds) + '</span>' + res(l.result) + '</div>'; }).join("")
+        + '<div class="meta">' + state + (s.reason ? ' · “' + esc(s.reason) + '”' : "") + (s.note ? " · " + esc(s.note) : "") + '</div></div>';
+    }).join("") + olds.map(function (b) {
+      return '<div class="card"><div class="head"><span class="title">' + esc(b.event) + '</span><span class="n">#' + b.id + ' · ' + whenLabel(b.created_at) + '</span></div>'
+        + '<div class="pickrow"><span><b>' + esc(b.pick || "giocata libera") + '</b> @ ' + oddsTxt(b.odds) + '</span>' + res(b.result) + '</div>'
+        + '<div class="meta">' + (b.minute != null ? b.minute + "' · " : "") + esc(b.score || "") + (b.reason ? ' · “' + esc(b.reason) + '”' : "") + (b.note ? " · " + esc(b.note) : "") + '</div></div>';
+    }).join("");
+    $("diariobets").innerHTML = html || '<div class="note">Nessun pronostico salvato.</div>';
+  }
+
+  $("diarioevents").addEventListener("click", function (ev) {
+    var t = ev.target.closest("button.otile[data-code]");
+    if (t) { var e = evById(Number(t.dataset.ev)); if (e) { toggleLeg(e, t.dataset.code); renderDiario(); } return; }
+    var o = ev.target.closest("[data-open]"); if (o) { curTab = null; renderGiocata(o.dataset.open); }
+  });
+  $("giocata").addEventListener("click", function (ev) {
+    var t = ev.target.closest("button.otile[data-code]");
+    if (t && curEvent) { toggleLeg(curEvent, t.dataset.code); renderGiocata(curEvent.id); return; }
+    var m = ev.target.closest("[data-mtab]"); if (m && curEvent) { curTab = m.dataset.mtab; renderGiocata(curEvent.id); }
+  });
+  $("diariochips").addEventListener("click", function (ev) {
+    var b = ev.target.closest(".chip"); if (!b) return;
+    dsport = b.dataset.dsport;
+    $("diariochips").querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", c === b ? "true" : "false"); });
+    renderDiario();
+  });
+  $("dviewchips").addEventListener("click", function (ev) { var b = ev.target.closest("[data-dview]"); if (b) { dview = b.dataset.dview; renderDiario(); } });
+  $("slipbar").addEventListener("click", function () { renderSchedina(); show("schedina"); });
+  $("schedina").addEventListener("click", function (ev) {
+    var d = ev.target.closest("[data-del]");
+    if (d) { slip.legs.splice(Number(d.dataset.del), 1); if (slip.legs.length <= 1) slip.mode = "singole"; saveSlip(); paintSlipBar(); renderSchedina(); return; }
+    var m = ev.target.closest("[data-mode]"); if (m) { slip.mode = m.dataset.mode; saveSlip(); paintSlipBar(); renderSchedina(); return; }
+    var k = ev.target.closest("[data-k]"); if (k) { slip.k = Number(k.dataset.k); saveSlip(); paintSlipBar(); renderSchedina(); return; }
+    if (ev.target.closest("#slipclear")) { slip.legs = []; slip.mode = "singole"; saveSlip(); paintSlipBar(); renderSchedina(); return; }
+    if (ev.target.closest("#slipcopy")) {
+      var code = "/schedina " + slipPayload();
+      try { navigator.clipboard.writeText(code); ev.target.closest("#slipcopy").innerHTML = ic("check") + " Copiato"; } catch (er) { window.prompt("Codice", code); }
+      return;
+    }
+    var go = ev.target.closest("#slipgo");
+    if (go && go.classList.contains("disabled")) { ev.preventDefault(); return; }
+    if (go) { setTimeout(function () { slip.legs = []; slip.mode = "singole"; saveSlip(); paintSlipBar(); renderSchedina(); }, 1500); }
+  });
+
+  // ---------------------------------------------------------------- Radar: tutte le partite live in una tabella
+  var rsport = "calcio";
+  var RADAR_COLS = ["Tiri in porta", "Tiri", "xG", "Angoli", "Possesso", "Attacchi pericolosi", "Rossi"];
+  function domCell(label, h, a, isPct) {
+    if (h == null || a == null) return '<td class="k">–</td>';
+    if (lockedCell(label)) return '<td class="locked"><span class="blur">8 - 8</span>' + ic("lock") + '</td>';
+    var nh = parseFloat(h), na = parseFloat(a), cls = "";
+    // come lo scanner di InPlayGuru: colore quando una squadra domina (almeno 3 e almeno 2,6 volte l'altra)
+    if (!isPct && (nh >= 3 || na >= 3) && (nh >= 2.6 * Math.max(na, 0.01) || na >= 2.6 * Math.max(nh, 0.01))) cls = (Math.max(nh, na) >= 3.6 * Math.max(Math.min(nh, na), 0.01) && Math.max(nh, na) >= 4) ? "hot" : "warm";
+    var fmt = function (v) { return typeof v === "number" && v % 1 ? it(v, 2) : esc(v); };
+    return '<td class="' + cls + '">' + fmt(h) + ' <span class="k">-</span> ' + fmt(a) + '</td>';
+  }
+  function renderRadar() {
+    var dz = data.diario;
+    var evs = evList().filter(function (e) { return e.live && e.sport === rsport && e.st; });
+    $("radarage").textContent = dz ? "dati di " + ageTxt(dz.at) : "";
+    if (!evs.length) { $("radar").innerHTML = '<div class="note">Nessuna partita live con statistiche in questo momento.</div>'; return; }
+    var lockHead = function (c) { return '<th>' + c + (lockedCell(c) ? " " + ic("lock") : "") + '</th>'; };
+    var html = '<table class="rt"><thead><tr>';
+    if (rsport === "calcio") {
+      evs.sort(function (a, b) { return ((b.st && b.st.minute) || 0) - ((a.st && a.st.minute) || 0); });
+      html += '<th>Min</th><th class="l">Partita</th><th>Ris.</th><th>1 X 2</th>' + RADAR_COLS.map(lockHead).join("") + '</tr></thead><tbody>'
+        + evs.map(function (e) {
+          var st = {}; ((e.st && e.st.stats) || []).forEach(function (r) { st[r[0]] = r; });
+          var q = ["1", "X", "2"].map(function (c) { return e.mk[c] ? oddsTxt(e.mk[c][0]) : "–"; }).join(" ");
+          return '<tr data-ev="' + e.id + '"><td class="mn">' + esc(estMinute(e) || "–") + '</td><td class="l"><b>' + pname(e, 1) + '</b><br><b>' + pname(e, 2) + '</b><div class="k">' + esc(e.comp) + '</div></td>'
+            + '<td class="sc">' + esc(scoreTxt(e)) + '</td><td>' + q + '</td>'
+            + RADAR_COLS.map(function (c) { var r = st[c]; return r ? domCell(c, r[1], r[2], c === "Possesso") : '<td class="k">–</td>'; }).join("") + '</tr>';
+        }).join("");
+    } else {
+      html += '<th class="l">Partita</th><th>Set</th><th>Game</th><th>Al servizio</th><th>Quote</th>' + ["Punti vinti al servizio", "Punti vinti in risposta"].map(lockHead).join("") + '<th>Ace</th><th>Doppi falli</th></tr></thead><tbody>'
+        + evs.map(function (e) {
+          var st = {}; ((e.st && e.st.stats) || []).forEach(function (r) { st[r[0]] = r; });
+          function c2(k) { var r = st[k]; if (!r) return '<td class="k">–</td>'; if (lockedCell(k)) return '<td class="locked"><span class="blur">88/88</span>' + ic("lock") + '</td>'; return '<td>' + esc(r[1]) + ' <span class="k">-</span> ' + esc(r[2]) + '</td>'; }
+          var srv = e.st && e.st.serve;
+          return '<tr data-ev="' + e.id + '"><td class="l"><b>' + pname(e, 1) + '</b><br><b>' + pname(e, 2) + '</b><div class="k">' + esc(e.comp) + '</div></td>'
+            + '<td class="sc">' + esc((e.st && e.st.sets) || "–") + '</td><td>' + esc(((e.st && e.st.games) || []).join(" ") || "–") + '</td><td>' + (srv ? ic("tennis") + " " + esc((srv === 1 ? e.home : e.away).split(" ").slice(-1)[0]) : "–") + '</td>'
+            + '<td>' + (e.mk.W1 || e.mk.W2 ? oddsTxt(e.mk.W1 && e.mk.W1[0]) + ' / ' + oddsTxt(e.mk.W2 && e.mk.W2[0]) : "–") + '</td>'
+            + c2("Punti vinti al servizio") + c2("Punti vinti in risposta") + c2("Ace") + c2("Doppi falli") + '</tr>';
+        }).join("");
+    }
+    $("radar").innerHTML = html + '</tbody></table>' + (!isFull() ? '<div class="upsell" style="margin-top:10px;">' + ic("lock") + ' Le colonne col lucchetto si vedono con <b>StatSight Full</b>.</div>' : "");
+  }
+  $("radarchips").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip"); if (!b) return;
+    rsport = b.dataset.rsport;
+    $("radarchips").querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
+    if (data) renderRadar();
+  });
+  $("radar").addEventListener("click", function (e) { var r = e.target.closest("tr[data-ev]"); if (r && data) { curTab = null; renderGiocata(r.dataset.ev); } });
+
   // ---------------------------------------------------------------- Il mio occhio: esperienza, leghe, badge
-  // Regole in docs/sistema_rewarding.md. Oggi calcolate qui dalle giocate del diario; con l'app pubblica
-  // le stesse regole girano sul server per tutti (classifiche, gironi, banner veri, pubblicita').
+  // Regole in docs/sistema_rewarding.md. Oggi calcolate qui dai pronostici del diario; con l'app pubblica le stesse
+  // regole girano sul server per tutti (classifiche, gironi, banner veri, pubblicita').
+  // La lega principale e' la STAGIONE, con le date della Premier League (2026/27: 21/08/2026 - 30/05/2027, 38
+  // giornate); la lega della settimana resta come sfida breve.
   var TITLES = ["Esordiente", "Osservatore", "Analista", "Scout", "Stratega", "Occhio di falco", "Maestro", "Leggenda"];
   var LEAGUES = [["Bronzo", "#7A4A24", "#B87333"], ["Argento", "#5E6872", "#AEB6BF"], ["Oro", "#7A5A0B", "#D4A520"],
                  ["Platino", "#2F5F66", "#7FC4C9"], ["Diamante", "#2B3F7A", "#7FA2F0"], ["Elite", "#4B1D5E", "#C06BE0"]];
+  var SEASON = { name: "2026/27", start: new Date(2026, 7, 21).getTime() / 1000, end: new Date(2027, 4, 30, 23, 59).getTime() / 1000, rounds: 38 };
+  // soglie della stagione: punti lega medi a settimana (e almeno 3 pronostici a settimana dall'Oro in su)
+  var SEASON_TIERS = [-1e9, 0, 0.5, 1, 2, 3];
   function dayKey(ts) { var d = new Date(ts * 1000); return d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate(); }
   function weekKey(ts) {  // lunedi' della settimana
     var d = new Date(ts * 1000); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d.getTime();
   }
   function xpNeeded(level) { return Math.round(100 * Math.pow(level, 1.5)); }
-  function rewardState(bets) {
-    var closed = bets.filter(function (b) { return b.result === 0 || b.result === 1; })
-      .slice().sort(function (a, b) { return a.created_at - b.created_at; });
-    var perDay = {}, seenEvent = {}, xp = 0, weeks = {}, perDayLeague = {};
+  // tutti i pronostici chiusi o aperti: giocate singole di prima + schedine (una singola = un pronostico per
+  // esito; una multipla o un sistema = un pronostico con la sua quota)
+  function pronostici() {
+    var dz = data.diario || {}, out = [];
+    (dz.bets || []).forEach(function (b) { out.push({ ts: b.created_at, odds: b.odds, result: b.result, sport: b.sport, ev: b.sport + ":" + (b.event_id || b.event), code: b.code || "" }); });
+    (dz.slips || []).forEach(function (s) {
+      if (s.mode === "singole") s.legs.forEach(function (l) { out.push({ ts: s.created_at, odds: l.odds, result: l.result, sport: l.sport, ev: l.sport + ":" + l.event_id, code: l.code }); });
+      else out.push({ ts: s.created_at, odds: s.odds || 1, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null, points: s.points,
+                      sport: "multi", ev: "s" + s.id, code: s.mode, legs: s.legs.length });
+    });
+    return out;
+  }
+  function leaguePoints(b) { return b.points != null ? b.points : b.result === 1 ? b.odds - 1 : b.result === 0 ? -1 : 0; }
+  function rewardState(list) {
+    var closed = list.filter(function (b) { return b.result === 0 || b.result === 1; }).sort(function (a, b) { return a.ts - b.ts; });
+    var perDay = {}, seenEvent = {}, xp = 0, weeks = {}, perDayLeague = {}, season = { pts: 0, n: 0 };
     closed.forEach(function (b) {
-      var ev = b.sport + ":" + (b.event_id || b.event);
       b._xp = 0;
-      if (b.odds >= 1.3 && !seenEvent[ev]) {
-        seenEvent[ev] = 1;
-        var k = dayKey(b.created_at), n = (perDay[k] = (perDay[k] || 0) + 1);
+      if (b.odds >= 1.3 && !seenEvent[b.ev]) {
+        seenEvent[b.ev] = 1;
+        var k = dayKey(b.ts), n = (perDay[k] = (perDay[k] || 0) + 1);
         var f = n <= 10 ? 1 : n <= 20 ? 0.5 : 0;
-        b._xp = Math.round((5 + (b.result === 1 ? Math.min(50, 10 * (b.odds - 1)) : 0)) * f);
+        b._xp = Math.round((5 + (b.result === 1 ? Math.min(50, 10 * (Math.min(b.odds, 6) - 1)) : 0)) * f);
         xp += b._xp;
       }
       if (b.odds >= 1.5) {
-        var dk = dayKey(b.created_at), nd = (perDayLeague[dk] = (perDayLeague[dk] || 0) + 1);
+        var dk = dayKey(b.ts), nd = (perDayLeague[dk] = (perDayLeague[dk] || 0) + 1);
         if (nd <= 10) {
-          var w = weekKey(b.created_at), wk = weeks[w] || (weeks[w] = { pts: 0, n: 0 });
-          wk.pts += b.result === 1 ? b.odds - 1 : -1; wk.n += 1;
+          var w = weekKey(b.ts), wk = weeks[w] || (weeks[w] = { pts: 0, n: 0 });
+          var p = leaguePoints(b);
+          wk.pts += p; wk.n += 1;
+          if (b.ts >= SEASON.start && b.ts <= SEASON.end) { season.pts += p; season.n += 1; }
         }
       }
     });
     var level = 1, left = xp;
     while (left >= xpNeeded(level)) { left -= xpNeeded(level); level++; }
-    // leghe: si parte da Bronzo e si rigiocano le settimane CHIUSE; quella in corso decide la prossima
-    var tier = 0, best = 0, thisWeek = weekKey(Date.now() / 1000);
+    var tier = 0, best = 0, thisWeek = weekKey(nowS());
     Object.keys(weeks).map(Number).sort().forEach(function (w) {
       if (w >= thisWeek) return;
       var r = weeks[w];
@@ -1216,244 +1693,99 @@
     });
     var cur = weeks[thisWeek] || { pts: 0, n: 0 };
     var zone = cur.n >= 10 && cur.pts >= 3 ? "up" : (cur.n < 5 || cur.pts <= -3) ? (tier > 0 ? "down" : "stay") : "stay";
-    return { closed: closed, xp: xp, level: level, inLevel: left, need: xpNeeded(level), tier: tier, bestTier: best,
-             week: cur, zone: zone, weeks: weeks };
+    var played = Math.max(1, Math.min(SEASON.rounds, Math.ceil((Math.min(nowS(), SEASON.end) - SEASON.start) / (7 * 86400))));
+    var perWeek = season.pts / played, sTier = 0;
+    SEASON_TIERS.forEach(function (t, i) { if (perWeek >= t) sTier = i; });
+    if (sTier >= 2 && season.n < 3 * played) sTier = 1;            // dall'Oro in su serve anche costanza
+    if (!season.n) sTier = 0;
+    return { closed: closed, xp: xp, level: level, inLevel: left, need: xpNeeded(level), tier: tier, bestTier: Math.max(best, tier),
+             week: cur, zone: zone, weeks: weeks, season: season, round: played, sTier: sTier, perWeek: perWeek };
   }
+  function signed(x) { return (x >= 0 ? "+" : "") + it(x, 1); }
   function renderOcchio() {
     var dz = data.diario;
-    if (!dz) { $("occhiolevel").innerHTML = ""; $("occhiobadges").innerHTML = ""; return; }
-    var bets = dz.bets || [], s = dz.summary, R = rewardState(bets), L = LEAGUES[R.tier];
-    var title = TITLES[Math.min(TITLES.length - 1, Math.floor((R.level - 1) / 5))];
-    var closed = R.closed;
-    // record personali (con l'app pubblica: i migliori di tutti gli utenti)
-    var today = dayKey(Date.now() / 1000);
-    var bestToday = closed.filter(function (b) { return b.result === 1 && dayKey(b.created_at) === today; }).sort(function (a, b) { return b.odds - a.odds; })[0];
+    if (!dz) { $("occhiolevel").innerHTML = ""; $("occhiobadges").innerHTML = ""; $("diariokpi").innerHTML = ""; return; }
+    var list = pronostici(), R2 = rewardState(list), L = LEAGUES[R2.tier], SL = LEAGUES[R2.sTier];
+    var title = TITLES[Math.min(TITLES.length - 1, Math.floor((R2.level - 1) / 5))];
+    var closed = R2.closed, won = closed.filter(function (b) { return b.result === 1; });
+    var today = dayKey(nowS());
+    var bestToday = won.filter(function (b) { return dayKey(b.ts) === today; }).sort(function (a, b) { return b.odds - a.odds; })[0];
     var streak = 0, bestStreak = 0;
     closed.forEach(function (b) { streak = b.result === 1 ? streak + 1 : 0; bestStreak = Math.max(bestStreak, streak); });
+    var daysLeft = Math.max(0, Math.ceil((SEASON.end - nowS()) / 86400));
     $("occhiolevel").innerHTML =
       '<div class="banners">'
-      + '<div class="banner">🏆 <span>Quota più alta vinta oggi</span><b>' + (bestToday ? it(bestToday.odds, 2) + " · tu" : "—") + '</b></div>'
-      + '<div class="banner">📈 <span>Più positivo della settimana</span><b>' + (R.week.n ? (R.week.pts >= 0 ? "+" : "") + it(R.week.pts, 1) + " · tu" : "—") + '</b></div>'
-      + '<div class="banner">🔥 <span>Serie più lunga</span><b>' + bestStreak + " · tu" + '</b></div>'
-      + '</div><div class="note" style="margin:6px 0 12px;">Con l\'app pubblica qui compaiono i migliori fra tutti gli utenti.</div>'
-      + '<div class="hero" style="background-image:linear-gradient(120deg,#0F2A33,#1F5560 60%,#2E8A8A);min-height:100px;">'
-      + '<div class="hs">Livello ' + R.level + ' · ' + R.xp + ' XP</div><div class="ht">👁 ' + title + '</div>'
-      + '<div class="lvbar"><div style="width:' + Math.round(R.inLevel / R.need * 100) + '%"></div></div>'
-      + '<div class="hs">' + R.inLevel + ' / ' + R.need + ' XP per il livello ' + (R.level + 1) + '</div></div>'
-      + '<div class="hero" style="margin-top:8px;background-image:linear-gradient(120deg,' + L[1] + ',' + L[2] + ');min-height:100px;">'
-      + '<div class="hs">Lega della settimana</div><div class="ht">🛡 ' + L[0] + '</div>'
-      + '<div class="hs">' + R.week.n + ' pronostici · ' + (R.week.pts >= 0 ? "+" : "") + it(R.week.pts, 1) + ' punti · '
-      + (R.zone === "up" ? "▲ in zona promozione" : R.zone === "down" ? "▼ in zona retrocessione" : "in zona salvezza") + '</div></div>'
-      + (R.zone === "down" ? '<button class="primary" type="button" disabled style="width:100%;margin-top:8px;">▶ Guarda un video e salvati (con l\'app pubblica)</button>' : "")
+      + '<div class="banner">' + ic("trophy") + '<span>Quota più alta vinta oggi</span><b>' + (bestToday ? oddsTxt(bestToday.odds) + " · tu" : "—") + '</b></div>'
+      + '<div class="banner">' + ic("trend") + '<span>Più positivo della settimana</span><b>' + (R2.week.n ? signed(R2.week.pts) + " · tu" : "—") + '</b></div>'
+      + '<div class="banner">' + ic("flame") + '<span>Serie più lunga</span><b>' + bestStreak + " · tu" + '</b></div>'
+      + '</div><div class="k" style="margin:6px 2px 12px;font-size:0.76rem;">Con l\'app pubblica qui compaiono i migliori fra tutti gli utenti.</div>'
+      + '<div class="hero season" style="background-image:linear-gradient(120deg,' + SL[1] + ',' + SL[2] + ');">'
+      + '<div class="hs">Stagione ' + SEASON.name + ' · giornata ' + R2.round + ' di ' + SEASON.rounds + ' · mancano ' + daysLeft + ' giorni</div>'
+      + '<div class="ht">' + ic("shield") + ' Lega ' + SL[0] + '</div>'
+      + '<div class="hs">' + R2.season.n + (R2.season.n === 1 ? ' pronostico · ' : ' pronostici · ') + signed(R2.season.pts) + ' punti · ' + signed(R2.perWeek) + ' a settimana</div></div>'
+      + '<div class="duo">'
+      + '<div class="hero mini" style="background-image:linear-gradient(120deg,#0F2A33,#1F5560 60%,#2E8A8A);"><div class="hs">Livello ' + R2.level + ' · ' + R2.xp + ' XP</div><div class="ht">' + ic("eye") + ' ' + title + '</div>'
+      + '<div class="lvbar"><div style="width:' + Math.round(R2.inLevel / R2.need * 100) + '%"></div></div><div class="hs">' + R2.inLevel + ' / ' + R2.need + ' XP</div></div>'
+      + '<div class="hero mini" style="background-image:linear-gradient(120deg,' + L[1] + ',' + L[2] + ');"><div class="hs">Lega della settimana</div><div class="ht">' + ic("shield") + ' ' + L[0] + '</div>'
+      + '<div class="hs">' + R2.week.n + (R2.week.n === 1 ? ' pronostico · ' : ' pronostici · ') + signed(R2.week.pts) + ' · ' + (R2.zone === "up" ? "zona promozione" : R2.zone === "down" ? "zona retrocessione" : "salvezza") + '</div></div>'
+      + '</div>'
+      + (R2.zone === "down" ? '<button class="primary" type="button" disabled style="width:100%;margin-top:8px;">' + ic("play") + ' Guarda un video e salvati (con l\'app pubblica)</button>' : "")
       + '<details class="card" style="margin-top:10px;"><summary><b>Come funziona</b></summary><div class="ds" style="margin-top:8px;line-height:1.5;">'
-      + '<b>Esperienza:</b> 5 XP per ogni pronostico chiuso, più 10 XP per ogni punto di quota sopra 1 se lo vinci (massimo 50). Sotto quota 1,30 niente XP; conta un pronostico per partita; al giorno i primi 10 valgono pieno, dall\'11 al 20 la metà, poi niente.<br>'
-      + '<b>Lega:</b> ogni settimana (lunedì-domenica) contano i pronostici a quota 1,50 o più, massimo 10 al giorno: vinto = quota − 1, perso = −1. Con almeno 10 pronostici e +3 punti si sale; con meno di 5 pronostici o −3 punti si scende.</div></details>';
+      + '<b>Stagione</b> (la lega che conta): segue il calendario della Premier League, ' + SEASON.rounds + ' giornate. Contano i pronostici a quota 1,50 o più, al massimo 10 al giorno: vinto = quota − 1, perso = −1. La lega dipende dai punti medi a settimana: Argento da 0, Oro da +0,5, Platino da +1, Diamante da +2, Elite da +3 (dall\'Oro in su almeno 3 pronostici a settimana). Con l\'app pubblica: classifica fra tutti, promozioni e retrocessioni a fine stagione.<br>'
+      + '<b>Settimana:</b> stesse regole, da lunedì a domenica. Con almeno 10 pronostici e +3 punti si sale, con meno di 5 o −3 punti si scende.<br>'
+      + '<b>Esperienza:</b> 5 XP per pronostico chiuso più 10 XP per ogni punto di quota sopra 1 se lo vinci (massimo 50). Sotto quota 1,30 niente XP; un pronostico per partita; al giorno i primi 10 valgono pieno, dall\'11 al 20 la metà, poi niente.</div></details>';
 
-    var sports = new Set(bets.map(function (b) { return b.sport; }).filter(function (x) { return x !== "libero"; }));
-    var days = new Set(bets.map(function (b) { return dayKey(b.created_at); }));
-    var won = closed.filter(function (b) { return b.result === 1; });
+    var n = closed.length, expected = closed.reduce(function (s2, b) { return s2 + 1 / b.odds; }, 0);
+    var roi = n ? closed.reduce(function (s2, b) { return s2 + leaguePoints(b); }, 0) / n : null, MIN = 30;
+    var open = list.filter(function (b) { return b.result == null; }).length;
+    $("diariokpi").innerHTML = '<div class="kpis">'
+      + '<div class="kpi"><div class="v">' + won.length + ' / ' + n + '</div><div class="l">vinti su chiusi</div></div>'
+      + '<div class="kpi"><div class="v">' + it(expected, 1) + '</div><div class="l">vinti attesi dalle quote</div></div>'
+      + '<div class="kpi"><div class="v ' + (n >= MIN ? (roi >= 0 ? "pos" : "neg") : "") + '">' + (n >= MIN && roi != null ? pct(roi) : "—") + '</div><div class="l">rendimento' + (n >= MIN ? "" : " (da " + MIN + ")") + '</div></div></div>'
+      + '<div class="verdict">' + (n === 0 ? "Ancora nessun pronostico chiuso: tocca le quote nelle partite del Diario e conferma la schedina."
+        : won.length > expected ? "Finora vinci più di quanto dicevano le quote (" + won.length + " contro " + it(expected, 1) + ")." + (n < MIN ? " Sono ancora pochi per dire che è occhio e non fortuna." : "")
+        : "Finora vinci meno o uguale a quanto dicevano le quote (" + won.length + " contro " + it(expected, 1) + ").") + (open ? " In attesa di esito: " + open + "." : "") + '</div>';
+
+    var sports = new Set(list.map(function (b) { return b.sport; }).filter(function (x) { return x !== "libero" && x !== "multi"; }));
+    var days = new Set(list.map(function (b) { return dayKey(b.ts); }));
     function wonOn(re) { return won.some(function (b) { return re.test(b.code || ""); }); }
-    var weekPos = Object.keys(R.weeks).some(function (w) { return R.weeks[w].n >= 10 && R.weeks[w].pts > 0; });
-    var exp100 = s.n >= 100 && s.won > s.expected;
+    var weekPos = Object.keys(R2.weeks).some(function (w) { return R2.weeks[w].n >= 10 && R2.weeks[w].pts > 0; });
+    var multi = won.some(function (b) { return b.sport === "multi" && b.code === "multipla"; });
+    var multi5 = won.some(function (b) { return b.sport === "multi" && b.code === "multipla" && b.legs >= 5; });
     var B = [
-      ["Inizio", [["🎯", "Prima giocata", "Salva la tua prima giocata", bets.length >= 1],
-                  ["✅", "Primo vinto", "Vinci il primo pronostico", won.length >= 1],
-                  ["✍️", "A modo mio", "Una giocata libera con /giocata", bets.some(function (b) { return b.sport === "libero"; })]]],
-      ["Costanza", [["📒", "Costante", "10 pronostici chiusi", s.n >= 10], ["📚", "Archivio", "50 pronostici chiusi", s.n >= 50],
-                    ["🗄", "Biblioteca", "100 pronostici chiusi", s.n >= 100], ["🏛", "Istituzione", "250 pronostici chiusi", s.n >= 250],
-                    ["📅", "Tre giorni", "Attivo in 3 giorni diversi", days.size >= 3], ["🗓", "Una settimana", "Attivo in 7 giorni diversi", days.size >= 7],
-                    ["🌙", "Un mese", "Attivo in 30 giorni diversi", days.size >= 30]]],
-      ["Quote", [["💥", "Colpo d'occhio", "Vinto a quota 2,50 o più", won.some(function (b) { return b.odds >= 2.5; })],
-                 ["🚀", "Sorpresa", "Vinto a quota 4,00 o più", won.some(function (b) { return b.odds >= 4; })],
-                 ["🌠", "Impresa", "Vinto a quota 7,00 o più", won.some(function (b) { return b.odds >= 7; })]]],
-      ["Serie", [["🔥", "Serie di 3", "3 vinti di fila", bestStreak >= 3], ["⚡", "Serie di 5", "5 vinti di fila", bestStreak >= 5],
-                 ["☄️", "Serie di 8", "8 vinti di fila", bestStreak >= 8]]],
-      ["Occhio", [["🦅", "Occhio vero", "Più vinti di quanto dicevano le quote, su almeno 30", s.n >= 30 && s.won > s.expected],
-                  ["🔭", "Occhio di lungo corso", "Lo stesso su almeno 100", exp100],
-                  ["📈", "Settimana positiva", "Una settimana in positivo con almeno 10 pronostici", weekPos]]],
-      ["Sport e mercati", [["⚽", "Calciatore", "Un pronostico sul calcio", sports.has("calcio")], ["🎾", "Tennista", "Un pronostico sul tennis", sports.has("tennis")],
-                           ["🌍", "Due sport", "Calcio e tennis", sports.size >= 2], ["🧊", "Mago dell'Under", "Vinto un Under", wonOn(/^U/)],
-                           ["🎆", "Pioggia di gol", "Vinto un Over", wonOn(/^O/)], ["🤝", "Entrambe", "Vinto un Goal o NoGoal", wonOn(/^(GG|NG)$/)],
-                           ["⏭", "Veggente", "Vinto un prossimo gol", wonOn(/^P/)], ["1️⃣", "Classico", "Vinto un 1X2", wonOn(/^[1X2]$/)]]],
-      ["Leghe", LEAGUES.slice(1).map(function (l, i) { return ["🛡", l[0], "Raggiungi la lega " + l[0], R.bestTier >= i + 1 || R.tier >= i + 1]; })],
-      ["Livelli", [5, 10, 20, 30].map(function (n) { return ["⭐", "Livello " + n, "Raggiungi il livello " + n, R.level >= n]; })]
+      ["Inizio", [["target", "Primo pronostico", "Conferma la tua prima schedina", list.length >= 1],
+                  ["check", "Primo vinto", "Vinci il primo pronostico", won.length >= 1],
+                  ["pen", "A modo mio", "Una giocata libera con /giocata", list.some(function (b) { return b.sport === "libero"; })]]],
+      ["Costanza", [["layers", "Costante", "10 pronostici chiusi", n >= 10], ["book", "Archivio", "50 pronostici chiusi", n >= 50],
+                    ["building", "Istituzione", "250 pronostici chiusi", n >= 250],
+                    ["calendar", "Tre giorni", "Attivo in 3 giorni diversi", days.size >= 3], ["calendar", "Una settimana", "Attivo in 7 giorni diversi", days.size >= 7],
+                    ["moon", "Un mese", "Attivo in 30 giorni diversi", days.size >= 30]]],
+      ["Quote", [["bolt", "Colpo d'occhio", "Vinto a quota 2,50 o più", won.some(function (b) { return b.odds >= 2.5; })],
+                 ["rocket", "Sorpresa", "Vinto a quota 4,00 o più", won.some(function (b) { return b.odds >= 4; })],
+                 ["star", "Impresa", "Vinto a quota 7,00 o più", won.some(function (b) { return b.odds >= 7; })]]],
+      ["Schedine", [["layers", "Multipla", "Vinci una multipla", multi], ["trophy", "Multipla da 5", "Vinci una multipla da almeno 5 partite", multi5],
+                    ["strategie", "Sistemista", "Chiudi un sistema in positivo", won.some(function (b) { return b.sport === "multi" && b.code === "sistema"; })]]],
+      ["Serie", [["flame", "Serie di 3", "3 vinti di fila", bestStreak >= 3], ["flame", "Serie di 5", "5 vinti di fila", bestStreak >= 5],
+                 ["flame", "Serie di 8", "8 vinti di fila", bestStreak >= 8]]],
+      ["Occhio", [["eye", "Occhio vero", "Più vinti di quanto dicevano le quote, su almeno 30", n >= 30 && won.length > expected],
+                  ["radar", "Occhio di lungo corso", "Lo stesso su almeno 100", n >= 100 && won.length > expected],
+                  ["trend", "Settimana positiva", "Una settimana in positivo con almeno 10 pronostici", weekPos]]],
+      ["Sport e mercati", [["calcio", "Calcio", "Un pronostico sul calcio", sports.has("calcio")], ["tennis", "Tennis", "Un pronostico sul tennis", sports.has("tennis")],
+                           ["globe", "Due sport", "Calcio e tennis", sports.size >= 2], ["snow", "Mago dell'Under", "Vinto un Under", wonOn(/^1?U\d/)],
+                           ["flame", "Pioggia di gol", "Vinto un Over", wonOn(/^1?O\d/)], ["handshake", "Entrambe", "Vinto un Goal o NoGoal", wonOn(/^(GG|NG)$/)],
+                           ["next", "Veggente", "Vinto un prossimo gol", wonOn(/^P[12N]$/)], ["one", "Classico", "Vinto un 1X2", wonOn(/^[1X2]$/)],
+                           ["target", "Cecchino", "Vinto un risultato esatto", wonOn(/^CS/)]]],
+      ["Leghe", LEAGUES.slice(1).map(function (l, i) { return ["shield", l[0], "Raggiungi la lega " + l[0] + " (settimana o stagione)", R2.bestTier >= i + 1 || R2.sTier >= i + 1]; })],
+      ["Livelli", [5, 10, 20, 30].map(function (lv) { return ["star", "Livello " + lv, "Raggiungi il livello " + lv, R2.level >= lv]; })]
     ];
     var got = 0, tot = 0;
     B.forEach(function (g) { g[1].forEach(function (b) { tot++; if (b[3]) got++; }); });
     $("occhiobadges").innerHTML = '<div class="k" style="margin-bottom:8px;">' + got + ' su ' + tot + ' sbloccati</div>' + B.map(function (g) {
       return '<div class="badgegroup">' + esc(g[0]) + '</div><div class="badges">' + g[1].map(function (b) {
-        return '<div class="badge' + (b[3] ? "" : " locked") + '"><div class="bi">' + b[0] + '</div><div class="bn">' + esc(b[1]) + '</div><div class="bd">' + esc(b[2]) + '</div></div>';
+        return '<div class="badge' + (b[3] ? "" : " locked") + '"><div class="bi">' + ic(b[0]) + '</div><div class="bn">' + esc(b[1]) + '</div><div class="bd">' + esc(b[2]) + '</div></div>';
       }).join("") + '</div>';
     }).join("");
   }
-
-  // ---------------------------------------------------------------- Radar: tutte le partite live in una tabella
-  var rsport = "calcio";
-  var RADAR_COLS = ["Tiri in porta", "Tiri", "xG", "Angoli", "Possesso", "Attacchi pericolosi", "Rossi"];
-  function domCell(h, a, isPct) {
-    if (h == null || a == null) return '<td class="k">–</td>';
-    var nh = parseFloat(h), na = parseFloat(a), cls = "";
-    // come lo scanner di InPlayGuru: colore quando una squadra domina (almeno 3 e almeno 2,6 volte l'altra)
-    if (!isPct && (nh >= 3 || na >= 3) && (nh >= 2.6 * Math.max(na, 0.01) || na >= 2.6 * Math.max(nh, 0.01))) cls = (Math.max(nh, na) >= 3.6 * Math.max(Math.min(nh, na), 0.01) && Math.max(nh, na) >= 4) ? "hot" : "warm";
-    var fmt = function (v) { return typeof v === "number" && v % 1 ? it(v, 2) : esc(v); };
-    return '<td class="' + cls + '">' + fmt(h) + ' <span class="k">-</span> ' + fmt(a) + '</td>';
-  }
-  function renderRadar() {
-    var dz = data.diario;
-    var evs = ((dz && dz.events) || []).filter(function (e) { return e.sport === rsport; });
-    $("radarage").textContent = dz ? "dati di " + ageTxt(dz.at) : "";
-    if (!evs.length) { $("radar").innerHTML = '<div class="note">Nessuna partita live in questo momento.</div>'; return; }
-    var html = '<table class="rt"><thead><tr>';
-    if (rsport === "calcio") {
-      evs.sort(function (a, b) { return (b.minute || 0) - (a.minute || 0); });
-      html += '<th>Min</th><th class="l">Partita</th><th>Ris.</th>' + RADAR_COLS.map(function (c) { return '<th>' + c + '</th>'; }).join("") + '</tr></thead><tbody>'
-        + evs.map(function (e) {
-          var st = {}; (e.stats || []).forEach(function (r) { st[r[0]] = r; });
-          return '<tr data-ev="' + esc(e.sport + ":" + e.id) + '"><td class="mn">' + esc(estMinute(e) || "–") + '</td><td class="l"><b>' + esc(e.home) + '</b><br><b>' + esc(e.away) + '</b><div class="k">' + esc(e.league) + '</div></td>'
-            + '<td class="sc">' + esc(scoreTxt(e)) + '</td>'
-            + RADAR_COLS.map(function (c) { var r = st[c]; return r ? domCell(r[1], r[2], c === "Possesso") : '<td class="k">–</td>'; }).join("") + '</tr>';
-        }).join("");
-    } else {
-      html += '<th class="l">Partita</th><th>Set</th><th>Game</th><th>Serve</th><th>Quote</th><th>Punti al servizio</th><th>Punti in risposta</th><th>Ace</th><th>Doppi falli</th></tr></thead><tbody>'
-        + evs.map(function (e) {
-          var st = {}; (e.stats || []).forEach(function (r) { st[r[0]] = r; });
-          function c2(k) { var r = st[k]; return r ? '<td>' + esc(r[1]) + ' <span class="k">-</span> ' + esc(r[2]) + '</td>' : '<td class="k">–</td>'; }
-          return '<tr data-ev="' + esc(e.sport + ":" + e.id) + '"><td class="l"><b>' + pname(e, 1) + '</b><br><b>' + pname(e, 2) + '</b><div class="k">' + esc(e.league) + '</div></td>'
-            + '<td class="sc">' + esc(e.sets || "–") + '</td><td>' + esc((e.games || []).join(" ") || "–") + '</td><td>' + (e.serve ? "🎾 " + esc((e.serve === 1 ? e.home : e.away).split(" ").slice(-1)[0]) : "–") + '</td>'
-            + '<td>' + (e.o1 || e.o2 ? oddsTxt(e.o1) + ' / ' + oddsTxt(e.o2) : "–") + '</td>'
-            + c2("Punti vinti al servizio") + c2("Punti vinti in risposta") + c2("Ace") + c2("Doppi falli") + '</tr>';
-        }).join("");
-    }
-    $("radar").innerHTML = html + '</tbody></table>';
-  }
-  $("radarchips").addEventListener("click", function (e) {
-    var b = e.target.closest(".chip"); if (!b) return;
-    rsport = b.dataset.rsport;
-    $("radarchips").querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
-    if (data) renderRadar();
-  });
-  $("radar").addEventListener("click", function (e) { var r = e.target.closest("tr[data-ev]"); if (r && data) renderGiocata(r.dataset.ev); });
-
-  function choiceLabel(e, code, choice) {
-    if (e.sport === "tennis") { var o = code === "W1" ? e.o1 : e.o2; return (code === "W1" ? e.home : e.away) + (o ? " (Betfair " + oddsTxt(o) + ")" : ""); }
-    if (code === "1") return "1 · " + e.home;
-    if (code === "2") return "2 · " + e.away;
-    if (code === "P1") return e.home;
-    if (code === "P2") return e.away;
-    return choice;
-  }
-
-  // ANTEPRIMA delle quote live (richiesta 01/10): al deploy su un server vero arriveranno quote Betfair
-  // aggiornate ogni 30 secondi. Oggi: tennis = quota Betfair dell'ultimo aggiornamento (vera ma vecchia di
-  // qualche minuto); calcio = STIMA d'esempio da un modello di Poisson (gol medi, minuti che restano), non una
-  // quota di mercato. Toccare una quota compila mercato, scelta e quota del modulo.
-  // ordine fisso: in JavaScript le chiavi numeriche ("1", "2", "12") passano davanti alle altre
-  var ORDER = ["1", "X", "2", "1X", "X2", "12", "P1", "PN", "P2", "O05", "U05", "O15", "U15", "O25", "U25",
-               "O35", "U35", "O45", "U45", "GG", "NG", "W1", "W2"];
-  function codesOf(mk) { return ORDER.filter(function (c) { return mk[c]; }); }
-  function poisson(l, k) { var p = Math.exp(-l); for (var i = 1; i <= k; i++) p *= l / i; return p; }
-  function demoOdds(e) {
-    if (e.sport === "tennis") return e.o1 && e.o2 ? { W1: e.o1, W2: e.o2 } : {};
-    var left = e.ht ? 0.5 : Math.max(0.02, (90 - Math.min(90, e.minute == null ? 0 : e.minute)) / 90);
-    var lh = 1.45 * left, la = 1.15 * left, gh = e.gh || 0, ga = e.ga || 0, p = {}, cell = [];
-    for (var i = 0; i <= 10; i++) for (var j = 0; j <= 10; j++) cell.push([gh + i, ga + j, poisson(lh, i) * poisson(la, j)]);
-    function sum(f) { return cell.reduce(function (s, c) { return s + (f(c[0], c[1]) ? c[2] : 0); }, 0); }
-    p["1"] = sum(function (h, a) { return h > a; }); p["X"] = sum(function (h, a) { return h === a; }); p["2"] = 1 - p["1"] - p["X"];
-    p["1X"] = p["1"] + p["X"]; p["X2"] = p["X"] + p["2"]; p["12"] = p["1"] + p["2"];
-    var none = Math.exp(-(lh + la));
-    p.P1 = (1 - none) * lh / (lh + la); p.P2 = (1 - none) * la / (lh + la); p.PN = none;
-    ["05", "15", "25", "35", "45"].forEach(function (l) {
-      var n = parseInt(l[0], 10) + 1, o = sum(function (h, a) { return h + a >= n; });
-      if (gh + ga < n) { p["O" + l] = o; p["U" + l] = 1 - o; }  // linee gia' superate: niente quota
-    });
-    p.GG = sum(function (h, a) { return h > 0 && a > 0; }); p.NG = 1 - p.GG;
-    var out = {};
-    Object.keys(p).forEach(function (k) { var q = Math.round(100 / (p[k] * 1.06)) / 100; if (p[k] > 0.009 && q >= 1.03) out[k] = q; });
-    return out;
-  }
-  var oddsTimer = null;
-  function startOddsTimer() {
-    clearInterval(oddsTimer);
-    var t = 30;
-    oddsTimer = setInterval(function () {
-      var el = $("oddscount"); if (!el) { clearInterval(oddsTimer); return; }
-      t = t <= 1 ? 30 : t - 1;
-      el.textContent = "prossimo aggiornamento tra " + t + " s";
-      if (t === 30) { var b = $("oddsbox"); b.classList.add("tick"); setTimeout(function () { b.classList.remove("tick"); }, 400); }
-    }, 1000);
-  }
-  function oddsHtml(e) {
-    var o = demoOdds(e), mk = data.diario.markets[e.sport], codes = Object.keys(o);
-    if (!codes.length) return "";
-    var groups = GROUPS[e.sport].map(function (g) {
-      var cs = codesOf(mk).filter(function (c) { return mk[c][0] === g && o[c]; });
-      if (!cs.length) return "";
-      return '<div class="og">' + esc(g) + '</div><div class="oddsgrid"' + (g === "Under/Over" || cs.length === 2 ? ' style="grid-template-columns:repeat(2,minmax(0,1fr));"' : "") + '>' + cs.map(function (c) {
-        var lab = choiceLabel(e, c, mk[c][1]).replace(/ \(Betfair .*\)$/, "");
-        return '<button class="oddbtn" type="button" data-odd="' + esc(c) + '" data-group="' + esc(g) + '" data-val="' + o[c] + '"><span class="ol">' + esc(lab) + '</span><span class="ov">' + oddsTxt(o[c]) + '</span></button>';
-      }).join("") + '</div>';
-    }).join("");
-    var src = e.sport === "tennis" ? "Quote Betfair vere, ma di " + ageTxt(e.ts) + "." : "Quote STIMATE da un modello d'esempio: non sono quote di mercato, non giocarle.";
-    return '<div class="oddsbox" id="oddsbox"><div class="oh"><span class="demo">ANTEPRIMA</span><span id="oddscount">prossimo aggiornamento tra 30 s</span></div>'
-      + '<div class="oh"><span>' + src + ' Con il server vero: quote Betfair aggiornate ogni 30 secondi. Tocca una quota per scegliere la giocata' + (e.sport === "tennis" ? "." : " (la quota la scrivi tu).") + '</span></div>'
-      + groups + '</div>';
-  }
-
-  function renderGiocata(key) {
-    var e = (data.diario.events || []).find(function (x) { return x.sport + ":" + x.id === key; });
-    if (!e) return;
-    curEvent = e;
-    var mk = data.diario.markets[e.sport], groups = GROUPS[e.sport];
-    var stats = (e.stats || []).map(function (r) { return '<tr><td>' + esc(r[1]) + '</td><td>' + esc(r[0]) + '</td><td>' + esc(r[2]) + '</td></tr>'; }).join("");
-    $("giocata").innerHTML = '<div class="dsub">' + EMOJI[e.sport] + ' ' + esc(e.league || NAME[e.sport]) + ' · dati di ' + ageTxt(e.ts) + '</div>'
-      + '<h1 class="dtitle">' + pname(e, 1) + ' – ' + pname(e, 2) + '</h1>'
-      + '<div class="bigscore">' + esc(scoreTxt(e) || "LIVE") + '</div>'
-      + '<div class="bigmin">' + esc(estMinute(e) || (e.games && e.games.length ? "Game: " + e.games.join("  ") : "")) + '</div>'
-      + (stats ? '<table class="stt"><tr><td><b>' + esc(e.home.split(" ").slice(-1)[0]) + '</b></td><td></td><td><b>' + esc(e.away.split(" ").slice(-1)[0]) + '</b></td></tr>' + stats + '</table>' : '<div class="note" style="margin-bottom:14px;">Statistiche non disponibili per questa partita.</div>')
-      + oddsHtml(e)
-      + '<form class="betform" id="betform"><label for="bgroup">Mercato</label><select id="bgroup">'
-      + groups.map(function (g) { return '<option>' + esc(g) + '</option>'; }).join("") + '</select>'
-      + '<label for="bpick">Scelta</label><select id="bpick"></select>'
-      + '<label for="bodds">Quota che hai preso</label><input id="bodds" inputmode="decimal" placeholder="es. 2,00" required>'
-      + '<div class="msg" id="betmsg" role="alert"></div>'
-      + '<button class="primary" type="submit">📒 Salva nel diario (apre Telegram)</button></form>'
-      + '<div class="note">Telegram si apre sulla chat del bot: se serve premi <b>Avvia</b>. Il bot salva la giocata con minuto e statistiche di quel momento, poi ti chiede il motivo. L\'esito lo trova da solo.</div>';
-    function fillPicks() {
-      var g = $("bgroup").value;
-      $("bpick").innerHTML = codesOf(mk).filter(function (c) { return mk[c][0] === g; })
-        .map(function (c) { return '<option value="' + esc(c) + '">' + esc(choiceLabel(e, c, mk[c][1])) + '</option>'; }).join("");
-    }
-    $("bgroup").addEventListener("change", fillPicks);
-    fillPicks();
-    if ($("oddsbox")) {
-      startOddsTimer();
-      $("oddsbox").addEventListener("click", function (ev) {
-        var b = ev.target.closest("[data-odd]"); if (!b) return;
-        $("oddsbox").querySelectorAll("[data-odd]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
-        $("bgroup").value = b.dataset.group; fillPicks(); $("bpick").value = b.dataset.odd;
-        // la stima del calcio NON entra nel diario (falserebbe il conto): la quota la scrive l'utente
-        if (e.sport === "tennis") $("bodds").value = oddsTxt(parseFloat(b.dataset.val));
-        else { $("bodds").value = ""; $("bodds").focus(); }
-      });
-    }
-    $("betform").addEventListener("submit", function (ev) {
-      ev.preventDefault();
-      var odds = parseFloat(String($("bodds").value).replace(",", "."));
-      if (!(odds >= 1.01 && odds <= 1000)) { $("betmsg").textContent = "Scrivi la quota, per esempio 2,00."; return; }
-      var id = e.sport === "tennis" ? String(e.id).replace(/^1\./, "") : String(e.id);
-      var code = "g" + (e.sport === "tennis" ? "t" : "c") + id + "_" + $("bpick").value + "_" + Math.round(odds * 100);
-      window.location.href = "https://t.me/" + encodeURIComponent(data.diario.bot) + "?start=" + code;
-    });
-    show("giocata");
-    window.scrollTo(0, 0);
-  }
-  $("diarioevents").addEventListener("click", function (ev) { var b = ev.target.closest("[data-ev]"); if (b) renderGiocata(b.dataset.ev); });
-  $("diariochips").addEventListener("click", function (ev) {
-    var b = ev.target.closest(".chip"); if (!b) return;
-    dsport = b.dataset.dsport;
-    $("diariochips").querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", c === b ? "true" : "false"); });
-    renderDiario();
-  });
 
   async function load(password, fromForm) {
     var btn = $("unlock"), msg = $("lockmsg");
@@ -1508,7 +1840,18 @@
   function paintTema() {
     document.querySelectorAll("#temachips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.tema === window.getTema())); });
   }
-  $("settingsbtn").addEventListener("click", function () { paintTema(); show("impostazioni"); });
+  function paintPiano() {
+    document.querySelectorAll("#pianochips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String((c.dataset.piano === "full") === isFull())); });
+  }
+  $("settingsbtn").addEventListener("click", function () { paintTema(); paintPiano(); if (data) renderInformativa(); show("impostazioni"); });
+  $("pianochips").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-piano]"); if (!b) return;
+    try { localStorage.setItem(PLAN_KEY, b.dataset.piano); } catch (er) {}
+    paintPiano(); if (data) renderAll();
+  });
+  $("informativa").addEventListener("click", function (e) {
+    var x = e.target.closest("button[data-escluso]"); if (x && data) renderEscluso(x.dataset.escluso);
+  });
   $("temachips").addEventListener("click", function (e) {
     var b = e.target.closest("[data-tema]"); if (!b) return;
     window.setTema(b.dataset.tema); paintTema();
