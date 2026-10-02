@@ -586,6 +586,13 @@ window.I18N_EN = {
   "I personaggi del Team StatSight sono della casa: giocano con una regola fissa, scritta qui sopra, alle quote vere di quel momento. I risultati non sono aggiustati.": "The Team StatSight characters belong to the house: they play a fixed rule, written above, at the real odds of that moment. Results are not adjusted.",
   "Classifica della settimana con il Team StatSight. Con l'app pubblica ci saranno anche gli altri utenti.": "This week's leaderboard with Team StatSight. With the public app other users will be here too.",
   "Tu": "You",
+  // benvenuto e selettore del preferito
+  "Benvenuto in StatSight": "Welcome to StatSight",
+  "Raccontaci cosa segui: mettiamo in primo piano il tuo campionato e la tua squadra, e ti proponiamo le sfide giuste. Si cambia quando vuoi dal Diario.": "Tell us what you follow: we'll put your league and your team first and suggest the right challenges. Change it anytime from the Diary.",
+  "Il tuo sport": "Your sport", "Il campionato": "League", "Il circuito": "Tour", "Il tuo tennista": "Your player", "La tua squadra": "Your team",
+  "Non c'è? Scrivi il nome": "Not listed? Type the name", "Non c'è? Scrivi la squadra": "Not listed? Type the team", "Aggiungi": "Add",
+  "Inizia": "Start", "Salta, lo faccio dopo": "Skip, I'll do it later", "Cosa segui": "What you follow",
+  "Scegli il tuo sport e la tua squadra": "Choose your sport and your team", "Mettiamo in primo piano il tuo campionato e le sfide giuste.": "We'll put your league and the right challenges first.",
   // schedina salvata nell'app
   "Scrivi qualcosa (facoltativo)": "Write something (optional)",
   "Perché la giochi? Chi ti segue lo vede nella Home insieme al pronostico": "Why this pick? Your followers will see it in their Home with the pick",
