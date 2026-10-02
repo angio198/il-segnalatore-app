@@ -87,11 +87,12 @@
   function walk(node) {
     if (node.nodeType === 3) {
       if (node.parentNode && SKIP[node.parentNode.nodeName]) return;
+      if (node.parentNode && node.parentNode.closest && node.parentNode.closest('[translate="no"]')) return;  // testi dell'utente (nome, bio)
       var r = tr(node.data);
       if (r != null) node.data = r;
       return;
     }
-    if (node.nodeType !== 1 || SKIP[node.nodeName]) return;
+    if (node.nodeType !== 1 || SKIP[node.nodeName] || node.getAttribute("translate") === "no") return;
     fixEl(node);
     for (var c = node.firstChild; c; c = c.nextSibling) walk(c);
   }
