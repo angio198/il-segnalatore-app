@@ -560,6 +560,20 @@ window.I18N_EN = {
   "turno dopo, stesso campionato": "next round, same league", "partita dopo delle stesse squadre": "next match of the same teams",
   "uscito davvero": "actually happened", "quote stimate": "estimated odds", "Partite \"fortunate\"": "\"Lucky\" matches",
 
+  // ---------------------------------------------------------------- divisioni, monete e jolly
+  "Divisioni della settimana": "Weekly divisions", "Termina tra #g #h": "Ends in #d #h", "TU SEI QUI": "YOU ARE HERE",
+  "Pronostici #/#": "Picks #/#", "Punti #/#": "Points #/#", "Premio di fine settimana: # monete": "End-of-week reward: # coins",
+  "Per salire: almeno 10 pronostici e +3 punti entro domenica. Con meno di 5 pronostici o −3 punti si scende. Il premio in monete arriva a fine settimana (con almeno 5 pronostici).": "To go up: at least 10 picks and +3 points by Sunday. With fewer than 5 picks or −3 points you go down. The coin reward arrives at the end of the week (with at least 5 picks).",
+  "Per salire: almeno # pronostici e # punti entro domenica. Con meno di # pronostici o # punti si scende. Il premio in monete arriva a fine settimana (con almeno # pronostici).": "To go up: at least # picks and # points by Sunday. With fewer than # picks or # points you go down. The coin reward arrives at the end of the week (with at least # picks).",
+  "Jolly": "Power-ups", "monete": "coins", "· si guadagnano coi pronostici, non si comprano": "· earned with picks, never bought",
+  "Assicurazione": "Insurance", "Raddoppio": "Double",
+  "Se il pronostico va male non perdi punti lega.": "If the pick loses you don't lose league points.",
+  "Se il pronostico vince, i punti lega raddoppiano.": "If the pick wins, league points double.",
+  "· ne hai #": "· you have #",
+  "Un jolly si mette su un pronostico ancora aperto, da \"Le mie giocate\". Al massimo un'Assicurazione e un Raddoppio a settimana.": "Put a power-up on a pick that's still open, from \"My picks\". At most one Insurance and one Double per week.",
+  "Monete:": "Coins:",
+  "# di benvenuto, # per ogni pronostico chiuso che dà XP più # se vinto, # a ogni livello, e a fine settimana un premio secondo la lega (da # in Bronzo a # in Elite). Servono solo per i jolly: non si comprano e non valgono soldi.": "# welcome, # for each settled pick that gives XP plus # if won, # at every level, and at the end of the week a reward by league (from # in Bronze to # in Elite). They're only for power-ups: they can't be bought and aren't worth money.",
+
   // ---------------------------------------------------------------- corse estere
   "Corse estere": "Foreign races", "Favorito nelle corse estere": "Favourite in foreign races", "Ultime corse": "Latest races",
   "Le riunioni estere che SNAI propone ogni giorno (Francia, Gran Bretagna, Irlanda, Svezia, Stati Uniti, Australia e altre): # riunioni seguite finora. Il modello del bot conosce solo i cavalli italiani, quindi qui per ora c'è il termine di paragone: il favorito.": "The foreign meetings SNAI offers every day (France, Great Britain, Ireland, Sweden, United States, Australia and others): # meetings followed so far. The bot's model only knows Italian horses, so for now here is the benchmark: the favourite.",
