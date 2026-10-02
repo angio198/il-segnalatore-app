@@ -953,7 +953,31 @@
     $("strategie").innerHTML = tabs + hero + [stratSport].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) { return row(s, false); }).join("");
       return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2>' + NOTE + '<div class="card">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
-    }).join("") + catalogoHtml(stratSport);
+    }).join("") + catalogoHtml(stratSport) + (stratSport === "ippica" ? esteroHtml() : "");
+  }
+
+  // Corse estere dell'ippica (signals/ippica_estero.py): il favorito alla quota fissa SNAI, con il conto per paese.
+  var PAESI = { FR: "Francia", GB: "Gran Bretagna", IE: "Irlanda", SE: "Svezia", NO: "Norvegia", DK: "Danimarca", FI: "Finlandia",
+    DE: "Germania", BE: "Belgio", NL: "Olanda", AT: "Austria", CH: "Svizzera", ES: "Spagna", US: "Stati Uniti", CA: "Canada",
+    AR: "Argentina", UY: "Uruguay", BR: "Brasile", CL: "Cile", AU: "Australia", NZ: "Nuova Zelanda", ZA: "Sudafrica",
+    KR: "Corea del Sud", JP: "Giappone", HK: "Hong Kong", SG: "Singapore", MY: "Malesia", AE: "Emirati" };
+  function esteroHtml() {
+    var e = data.ippica_estero;
+    if (!e) return "";
+    function st(a) { return { n: a[0], wins: a[1], roi: a[0] ? a[2] / a[0] : null }; }
+    var countries = Object.keys(e.by_country || {}).sort(function (a, b) { return e.by_country[b][0] - e.by_country[a][0]; });
+    var STATUS = { vinta: "vinto", persa: "perso", aperta: "in attesa", nulla: "nullo", senza_esito: "senza esito" };
+    return '<h2 class="sectiontitle">Corse estere</h2>'
+      + '<div class="note" style="margin-bottom:10px;">Le riunioni estere che SNAI propone ogni giorno (Francia, Gran Bretagna, Irlanda, Svezia, Stati Uniti, Australia e altre): ' + e.meetings + ' riunioni seguite finora. Il modello del bot conosce solo i cavalli italiani, quindi qui per ora c\'è il termine di paragone: il favorito.</div>'
+      + '<div class="card"><div class="strat"><div class="txt"><span class="nm">Favorito nelle corse estere</span>' + tmTag("corsa")
+      + '<div class="ds">Il cavallo con la quota fissa SNAI più bassa 15-20 minuti prima del via. Rendimento a quella quota (il margine del bookmaker è già dentro). Ogni strategia sulle estere dovrà fare meglio di lui.</div>'
+      + perfBar("Dal vivo", st(e.total)) + countries.map(function (k) { return perfBar(PAESI[k] || k, st(e.by_country[k])); }).join("")
+      + (e.open ? '<div class="ds">In attesa di esito: ' + e.open + '</div>' : "") + '</div></div></div>'
+      + (e.recent && e.recent.length ? '<details class="card catgroup"><summary><b>Ultime corse</b> <span class="k">· ' + e.recent.length + '</span></summary>'
+        + e.recent.slice(0, 20).map(function (r) {
+          return '<div class="ds" style="margin-top:6px;">' + whenLabel(r.ts) + ' · ' + esc(PAESI[r.country] || r.country) + ' · ' + esc(r.track) + ' corsa ' + r.race
+            + ' · <b>' + esc(r.horse) + '</b> a ' + it(r.odds, 2) + ' · <span class="' + (r.status === "vinta" ? "pos" : r.status === "persa" ? "neg" : "k") + '">' + (STATUS[r.status] || r.status) + '</span></div>';
+        }).join("") + '</details>' : "");
   }
 
   // Informativa (Impostazioni): regolamento del Diario, fonti dei dati, cosa non copriamo, avvertenze.
