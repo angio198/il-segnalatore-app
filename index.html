@@ -155,6 +155,20 @@
   .lbpts{font-weight:900;font-variant-numeric:tabular-nums;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 10px;}
   .lbrow svg{border-radius:12px;}
   .meav{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--accent);color:#fff;flex:none;}
+  /* profilazione e sfide */
+  .mefavs{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+  .mefav{display:inline-flex;align-items:center;gap:5px;font-size:0.74rem;font-weight:700;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 8px 2px 2px;}
+  .mefav .tlogo{width:20px;height:20px;font-size:8px;}
+  .mefav:first-child:not(:has(.tlogo)){padding:2px 6px;}
+  .favchips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;}
+  .favchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--accent);background:color-mix(in srgb, var(--accent) 14%, transparent);color:var(--ink);font:inherit;font-size:0.8rem;font-weight:700;border-radius:999px;padding:3px 8px 3px 3px;cursor:pointer;}
+  .favchip .tlogo{width:22px;height:22px;font-size:9px;} .favchip .ico{width:12px;height:12px;opacity:.6;}
+  .favhits{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;} .favhits .tlogo{width:20px;height:20px;font-size:8px;}
+  .favhead{color:var(--accent-strong);}
+  .chcard summary{display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none;} .chcard summary::-webkit-details-marker{display:none;}
+  .chic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--bg);flex:none;} .chic .ico{width:24px;height:24px;}
+  .cht{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .chprize{display:inline-flex;align-items:center;gap:4px;font-weight:900;background:linear-gradient(120deg,#FFD866,#F2A93B);color:#2A1A00;border-radius:999px;padding:3px 10px;}
   /* Home del Diario */
   .landing .lhead{display:flex;gap:12px;align-items:flex-start;} .landing .lhead img{border-radius:12px;flex:none;} .landing .lhead b{font-size:1.05rem;}
   .sugrow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);}
@@ -757,6 +771,7 @@
 
 <script src="regole.js"></script>
 <script src="moderazione.js"></script>
+<script src="anagrafica.js"></script>
 <script>
 (function () {
   "use strict";
@@ -1761,14 +1776,68 @@
   }
   function myAvatar(size) { return avOf(me, size); }
   // in modifica si lavora su una copia (meEdit): si salva solo con "Salva", e i ridisegni non perdono il testo
-  // sport preferiti (come all'iscrizione): servono a ordinare i consigliati della Home
-  var SPORTS = ["calcio", "tennis", "basket", "hockey", "ippica"], pickSports = [];
-  function sportChips(sel) {
-    return '<div class="chips" style="margin-top:8px;flex-wrap:wrap;">' + SPORTS.map(function (k) {
-      return '<button class="chip" type="button" data-sport="' + k + '" aria-pressed="' + (sel.indexOf(k) >= 0) + '">' + ic(k) + ' ' + NAME[k] + '</button>';
-    }).join("") + '</div>';
+  // Profilazione (come all'iscrizione, richiesta utente 02/10): nazione, sport, squadre e tennisti preferiti
+  // (anagrafica.js). Servono a ordinare Partite, consigliati della Home e sfide della settimana.
+  var A = window.ANAGRAFICA, SPORTS = ["calcio", "tennis", "basket", "hockey", "ippica"];
+  var FAV_MAX = 5;
+  function newPrefs(src) {
+    var c = (src && src.country) || A.guessCountry();
+    var fav = {}; SPORTS.forEach(function (k) { fav[k] = ((src && src.fav && src.fav[k]) || []).slice(); });
+    return { country: c, sports: ((src && src.sports) || A.PAESI[c].sports).slice(), fav: fav, q: {} };
   }
-  function startEdit() { meEdit = { name: me.name || "", bio: me.bio || "", pic: me.pic, seed: me.seed, sports: (me.sports || []).slice(), base: me.seed.split("-")[0], more: [1, 2, 3, 4, 5, 6, 7] }; renderProfilo(); }
+  var pick = newPrefs(null);
+  function favLabel(k) { return k === "tennis" ? "Tennisti preferiti" : "Squadre preferite · " + NAME[k]; }
+  function prefsHtml(st) {
+    var h = '<div class="melabel">Nazione</div><div class="chips" style="flex-wrap:wrap;">' + Object.keys(A.PAESI).map(function (c) {
+      return '<button class="chip" type="button" data-country="' + c + '" aria-pressed="' + (st.country === c) + '">' + A.PAESI[c].flag + ' ' + esc(A.PAESI[c].name) + '</button>';
+    }).join("") + '</div>'
+      + '<div class="melabel">Sport che segui</div><div class="chips" style="flex-wrap:wrap;">' + SPORTS.map(function (k) {
+        return '<button class="chip" type="button" data-sport="' + k + '" aria-pressed="' + (st.sports.indexOf(k) >= 0) + '">' + ic(k) + ' ' + NAME[k] + '</button>';
+      }).join("") + '</div>';
+    st.sports.filter(function (k) { return k !== "ippica"; }).forEach(function (k) {
+      var list = k === "tennis" ? A.TENNISTI : A.SQUADRE[k] || [], raw = (st.q[k] || "").trim(), q = raw.toLowerCase();
+      var hits = q.length >= 2 ? list.filter(function (n) { return n.toLowerCase().indexOf(q) >= 0 && st.fav[k].indexOf(n) < 0; }).slice(0, 6) : [];
+      h += '<div class="melabel">' + favLabel(k) + ' <span class="k">(fino a ' + FAV_MAX + ')</span></div>'
+        + '<div class="favchips">' + st.fav[k].map(function (n) {
+          return '<button class="favchip" type="button" data-favdel="' + esc(n) + '" data-favsport="' + k + '">' + teamLogo(n, k) + '<span translate="no">' + esc(n) + '</span>' + ic("x") + '</button>';
+        }).join("") + '</div>'
+        + (st.fav[k].length < FAV_MAX ? '<input class="meinput" type="text" data-favq="' + k + '" value="' + esc(st.q[k] || "") + '" placeholder="' + (k === "tennis" ? "Cerca un tennista" : "Cerca una squadra") + '" translate="no">'
+          + '<div class="favhits" data-favhits="' + k + '">' + favHits(st, k, list, hits, raw) + '</div>' : "");
+    });
+    return h;
+  }
+  function favHits(st, k, list, hits, raw) {
+    var q = raw.toLowerCase();
+    return hits.map(function (n) {
+      return '<button class="chip" type="button" data-favadd="' + esc(n) + '" data-favsport="' + k + '">' + teamLogo(n, k) + ' <span translate="no">' + esc(n) + '</span></button>';
+    }).join("") + (q.length >= 2 && !hits.some(function (n) { return n.toLowerCase() === q; }) ? '<button class="chip" type="button" data-favadd="' + esc(raw) + '" data-favsport="' + k + '">+ <span translate="no">' + esc(raw) + '</span></button>' : "");
+  }
+  // squadre e tennisti preferiti, piu' la nazionale del paese scelto: per "Per te" nelle Partite
+  function normName(s) {
+    return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\b(fc|ac|afc|sc|cf|ssc|as|us|calcio)\b/g, " ").replace(/[^a-z0-9]+/g, " ").trim();
+  }
+  function favKeys() {
+    var out = [], fav = me.fav || {};
+    Object.keys(fav).forEach(function (k) {
+      fav[k].forEach(function (n) { var w = normName(n).split(" "); out.push({ sport: k, key: k === "tennis" ? w[w.length - 1] : normName(n), name: n }); });
+    });
+    var P = A.PAESI[me.country || A.guessCountry()];
+    (P ? P.nat : []).forEach(function (n) { out.push({ sport: "calcio", key: normName(n), name: n, nat: true }); });
+    return out.filter(function (f) { return f.key.length >= 3; });
+  }
+  function isFavEvent(e, keys) {
+    var names = [" " + normName(e.home) + " ", " " + normName(e.away) + " "];
+    return keys.some(function (f) {
+      if (f.sport !== e.sport) return false;
+      return names.some(function (n) { return f.nat ? n.trim() === f.key : n.indexOf(" " + f.key + " ") >= 0; });
+    });
+  }
+  function startEdit() {
+    var p = newPrefs(me);
+    meEdit = { name: me.name || "", bio: me.bio || "", pic: me.pic, seed: me.seed, country: p.country, sports: p.sports, fav: p.fav, q: {},
+               base: me.seed.split("-")[0], more: [1, 2, 3, 4, 5, 6, 7] };
+    renderProfilo();
+  }
   // pronostici da mostrare nello storico: singole una per una, multiple e sistemi come una riga sola
   function histItems() {
     var dz = data.diario || {}, out = [];
@@ -1800,7 +1869,7 @@
         + '<label class="melabel" for="mename">Nome</label><input id="mename" class="meinput" maxlength="24" value="' + esc(d.name) + '" placeholder="Come ti vedono gli altri" translate="no">'
         + '<label class="melabel" for="mebio">Bio</label><textarea id="mebio" class="meinput" maxlength="160" rows="3" placeholder="Due righe su di te: sport preferiti, come giochi">' + esc(d.bio) + '</textarea>'
         + '<div class="k" id="mebion" style="text-align:right;">' + d.bio.length + '/160</div>'
-        + '<div class="melabel">Sport che segui</div>' + sportChips(d.sports)
+        + prefsHtml(d)
         + '<div class="duo" style="margin-top:8px;"><button class="chip" type="button" data-meannulla="1" style="justify-content:center;">Annulla</button>'
         + '<button class="primary" type="button" data-mesalva="1">' + ic("check") + ' Salva</button></div></div>';
     } else {
@@ -1808,14 +1877,17 @@
       html = '<div class="mehead">' + myAvatar(88)
         + '<div class="mewho"><div class="dtitle" style="margin:0;" translate="no">' + esc(me.name || "Il tuo profilo") + '</div>'
         + '<div class="pnick">' + ic("eye") + ' ' + esc(title) + ' · livello ' + R2.level + '</div>'
-        + '<div class="k">' + won + ' vinti su ' + closed.length + (streak > 1 ? ' · serie di ' + streak : "") + '</div></div>'
+        + '<div class="k">' + won + ' vinti su ' + closed.length + (streak > 1 ? ' · serie di ' + streak : "") + '</div>'
+        + (me.sports ? '<div class="mefavs">' + (A.PAESI[me.country] ? '<span class="mefav">' + A.PAESI[me.country].flag + '</span>' : "")
+          + [].concat.apply([], Object.keys(me.fav || {}).map(function (k) { return me.fav[k].map(function (n) { return '<span class="mefav">' + teamLogo(n, k) + '<span translate="no">' + esc(n) + '</span></span>'; }); })).join("") + '</div>' : "")
+        + '</div>'
         + '<button class="iconbtn" type="button" data-meedit="1" aria-label="Modifica il profilo">' + ic("pen") + '</button></div>'
         + (me.bio ? '<div class="mebio" translate="no">' + esc(me.bio) + '</div>'
           : '<button class="linkbtn mebio empty" type="button" data-meedit="1">' + ic("pen") + ' Scrivi la tua bio</button>')
         + heroesHtml(R2)
         + '<button class="coinbtn" type="button" data-megioca="1"><span class="cc">' + ic("coin") + '</span><span class="ct"><b>' + R2.coins + '</b> monete<span>Scegli le partite e fai il tuo pronostico</span></span>' + ic("chev") + '</button>'
-        + (me.sports ? "" : '<div class="card sportpick"><b>Quali sport segui?</b><div class="k">Ti consigliamo chi gioca gli stessi sport. Si cambia quando vuoi dalla matita.</div>'
-          + sportChips(pickSports) + '<button class="primary" type="button" data-mesports="1" style="width:100%;margin-top:10px;"' + (pickSports.length ? "" : " disabled") + '>Fatto</button></div>');
+        + (me.sports ? "" : '<div class="card sportpick"><b>Raccontaci cosa segui</b><div class="k">Così ti mettiamo in primo piano i tuoi campionati, la tua squadra e i tuoi tennisti, e le sfide giuste. Si cambia quando vuoi dalla matita.</div>'
+          + prefsHtml(pick) + '<button class="primary" type="button" data-mesports="1" style="width:100%;margin-top:12px;"' + (pick.sports.length ? "" : " disabled") + '>Fatto</button></div>');
     }
     $("profilo").innerHTML = html;
   }
@@ -2018,13 +2090,30 @@
     var evs = dview === "live" ? live : pre;
     var html = '<div class="k" style="margin:4px 2px 8px;font-size:0.76rem;">' + ic("clock") + ' Quote di ' + ageTxt(dz.at) + ' · alla conferma il bot riprende quelle del momento</div>';
     var isPre = dview === "pre";
-    if (dview === "live") evs.sort(function (a, b) { return a.sport === b.sport ? (a.comp > b.comp ? 1 : -1) : (a.sport > b.sport ? 1 : -1); });
+    // ordine personale (anagrafica.js): coppe e nazionali del giorno in primo piano, poi i campionati del tuo
+    // paese, poi i grandi campionati; gli sport che non segui in fondo. Sopra tutto "Per te": tue squadre,
+    // tuoi tennisti, la tua nazionale.
+    var P0 = A.PAESI[me.country || A.guessCountry()] || A.PAESI.XX, mySports = me.sports || P0.sports;
+    function compRank(e) {
+      var c = A.compOf(e.comp), r = 100;
+      if (c) {
+        var i = A.SPOT.indexOf(c.id), j = P0.leagues.indexOf(c.id), b = A.BIG.indexOf(c.id);
+        r = i >= 0 ? 900 - i : j >= 0 ? 800 - j : b >= 0 ? 500 - b : 100;
+      }
+      return r - (mySports.indexOf(e.sport) >= 0 ? 0 : 1000);
+    }
+    var fk = favKeys(), favSet = new Set(evs.filter(function (e) { return isFavEvent(e, fk); }).map(function (e) { return e.id; }));
+    if (dview === "live") evs.sort(function (a, b) {
+      return (favSet.has(b.id) - favSet.has(a.id)) || (compRank(b) - compRank(a)) || (a.comp > b.comp ? 1 : a.comp < b.comp ? -1 : 0);
+    });
     else {
       // pre-partita a gruppi per campionato (prima i campionati con piu' partite), dentro in ordine d'orario;
       // in alto i campionati come filtri, con la bandiera
       var cnt = {}, first = {};
       evs.forEach(function (e) { var k = e.sport + "|" + e.comp; cnt[k] = (cnt[k] || 0) + 1; first[k] = Math.min(first[k] || Infinity, e.start || 0); });
-      var keys = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a] || first[a] - first[b]; });
+      var rankOf = {};
+      evs.forEach(function (e) { rankOf[e.sport + "|" + e.comp] = compRank(e); });
+      var keys = Object.keys(cnt).sort(function (a, b) { return rankOf[b] - rankOf[a] || cnt[b] - cnt[a] || first[a] - first[b]; });
       if (dcomp !== "all" && !cnt[dcomp]) dcomp = "all";
       if (keys.length > 1) {
         html += '<div class="chips compchips">' + ['<button class="chip" type="button" data-dcomp="all" aria-pressed="' + (dcomp === "all") + '">🔥 Tutti <span class="k">' + evs.length + '</span></button>']
@@ -2035,15 +2124,21 @@
       }
       if (dcomp !== "all") evs = evs.filter(function (e) { return e.sport + "|" + e.comp === dcomp; });
       evs.sort(function (a, b) {
+        var fa = dcomp === "all" && favSet.has(a.id), fb = dcomp === "all" && favSet.has(b.id);
+        if (fa !== fb) return fb - fa;
         var ka = a.sport + "|" + a.comp, kb = b.sport + "|" + b.comp;
-        return ka === kb ? (a.start || 0) - (b.start || 0) : keys.indexOf(ka) - keys.indexOf(kb);
+        return ka === kb || (fa && fb) ? (a.start || 0) - (b.start || 0) : keys.indexOf(ka) - keys.indexOf(kb);
       });
     }
+    if (dview === "pre" && dcomp !== "all") favSet = new Set();
     if (!evs.length) html += '<div class="note">' + (dview === "live" ? "Nessuna partita in corso con quote in questo momento." : "Nessuna partita in programma con quote nelle prossime 24 ore.") + '</div>';
     var lastComp = null;
     evs.forEach(function (e) {
-      var comp = e.sport + "|" + e.comp;
-      if (comp !== lastComp) {
+      var fav = favSet.has(e.id), comp = fav ? "fav" : e.sport + "|" + e.comp;
+      if (comp !== lastComp && fav) {
+        html += '<div class="comphead favhead">' + (isPre ? "⭐" : ic("star")) + ' Per te</div>';
+        lastComp = comp;
+      } else if (comp !== lastComp) {
         html += isPre ? '<div class="comphead pre"><span class="flag">' + flagOf(e) + '</span> ' + esc(e.comp || NAME[e.sport]) + '</div>'
           : '<div class="comphead">' + EMOJI[e.sport] + ' ' + esc(e.comp || NAME[e.sport]) + '</div>';
         lastComp = comp;
@@ -2282,7 +2377,7 @@
     var dz = data.diario || {}, out = [];
     (dz.bets || []).forEach(function (b) { out.push({ key: "b" + b.id, ts: b.created_at, odds: b.odds, result: b.result, sport: b.sport, ev: b.sport + ":" + (b.event_id || b.event), code: b.code || "" }); });
     (dz.slips || []).forEach(function (s) {
-      if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, ts: s.created_at, odds: l.odds, result: l.result, sport: l.sport, ev: l.sport + ":" + l.event_id, code: l.code }); });
+      if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, ts: s.created_at, odds: l.odds, result: l.result, sport: l.sport, ev: l.sport + ":" + l.event_id, code: l.code, comp: l.comp }); });
       else out.push({ key: "s" + s.id, ts: s.created_at, odds: s.odds || 1, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null, points: s.points,
                       sport: "multi", ev: "s" + s.id, code: s.mode, legs: s.legs.length });
     });
@@ -2315,7 +2410,7 @@
   }
   function rewardState(list) {
     var closed = list.filter(function (b) { return b.result === 0 || b.result === 1; }).sort(function (a, b) { return a.ts - b.ts; });
-    var perDay = {}, seenEvent = {}, xp = 0, weeks = {}, perDayLeague = {}, season = { pts: 0, n: 0 }, coins = COINS.welcome;
+    var perDay = {}, seenEvent = {}, xp = 0, weeks = {}, perDayLeague = {}, season = { pts: 0, n: 0 }, coins = COINS.welcome, chWeeks = {};
     closed.forEach(function (b) {
       b._xp = 0;
       if (b.odds >= 1.3 && !seenEvent[b.ev]) {
@@ -2332,6 +2427,8 @@
           var w = weekKey(b.ts), wk = weeks[w] || (weeks[w] = { pts: 0, n: 0 });
           var p = leaguePoints(b);
           wk.pts += p; wk.n += 1;
+          var cc = b.comp && A.compOf(b.comp);                  // sfide della settimana per competizione
+          if (cc) { var cw = chWeeks[w] || (chWeeks[w] = {}), cr = cw[cc.id] || (cw[cc.id] = { pts: 0, n: 0 }); cr.pts += p; cr.n += 1; }
           if (b.ts >= SEASON.start && b.ts <= SEASON.end) { season.pts += p; season.n += 1; }
         }
       }
@@ -2347,6 +2444,10 @@
       best = Math.max(best, tier);
       if (r.n >= 5) coins += COINS.week[tier];  // premio di fine settimana secondo la lega raggiunta
     });
+    Object.keys(chWeeks).map(Number).forEach(function (w) {   // premi delle sfide chiuse
+      if (w >= thisWeek) return;
+      Object.keys(chWeeks[w]).forEach(function (id) { coins += challengePrize(chWeeks[w][id]); });
+    });
     coins -= jolly.spent;
     var cur = weeks[thisWeek] || { pts: 0, n: 0 };
     var zone = cur.n >= 10 && cur.pts >= 3 ? "up" : (cur.n < 5 || cur.pts <= -3) ? (tier > 0 ? "down" : "stay") : "stay";
@@ -2356,7 +2457,56 @@
     if (sTier >= 2 && season.n < 3 * played) sTier = 1;            // dall'Oro in su serve anche costanza
     if (!season.n) sTier = 0;
     return { closed: closed, xp: xp, level: level, inLevel: left, need: xpNeeded(level), tier: tier, bestTier: Math.max(best, tier),
-             week: cur, zone: zone, weeks: weeks, season: season, round: played, sTier: sTier, perWeek: perWeek, coins: coins };
+             week: cur, zone: zone, weeks: weeks, season: season, round: played, sTier: sTier, perWeek: perWeek, coins: coins,
+             ch: chWeeks[thisWeek] || {} };
+  }
+  // ---------------------------------------------------------------- Sfide della settimana (richiesta utente 02/10)
+  // Una sfida per competizione (Sfida Champions, Sfida Serie A, Sfida Nations, Sfida ATP...): contano i pronostici
+  // della lega (quota >= 1,50, i primi 10 al giorno) su quella competizione, da lunedi' a domenica. Premio a fine
+  // settimana: 3 pronostici e punti positivi = 25 monete; 5 pronostici e almeno +3 = 50. Classifica con il Team.
+  var CH = { base: [3, 0, 25], top: [5, 3, 50] };
+  function challengePrize(r) { return r.n >= CH.top[0] && r.pts >= CH.top[1] ? CH.top[2] : r.n >= CH.base[0] && r.pts > CH.base[1] ? CH.base[2] : 0; }
+  function challengesHtml(R2) {
+    var P0 = A.PAESI[me.country || A.guessCountry()] || A.PAESI.XX, mySports = me.sports || P0.sports;
+    var ids = {};
+    function add(id, w) { if (id) ids[id] = Math.max(ids[id] || 0, w); }
+    evList().forEach(function (e) {
+      var c = A.compOf(e.comp); if (!c) return;
+      var i = A.SPOT.indexOf(c.id), j = P0.leagues.indexOf(c.id);
+      if (i >= 0) add(c.id, 900 - i); else if (j >= 0) add(c.id, 800 - j); else if (mySports.indexOf(c.sport) >= 0 && A.BIG.indexOf(c.id) >= 0) add(c.id, 500 - A.BIG.indexOf(c.id));
+    });
+    P0.leagues.forEach(function (id, j) { var c = A.COMPS.filter(function (x) { return x.id === id; })[0]; if (c && mySports.indexOf(c.sport) >= 0) add(id, 800 - j); });
+    Object.keys(R2.ch).forEach(function (id) { add(id, 950); });     // dove hai gia' giocato questa settimana
+    var list = Object.keys(ids).sort(function (a, b) { return ids[b] - ids[a]; }).slice(0, 6);
+    if (!list.length) return "";
+    var end = weekKey(nowS()) / 1000 + 7 * 86400, left = Math.max(0, end - nowS());
+    var dd = Math.floor(left / 86400), hh = Math.floor(left % 86400 / 3600);
+    return '<h2 class="sectiontitle">Sfide della settimana</h2>'
+      + '<div class="k" style="margin:-4px 2px 8px;">' + ic("clock") + ' Terminano tra ' + dd + 'g ' + hh + 'h · premio a fine settimana</div>'
+      + list.map(function (id) {
+        var c = A.COMPS.filter(function (x) { return x.id === id; })[0], r = R2.ch[id] || { n: 0, pts: 0 };
+        var rows = team().map(function (p) {
+          var mine = (p.wk || []).filter(function (x) { var cc = A.compOf(x.comp); return cc && cc.id === id && x.odds >= 1.5; });
+          return { id: p.id, name: p.name + " · " + p.nick, n: mine.length,
+                   pts: mine.reduce(function (s, x) { return s + (x.result === 1 ? x.odds - 1 : x.result === 0 ? -1 : 0); }, 0) };
+        }).filter(function (x) { return x.n > 0; });
+        rows.push({ id: null, name: me.name || "Tu", n: r.n, pts: r.pts });
+        rows.sort(function (a, b) { return b.pts - a.pts || b.n - a.n; });
+        var pos = rows.findIndex(function (x) { return x.id === null; }) + 1, prize = challengePrize(r);
+        var goal = prize >= CH.top[2] ? "Premio massimo raggiunto: " + CH.top[2] + " monete"
+          : prize ? "Già " + CH.base[2] + " monete; con " + CH.top[0] + " pronostici e +" + CH.top[1] + " punti diventano " + CH.top[2]
+          : "Servono " + CH.base[0] + " pronostici e punti positivi per " + CH.base[2] + " monete (" + CH.top[2] + " con " + CH.top[0] + " e +" + CH.top[1] + ")";
+        return '<details class="card chcard"><summary><span class="chic">' + ic(c.sport) + '</span><span class="cht"><b>Sfida ' + esc(c.label) + '</b>'
+          + '<span class="k">Tu: ' + r.n + (r.n === 1 ? " pronostico · " : " pronostici · ") + signed(r.pts) + ' · ' + pos + '° su ' + rows.length + '</span></span>'
+          + (prize ? '<span class="chprize">' + ic("coin") + ' ' + prize + '</span>' : ic("chev")) + '</summary>'
+          + '<div class="k" style="margin:8px 0;">' + goal + '</div>'
+          + '<div class="lb">' + rows.map(function (x, i) {
+            return '<div class="lbrow' + (x.id ? "" : " me") + '"' + (x.id ? ' data-persona="' + x.id + '"' : "") + '><span class="lbpos">' + (i + 1) + '</span>'
+              + (x.id ? avatar(x.id, 32) : myAvatar(32)) + '<span class="lbname"' + (x.id ? "" : ' translate="no"') + '>' + esc(x.name) + '</span>'
+              + '<span class="lbpts ' + (x.pts >= 0 ? "pos" : "neg") + '">' + signed(x.pts) + '</span></div>';
+          }).join("") + '</div></details>';
+      }).join("")
+      + '<div class="k" style="margin-top:6px;">Contano i pronostici della lega (quota 1,50 o più) su quella competizione. In classifica con il Team StatSight; con l\'app pubblica anche gli altri utenti.</div>';
   }
   // Scala delle divisioni della settimana (come la League di Omada): dove sei, cosa serve per salire, quanto manca.
   function ladderHtml(R2) {
@@ -2423,12 +2573,12 @@
       + '<div class="banner">' + ic("trend") + '<span>Più positivo della settimana</span><b>' + (R2.week.n ? signed(R2.week.pts) + " · tu" : "—") + '</b></div>'
       + '<div class="banner">' + ic("flame") + '<span>Serie più lunga</span><b>' + bestStreak + " · tu" + '</b></div>'
       + '</div><div class="k" style="margin:6px 2px 12px;font-size:0.76rem;">Con l\'app pubblica qui compaiono i migliori fra tutti gli utenti.</div>'
-      + ladderHtml(R2) + jollyShopHtml(R2)
+      + ladderHtml(R2) + challengesHtml(R2) + jollyShopHtml(R2)
       + '<details class="card" style="margin-top:10px;"><summary><b>Come funziona</b></summary><div class="ds" style="margin-top:8px;line-height:1.5;">'
       + '<b>Stagione</b> (la lega che conta): segue il calendario della Premier League, ' + SEASON.rounds + ' giornate. Contano i pronostici a quota 1,50 o più, al massimo 10 al giorno: vinto = quota − 1, perso = −1. La lega dipende dai punti medi a settimana: Argento da 0, Oro da +0,5, Platino da +1, Diamante da +2, Elite da +3 (dall\'Oro in su almeno 3 pronostici a settimana). Con l\'app pubblica: classifica fra tutti, promozioni e retrocessioni a fine stagione.<br>'
       + '<b>Settimana:</b> stesse regole, da lunedì a domenica. Con almeno 10 pronostici e +3 punti si sale, con meno di 5 o −3 punti si scende.<br>'
       + '<b>Esperienza:</b> 5 XP per pronostico chiuso più 10 XP per ogni punto di quota sopra 1 se lo vinci (massimo 50). Sotto quota 1,30 niente XP; un pronostico per partita; al giorno i primi 10 valgono pieno, dall\'11 al 20 la metà, poi niente.<br>'
-      + '<b>Monete:</b> 100 di benvenuto, 10 per ogni pronostico chiuso che dà XP più 10 se vinto, 50 a ogni livello, e a fine settimana un premio secondo la lega (da 10 in Bronzo a 150 in Elite). Servono solo per i jolly: non si comprano e non valgono soldi.</div></details>';
+      + '<b>Monete:</b> 100 di benvenuto, 10 per ogni pronostico chiuso che dà XP più 10 se vinto, 50 a ogni livello, e a fine settimana un premio secondo la lega (da 10 in Bronzo a 150 in Elite) più quelli delle sfide per competizione (25 o 50 ciascuna). Servono solo per i jolly: non si comprano e non valgono soldi.</div></details>';
 
     $("occhioclassifica").innerHTML = team().length ? leaderboardHtml(R2)
       : '<div class="note">La classifica arriva con il prossimo aggiornamento dei dati.</div>';
@@ -2503,6 +2653,16 @@
 
   // il tuo profilo: modifica, foto, avatar, occhio sullo storico, monete -> partite
   $("profilo").addEventListener("input", function (e) {
+    var fq = e.target.closest("[data-favq]");
+    if (fq) {
+      // ricerca della squadra/tennista: si aggiornano solo i suggerimenti, cosi' la tastiera resta aperta
+      var st = meEdit || pick, k = fq.dataset.favq, raw = fq.value.trim(), q = raw.toLowerCase();
+      st.q[k] = fq.value;
+      var list = k === "tennis" ? A.TENNISTI : A.SQUADRE[k] || [];
+      var hits = q.length >= 2 ? list.filter(function (n) { return n.toLowerCase().indexOf(q) >= 0 && st.fav[k].indexOf(n) < 0; }).slice(0, 6) : [];
+      var box = $("profilo").querySelector('[data-favhits="' + k + '"]'); if (box) box.innerHTML = favHits(st, k, list, hits, raw);
+      return;
+    }
     if (!meEdit) return;
     if (e.target.id === "mename") meEdit.name = e.target.value;
     if (e.target.id === "mebio") { meEdit.bio = e.target.value; $("mebion").textContent = meEdit.bio.length + "/160"; }
@@ -2513,12 +2673,23 @@
     var ds = b.dataset;
     if (ds.megioca) { show("diario"); window.scrollTo(0, 0); return; }
     if (ds.meedit) { startEdit(); return; }
+    var st = meEdit || pick;
+    if (ds.country) { st.country = ds.country; if (!meEdit) st.sports = A.PAESI[ds.country].sports.slice(); renderProfilo(); return; }
     if (ds.sport) {
-      var arr = meEdit ? meEdit.sports : pickSports, i = arr.indexOf(ds.sport);
-      if (i >= 0) arr.splice(i, 1); else arr.push(ds.sport);
+      var i = st.sports.indexOf(ds.sport);
+      if (i >= 0) st.sports.splice(i, 1); else st.sports.push(ds.sport);
       renderProfilo(); return;
     }
-    if (ds.mesports) { me.sports = pickSports.slice(); saveMe(); renderProfilo(); renderBacheca(); return; }
+    if (ds.favadd) {
+      var fl = st.fav[ds.favsport];
+      if (fl.length < FAV_MAX && fl.indexOf(ds.favadd) < 0 && !checkText(ds.favadd)) fl.push(ds.favadd.slice(0, 40));
+      st.q[ds.favsport] = ""; renderProfilo(); return;
+    }
+    if (ds.favdel) { st.fav[ds.favsport] = st.fav[ds.favsport].filter(function (n) { return n !== ds.favdel; }); renderProfilo(); return; }
+    if (ds.mesports) {
+      me.country = pick.country; me.sports = pick.sports.slice(); me.fav = pick.fav; saveMe();
+      renderProfilo(); renderBacheca(); renderDiario(); renderOcchio(); return;
+    }
     if (!meEdit) return;
     if (ds.mefoto) { $("fotoinput").click(); return; }
     if (ds.menofoto) { meEdit.pic = null; renderProfilo(); return; }
@@ -2532,7 +2703,7 @@
       var why = checkText(meEdit.name) || checkText(meEdit.bio);
       if (why && why !== "lungo") { alert(MOD_MSG[why]); return; }
       var old = { name: me.name, bio: me.bio, pic: me.pic, seed: me.seed };
-      me.name = meEdit.name.trim().slice(0, 24); me.bio = meEdit.bio.trim().slice(0, 160); me.pic = meEdit.pic; me.seed = meEdit.seed; me.sports = meEdit.sports.slice();
+      me.name = meEdit.name.trim().slice(0, 24); me.bio = meEdit.bio.trim().slice(0, 160); me.pic = meEdit.pic; me.seed = meEdit.seed; me.sports = meEdit.sports.slice(); me.country = meEdit.country; me.fav = meEdit.fav;
       if (!saveMe()) { Object.assign(me, old); alert("La foto non entra nella memoria del telefono: provane un'altra."); return; }
       meEdit = false; renderProfilo(); renderOcchio(); renderBacheca();
     }
@@ -2543,7 +2714,7 @@
   });
 
   // Team StatSight: profilo, segui, filtro della bacheca
-  ["bacheca", "persona", "occhioclassifica"].forEach(function (id) {
+  ["bacheca", "persona", "occhioclassifica", "occhiolevel"].forEach(function (id) {
     $(id).addEventListener("input", function (e) {
       var t = e.target.closest("[data-cin]"); if (t) drafts[t.dataset.cin] = t.value;
     });
