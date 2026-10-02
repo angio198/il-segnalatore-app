@@ -155,6 +155,18 @@
   .lbpts{font-weight:900;font-variant-numeric:tabular-nums;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 10px;}
   .lbrow svg{border-radius:12px;}
   .meav{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--accent);color:#fff;flex:none;}
+  /* Home del Diario */
+  .landing .lhead{display:flex;gap:12px;align-items:flex-start;} .landing .lhead img{border-radius:12px;flex:none;} .landing .lhead b{font-size:1.05rem;}
+  .sugrow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);}
+  .sugrow .phead{flex:1;display:flex;align-items:center;gap:10px;background:none;border:none;color:inherit;font:inherit;text-align:left;cursor:pointer;padding:0;min-width:0;}
+  .sugrow .pwho{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;row-gap:2px;font-size:0.84rem;} .sugrow .pwho .teambadge{margin-left:0;}
+  .sugrow .avatar{border-radius:14px;} .sugrow .chip{flex:none;}
+  .sdesc{width:100%;font-size:0.74rem;}
+  .tavb{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:inherit;font:inherit;cursor:pointer;padding:0;}
+  .tavf{border:none;border-radius:999px;background:var(--accent);color:#12181A;font:inherit;font-size:0.66rem;font-weight:800;padding:3px 8px;cursor:pointer;}
+  .ptext{font-size:0.95rem;line-height:1.45;margin:10px 0 4px;white-space:pre-wrap;overflow-wrap:anywhere;}
+  .post.mine{border-color:color-mix(in srgb, var(--accent) 45%, var(--line));}
+  .sportpick .chip[aria-pressed="true"]{border-color:var(--accent);}
   /* reazioni, commenti, segnalazioni */
   .sbar{display:flex;align-items:center;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);}
   .rbtn{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink-soft);font:inherit;font-size:0.78rem;font-weight:800;
@@ -661,7 +673,6 @@
   <div class="chips subtabs" role="tablist">
     <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-user"/></svg> Profilo</button>
     <button class="chip" type="button" data-sub="diario" aria-pressed="true"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
-    <button class="chip" type="button" data-sub="bacheca" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Bacheca</button>
     <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
   <div class="segbar" id="dviewchips" role="tablist">
@@ -681,7 +692,6 @@
   <div class="chips subtabs" role="tablist">
     <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-user"/></svg> Profilo</button>
     <button class="chip" type="button" data-sub="diario" aria-pressed="false"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
-    <button class="chip" type="button" data-sub="bacheca" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Bacheca</button>
     <button class="chip" type="button" data-sub="occhio" aria-pressed="true"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
   <div id="occhiolevel"></div>
@@ -699,25 +709,15 @@
   <div class="chips subtabs" role="tablist">
     <button class="chip" type="button" data-sub="profilo" aria-pressed="true"><svg class="ico"><use href="#i-user"/></svg> Profilo</button>
     <button class="chip" type="button" data-sub="diario" aria-pressed="false"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
-    <button class="chip" type="button" data-sub="bacheca" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Bacheca</button>
     <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
   <div id="profilo"></div>
+  <div id="bacheca"></div>
   <input type="file" id="fotoinput" accept="image/*" hidden>
 </main>
 
-<main class="view" id="view-bacheca" hidden>
-  <div class="chips subtabs" role="tablist">
-    <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-user"/></svg> Profilo</button>
-    <button class="chip" type="button" data-sub="diario" aria-pressed="false"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
-    <button class="chip" type="button" data-sub="bacheca" aria-pressed="true"><svg class="ico"><use href="#i-handshake"/></svg> Bacheca</button>
-    <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
-  </div>
-  <div id="bacheca"></div>
-</main>
-
 <main class="view" id="view-persona" hidden>
-  <button class="back" type="button" data-back="bacheca">‹ Bacheca</button>
+  <button class="back" type="button" data-back="profilo">‹ Diario</button>
   <div id="persona"></div>
 </main>
 
@@ -1507,7 +1507,7 @@
   }
 
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "bacheca", "persona", "profilo"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     $("tabbar").hidden = !unlocked;
     // la barra della schedina: in tutte le pagine tranne il blocco e la schedina stessa
@@ -1531,7 +1531,7 @@
   var FOLLOW_KEY = "statsight.seguiti";
   var follows = (function () { try { return new Set(JSON.parse(localStorage.getItem(FOLLOW_KEY) || "[]")); } catch (e) { return new Set(); } })();
   function saveFollows() { try { localStorage.setItem(FOLLOW_KEY, JSON.stringify(Array.from(follows))); } catch (e) {} }
-  var bview = "tutti";
+  var bview = "home";
   function team() { return (data && data.personaggi && data.personaggi.profiles) || []; }
   function personaOf(id) { return team().filter(function (p) { return p.id === id; })[0]; }
   // avatar disegnato da noi (niente foto): pelle, capelli, occhiali, cappellino e sfondo dal nome
@@ -1603,14 +1603,14 @@
     return '<div class="card post reported">' + ic("flag") + ' <span>Hai segnalato questo contenuto: non lo vedi più e lo controlliamo.</span> '
       + '<button class="linkbtn" type="button" data-unreport="' + esc(id) + '">Annulla</button></div>';
   }
-  function socialBar(pid) {
+  function socialBar(pid, own) {
     var mine = social.r[pid], cs = social.c[pid] || [], open = openComments.has(pid);
     var html = '<div class="sbar">' + REACTIONS.map(function (r) {
       return '<button class="rbtn' + (mine === r[0] ? " on" : "") + '" type="button" data-react="' + r[0] + '" data-pid="' + esc(pid) + '" aria-label="' + esc(r[2]) + '" title="' + esc(r[2]) + '">'
         + ic(r[1]) + (mine === r[0] ? '<span>1</span>' : "") + '</button>';
     }).join("")
       + '<button class="rbtn cm' + (open ? " on" : "") + '" type="button" data-comments="' + esc(pid) + '" aria-label="Commenti">' + ic("chat") + '<span>' + cs.length + '</span></button>'
-      + '<button class="rbtn rp" type="button" data-report="' + esc(pid) + '" data-kind="post" aria-label="Segnala">' + ic("flag") + '</button></div>';
+      + (own ? "" : '<button class="rbtn rp" type="button" data-report="' + esc(pid) + '" data-kind="post" aria-label="Segnala">' + ic("flag") + '</button>') + '</div>';
     if (reporting && reporting.id === pid) html += reasonsHtml(pid, "post");
     if (!open) return html;
     html += '<div class="clist">' + cs.map(function (c) {
@@ -1661,17 +1661,69 @@
     }
     return false;
   }
+  // Home del Diario: le giocate di chi segui e le tue, come post. Se non segui nessuno, la pagina di benvenuto
+  // con il Team StatSight; i consigliati sono ordinati sugli sport che hai scelto (me.sports). Con l'app pubblica
+  // tra i consigliati ci saranno anche gli utenti veri con gusti simili.
+  function sportsOf(p) {
+    var s = {}; (p.last || []).forEach(function (x) { s[x.sport] = (s[x.sport] || 0) + 1; }); return s;
+  }
+  function suggested() {
+    var prefs = me.sports || [];
+    return team().filter(function (p) { return !follows.has(p.id); }).map(function (p) {
+      var s = sportsOf(p), hit = prefs.reduce(function (n, k) { return n + (s[k] || 0); }, 0);
+      return { p: p, score: hit * 10 + (p.n ? p.w / p.n : 0) + p.wpts / 100 };
+    }).sort(function (a, b) { return b.score - a.score; }).map(function (x) { return x.p; });
+  }
+  function suggestRow(p) {
+    var wr = p.n ? Math.round(p.w / p.n * 100) + "% vinti" : "nuovo";
+    return '<div class="sugrow"><button class="phead" type="button" data-persona="' + p.id + '">' + avatar(p.id, 44)
+      + '<span class="pwho"><b>' + esc(p.name) + ' · ' + esc(p.nick) + '</b>' + teamBadge() + '<span class="k sdesc">' + esc(p.desc) + '</span>'
+      + '<span class="k">' + wr + ' · ' + signed(p.pts) + ' punti</span></span></button>'
+      + '<button class="chip" type="button" data-follow="' + p.id + '">Segui</button></div>';
+  }
+  function myPostCard(x) {
+    var pid = "m:" + x.key;
+    return '<div class="card post mine"><div class="phead">' + myAvatar(40) + '<span class="pwho"><b translate="no">' + esc(me.name || "Tu") + '</b></span><span class="time">' + whenLabel(x.ts) + '</span></div>'
+      + (x.text ? '<div class="ptext" translate="no">' + esc(x.text) + '</div>' : "")
+      + '<div class="pev">' + (EMOJI[x.sport] || "") + ' ' + esc(x.event) + '</div>'
+      + '<div class="pickrow"><span>' + (x.label ? '<b>' + esc(x.label) + '</b> ' : "") + '@ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div>' + socialBar(pid, true) + '</div>';
+  }
   function renderBacheca() {
-    var P = data.personaggi;
-    if (!P || !P.profiles) { $("bacheca").innerHTML = '<div class="note">La bacheca arriva con il prossimo aggiornamento dei dati.</div>'; return; }
-    var feed = (P.feed || []).filter(function (x) { return bview === "tutti" || follows.has(x.p); });
-    $("bacheca").innerHTML = '<div class="teamhead"><b>Team StatSight</b><span class="k">i personaggi della casa: un pronostico al giorno ciascuno, con la sua strategia, a quote vere</span></div>'
-      + '<div class="teamrow">' + P.profiles.map(function (p) {
-        return '<button class="tav' + (follows.has(p.id) ? " on" : "") + '" type="button" data-persona="' + p.id + '">' + avatar(p.id, 52) + '<span>' + esc(p.nick) + '</span></button>';
-      }).join("") + '</div>'
-      + '<div class="segbar" style="margin:10px 0;"><button type="button" data-bview="tutti" aria-pressed="' + (bview === "tutti") + '">Tutti</button>'
-      + '<button type="button" data-bview="seguiti" aria-pressed="' + (bview === "seguiti") + '">Seguiti <span class="cnt">' + follows.size + '</span></button></div>'
-      + (feed.length ? feed.map(postCard).join("") : '<div class="note">' + (bview === "seguiti" ? "Non segui ancora nessuno: tocca un personaggio e premi Segui." : "Nessuna giocata, per ora.") + '</div>');
+    if (!data) return;
+    var P = data.personaggi, html = '<div class="segbar" style="margin:16px 0 10px;"><button type="button" data-bview="home" aria-pressed="' + (bview === "home") + '">' + ic("handshake") + ' Home</button>'
+      + '<button type="button" data-bview="miei" aria-pressed="' + (bview === "miei") + '">' + ic("diario") + ' I miei pronostici</button></div>';
+    if (bview === "miei") {
+      html += '<div class="mehist"><span class="k">' + (me.hist ? "Chi ti segue vede i tuoi pronostici. Tocca l'occhio per nasconderli." : "Solo tu vedi i tuoi pronostici: gli altri vedono livello, lega e bio. Tocca l'occhio per mostrarli.") + '</span>'
+        + '<button class="eyebtn' + (me.hist ? " on" : "") + '" type="button" data-mehist="1" aria-pressed="' + me.hist + '">' + ic(me.hist ? "eye" : "eyeoff") + ' ' + (me.hist ? "Visibili" : "Nascosti") + '</button></div>';
+      var items = histItems().slice(0, 30);
+      html += '<div class="' + (me.hist ? "" : "histoff") + '">' + (items.length ? items.map(function (x) {
+        return '<div class="card post"><div class="pev" style="margin-top:0;">' + (EMOJI[x.sport] || "") + ' ' + esc(x.event) + '<span class="k"> · ' + whenLabel(x.ts) + '</span></div>'
+          + (x.text ? '<div class="ptext" translate="no">' + esc(x.text) + '</div>' : "")
+          + '<div class="pickrow"><span>' + (x.label ? '<b>' + esc(x.label) + '</b> ' : "") + '@ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div></div>';
+      }).join("") : '<div class="note">Nessun pronostico ancora: premi le monete qui sopra e scegli una partita.</div>') + '</div>';
+      $("bacheca").innerHTML = html; return;
+    }
+    if (!P || !P.profiles) { $("bacheca").innerHTML = html + '<div class="note">La Home arriva con il prossimo aggiornamento dei dati.</div>'; return; }
+    var sug = suggested(), prefs = me.sports || [];
+    var prefTxt = prefs.length ? "scelti sui tuoi sport: " + prefs.map(function (k) { return NAME[k] || k; }).join(", ") : "scegli i tuoi sport qui sopra per consigli migliori";
+    if (!follows.size) {
+      var top = sug.slice(0, 5);
+      html += '<div class="card landing"><div class="lhead"><img src="icon-192.png" alt="" width="44" height="44"><div><b>Benvenuto nella Home</b>'
+        + '<div class="k">Qui vedi le giocate di chi segui, e le tue. Comincia dal Team StatSight: i personaggi della casa, ognuno con la sua strategia, a quote vere e con i risultati non aggiustati.</div></div></div>'
+        + '<div class="k" style="margin:10px 0 4px;">Consigliati per te · ' + esc(prefTxt) + '</div>'
+        + top.map(suggestRow).join("")
+        + '<button class="primary" type="button" data-followall="' + top.map(function (p) { return p.id; }).join(",") + '" style="width:100%;margin-top:10px;">Segui tutti e ' + top.length + '</button></div>'
+        + '<h2 class="sectiontitle">Le ultime giocate del Team</h2>' + (P.feed || []).slice(0, 10).map(postCard).join("");
+    } else {
+      var mine = histItems().map(function (x) { return Object.assign({ mine: true }, x); });
+      var feed = (P.feed || []).filter(function (x) { return follows.has(x.p); }).concat(mine).sort(function (a, b) { return b.ts - a.ts; }).slice(0, 40);
+      html += (sug.length ? '<div class="k" style="margin:0 2px 4px;">Consigliati per te · ' + esc(prefTxt) + '</div><div class="teamrow">' + sug.slice(0, 10).map(function (p) {
+          return '<div class="tav"><button class="tavb" type="button" data-persona="' + p.id + '">' + avatar(p.id, 52) + '<span>' + esc(p.nick) + '</span></button>'
+            + '<button class="tavf" type="button" data-follow="' + p.id + '">+ Segui</button></div>';
+        }).join("") + '</div>' : "")
+        + (feed.length ? feed.map(function (x) { return x.mine ? myPostCard(x) : postCard(x); }).join("") : '<div class="note">Nessuna giocata, per ora.</div>');
+    }
+    $("bacheca").innerHTML = html;
   }
   var curPersona = null;
   function renderPersona(id, stay) {
@@ -1709,21 +1761,28 @@
   }
   function myAvatar(size) { return avOf(me, size); }
   // in modifica si lavora su una copia (meEdit): si salva solo con "Salva", e i ridisegni non perdono il testo
-  function startEdit() { meEdit = { name: me.name || "", bio: me.bio || "", pic: me.pic, seed: me.seed, base: me.seed.split("-")[0], more: [1, 2, 3, 4, 5, 6, 7] }; renderProfilo(); }
+  // sport preferiti (come all'iscrizione): servono a ordinare i consigliati della Home
+  var SPORTS = ["calcio", "tennis", "basket", "hockey", "ippica"], pickSports = [];
+  function sportChips(sel) {
+    return '<div class="chips" style="margin-top:8px;flex-wrap:wrap;">' + SPORTS.map(function (k) {
+      return '<button class="chip" type="button" data-sport="' + k + '" aria-pressed="' + (sel.indexOf(k) >= 0) + '">' + ic(k) + ' ' + NAME[k] + '</button>';
+    }).join("") + '</div>';
+  }
+  function startEdit() { meEdit = { name: me.name || "", bio: me.bio || "", pic: me.pic, seed: me.seed, sports: (me.sports || []).slice(), base: me.seed.split("-")[0], more: [1, 2, 3, 4, 5, 6, 7] }; renderProfilo(); }
   // pronostici da mostrare nello storico: singole una per una, multiple e sistemi come una riga sola
   function histItems() {
     var dz = data.diario || {}, out = [];
     (dz.slips || []).forEach(function (s) {
-      if (s.mode === "singole") s.legs.forEach(function (l) { out.push({ ts: s.created_at, sport: l.sport, event: l.event, label: l.label, odds: l.odds, result: l.result }); });
-      else out.push({ ts: s.created_at, sport: "multi", event: (s.mode === "multipla" ? "Multipla" : "Sistema " + s.k + "/" + s.n) + " · " + s.legs.length + " partite", label: "",
+      if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, text: s.reason, ts: s.created_at, sport: l.sport, event: l.event, label: l.label, odds: l.odds, result: l.result }); });
+      else out.push({ key: "s" + s.id, text: s.reason, ts: s.created_at, sport: "multi", event: (s.mode === "multipla" ? "Multipla" : "Sistema " + s.k + "/" + s.n) + " · " + s.legs.length + " partite", label: "",
                       odds: s.odds, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null });
     });
-    (dz.bets || []).forEach(function (b) { out.push({ ts: b.created_at, sport: b.sport, event: b.event, label: b.pick || "giocata libera", odds: b.odds, result: b.result }); });
+    (dz.bets || []).forEach(function (b) { out.push({ key: "b" + b.id, text: b.reason, ts: b.created_at, sport: b.sport, event: b.event, label: b.pick || "giocata libera", odds: b.odds, result: b.result }); });
     return out.sort(function (a, b) { return b.ts - a.ts; });
   }
   function renderProfilo() {
     if (!data) return;
-    var R2 = rewardState(pronostici()), L = LEAGUES[R2.tier];
+    var R2 = rewardState(pronostici());
     var title = TITLES[Math.min(TITLES.length - 1, Math.floor((R2.level - 1) / 5))];
     var closed = R2.closed, won = closed.filter(function (b) { return b.result === 1; }).length;
     var streak = 0; closed.forEach(function (b) { streak = b.result === 1 ? streak + 1 : 0; });
@@ -1741,29 +1800,22 @@
         + '<label class="melabel" for="mename">Nome</label><input id="mename" class="meinput" maxlength="24" value="' + esc(d.name) + '" placeholder="Come ti vedono gli altri" translate="no">'
         + '<label class="melabel" for="mebio">Bio</label><textarea id="mebio" class="meinput" maxlength="160" rows="3" placeholder="Due righe su di te: sport preferiti, come giochi">' + esc(d.bio) + '</textarea>'
         + '<div class="k" id="mebion" style="text-align:right;">' + d.bio.length + '/160</div>'
+        + '<div class="melabel">Sport che segui</div>' + sportChips(d.sports)
         + '<div class="duo" style="margin-top:8px;"><button class="chip" type="button" data-meannulla="1" style="justify-content:center;">Annulla</button>'
         + '<button class="primary" type="button" data-mesalva="1">' + ic("check") + ' Salva</button></div></div>';
     } else {
+      // ordine voluto dall'utente: profilo e bio, carte di stagione/livello/lega, monete; sotto la Home (#bacheca)
       html = '<div class="mehead">' + myAvatar(88)
         + '<div class="mewho"><div class="dtitle" style="margin:0;" translate="no">' + esc(me.name || "Il tuo profilo") + '</div>'
         + '<div class="pnick">' + ic("eye") + ' ' + esc(title) + ' · livello ' + R2.level + '</div>'
-        + '<span class="lgchip" style="background-image:linear-gradient(120deg,' + L[1] + ',' + L[2] + ');">' + ic("shield") + ' ' + esc(L[0]) + '</span></div>'
+        + '<div class="k">' + won + ' vinti su ' + closed.length + (streak > 1 ? ' · serie di ' + streak : "") + '</div></div>'
         + '<button class="iconbtn" type="button" data-meedit="1" aria-label="Modifica il profilo">' + ic("pen") + '</button></div>'
         + (me.bio ? '<div class="mebio" translate="no">' + esc(me.bio) + '</div>'
           : '<button class="linkbtn mebio empty" type="button" data-meedit="1">' + ic("pen") + ' Scrivi la tua bio</button>')
+        + heroesHtml(R2)
         + '<button class="coinbtn" type="button" data-megioca="1"><span class="cc">' + ic("coin") + '</span><span class="ct"><b>' + R2.coins + '</b> monete<span>Scegli le partite e fai il tuo pronostico</span></span>' + ic("chev") + '</button>'
-        + '<div class="kpis"><div class="kpi"><div class="v">' + won + ' / ' + closed.length + '</div><div class="l">vinti su chiusi</div></div>'
-        + '<div class="kpi"><div class="v ' + (R2.week.pts >= 0 ? "pos" : "neg") + '">' + signed(R2.week.pts) + '</div><div class="l">punti questa settimana</div></div>'
-        + '<div class="kpi"><div class="v">' + streak + '</div><div class="l">serie in corso</div></div></div>'
-        + '<div class="mehist"><h2 class="sectiontitle" style="margin:0;">I miei pronostici</h2>'
-        + '<button class="eyebtn' + (me.hist ? " on" : "") + '" type="button" data-mehist="1" aria-pressed="' + me.hist + '">' + ic(me.hist ? "eye" : "eyeoff") + ' ' + (me.hist ? "Visibili" : "Nascosti") + '</button></div>'
-        + '<div class="k" style="margin:2px 2px 8px;">' + (me.hist ? "Chi ti segue vede i tuoi pronostici. Tocca l'occhio per nasconderli." : "Solo tu vedi i tuoi pronostici: gli altri vedono livello, lega e bio. Tocca l'occhio per mostrarli.") + '</div>';
-      var items = histItems().slice(0, 15);
-      html += '<div class="' + (me.hist ? "" : "histoff") + '">' + (items.length ? items.map(function (x) {
-        return '<div class="card post"><div class="pev" style="margin-top:0;">' + (EMOJI[x.sport] || "") + ' ' + esc(x.event) + '<span class="k"> · ' + whenLabel(x.ts) + '</span></div>'
-          + '<div class="pickrow"><span>' + (x.label ? '<b>' + esc(x.label) + '</b> ' : "") + '@ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div></div>';
-      }).join("") : '<div class="note">Nessun pronostico ancora: premi le monete qui sopra e scegli una partita.</div>') + '</div>'
-        + '<div class="k" style="margin-top:8px;">Profilo, foto e bio restano su questo telefono finché non arriva l\'app pubblica con l\'account.</div>';
+        + (me.sports ? "" : '<div class="card sportpick"><b>Quali sport segui?</b><div class="k">Ti consigliamo chi gioca gli stessi sport. Si cambia quando vuoi dalla matita.</div>'
+          + sportChips(pickSports) + '<button class="primary" type="button" data-mesports="1" style="width:100%;margin-top:10px;"' + (pickSports.length ? "" : " disabled") + '>Fatto</button></div>');
     }
     $("profilo").innerHTML = html;
   }
@@ -2337,6 +2389,23 @@
       + '<div class="k" style="margin-top:6px;">Un jolly si mette su un pronostico ancora aperto, da "Le mie giocate". Al massimo un\'Assicurazione e un Raddoppio a settimana.</div>';
   }
   function signed(x) { return (x >= 0 ? "+" : "") + it(x, 1); }
+  // carte di stagione, livello e lega della settimana: in cima al profilo, sotto la bio (richiesta utente 02/10)
+  function heroesHtml(R2) {
+    var L = LEAGUES[R2.tier], SL = LEAGUES[R2.sTier];
+    var title = TITLES[Math.min(TITLES.length - 1, Math.floor((R2.level - 1) / 5))];
+    var daysLeft = Math.max(0, Math.ceil((SEASON.end - nowS()) / 86400));
+    return '<div class="hero season" style="background-image:linear-gradient(120deg,' + SL[1] + ',' + SL[2] + ');">'
+      + '<div class="hs">Stagione ' + SEASON.name + ' · giornata ' + R2.round + ' di ' + SEASON.rounds + ' · mancano ' + daysLeft + ' giorni</div>'
+      + '<div class="ht">' + ic("shield") + ' Lega ' + SL[0] + '</div>'
+      + '<div class="hs">' + R2.season.n + (R2.season.n === 1 ? ' pronostico · ' : ' pronostici · ') + signed(R2.season.pts) + ' punti · ' + signed(R2.perWeek) + ' a settimana</div></div>'
+      + '<div class="duo">'
+      + '<div class="hero mini" style="background-image:linear-gradient(120deg,#0F2A33,#1F5560 60%,#2E8A8A);"><div class="hs">Livello ' + R2.level + ' · ' + R2.xp + ' XP</div><div class="ht">' + ic("eye") + ' ' + title + '</div>'
+      + '<div class="lvbar"><div style="width:' + Math.round(R2.inLevel / R2.need * 100) + '%"></div></div><div class="hs">' + R2.inLevel + ' / ' + R2.need + ' XP</div></div>'
+      + '<div class="hero mini" style="background-image:linear-gradient(120deg,' + L[1] + ',' + L[2] + ');"><div class="hs">Lega della settimana</div><div class="ht">' + ic("shield") + ' ' + L[0] + '</div>'
+      + '<div class="hs">' + R2.week.n + (R2.week.n === 1 ? ' pronostico · ' : ' pronostici · ') + signed(R2.week.pts) + ' · ' + (R2.zone === "up" ? "zona promozione" : R2.zone === "down" ? "zona retrocessione" : "salvezza") + '</div></div>'
+      + '</div>'
+      + (R2.zone === "down" ? '<button class="primary" type="button" disabled style="width:100%;margin-top:8px;">' + ic("play") + ' Guarda un video e salvati (con l\'app pubblica)</button>' : "");
+  }
   function renderOcchio() {
     var dz = data.diario;
     if (!dz) { $("occhiolevel").innerHTML = ""; $("occhiobadges").innerHTML = ""; $("diariokpi").innerHTML = ""; return; }
@@ -2354,17 +2423,6 @@
       + '<div class="banner">' + ic("trend") + '<span>Più positivo della settimana</span><b>' + (R2.week.n ? signed(R2.week.pts) + " · tu" : "—") + '</b></div>'
       + '<div class="banner">' + ic("flame") + '<span>Serie più lunga</span><b>' + bestStreak + " · tu" + '</b></div>'
       + '</div><div class="k" style="margin:6px 2px 12px;font-size:0.76rem;">Con l\'app pubblica qui compaiono i migliori fra tutti gli utenti.</div>'
-      + '<div class="hero season" style="background-image:linear-gradient(120deg,' + SL[1] + ',' + SL[2] + ');">'
-      + '<div class="hs">Stagione ' + SEASON.name + ' · giornata ' + R2.round + ' di ' + SEASON.rounds + ' · mancano ' + daysLeft + ' giorni</div>'
-      + '<div class="ht">' + ic("shield") + ' Lega ' + SL[0] + '</div>'
-      + '<div class="hs">' + R2.season.n + (R2.season.n === 1 ? ' pronostico · ' : ' pronostici · ') + signed(R2.season.pts) + ' punti · ' + signed(R2.perWeek) + ' a settimana</div></div>'
-      + '<div class="duo">'
-      + '<div class="hero mini" style="background-image:linear-gradient(120deg,#0F2A33,#1F5560 60%,#2E8A8A);"><div class="hs">Livello ' + R2.level + ' · ' + R2.xp + ' XP</div><div class="ht">' + ic("eye") + ' ' + title + '</div>'
-      + '<div class="lvbar"><div style="width:' + Math.round(R2.inLevel / R2.need * 100) + '%"></div></div><div class="hs">' + R2.inLevel + ' / ' + R2.need + ' XP</div></div>'
-      + '<div class="hero mini" style="background-image:linear-gradient(120deg,' + L[1] + ',' + L[2] + ');"><div class="hs">Lega della settimana</div><div class="ht">' + ic("shield") + ' ' + L[0] + '</div>'
-      + '<div class="hs">' + R2.week.n + (R2.week.n === 1 ? ' pronostico · ' : ' pronostici · ') + signed(R2.week.pts) + ' · ' + (R2.zone === "up" ? "zona promozione" : R2.zone === "down" ? "zona retrocessione" : "salvezza") + '</div></div>'
-      + '</div>'
-      + (R2.zone === "down" ? '<button class="primary" type="button" disabled style="width:100%;margin-top:8px;">' + ic("play") + ' Guarda un video e salvati (con l\'app pubblica)</button>' : "")
       + ladderHtml(R2) + jollyShopHtml(R2)
       + '<details class="card" style="margin-top:10px;"><summary><b>Come funziona</b></summary><div class="ds" style="margin-top:8px;line-height:1.5;">'
       + '<b>Stagione</b> (la lega che conta): segue il calendario della Premier League, ' + SEASON.rounds + ' giornate. Contano i pronostici a quota 1,50 o più, al massimo 10 al giorno: vinto = quota − 1, perso = −1. La lega dipende dai punti medi a settimana: Argento da 0, Oro da +0,5, Platino da +1, Diamante da +2, Elite da +3 (dall\'Oro in su almeno 3 pronostici a settimana). Con l\'app pubblica: classifica fra tutti, promozioni e retrocessioni a fine stagione.<br>'
@@ -2455,7 +2513,12 @@
     var ds = b.dataset;
     if (ds.megioca) { show("diario"); window.scrollTo(0, 0); return; }
     if (ds.meedit) { startEdit(); return; }
-    if (ds.mehist) { me.hist = !me.hist; saveMe(); renderProfilo(); return; }
+    if (ds.sport) {
+      var arr = meEdit ? meEdit.sports : pickSports, i = arr.indexOf(ds.sport);
+      if (i >= 0) arr.splice(i, 1); else arr.push(ds.sport);
+      renderProfilo(); return;
+    }
+    if (ds.mesports) { me.sports = pickSports.slice(); saveMe(); renderProfilo(); renderBacheca(); return; }
     if (!meEdit) return;
     if (ds.mefoto) { $("fotoinput").click(); return; }
     if (ds.menofoto) { meEdit.pic = null; renderProfilo(); return; }
@@ -2469,9 +2532,9 @@
       var why = checkText(meEdit.name) || checkText(meEdit.bio);
       if (why && why !== "lungo") { alert(MOD_MSG[why]); return; }
       var old = { name: me.name, bio: me.bio, pic: me.pic, seed: me.seed };
-      me.name = meEdit.name.trim().slice(0, 24); me.bio = meEdit.bio.trim().slice(0, 160); me.pic = meEdit.pic; me.seed = meEdit.seed;
+      me.name = meEdit.name.trim().slice(0, 24); me.bio = meEdit.bio.trim().slice(0, 160); me.pic = meEdit.pic; me.seed = meEdit.seed; me.sports = meEdit.sports.slice();
       if (!saveMe()) { Object.assign(me, old); alert("La foto non entra nella memoria del telefono: provane un'altra."); return; }
-      meEdit = false; renderProfilo(); renderOcchio();
+      meEdit = false; renderProfilo(); renderOcchio(); renderBacheca();
     }
   });
   $("fotoinput").addEventListener("change", function () {
@@ -2492,7 +2555,15 @@
       if (!data) return;
       if (socialClick(e)) return;
       var f = e.target.closest("[data-follow]");
-      if (f) { var pid = f.dataset.follow; if (follows.has(pid)) follows.delete(pid); else follows.add(pid); saveFollows(); renderBacheca(); renderPersona(pid); return; }
+      if (f) {
+        var pid = f.dataset.follow; if (follows.has(pid)) follows.delete(pid); else follows.add(pid); saveFollows(); renderBacheca();
+        if (!$("view-persona").hidden) renderPersona(pid, true);
+        return;
+      }
+      var fa = e.target.closest("[data-followall]");
+      if (fa) { fa.dataset.followall.split(",").forEach(function (x) { if (x) follows.add(x); }); saveFollows(); renderBacheca(); return; }
+      var eh = e.target.closest("[data-mehist]");
+      if (eh) { me.hist = !me.hist; saveMe(); renderBacheca(); return; }
       var v = e.target.closest("[data-bview]"); if (v) { bview = v.dataset.bview; renderBacheca(); return; }
       var p = e.target.closest("[data-persona]"); if (p) renderPersona(p.dataset.persona);
     });
