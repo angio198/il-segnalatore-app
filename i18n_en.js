@@ -694,7 +694,13 @@ window.I18N_EN = {
   "corsa #": "race #", "a #": "at #", "In attesa di esito: #": "Awaiting result: #",
 
   // ---------------------------------------------------------------- ippica (scheda delle nostre strategie)
-  "Trotto": "Trotting", "Galoppo": "Flat racing", "Modello": "Model"
+  "Trotto": "Trotting", "Galoppo": "Flat racing", "Modello": "Model",
+  // ---------------------------------------------------------------- grafica del Diario: monete, livelli, cassa, novita'
+  "Pronostico vinto": "Pick won", "# pronostici vinti": "# picks won", "# monete": "# coins", "# XP": "# XP",
+  "Nuovo livello": "New level", "Avanti": "Next", "NUOVO": "NEW",
+  "Premio della settimana": "Weekly reward", "tocca per aprire": "tap to open", "# settimane": "# weeks",
+  "Lega Argento": "Silver league", "Lega Oro": "Gold league", "Lega Platino": "Platinum league", "Lega Diamante": "Diamond league", "Lega Elite": "Elite league",
+  "Cassa aperta": "Chest opened", "Cassa aperta: le monete sono tue": "Chest opened: the coins are yours"
 };
 
 // parole fisse dentro i messaggi dei bot (con nomi propri attorno): sostituzioni puntuali
