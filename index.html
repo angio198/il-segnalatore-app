@@ -526,6 +526,61 @@
   .tab:not([aria-current="page"]) .ic .ico{opacity:.5;filter:saturate(.55);}
   :root[data-dark="1"] .tab[aria-current="page"]{color:var(--accent);}
 
+  /* grafica "addictive" del Diario (richiesta utente 03/10): pallini delle novita', monete, coriandoli, cassa */
+  .tab,.chips.subtabs .chip,.segbar button{position:relative;}
+  .ndot{position:absolute;width:10px;height:10px;border-radius:50%;background:#E5322D;box-shadow:0 0 0 2px var(--surface);pointer-events:none;animation:ndotpop .35s cubic-bezier(.3,1.6,.5,1);}
+  .tab .ndot{top:4px;left:calc(50% + 7px);}
+  .chips.subtabs .chip .ndot{top:-1px;right:-1px;}
+  .segbar button .ndot{top:5px;right:8px;}
+  @keyframes ndotpop{from{transform:scale(0);}to{transform:scale(1);}}
+  .card.post.isnew{border-color:color-mix(in srgb, #E5322D 55%, var(--line));box-shadow:0 0 0 1px color-mix(in srgb, #E5322D 30%, transparent);}
+  .newtag{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;background:#E5322D;color:#fff;font-size:0.64rem;font-weight:800;letter-spacing:.04em;vertical-align:1px;}
+  #fx{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden;}
+  .fxcoin{position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;will-change:transform,opacity;}
+  .fxcoin .ico{width:30px;height:30px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));}
+  .fxtoast{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 64px);transform:translate(-50%,-140%);display:flex;align-items:center;gap:10px;
+    padding:10px 16px 10px 10px;border-radius:999px;background:linear-gradient(120deg,#FFD866,#F2A93B 55%,#E8812F);color:#2A1A00;font-weight:800;font-size:0.95rem;
+    box-shadow:0 10px 24px -8px rgba(0,0,0,.5);white-space:nowrap;transition:transform .45s cubic-bezier(.3,1.4,.5,1),opacity .3s;opacity:0;}
+  .fxtoast.on{transform:translate(-50%,0);opacity:1;}
+  .fxtoast .ico{width:28px;height:28px;} .fxtoast span{display:flex;flex-direction:column;line-height:1.15;} .fxtoast small{font-size:0.74rem;font-weight:700;opacity:.8;}
+  .fxconf{position:absolute;inset:0;width:100%;height:100%;}
+  .fxlevel{position:fixed;inset:0;z-index:61;display:grid;place-items:center;padding:24px;background:rgba(6,12,16,.62);opacity:0;transition:opacity .3s;}
+  .fxlevel.on{opacity:1;}
+  .fxlevel .lvcard{width:min(320px,100%);border-radius:22px;padding:26px 20px 18px;text-align:center;color:#fff;
+    background:linear-gradient(150deg,#0F2A33,#1F5560 55%,#2E8A8A);box-shadow:0 20px 50px -12px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.18);
+    transform:scale(.6);transition:transform .5s cubic-bezier(.3,1.6,.5,1);}
+  .fxlevel.on .lvcard{transform:scale(1);}
+  .fxlevel .lvstar{width:96px;height:96px;margin:0 auto 6px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle,rgba(255,226,122,.45),transparent 70%);animation:lvspin 6s linear infinite;}
+  .fxlevel .lvstar .ico{width:72px;height:72px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));}
+  .fxlevel .lvk{font-size:0.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.8;}
+  .fxlevel .lvn{font-size:2.3rem;font-weight:900;line-height:1.05;margin:2px 0;}
+  .fxlevel .lvt{font-size:1.05rem;font-weight:700;opacity:.92;}
+  .fxlevel .lvc{display:inline-flex;align-items:center;gap:6px;margin:14px 0 16px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.14);font-weight:800;}
+  .fxlevel .lvc .ico{width:22px;height:22px;}
+  .fxlevel button{width:100%;}
+  @keyframes lvspin{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+  .coinbtn .ct b.bump{animation:cbump .5s ease;}
+  @keyframes cbump{40%{transform:scale(1.25);color:#fff;}}
+  .chestcard{display:flex;align-items:center;gap:14px;width:100%;margin:4px 0 12px;padding:12px 16px 12px 10px;border-radius:18px;cursor:pointer;font:inherit;text-align:left;color:#fff;
+    border:1px solid rgba(255,216,102,.55);background:radial-gradient(circle at 18% 50%,rgba(255,216,102,.35),transparent 45%),linear-gradient(120deg,#3A2410,#6B3F17 60%,#8A5524);
+    box-shadow:0 8px 22px -8px rgba(138,85,36,.8),inset 0 1px 0 rgba(255,255,255,.18);}
+  .chestcard .chestbox{width:72px;height:72px;flex:none;position:relative;}
+  .chestcard .chestbox svg{width:72px;height:72px;overflow:visible;}
+  .chestcard .ct{flex:1;display:flex;flex-direction:column;} .chestcard .ct b{font-size:1.1rem;font-weight:900;}
+  .chestcard .ct span{font-size:0.8rem;font-weight:600;opacity:.85;}
+  .chestcard:not(.open) .chestbox svg{animation:cwobble 2.4s ease-in-out infinite;transform-origin:50% 90%;}
+  @keyframes cwobble{0%,62%,100%{transform:rotate(0);}66%{transform:rotate(-7deg);}72%{transform:rotate(6deg);}78%{transform:rotate(-4deg);}84%{transform:rotate(2deg);}}
+  .chestcard .lid{transform-box:fill-box;transform-origin:50% 100%;transition:transform .55s cubic-bezier(.3,1.5,.5,1);}
+  .chestcard.open .lid{transform:translateY(-6px) rotate(-24deg);}
+  .chestcard .glow{opacity:0;transform-box:fill-box;transform-origin:50% 50%;transition:opacity .4s;}
+  .chestcard.open .glow{opacity:1;animation:lvspin 5s linear infinite;}
+  .chestcard .gin{opacity:0;transition:opacity .4s .15s;} .chestcard.open .gin{opacity:1;}
+  .chestcard.open{cursor:default;}
+  @media (prefers-reduced-motion: reduce){
+    .ndot,.fxlevel .lvstar,.chestcard:not(.open) .chestbox svg,.chestcard.open .glow,.coinbtn .ct b.bump{animation:none;}
+    .fxtoast,.fxlevel,.fxlevel .lvcard,.chestcard .lid{transition:none;}
+  }
+
   /* colonna stretta solo su schermi alti (computer, tablet); il telefono in orizzontale usa tutta la larghezza (Radar) */
   @media (min-width:600px) and (min-height:560px){
     body{max-width:480px;margin-inline:auto;box-shadow:0 0 0 1px var(--line);}
@@ -597,6 +652,7 @@
     <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
     <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 5l8 13H4z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 19L4 6h16z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-chest" viewBox="0 0 24 24"><path d="M3 11h18v9.5H3z" fill="#8A5524" stroke="#4E2C0E" stroke-width="1"/><path d="M3 11.5V9c0-2.8 4-5 9-5s9 2.2 9 5v2.5z" fill="#A5672E" stroke="#4E2C0E" stroke-width="1"/><path d="M5.5 5.8v14.7M18.5 5.8v14.7M3 13h18" stroke="url(#g-gold)" stroke-width="1.8"/><rect x="10" y="11" width="4" height="5" rx="1" fill="url(#g-gold)" stroke="#8A5D00" stroke-width=".8"/></symbol>
   </defs>
 </svg>
 
@@ -780,6 +836,8 @@
 </main>
 
 <button class="slipbar" id="slipbar" type="button" hidden><span id="slipbartxt"></span><span class="go">Apri <svg class="ico"><use href="#i-chev"/></svg></span></button>
+
+<div id="fx" aria-hidden="true"></div>
 
 <nav class="tabbar" id="tabbar" hidden>
   <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic"><svg class="ico"><use href="#i-segnali"/></svg></span>Segnali</button>
@@ -1553,10 +1611,12 @@
     document.querySelectorAll(".tab").forEach(function (t) {
       if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
+    if (unlocked) setTimeout(newsTick, 0);   // novita' viste, pallini e feste del Diario
   }
 
   function renderAll() {
     settleMySlips(); renderStatus(); renderFeed(); renderStrategie(); renderDiario(); renderOcchio(); renderRadar(); renderBacheca(); renderProfilo();
+    newsTick();
   }
 
   // ---------------------------------------------------------------- Team StatSight (signals/personaggi.py)
@@ -1734,8 +1794,9 @@
         return '<div class="card post"><div class="pev" style="margin-top:0;">' + (EMOJI[x.sport] || "") + ' ' + esc(x.event) + '<span class="k"> · ' + whenLabel(x.ts) + '</span></div>'
           + (x.text ? '<div class="ptext" translate="no">' + esc(x.text) + '</div>' : "")
           + '<div class="pickrow"><span>' + (x.label ? '<b>' + esc(x.label) + '</b> ' : "") + '@ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div></div>';
-      }).join("") : '<div class="note">Nessun pronostico ancora: premi le monete qui sopra e scegli una partita.</div>') + '</div>';
-      $("bacheca").innerHTML = html; return;
+      }).map(function (h, i) { return esitiHi[items[i].key] ? h.replace('class="card post"', 'class="card post isnew"').replace('<span class="k"> · ', '<span class="newtag">NUOVO</span><span class="k"> · ') : h; }).join("")
+        : '<div class="note">Nessun pronostico ancora: premi le monete qui sopra e scegli una partita.</div>') + '</div>';
+      $("bacheca").innerHTML = html; paintDots(); if (!inTick) setTimeout(newsTick, 0); return;
     }
     if (!P || !P.profiles) { $("bacheca").innerHTML = html + '<div class="note">La Home arriva con il prossimo aggiornamento dei dati.</div>'; return; }
     var sug = suggested(), prefs = me.sports || [];
@@ -1757,9 +1818,10 @@
           return '<div class="tav"><button class="tavb" type="button" data-persona="' + p.id + '">' + avatar(p.id, 52) + '<span>' + esc(p.nick) + '</span></button>'
             + '<button class="tavf" type="button" data-follow="' + p.id + '">+ Segui</button></div>';
         }).join("") + '</div>' : "")
-        + (feed.length ? feed.map(function (x) { return x.mine ? myPostCard(x) : postCard(x); }).join("") : '<div class="note">Nessuna giocata, per ora.</div>');
+        + (feed.length ? feed.map(function (x) { return x.mine ? myPostCard(x) : markNew(postCard(x), feedHi != null && x.ts > feedHi); }).join("") : '<div class="note">Nessuna giocata, per ora.</div>');
     }
-    $("bacheca").innerHTML = html;
+    $("bacheca").innerHTML = html; paintDots();
+    if (!inTick) setTimeout(newsTick, 0);   // un Segui nuovo o il cambio di Home/I miei pronostici aggiornano le novita'
   }
   var curPersona = null;
   function renderPersona(id, stay) {
@@ -1942,7 +2004,7 @@
         + '<button class="iconbtn" type="button" data-meedit="1" aria-label="Modifica il profilo">' + ic("pen") + '</button></div>'
         + (me.bio ? '<div class="mebio" translate="no">' + esc(me.bio) + '</div>'
           : '<button class="linkbtn mebio empty" type="button" data-meedit="1">' + ic("pen") + ' Scrivi la tua bio</button>')
-        + heroesHtml(R2)
+        + heroesHtml(R2) + chestHtml(R2)
         + '<button class="coinbtn" type="button" data-megioca="1"><span class="cc">' + ic("coin") + '</span><span class="ct"><b>' + R2.coins + '</b> monete<span>Scegli le partite e fai il tuo pronostico</span></span>' + ic("chev") + '</button>'
         + (me.sport ? "" : '<button class="card sportpick" type="button" data-meedit="1">' + ic("star") + ' <b>Scegli il tuo sport e la tua squadra</b><span class="k">Mettiamo in primo piano il tuo campionato e le sfide giuste.</span></button>');
     }
@@ -2558,7 +2620,7 @@
   }
   function rewardState(list) {
     var closed = list.filter(function (b) { return b.result === 0 || b.result === 1; }).sort(function (a, b) { return a.ts - b.ts; });
-    var perDay = {}, seenEvent = {}, xp = 0, weeks = {}, perDayLeague = {}, season = { pts: 0, n: 0 }, coins = COINS.welcome, chWeeks = {};
+    var perDay = {}, seenEvent = {}, xp = 0, weeks = {}, perDayLeague = {}, season = { pts: 0, n: 0 }, coins = COINS.welcome, chWeeks = {}, prizes = {};
     closed.forEach(function (b) {
       b._xp = 0;
       if (b.odds >= 1.3 && !seenEvent[b.ev]) {
@@ -2590,13 +2652,18 @@
       if (r.n >= 10 && r.pts >= 3) tier = Math.min(LEAGUES.length - 1, tier + 1);
       else if (r.n < 5 || r.pts <= -3) tier = Math.max(0, tier - 1);
       best = Math.max(best, tier);
-      if (r.n >= 5) coins += COINS.week[tier];  // premio di fine settimana secondo la lega raggiunta
+      if (r.n >= 5) { coins += COINS.week[tier]; prizes[w] = { coins: COINS.week[tier], tier: tier }; }  // premio di fine settimana secondo la lega raggiunta
     });
     Object.keys(chWeeks).map(Number).forEach(function (w) {   // premi delle sfide chiuse
       if (w >= thisWeek) return;
-      Object.keys(chWeeks[w]).forEach(function (id) { coins += challengePrize(chWeeks[w][id]); });
+      Object.keys(chWeeks[w]).forEach(function (id) {
+        var c = challengePrize(chWeeks[w][id]); if (!c) return;
+        coins += c; (prizes[w] = prizes[w] || { coins: 0, tier: null }).coins += c;
+      });
     });
     coins -= jolly.spent;
+    var chest = chestOf(prizes, thisWeek);   // i premi delle settimane chiuse arrivano in una cassa da aprire
+    coins -= chest.coins;
     var cur = weeks[thisWeek] || { pts: 0, n: 0 };
     var zone = cur.n >= 10 && cur.pts >= 3 ? "up" : (cur.n < 5 || cur.pts <= -3) ? (tier > 0 ? "down" : "stay") : "stay";
     var played = Math.max(1, Math.min(SEASON.rounds, Math.ceil((Math.min(nowS(), SEASON.end) - SEASON.start) / (7 * 86400))));
@@ -2606,7 +2673,7 @@
     if (!season.n) sTier = 0;
     return { closed: closed, xp: xp, level: level, inLevel: left, need: xpNeeded(level), tier: tier, bestTier: Math.max(best, tier),
              week: cur, zone: zone, weeks: weeks, season: season, round: played, sTier: sTier, perWeek: perWeek, coins: coins,
-             ch: chWeeks[thisWeek] || {} };
+             ch: chWeeks[thisWeek] || {}, chest: chest };
   }
   // ---------------------------------------------------------------- Sfide della settimana (richiesta utente 02/10)
   // Una sfida per competizione (Sfida Champions, Sfida Serie A, Sfida Nations, Sfida ATP...): contano i pronostici
@@ -2686,6 +2753,203 @@
       }).join("") + '</div>'
       + '<div class="k" style="margin-top:6px;">Un jolly si mette su un pronostico ancora aperto, da "Le mie giocate". Al massimo un\'Assicurazione e un Raddoppio a settimana.</div>';
   }
+  // ---------------------------------------------------------------- Grafica "addictive" (richiesta utente 03/10)
+  // Pallini rossi sulle schede con le novita' (esiti nuovi, post nuovi dei seguiti, cassa da aprire), pioggia di
+  // monete quando un pronostico risulta vinto, coriandoli al passaggio di livello, cassa del premio di fine
+  // settimana. Le regole delle monete non cambiano: il premio della settimana resta in cassa finche' non la apri.
+  // Cosa hai gia' visto sta su questo telefono (statsight.novita, statsight.casse); col server va sull'account.
+  var NEWS_KEY = "statsight.novita", CHEST_KEY = "statsight.casse";
+  var news = (function () { try { var n = JSON.parse(localStorage.getItem(NEWS_KEY)); if (n && n.seen) return n; } catch (e) {} return null; })();
+  var chests = (function () { try { var c = JSON.parse(localStorage.getItem(CHEST_KEY)); if (c && c.opened) return c; } catch (e) {} return null; })();
+  function saveNews() { try { localStorage.setItem(NEWS_KEY, JSON.stringify(news)); } catch (e) {} }
+  function saveChests() { try { localStorage.setItem(CHEST_KEY, JSON.stringify(chests)); } catch (e) {} }
+  var REDUCED = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var dots = {}, feedHi = null, esitiHi = {}, inTick = false, fxBusy = false;
+  // premi delle settimane chiuse non ancora aperti (dalla settimana prima della prima apertura con le casse)
+  function chestOf(prizes, thisWeek) {
+    if (!chests) { chests = { since: weekKey(nowS() - 7 * 86400), opened: {} }; saveChests(); }
+    var weeks = Object.keys(prizes).map(Number).filter(function (w) { return w >= chests.since && w < thisWeek && prizes[w].coins > 0 && !chests.opened[w]; }).sort();
+    return { coins: weeks.reduce(function (t, w) { return t + prizes[w].coins; }, 0), weeks: weeks, tier: weeks.length ? prizes[weeks[weeks.length - 1]].tier : null };
+  }
+  function chestSvg() {
+    var rays = "";
+    for (var i = 0; i < 12; i++) { var a = i * Math.PI / 6, b = a + 0.13; rays += "M32 30L" + (32 + 40 * Math.cos(a)).toFixed(1) + " " + (30 + 40 * Math.sin(a)).toFixed(1) + "L" + (32 + 40 * Math.cos(b)).toFixed(1) + " " + (30 + 40 * Math.sin(b)).toFixed(1) + "z"; }
+    return '<svg viewBox="0 0 64 64" aria-hidden="true"><path class="glow" d="' + rays + '" fill="#FFE27A" fill-opacity=".55"/>'
+      + '<ellipse cx="32" cy="58" rx="24" ry="3.5" fill="#000" fill-opacity=".3"/>'
+      + '<ellipse class="gin" cx="32" cy="33" rx="21" ry="5" fill="#FFE27A"/>'
+      + '<rect x="8" y="32" width="48" height="24" rx="3" fill="#8A5524" stroke="#4E2C0E" stroke-width="1.5"/>'
+      + '<path d="M9 44h46" stroke="#6B3F17" stroke-width="1.2"/><path d="M15 32v24M49 32v24" stroke="url(#g-gold)" stroke-width="4"/>'
+      + '<g class="lid"><path d="M8 33v-9c0-8 10.7-13 24-13s24 5 24 13v9z" fill="#A5672E" stroke="#4E2C0E" stroke-width="1.5"/>'
+      + '<path d="M15 13.8V33M49 13.8V33" stroke="url(#g-gold)" stroke-width="4"/><path d="M14 20c5-3 11-4 18-4" stroke="#fff" stroke-opacity=".3" stroke-width="2" stroke-linecap="round"/></g>'
+      + '<rect x="27" y="29" width="10" height="12" rx="2" fill="url(#g-gold)" stroke="#8A5D00" stroke-width="1"/><path d="M32 33.5v3.5" stroke="#5C3A00" stroke-width="2.2" stroke-linecap="round"/></svg>';
+  }
+  function chestHtml(R2) {
+    var c = R2.chest; if (!c || !c.coins) return "";
+    var n = c.weeks.length, sub = n > 1 ? n + " settimane" : c.tier != null ? "Lega " + LEAGUES[c.tier][0] : "Sfide della settimana";
+    return '<button class="chestcard" type="button" data-chest="1"><span class="chestbox">' + chestSvg() + '</span>'
+      + '<span class="ct"><b>Premio della settimana</b><span>' + esc(sub) + ' · tocca per aprire</span></span>' + ic("chev") + '</button>';
+  }
+  function openChest(btn) {
+    if (btn.classList.contains("open") || fxBusy) return;
+    var c = rewardState(pronostici()).chest; if (!c.coins) return;
+    var shown = coinShown();
+    c.weeks.forEach(function (w) { chests.opened[w] = 1; }); saveChests();
+    btn.classList.add("open"); fxBusy = true;
+    var ch = btn.querySelector(".ico:last-child"); if (ch) ch.remove();
+    btn.querySelector(".ct").innerHTML = '<b>+' + c.coins + ' monete</b><span>Cassa aperta: le monete sono tue</span>';
+    setTimeout(function () {
+      fxCoins(btn.querySelector(".chestbox"), Math.min(18, 8 + Math.round(c.coins / 15)), shown, shown == null ? null : shown + c.coins);
+      fxToast("chest", "Cassa aperta", "+" + c.coins + " monete");
+    }, REDUCED ? 0 : 450);
+    setTimeout(function () { fxBusy = false; renderProfilo(); renderOcchio(); newsTick(); }, REDUCED ? 1200 : 2600);
+  }
+
+  // ---- effetti
+  function centerOf(el) { var r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
+  function coinEl() { return document.querySelector(".view:not([hidden]) .coinbtn .ct b, .view:not([hidden]) .coinbar b"); }
+  function coinShown() { var b = coinEl(); return b ? parseInt(b.textContent, 10) || 0 : null; }
+  function countUp(from, to) {
+    var b = coinEl(); if (!b || from == null || to == null) return;
+    b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump");
+    if (REDUCED) { b.textContent = to; return; }
+    var t0 = performance.now(), dur = 700;
+    (function step(t) {
+      var k = Math.min(1, (t - t0) / dur); b.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+  // pioggia di monete: escono da "from" (o dal centro), si allargano e volano sul contatore delle monete
+  function fxCoins(from, n, startVal, endVal) {
+    var fx = $("fx"), W = innerWidth, H = innerHeight, b = coinEl();
+    if (startVal != null && b) b.textContent = startVal;
+    if (REDUCED || !fx.animate) { countUp(startVal, endVal); return; }
+    var o = from ? centerOf(from) : [W / 2, H * 0.45];
+    var tg = b ? centerOf(b.closest(".coinbtn") ? b.closest(".coinbtn").querySelector(".cc") : b) : [W / 2, 30];
+    tg = [tg[0], Math.max(20, Math.min(H - 20, tg[1]))];
+    for (var i = 0; i < n; i++) {
+      var el = document.createElement("div"); el.className = "fxcoin"; el.innerHTML = ic("coin"); fx.appendChild(el);
+      var a = Math.random() * 2 * Math.PI, d = 45 + Math.random() * 75, mx = o[0] + Math.cos(a) * d, my = o[1] + Math.sin(a) * d - 40, r = (Math.random() - 0.5) * 540;
+      el.animate([
+        { transform: "translate(" + o[0] + "px," + o[1] + "px) scale(.3)", opacity: 0, easing: "cubic-bezier(.2,.9,.3,1)" },
+        { transform: "translate(" + mx + "px," + my + "px) scale(1.15) rotate(" + r / 2 + "deg)", opacity: 1, offset: 0.35, easing: "cubic-bezier(.6,0,.4,1)" },
+        { transform: "translate(" + tg[0] + "px," + tg[1] + "px) scale(.6) rotate(" + r + "deg)", opacity: 1, offset: 0.9 },
+        { transform: "translate(" + tg[0] + "px," + tg[1] + "px) scale(.2) rotate(" + r + "deg)", opacity: 0 }
+      ], { duration: 1050 + Math.random() * 250, delay: i * 45, fill: "both" }).onfinish = (function (x) { return function () { x.remove(); }; })(el);
+    }
+    setTimeout(function () { countUp(startVal, endVal); }, 1000 + n * 22);
+  }
+  function fxToast(icon, title, sub) {
+    var fx = $("fx"), t = document.createElement("div");
+    t.className = "fxtoast"; t.setAttribute("role", "status");
+    t.innerHTML = ic(icon) + '<span><b>' + esc(title) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") + '</span>';
+    fx.appendChild(t);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.add("on"); }); });
+    setTimeout(function () { t.classList.remove("on"); setTimeout(function () { t.remove(); }, 500); }, 2800);
+  }
+  // coriandoli: due cannoni dagli angoli in basso, carta che gira e cade
+  function fxConfetti() {
+    if (REDUCED) return;
+    var fx = $("fx"), cv = document.createElement("canvas"), dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight;
+    cv.className = "fxconf"; cv.width = W * dpr; cv.height = H * dpr; fx.appendChild(cv);
+    var g = cv.getContext("2d"); g.scale(dpr, dpr);
+    var COL = ["#FFD866", "#E8812F", "#2F6FD6", "#3C7A57", "#E5322D", "#7FC4C9", "#C06BE0", "#FFFFFF"], P = [];
+    for (var i = 0; i < 160; i++) {
+      var left = i % 2 === 0, sp = 9 + Math.random() * 9, spread = 0.25 + Math.random() * 0.55, an = -Math.PI / 2 + (left ? spread : -spread);
+      P.push({ x: left ? -10 : W + 10, y: H * 0.85, vx: Math.cos(an) * sp * (W / 420), vy: Math.sin(an) * sp * Math.max(1, H / 760),
+               w: 6 + Math.random() * 5, h: 9 + Math.random() * 7, r: Math.random() * 6, vr: (Math.random() - 0.5) * 0.35, f: Math.random() * 6, c: COL[i % COL.length], d: Math.random() * 280 });
+    }
+    var t0 = performance.now(), LIFE = 3600;
+    (function frame(t) {
+      var el = t - t0; g.clearRect(0, 0, W, H);
+      P.forEach(function (p) {
+        if (el < p.d) return;
+        p.vy += 0.32; p.vx *= 0.985; p.vy *= 0.985; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.f += 0.18;
+        g.save(); g.globalAlpha = Math.max(0, Math.min(1, (LIFE - el) / 600)); g.translate(p.x, p.y); g.rotate(p.r); g.scale(1, Math.cos(p.f));
+        g.fillStyle = p.c; g.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); g.restore();
+      });
+      if (el < LIFE) requestAnimationFrame(frame); else cv.remove();
+    })(t0);
+  }
+  function fxLevel(level, title, coins, done) {
+    var d = document.createElement("div"); d.className = "fxlevel"; d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true");
+    d.innerHTML = '<div class="lvcard"><div class="lvstar">' + ic("star") + '</div><div class="lvk">Nuovo livello</div><div class="lvn">Livello ' + level + '</div>'
+      + '<div class="lvt">' + esc(title) + '</div><div class="lvc">' + ic("coin") + ' +' + coins + ' monete</div>'
+      + '<button class="primary" type="button">Avanti</button></div>';
+    document.body.appendChild(d);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { d.classList.add("on"); }); });
+    fxConfetti();
+    function close(e) { if (e.target !== d && !e.target.closest("button")) return; d.removeEventListener("click", close); d.classList.remove("on"); setTimeout(function () { d.remove(); if (done) done(); }, 300); }
+    d.addEventListener("click", close);
+    d.querySelector("button").focus();
+  }
+  function titleOf(level) { return TITLES[Math.min(TITLES.length - 1, Math.floor((level - 1) / 5))]; }
+  // pronostici vinti e livelli nuovi dall'ultima volta: monete, poi coriandoli
+  function celebrate(list, R2) {
+    if (fxBusy) return;
+    var wins = list.filter(function (b) { return b.result === 1 && !news.cel[b.key]; });
+    var oldLevel = news.level || R2.level, up = R2.level > oldLevel;
+    if (!wins.length && !up) return;
+    fxBusy = true;
+    wins.forEach(function (b) { news.cel[b.key] = 1; });
+    news.level = Math.max(oldLevel, R2.level); saveNews();
+    var winCoins = wins.reduce(function (t, b) { return t + (b._xp > 0 ? COINS.closed + COINS.won : 0); }, 0);
+    var winXp = wins.reduce(function (t, b) { return t + (b._xp || 0); }, 0);
+    var lvCoins = up ? (R2.level - oldLevel) * COINS.level : 0, cur = coinShown();
+    var base = cur == null ? null : cur - lvCoins;
+    function level() {
+      if (!up) { fxBusy = false; return; }
+      fxLevel(R2.level, titleOf(R2.level), lvCoins, function () { fxBusy = false; countUp(base, cur); });
+    }
+    if (wins.length) {
+      fxToast("coin", wins.length === 1 ? "Pronostico vinto" : wins.length + " pronostici vinti", (winCoins ? "+" + winCoins + " monete · " : "") + "+" + winXp + " XP");
+      fxCoins(null, Math.min(16, 6 + 3 * wins.length), base == null ? null : base - winCoins, base);
+      setTimeout(level, REDUCED ? 600 : 1900);
+    } else { var b0 = coinEl(); if (b0 && base != null) b0.textContent = base; level(); }
+  }
+  // ---- pallini rossi
+  function setDot(el, on) {
+    var d = el.querySelector(":scope > .ndot");
+    if (on && !d) { d = document.createElement("span"); d.className = "ndot"; d.setAttribute("aria-hidden", "true"); el.appendChild(d); }
+    else if (!on && d) d.remove();
+  }
+  function paintDots() {
+    function all(sel, on) { document.querySelectorAll(sel).forEach(function (el) { setDot(el, on); }); }
+    all('.tab[data-view="diario"]', dots.feed || dots.esiti || dots.chest);
+    all('[data-sub="profilo"]', dots.feed || dots.esiti || dots.chest);
+    all('[data-sub="occhio"]', dots.esiti || dots.chest);
+    all('[data-bview="home"]', dots.feed);
+    all('[data-bview="miei"]', dots.esiti);
+  }
+  function markNew(html, on) {
+    return on ? html.replace('class="card post"', 'class="card post isnew"').replace('<span class="time">', '<span class="newtag">NUOVO</span><span class="time">') : html;
+  }
+  function curView() { var v = document.querySelector("main.view:not([hidden])"); return v ? v.id.slice(5) : null; }
+  function newsTick() {
+    if (!data || inTick) return;
+    inTick = true;
+    try {
+      var list = pronostici(), R2 = rewardState(list), done = list.filter(function (b) { return b.result != null; });
+      var P = data.personaggi, feed = ((P && P.feed) || []).filter(function (x) { return follows.has(x.p); });
+      var feedMax = feed.reduce(function (m, x) { return Math.max(m, x.ts); }, 0);
+      if (!news) {   // prima volta: tutto quello che c'e' gia' conta come visto, niente festa per lo storico
+        news = { seen: {}, cel: {}, level: R2.level, feedTs: feedMax };
+        done.forEach(function (b) { news.seen[b.key] = 1; if (b.result === 1) news.cel[b.key] = 1; });
+        saveNews();
+      }
+      var v = curView(), changed = false;
+      if (v === "profilo" && bview === "home" && feedMax > news.feedTs) {   // Home vista: i post restano evidenziati finche' sei qui
+        feedHi = news.feedTs; news.feedTs = feedMax; changed = true; renderBacheca();
+      }
+      if (v === "occhio" || (v === "profilo" && bview === "miei")) {
+        var fresh = done.filter(function (b) { return !news.seen[b.key]; });
+        if (fresh.length) { fresh.forEach(function (b) { news.seen[b.key] = 1; esitiHi[b.key] = 1; }); changed = true; if (v === "profilo") renderBacheca(); }
+      }
+      if (changed) saveNews();
+      dots = { feed: feed.some(function (x) { return x.ts > news.feedTs; }), esiti: done.some(function (b) { return !news.seen[b.key]; }), chest: R2.chest.coins > 0 };
+      paintDots();
+      if (v === "profilo" || v === "occhio" || v === "diario") celebrate(list, R2);
+    } finally { inTick = false; }
+  }
   function signed(x) { return (x >= 0 ? "+" : "") + it(x, 1); }
   // carte di stagione, livello e lega della settimana: in cima al profilo, sotto la bio (richiesta utente 02/10)
   function heroesHtml(R2) {
@@ -2721,7 +2985,7 @@
       + '<div class="banner">' + ic("trend") + '<span>Più positivo della settimana</span><b>' + (R2.week.n ? signed(R2.week.pts) + " · tu" : "—") + '</b></div>'
       + '<div class="banner">' + ic("flame") + '<span>Serie più lunga</span><b>' + bestStreak + " · tu" + '</b></div>'
       + '</div><div class="k" style="margin:6px 2px 12px;font-size:0.76rem;">Con l\'app pubblica qui compaiono i migliori fra tutti gli utenti.</div>'
-      + ladderHtml(R2) + challengesHtml(R2) + jollyShopHtml(R2)
+      + chestHtml(R2) + ladderHtml(R2) + challengesHtml(R2) + jollyShopHtml(R2)
       + '<details class="card" style="margin-top:10px;"><summary><b>Come funziona</b></summary><div class="ds" style="margin-top:8px;line-height:1.5;">'
       + '<b>Stagione</b> (la lega che conta): segue il calendario della Premier League, ' + SEASON.rounds + ' giornate. Contano i pronostici a quota 1,50 o più, al massimo 10 al giorno: vinto = quota − 1, perso = −1. La lega dipende dai punti medi a settimana: Argento da 0, Oro da +0,5, Platino da +1, Diamante da +2, Elite da +3 (dall\'Oro in su almeno 3 pronostici a settimana). Con l\'app pubblica: classifica fra tutti, promozioni e retrocessioni a fine stagione.<br>'
       + '<b>Settimana:</b> stesse regole, da lunedì a domenica. Con almeno 10 pronostici e +3 punti si sale, con meno di 5 o −3 punti si scende.<br>'
@@ -2783,6 +3047,9 @@
   }
 
   // jolly: comprarli con le monete (Il mio occhio) e metterli su un pronostico aperto (Le mie giocate)
+  ["profilo", "occhiolevel"].forEach(function (id) {
+    $(id).addEventListener("click", function (e) { var c = e.target.closest("[data-chest]"); if (c && data) openChest(c); });
+  });
   $("occhiolevel").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-buyjolly]"); if (!b || !data) return;
     var t = b.dataset.buyjolly, coins = rewardState(pronostici()).coins;
