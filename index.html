@@ -46,7 +46,7 @@
   }
   *{box-sizing:border-box;}
   .ico{width:1.15em;height:1.15em;vertical-align:-0.2em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;display:inline-block;}
-  .tab .ic .ico{width:22px;height:22px;}
+  .tab .ic .ico{width:24px;height:24px;}
   [hidden]{display:none!important;}
   html,body{height:100%;margin:0;}
   body{
@@ -235,7 +235,11 @@
   .seedrow{display:flex;flex-wrap:wrap;gap:8px;}
   .seedbtn{padding:0;border:none;background:none;cursor:pointer;border-radius:16px;} .seedbtn svg{border-radius:16px;}
   .seedbtn.on svg{outline:3px solid var(--accent);outline-offset:2px;}
-  .seedbtn.more{width:48px;height:48px;display:grid;place-items:center;border:1px dashed var(--line);color:var(--ink-soft);}
+  .seedbtn.sp{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;width:64px;}
+  .seedbtn.sp .spname{font-size:0.66rem;font-weight:700;color:var(--ink-soft);}
+  .seedbtn.locked{cursor:not-allowed;} .seedbtn.locked svg{filter:grayscale(.85) brightness(.6);}
+  .splock{position:absolute;top:18px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:2px;white-space:nowrap;background:rgba(10,16,18,.82);color:#fff;font-size:0.62rem;font-weight:800;padding:2px 6px;border-radius:999px;}
+  .splock .ico{width:11px;height:11px;}
   .melabel{display:block;font-size:0.78rem;font-weight:700;color:var(--ink-soft);margin:12px 0 4px;}
   .meinput{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical;}
   .lbme{position:sticky;bottom:64px;margin-top:8px;box-shadow:0 6px 18px rgba(0,0,0,.3);border-radius:12px;background:var(--bg);}
@@ -262,6 +266,7 @@
   .tlogo{display:inline-grid;place-items:center;width:20px;height:22px;margin-right:6px;vertical-align:-5px;color:#fff;font-size:8.5px;font-weight:800;letter-spacing:-0.02em;
     clip-path:polygon(0 0,100% 0,100% 62%,50% 100%,0 62%);text-shadow:0 1px 1px rgba(0,0,0,.35);}
   .tlogo.round{clip-path:none;border-radius:50%;width:20px;height:20px;vertical-align:-4px;}
+  .tlogo.flag{color:#fff;text-shadow:0 0 2px rgba(0,0,0,.9),0 0 1px #000;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);}
   /* due righe: orario, squadre e punteggio sopra; le quote sotto, larghe (i nomi non si tagliano) */
   .evline{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px 8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:6px;}
   .evmain{grid-column:1 / -1;display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:6px;font:inherit;color:inherit;background:none;border:none;text-align:left;cursor:pointer;padding:2px;min-width:0;}
@@ -523,7 +528,12 @@
   }
   .tab .ic{font-size:1.25rem;line-height:1;}
   .tab[aria-current="page"]{color:var(--accent-strong);}
-  .tab:not([aria-current="page"]) .ic .ico{opacity:.5;filter:saturate(.55);}
+  .tab .ic{display:grid;place-items:center;width:54px;height:30px;border-radius:999px;transition:background .2s;}
+  .tab .ic .ico{transition:transform .2s;}
+  .tab:not([aria-current="page"]) .ic .ico{opacity:.72;filter:saturate(.6);}
+  .tab[aria-current="page"] .ic{background:color-mix(in srgb, var(--accent) 22%, transparent);}
+  .tab[aria-current="page"] .ic .ico{transform:scale(1.14);}
+  .tab[aria-current="page"]{font-weight:800;}
   :root[data-dark="1"] .tab[aria-current="page"]{color:var(--accent);}
 
   /* grafica "addictive" del Diario (richiesta utente 03/10): pallini delle novita', monete, coriandoli, cassa */
@@ -635,6 +645,86 @@
   .sticker.off{background:var(--bg-alt);} .sticker.off .tlogo{filter:grayscale(1) brightness(.55);opacity:.45;} .sticker.off span.sn{color:var(--ink-soft);font-weight:600;}
   .sticker.got{border-color:color-mix(in srgb, #E8A800 60%, var(--line));box-shadow:inset 0 0 0 1px rgba(255,216,102,.25);}
   .aldone{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#2A1A00;background:linear-gradient(120deg,#FFD866,#E8812F);border-radius:999px;padding:2px 8px;}
+  /* gambe di multiple e sistemi nei post (04/10) */
+  .plegs{margin-top:8px;border-left:3px solid color-mix(in srgb, var(--accent) 55%, var(--line));padding-left:10px;display:flex;flex-direction:column;gap:6px;}
+  .pleg .plev{font-size:0.8rem;color:var(--ink-soft);} .pleg .pickrow{margin-top:2px;}
+  .pickrow.ptot{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);}
+  .namemsg{margin-top:6px;border-color:color-mix(in srgb, var(--bad) 55%, var(--line));color:var(--bad);}
+  /* Tutorial (04/10) */
+  #tut{position:fixed;inset:0;z-index:70;}
+  #tut .tspot{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(4,10,14,.72),0 0 0 3px var(--accent);transition:all .35s cubic-bezier(.3,1.2,.5,1);pointer-events:none;}
+  #tut .tcard{position:fixed;left:16px;right:16px;max-width:448px;margin:0 auto;background:var(--surface);color:var(--ink);border-radius:18px;padding:16px 16px 12px;
+    box-shadow:0 18px 40px -12px rgba(0,0,0,.6);border:1px solid var(--line);transition:top .35s,bottom .35s;}
+  #tut .tstep{font-size:0.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-strong);display:flex;align-items:center;gap:8px;}
+  #tut .tdots{display:flex;gap:4px;margin-left:auto;} #tut .tdots i{width:7px;height:7px;border-radius:50%;background:var(--line);} #tut .tdots i.on{background:var(--accent);}
+  #tut h3{font-size:1.1rem;margin:6px 0 6px;} #tut .ttext{font-size:0.9rem;line-height:1.45;color:var(--ink-soft);}
+  #tut .ttext p{margin:0 0 6px;} #tut .tleg{display:flex;gap:8px;align-items:flex-start;} #tut .ttext .sw{flex:none;width:14px;height:14px;border-radius:4px;margin-top:3px;}
+  #tut .tbtns{display:flex;gap:8px;margin-top:12px;} #tut .tbtns .primary{flex:1;} #tut .tbtns .linkbtn{flex:none;padding:0 6px;}
+  @media (prefers-reduced-motion: reduce){#tut .tspot,#tut .tcard{transition:none;}}
+  .rankn{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 5px;margin-right:6px;border-radius:999px;background:linear-gradient(120deg,#FFD866,#E8A800);color:#2A1A00;font-size:0.74rem;font-weight:900;vertical-align:1px;}
+  .stakebox{margin:12px 0 4px;padding:12px 14px;border-radius:14px;border:1px solid color-mix(in srgb, #E8A800 45%, var(--line));background:color-mix(in srgb, #FFD866 10%, var(--surface));}
+  .stakehead{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;} .stakehead .ico{width:22px;height:22px;} .stakehead b{white-space:nowrap;} .stakehead .k{margin-left:auto;white-space:nowrap;}
+  .stakerow{display:flex;align-items:center;gap:10px;margin-bottom:6px;} .stakerow .iconbtn{font-weight:900;font-size:1.1rem;} .stakerow .iconbtn:disabled{opacity:.35;}
+  .stakev{flex:1;text-align:center;font-size:0.9rem;} .stakev b{font-size:1.4rem;font-weight:900;}
+  /* dettaglio del pronostico (04/10) */
+  [data-pick]{cursor:pointer;} .pchev{margin-left:auto;opacity:.5;float:right;}
+  .pkwhen{margin:-4px 2px 12px;} .pkleg .pkev{font-size:0.95rem;}
+  .pkscore{display:flex;align-items:baseline;justify-content:space-between;margin:10px 0 6px;padding:10px 12px;border-radius:12px;background:var(--bg-alt);}
+  .pkscore b{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums;}
+  .pkgoals{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;} .pkgoals span{font-size:0.74rem;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+  .pksum .pickrow,.pkleg .pickrow{display:flex;justify-content:space-between;align-items:center;gap:10px;} .pksum .pickrow{margin:4px 0;}
+  /* telefono in orizzontale (altezza piccola, 04/10): barre compatte, e si nascondono scorrendo verso il basso */
+  @media (max-height:500px){
+    .topbar{padding:calc(env(safe-area-inset-top,0px) + 5px) 16px 5px;transition:margin-top .22s ease;}
+    .topbar .brand img{width:22px;height:22px;} .topbar .iconbtn{width:30px;height:30px;}
+    .tabbar{padding:3px 6px calc(env(safe-area-inset-bottom,0px) + 3px);transition:transform .22s ease;}
+    .tab{flex-direction:row;justify-content:center;gap:6px;padding:4px;font-size:0.7rem;} .tab .ic{width:36px;height:24px;} .tab .ic .ico{width:18px;height:18px;}
+    .view{padding-top:10px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 52px);}
+    body.hidebars .tabbar{transform:translateY(110%);}
+    body.hidebars .topbar{margin-top:calc(-1 * var(--topbar-h, 44px));}
+    .slipbar{bottom:calc(env(safe-area-inset-bottom,0px) + 44px);padding-top:8px;padding-bottom:8px;transition:bottom .22s ease;}
+    body.hidebars .slipbar{bottom:calc(env(safe-area-inset-bottom,0px) + 8px);}
+  }
+  @media (max-height:500px) and (prefers-reduced-motion: reduce){.topbar,.tabbar{transition:none;}}
+  .slsw{display:flex;align-items:center;gap:12px;} .slsw .slh{flex:1;cursor:pointer;margin:0;}
+  .segbar.sl2{margin:6px 0 0;} .segbar.sl2 button{font-size:0.8rem;}
+  .catsport{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;} .catsport .chip{flex:none;}
+  /* animazione del logo all'avvio (04/10) */
+  #splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;cursor:pointer;
+    background:radial-gradient(circle at 50% 42%,#1B3540,#0C161C 62%);transition:opacity .3s ease;}
+  #splash.out{opacity:0;pointer-events:none;}
+  .splogo{position:relative;width:104px;height:104px;animation:spin-in .9s cubic-bezier(.2,1.4,.4,1) both;}
+  .splogo img{position:relative;border-radius:26px;box-shadow:0 14px 40px -10px rgba(0,0,0,.8),0 0 0 2px rgba(232,162,82,.35);}
+  .spring{position:absolute;inset:-6px;border-radius:32px;border:2px solid #E8A252;opacity:0;animation:sp-ring 1.5s .35s ease-out infinite;}
+  .spring.r2{animation-delay:.85s;}
+  .spname{font-family:'Archivo',system-ui,sans-serif;font-stretch:87.5%;font-weight:800;font-size:1.7rem;letter-spacing:-0.01em;color:#E8ECE6;animation:sp-up .6s .45s ease-out both;}
+  @keyframes spin-in{0%{transform:scale(.3) rotate(-25deg);opacity:0;}70%{opacity:1;}100%{transform:scale(1) rotate(0);opacity:1;}}
+  @keyframes sp-ring{0%{transform:scale(.92);opacity:.7;}100%{transform:scale(1.55);opacity:0;}}
+  @keyframes sp-up{0%{transform:translateY(12px);opacity:0;}100%{transform:none;opacity:1;}}
+  .hinfob{cursor:pointer;position:relative;} .hinfo{position:absolute;right:12px;top:12px;font-size:0.76rem;font-weight:800;padding:4px 10px;border-radius:999px;background:rgba(10,16,18,.55);color:#fff;}
+  .sinfo p{margin:0 0 8px;line-height:1.5;} .sinfo p:last-child{margin-bottom:0;}
+  .sstat{list-style:none;margin:0;padding:0;display:grid;gap:8px;} .sstat li{display:flex;gap:8px;align-items:flex-start;} .sstat .ico{color:var(--good);flex:none;margin-top:2px;}
+  .sndrow{margin-bottom:12px;} .sndrow .nhead{display:flex;align-items:center;gap:10px;} .sndrow .nhead .nm{flex:1;font-weight:700;font-size:0.92rem;} .sndrow .nm{display:flex;flex-direction:column;} .sndrow .nm .k{font-weight:500;font-size:0.78rem;}
+  .catstart{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0 0 10px;font-size:0.78rem;color:var(--ink-soft);}
+  .catstart > span{flex:1 1 200px;} .catstart .chip{font-size:0.74rem;padding:4px 10px;}
+  /* rarita' delle figurine (04/10) */
+  .sticker{position:relative;overflow:hidden;}
+  .sticker .srar{font-size:0.58rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);} .sticker .srar .ico{width:11px;height:11px;}
+  .sticker .sprog{position:absolute;top:4px;right:6px;font-size:0.6rem;font-weight:800;color:var(--ink-soft);}
+  .sticker .lemb{width:40px;height:44px;} .sticker .avatar{border-radius:12px;}
+  .sticker.off .lemb,.sticker.off .avatar{filter:grayscale(1) brightness(.55);opacity:.45;}
+  .sticker.got.r0{border-color:#8A949C;}
+  .sticker.got.r1{border-color:#3B82F6;box-shadow:0 0 0 1px #3B82F655,0 0 12px -4px #3B82F6;} .sticker.got.r1 .srar{color:#5AA9FF;}
+  .sticker.got.r2{border:2px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(135deg,#FFE27A,#C98A12,#FFF1B0,#B57F00) border-box;} .sticker.got.r2 .srar{color:#E8B33A;}
+  .sticker.got.r3{border:2px solid transparent;background:linear-gradient(160deg,color-mix(in srgb,#8E5BC9 22%,var(--surface)),var(--surface)) padding-box,linear-gradient(135deg,#FF6BD5,#FFD84A,#5AE0FF,#9B6BFF,#FF6BD5) border-box;box-shadow:0 0 16px -6px #C06BE0;}
+  .sticker.got.r3 .srar{background:linear-gradient(90deg,#FF6BD5,#FFD84A,#5AE0FF);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sticker .shine{position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);transform:translateX(-60%);animation:shine 3.2s ease-in-out infinite;pointer-events:none;}
+  .sticker.r3 .shine{background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.45) 46%,rgba(255,216,74,.5) 50%,rgba(90,224,255,.45) 54%,transparent 62%);animation-duration:2.6s;}
+  @keyframes shine{0%,30%{transform:translateX(-60%);}70%,100%{transform:translateX(60%);}}
+  @media (prefers-reduced-motion: reduce){.sticker .shine{animation:none;opacity:.35;transform:none;}}
+  .colcount .cchead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;} .colcount .cchead span b{font-size:1.4rem;font-weight:900;}
+  .ccrar{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:0.76rem;color:var(--ink-soft);} .ccrar i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px;}
+  .rr.r0 i{background:#8A949C;} .rr.r1 i{background:#3B82F6;} .rr.r2 i{background:linear-gradient(135deg,#FFE27A,#C98A12);} .rr.r3 i{background:linear-gradient(135deg,#FF6BD5,#FFD84A,#5AE0FF);}
   /* colonna stretta solo su schermi alti (computer, tablet); il telefono in orizzontale usa tutta la larghezza (Radar) */
   @media (min-width:600px) and (min-height:560px){
     body{max-width:480px;margin-inline:auto;box-shadow:0 0 0 1px var(--line);}
@@ -643,6 +733,21 @@
 </style>
 </head>
 <body>
+<!-- animazione del logo all'avvio (04/10): ~1,8 s, si salta toccando, niente con "riduci animazioni" -->
+<div id="splash" aria-hidden="true">
+  <div class="splogo"><span class="spring"></span><span class="spring r2"></span><img src="icon-192.png" alt="" width="104" height="104"></div>
+  <div class="spname">StatSight</div>
+</div>
+<script>
+  (function () {
+    var sp = document.getElementById("splash"), done = false;
+    var reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function end() { if (done) return; done = true; sp.classList.add("out"); setTimeout(function () { if (sp.parentNode) sp.parentNode.removeChild(sp); }, 320); }
+    if (reduced) { sp.parentNode.removeChild(sp); return; }
+    sp.addEventListener("click", end); sp.addEventListener("touchstart", end, { passive: true });
+    setTimeout(end, 1800);
+  })();
+</script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <!-- icone a colori (richiesta utente 02/10: "troppo minimal e senza colori"): colori fissi nei disegni -->
@@ -669,6 +774,11 @@
     <symbol id="i-exit" viewBox="0 0 24 24"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></symbol>
     <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z" fill="url(#g-gold)" stroke="#B57F00" stroke-width="1.2"/></symbol>
     <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2.5" fill="#FFFFFF" stroke="#9AA4AE" stroke-width="1"/><path d="M4 7.5a2.5 2.5 0 0 1 2.5-2.5h11A2.5 2.5 0 0 1 20 7.5V10H4z" fill="url(#g-red)" stroke="none"/><path d="M8.5 3v4M15.5 3v4" stroke="#5B6670" stroke-width="1.8"/><path d="M8 13.5h2M11 13.5h2M14 13.5h2M8 16.5h2M11 16.5h2" stroke="#9AA4AE" stroke-width="1.6"/></symbol>
+    <!-- icone della barra in basso (04/10): stesso stile a colori, piu' riconoscibili -->
+    <symbol id="tb-segnali" viewBox="0 0 24 24"><path d="M6.6 6.2a8 8 0 0 0 0 11.6M17.4 6.2a8 8 0 0 1 0 11.6" fill="none" stroke="#FF8A65" stroke-width="2" stroke-linecap="round"/><path d="M9.1 8.8a4.4 4.4 0 0 0 0 6.4M14.9 8.8a4.4 4.4 0 0 1 0 6.4" fill="none" stroke="url(#g-red)" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="12" r="2.6" fill="url(#g-flame)" stroke="#C2361A" stroke-width=".8"/><path d="M12 14.6v6.4" stroke="#E0663F" stroke-width="1.8" stroke-linecap="round"/><path d="M9.4 21h5.2" stroke="#E0663F" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="tb-strategie" viewBox="0 0 24 24"><path d="M6.5 21h11l-1-3h-9z" fill="#1F4FA0"/><path d="M8 18c.3-3 1.6-4.6 3-5.8-1.5.2-2.7.8-3.6 1.3L6 11.6c1.6-2.2 3-4 3.6-6.3l1.2-2.1.8 1.8C15.5 5.2 18 8.4 17.4 18z" fill="url(#g-blue)" stroke="#1F4FA0" stroke-width="1" stroke-linejoin="round"/><circle cx="10.6" cy="8.2" r="1" fill="#fff"/><path d="M13.6 7.4c1.6 1.3 2.4 3.4 2.4 6" stroke="#fff" stroke-opacity=".55" stroke-width="1.1" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="tb-diario" viewBox="0 0 24 24"><rect x="4.5" y="3" width="13" height="18" rx="2.2" fill="url(#g-amber)" stroke="#B5650A" stroke-width="1"/><path d="M8 3v18" stroke="#B5650A" stroke-width="1"/><path d="M10.5 8h4.5M10.5 11h3.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M3.4 6.5h2.4M3.4 10.5h2.4M3.4 14.5h2.4" stroke="#7A4B1E" stroke-width="1.4" stroke-linecap="round"/><path d="M14.6 18.8l1-3.4 5.2-5.2a1.4 1.4 0 0 1 2 2l-5.2 5.2z" fill="url(#g-green)" stroke="#146B3C" stroke-width=".9" stroke-linejoin="round"/></symbol>
+    <symbol id="tb-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="#0F3B2A" stroke="url(#g-green)" stroke-width="1.8"/><circle cx="12" cy="12" r="5.6" fill="none" stroke="#45D483" stroke-opacity=".55" stroke-width="1"/><path d="M12 12L12 2.4A9.6 9.6 0 0 1 20.3 7.2z" fill="#45D483" fill-opacity=".55"/><path d="M12 12l8.3-4.8" stroke="#B8F5CF" stroke-width="1.6" stroke-linecap="round"/><circle cx="15.6" cy="6.8" r="1.4" fill="#FFE27A"/><circle cx="8" cy="15.4" r="1.2" fill="#FF8A65"/><circle cx="12" cy="12" r="1.3" fill="#B8F5CF"/></symbol>
     <symbol id="i-bell" viewBox="0 0 24 24"><path d="M12 3.2c3.5 0 6 2.6 6 6.2v3.8l1.8 3.1H4.2L6 13.2V9.4c0-3.6 2.5-6.2 6-6.2z" fill="url(#g-amber)" stroke="#B5650A" stroke-width="1.1"/><path d="M9.6 18.6a2.5 2.5 0 0 0 4.8 0" fill="#7A4B1E" stroke="#7A4B1E" stroke-width="1"/><circle cx="17.6" cy="5.6" r="2.6" fill="#E5322D" stroke="none"/></symbol>
     <symbol id="i-staro" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="url(#g-gold)" stroke="#C48A00" stroke-width="1.2"/></symbol>
@@ -808,6 +918,8 @@
     <button class="chip" type="button" data-oddsfmt="us">Americano +150</button>
   </div>
   <div class="note" style="margin-top:10px;">Cambia solo come vedi le quote: punti, monete e classifiche si calcolano sempre sulla quota decimale.</div>
+  <h2 class="sectiontitle">Guida</h2>
+  <button class="card navcard" type="button" id="tutbtn"><svg class="ico"><use href="#i-book"/></svg><span><b>Rivedi il tutorial</b><span class="k">Strategie, avvisi, Radar e Diario in quattro passi</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <h2 class="sectiontitle">Notifiche</h2>
   <button class="card navcard" type="button" id="notifbtn"><svg class="ico"><use href="#i-bell"/></svg><span><b>Notifiche delle strategie</b><span class="k">Quali strategie e cosa mostrare nel messaggio</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <h2 class="sectiontitle">Piano</h2>
@@ -818,6 +930,11 @@
   <div class="note" style="margin-top:10px;">Con "Gratuito" vedi l'app come la vedrà chi non è abbonato: xG, attacchi pericolosi, possesso, statistiche al servizio e le strategie che le usano sono coperti dal lucchetto. Gli abbonamenti veri arrivano con l'app pubblica.</div>
   <h2 class="sectiontitle">Informativa</h2>
   <div id="informativa"></div>
+</main>
+
+<main class="view" id="view-pick" hidden>
+  <button class="back" type="button" data-back="profilo">‹ I miei pronostici</button>
+  <div id="pick"></div>
 </main>
 
 <main class="view" id="view-album" hidden>
@@ -931,10 +1048,10 @@
 <div id="fx" aria-hidden="true"></div>
 
 <nav class="tabbar" id="tabbar" hidden>
-  <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic"><svg class="ico"><use href="#i-segnali"/></svg></span>Segnali</button>
-  <button class="tab" type="button" data-view="strategie"><span class="ic"><svg class="ico"><use href="#i-strategie"/></svg></span>Strategie</button>
-  <button class="tab" type="button" data-view="diario"><span class="ic"><svg class="ico"><use href="#i-diario"/></svg></span>Diario</button>
-  <button class="tab" type="button" data-view="radar"><span class="ic"><svg class="ico"><use href="#i-radar"/></svg></span>Radar</button>
+  <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic"><svg class="ico"><use href="#tb-segnali"/></svg></span>Segnali</button>
+  <button class="tab" type="button" data-view="strategie"><span class="ic"><svg class="ico"><use href="#tb-strategie"/></svg></span>Strategie</button>
+  <button class="tab" type="button" data-view="diario"><span class="ic"><svg class="ico"><use href="#tb-diario"/></svg></span>Diario</button>
+  <button class="tab" type="button" data-view="radar"><span class="ic"><svg class="ico"><use href="#tb-radar"/></svg></span>Radar</button>
 </nav>
 
 <script src="regole.js"></script>
@@ -1224,11 +1341,12 @@
     var cat = data.catalog || [];
     if (!cat.length) { $("strategie").innerHTML = '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'; return; }
     var cc = catOf(stratSport), nCat = cc && cc.strategies ? cc.strategies.length : 0;
-    var TOPS = { top5: 5, top10: 10 };
+    // classifica per rendimento storico: "Top 5" e "Dalla 6 alla 10" (prima la Top 10 ripeteva meta' della Top 5)
+    var TOPS = { top5: [0, 5], top10: [5, 10] };
     if (!HERO[stratSport] && !TOPS[stratSport]) stratSport = "calcio";
     var tabs = '<div class="chips sporttabs" role="tablist">'
       + ["top5", "top10"].map(function (t) {
-        return '<button class="chip" type="button" role="tab" data-ssport="' + t + '" aria-pressed="' + (t === stratSport) + '">' + (t === "top5" ? ic("star") + " Top 5" : "Top 10") + '</button>';
+        return '<button class="chip" type="button" role="tab" data-ssport="' + t + '" aria-pressed="' + (t === stratSport) + '">' + ic("star") + (t === "top5" ? " Top 5" : " Dalla 6 alla 10") + '</button>';
       }).join("")
       + STRAT_SPORTS.map(function (sp) {
         return '<button class="chip" type="button" role="tab" data-ssport="' + sp + '" aria-pressed="' + (sp === stratSport) + '">' + EMOJI[sp] + ' ' + NAME[sp] + '</button>';
@@ -1240,7 +1358,7 @@
           + '<div class="ds">' + esc(s.description) + '</div><div class="ds">Usa statistiche di StatSight Full: si sblocca con l\'abbonamento.</div></div>'
           + '<span class="switch"><input type="checkbox" role="switch" disabled aria-label="Serve StatSight Full"><span class="slider"></span></span></div>';
       }
-      return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + (withSport ? EMOJI[s.sport] + " " : "") + esc(s.name) + '</label>'
+      return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + (withSport && rank >= 0 ? '<span class="rankn">' + (rank + 1) + '</span>' : "") + (withSport ? EMOJI[s.sport] + " " : "") + esc(s.name) + '</label>'
         + (s.retired ? '<span class="tm spenta">SPENTA DAL ' + esc(s.retired) + '</span>' : tmTag(s.timing))
         + (rank >= 0 && rank < 5 ? '<span class="tm top">TOP 5</span>' : rank >= 5 ? '<span class="tm top">TOP 10</span>' : "")
         + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
@@ -1250,21 +1368,43 @@
     }
     var NOTE = '<div class="note" style="margin-bottom:10px;">L\'interruttore mostra o nasconde i segnali di quella strategia nella lista "Segnali". I dati non si cancellano e le notifiche Telegram non cambiano.</div>';
     if (TOPS[stratSport]) {
-      var top = topIds().slice(0, TOPS[stratSport]).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(Boolean);
+      var R = TOPS[stratSport], ids = topIds(), top = ids.slice(R[0], R[1]).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(Boolean);
+      var mc = (data.top5 && data.top5.min_cases) || 100;
       $("strategie").innerHTML = tabs + legheCard()
-        + '<div class="hero" style="background-image:linear-gradient(120deg,#3B2F0B,#8A6A14 60%,#C9A227);"><div class="ht">' + ic("star") + ' Top ' + TOPS[stratSport] + '</div><div class="hs">Le strategie col rendimento storico più alto, tutti gli sport (almeno ' + ((data.top5 && data.top5.min_cases) || 100) + ' casi)</div></div>'
-        + (top.length ? '<h2 class="sectiontitle">In classifica</h2>' + NOTE + '<div class="card">' + top.map(function (s) { return row(s, true); }).join("") + '</div>'
-          : '<div class="note" style="margin-top:14px;">Nessuna strategia ha ancora abbastanza casi per entrare in classifica.</div>')
-        + (top.length < TOPS[stratSport] && top.length ? '<div class="note" style="margin-top:10px;">Solo ' + top.length + ' strategie hanno abbastanza casi, per ora.</div>' : "");
+        + '<div class="hero" style="background-image:linear-gradient(120deg,#3B2F0B,#8A6A14 60%,#C9A227);"><div class="ht">' + ic("star") + (R[0] ? ' Dalla 6 alla 10' : ' Top 5') + '</div><div class="hs">Le strategie col rendimento storico più alto, tutti gli sport (almeno ' + mc + ' casi)</div></div>'
+        + (top.length ? '<h2 class="sectiontitle">' + (R[0] ? "Posizioni dalla 6 alla 10" : "Le prime 5") + '</h2>' + NOTE + '<div class="card">' + top.map(function (s) { return row(s, true); }).join("") + '</div>'
+          : '<div class="note" style="margin-top:14px;">' + (R[0] && ids.length ? "Solo " + Math.min(ids.length, 5) + " strategie hanno abbastanza casi: sono tutte nella Top 5." : "Nessuna strategia ha ancora abbastanza casi per entrare in classifica.") + '</div>')
+        + (top.length && top.length < R[1] - R[0] ? '<div class="note" style="margin-top:10px;">Solo ' + (R[0] + top.length) + ' strategie hanno abbastanza casi, per ora.</div>' : "");
       return;
     }
     var count = cat.filter(function (s) { return s.sport === stratSport; }).length + nCat;
-    var hero = '<div class="hero" style="background-image:linear-gradient(90deg,rgba(10,16,18,.72),rgba(10,16,18,.2)),' + HERO[stratSport] + ';">'
-      + '<div class="ht">' + EMOJI[stratSport] + ' ' + NAME[stratSport] + '</div><div class="hs">' + count + ' strategie</div></div>';
+    var hero = '<div class="hero hinfob" role="button" tabindex="0" data-sportinfo="' + stratSport + '" aria-label="Come funziona: ' + esc(NAME[stratSport]) + '" style="background-image:linear-gradient(90deg,rgba(10,16,18,.72),rgba(10,16,18,.2)),' + HERO[stratSport] + ';">'
+      + '<div class="ht">' + EMOJI[stratSport] + ' ' + NAME[stratSport] + '</div><div class="hs">' + count + ' strategie</div>'
+      + '<span class="hinfo">Come funziona ›</span></div>';
     $("strategie").innerHTML = tabs + legheCard() + hero + [stratSport].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) { return row(s, false); }).join("");
       return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2>' + NOTE + '<div class="card">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
     }).join("") + catalogoHtml(stratSport) + (stratSport === "ippica" ? esteroHtml() : "");
+  }
+
+  // ---------------------------------------------------------------- Come funziona, sport per sport (04/10)
+  // Si apre toccando l'immagine dello sport in Strategie. Testi scritti dai publisher e dai cataloghi (signals/,
+  // research/*_catalogo.py): linguaggio semplice, niente promesse.
+  var SPORTINFO = {"calcio": {"come": ["Ci sono due tipi di strategie.", "Prima della partita confrontiamo la classifica con le quote: quando chi sta più in basso fa molti meno punti a partita ma il mercato gli dà comunque buone possibilità, la classifica inganna e quella squadra vince più spesso di quanto dica la quota. Lo stesso per le grandi di Serie A contro le squadre non grandi.", "Durante la partita guardiamo minuto, risultato e statistiche. Esempio: la favorita (secondo le quote prima del via) che va sotto di un gol fra il 20' e il 70' rimonta più spesso di quanto dica la quota."], "stat": ["Quote prima del via e live", "Classifica e punti a partita", "Minuto e risultato", "Tiri e tiri in porta", "xG, i gol attesi", "Angoli e possesso", "Attacchi pericolosi", "Cartellini rossi"], "numeri": ["Le strategie da personalizzare sono provate su 7.220 partite minuto per minuto dei cinque grandi campionati (Understat, 2022-2026). Il prezzo giusto viene dalle quote di chiusura; il rendimento è stimato giocando con il 5% di margine del bookmaker. Le pre-partita usano quote vere di chiusura di più bookmaker."], "limiti": ["Le quote live vere dello storico non le abbiamo: i numeri live sono stime e vanno confermati dal vivo. Molte idee famose, provate, perdono il margine del bookmaker."]}, "tennis": {"come": ["Prima della partita: la classifica ATP e WTA conta i punti degli ultimi 12 mesi, quindi è lenta. Un giocatore in crescita, di ritorno da un infortunio o sulla sua superficie ha pochi punti ma è forte adesso: quando il mercato lo dà comunque abbastanza, vince più spesso di quanto dica la quota.", "Durante la partita guardiamo il punteggio set per set, chi serve, quanti punti vince ognuno al servizio e in risposta e il prezzo Betfair di quel momento. Esempio: lo sfavorito che domina al servizio nel primo set."], "stat": ["Punti in classifica dei due giocatori", "Quote prima del via", "Set e game", "Chi serve", "Punti vinti al servizio e in risposta", "Ace e doppi falli", "Prezzo Betfair live"], "numeri": ["Live: partite registrate dal 25/09/2026 con il prezzo Betfair vero di ogni game; il rendimento è quello reale meno il 5% sulle vincite. Pre-partita: storico di decine di migliaia di partite con le quote di più bookmaker."], "limiti": ["Il punteggio arriva un po' in ritardo rispetto al prezzo, e i giorni di dati live sono ancora pochi: i numeri live cambiano molto."]}, "hockey": {"come": ["Solo prima della partita, NHL. La squadra che in stagione vince molto meno dell'avversario ma che il mercato dà comunque abbastanza vince più spesso di quanto dica la quota: è la stessa idea della classifica che inganna del tennis.", "Da personalizzare ci sono anche le idee più citate: sfavoriti, seconda sera di fila, rimbalzo dopo una sconfitta pesante, movimento della quota, Under e Over."], "stat": ["Percentuale di vittorie in stagione", "Partite giocate", "Quote di apertura e chiusura", "Giorni di riposo", "Serie di vittorie e sconfitte", "Linea Under/Over"], "numeri": ["NHL 2007-2023 con le quote vere di apertura e chiusura, margine del bookmaker già dentro: vinto = quota − 1, perso = −1. Supplementari e rigori compresi."], "limiti": ["Ogni regola scatta poche volte a stagione: i numeri sono ancora dentro il margine del caso. Le idee dei forum, nello storico, perdevano."]}, "basket": {"come": ["NBA, prima della partita. Dalle medie dei punti fatti e subiti delle due squadre stimiamo il totale della partita: quando la stima si stacca di 6 punti o più dalla linea dei bookmaker, si gioca l'Over o l'Under, presto e a quota almeno 1,95.", "Da personalizzare ci sono favoriti e sfavoriti, riposo, seconda sera di fila, squadre famose ed Elo contro il mercato."], "stat": ["Punti fatti e subiti partita per partita", "Media della lega", "Linea Over/Under e quote", "Giorni di riposo", "Serie di vittorie e sconfitte"], "numeri": ["NBA 2016-2026 (11 mila partite) con la quota vincente di chiusura; i totali sullo storico 2011-2023 con le linee di apertura e chiusura."], "limiti": ["Alla chiusura il mercato ci arriva da solo: il vantaggio c'è solo prendendo la linea presto. Si contano solo le partite di stagione regolare."]}, "ippica": {"come": ["Un modello stima la probabilità di vittoria di ogni cavallo a 15 minuti dal via; il segnale esce solo quando dà a un cavallo più del 35%.", "Accanto ci sono regole semplici, come termine di paragone: il favorito del mercato, il cavallo più in forma nelle ultime cinque corse, quello che vince più spesso su quella pista, la quota che paga almeno il 10% più del dovuto. Sulle corse estere c'è il favorito alla quota fissa a 15-20 minuti dal via, con il conto per paese."], "stat": ["Quote a 15 minuti dal via", "Forma nelle ultime corse", "Risultati sulla pista", "Stima del modello"], "numeri": ["Tutte le corse seguite, con le scelte congelate prima del via e l'arrivo vero; il rendimento è alla quota di quel momento."], "limiti": ["Il modello conosce solo i cavalli italiani: sulle corse estere c'è solo il favorito. Si vince spesso poco e si perde a serie."]}};
+  function renderSportInfo(sp) {
+    var I = SPORTINFO[sp]; if (!I) return;
+    var ours = (data.catalog || []).filter(function (x) { return x.sport === sp && !x.retired && !hidden.has(x.id); });
+    var cc = catOf(sp), nCat = cc && cc.strategies ? cc.strategies.length : 0;
+    function ps(a) { return a.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join(""); }
+    $("dettaglio").innerHTML = '<div class="hero" style="background-image:linear-gradient(90deg,rgba(10,16,18,.72),rgba(10,16,18,.2)),' + HERO[sp] + ';"><div class="ht">' + EMOJI[sp] + ' ' + esc(NAME[sp]) + '</div><div class="hs">Come funziona</div></div>'
+      + '<h2 class="sectiontitle">Come funziona</h2><div class="card sinfo">' + ps(I.come) + '</div>'
+      + '<h2 class="sectiontitle">Cosa guarda</h2><div class="card sinfo"><ul class="sstat">' + I.stat.map(function (t) { return '<li>' + ic("check") + '<span>' + esc(t) + '</span></li>'; }).join("") + '</ul></div>'
+      + '<h2 class="sectiontitle">Da dove vengono i numeri</h2><div class="card sinfo">' + ps(I.numeri) + '</div>'
+      + '<h2 class="sectiontitle">Limiti</h2><div class="card sinfo">' + ps(I.limiti) + '</div>'
+      + (ours.length || nCat ? '<h2 class="sectiontitle">Le strategie accese</h2><div class="card sinfo">' + (ours.length ? '<ul class="sstat">' + ours.map(function (x) { return '<li>' + ic("strategie") + '<span>' + esc(x.name) + '</span></li>'; }).join("") + '</ul>' : "")
+        + (nCat ? '<p class="k">Strategie da personalizzare: ' + nCat + '</p>' : "") + '</div>' : "")
+      + '<div class="note" style="margin-top:12px;">Nessuna promessa: anche una strategia che regge perde spesso, e i numeri cambiano col tempo. Contano vinti e persi, tutti.</div>';
+    show("dettaglio"); window.scrollTo(0, 0);
   }
 
   // Corse estere dell'ippica (signals/ippica_estero.py): il favorito alla quota fissa SNAI, con il conto per paese.
@@ -1402,7 +1542,12 @@
     var groups = [];
     c.strategies.forEach(function (s) { if (groups.indexOf(s.group) < 0) groups.push(s.group); });
     var live = !!liveOf(sport);
-    return '<div class="note" style="margin:22px 0 4px;">Le strategie qui sotto si regolano: "… altro", poi Personalizza. La barra "Storico" usa le tue impostazioni (' + c.matches + ' partite)'
+    var sp4 = ["calcio", "tennis", "basket", "hockey"].filter(function (x) { var cc = catOf(x); return cc && cc.strategies && cc.strategies.length; });
+    return '<h2 class="sectiontitle" id="catsec">Strategie personalizzabili</h2>'
+      + (sp4.length > 1 ? '<div class="chips catsport" role="group" aria-label="Sport delle strategie personalizzabili">' + sp4.map(function (x) {
+        return '<button class="chip" type="button" data-catsport="' + x + '" aria-pressed="' + (x === sport) + '">' + EMOJI[x] + ' ' + NAME[x] + ' <span class="k">' + catOf(x).strategies.length + '</span></button>';
+      }).join("") + '</div>' : "")
+      + '<div class="note" style="margin:10px 0 4px;">Le strategie qui sotto si regolano: "… altro", poi Personalizza. La barra "Storico" usa le tue impostazioni (' + c.matches + ' partite)'
       + (live ? ', la barra "Dal vivo" le partite seguite in diretta. L\'interruttore le attiva nella lista Segnali con le tue impostazioni (con qualche minuto di ritardo; le notifiche sul telefono arrivano con l\'app pubblica).</div>'
         : '. L\'interruttore le attiva nei tuoi segnali; il motore live di queste strategie è in arrivo, per ora conta lo storico.</div>')
       + groups.map(function (g) {
@@ -1430,6 +1575,9 @@
       + '<details class="card catgroup"><summary><b>Escluse</b> <span class="k">· perché</span></summary>'
       + Object.keys(c.excluded).map(function (k) { return '<div class="ds" style="margin-top:8px;"><b>' + esc(k) + '</b>: ' + esc(c.excluded[k].join(", ")) + '</div>'; }).join("") + '</details>';
   }
+  // barre a due valori: "qualsiasi / solo X" e' un si'/no (interruttore); due alternative vere sono due pulsanti
+  var SW_OFF = /^(qualsiasi|sempre|chiunque|tutt[aoie]|in casa o fuori|no\b|nessun)/i;
+  function paramKind(p) { return p.values.length !== 2 ? "range" : SW_OFF.test(p.labels[0] || "") ? "switch" : "two"; }
   function renderCat(id) {
     var s = null, cs = null;
     ["calcio", "tennis", "basket", "hockey"].forEach(function (sp) {
@@ -1451,14 +1599,27 @@
       $("catnums").innerHTML = cellHtml(cell, true) + '<div class="verdict">' + esc(catVerdict(cell)) + '</div>' + liveHtml(cs, s, key);
       s.params.forEach(function (p, i) { $("catv" + i).textContent = p.labels[idx[i]]; });
       $("catreset").hidden = key === s.default;
+      var st = $("catstart"); if (st) st.hidden = !!catSel[s.id];   // riga delle barre di partenza: finche' non le muovi
     }
     $("catalogo").innerHTML = '<h1 class="dtitle">' + esc(s.name) + '</h1>'
       + '<div class="dsub">' + EMOJI[cs] + ' ' + esc(s.group) + ' · ' + (catOf(cs).timing === "prepartita" ? "PRE-PARTITA" : "LIVE") + '</div>'
       + '<div class="facts"><div><span class="k">Cosa giochi: </span><b>' + esc(s.pick) + '</b></div>'
       + '<div><span class="k">Da dove viene: </span>' + esc(s.origin) + '</div>'
       + (s.note ? '<div><span class="k">' + esc(s.note) + '</span></div>' : "") + '</div>'
+      // barre di partenza dallo storico (research/catalogo_default.py): lo diciamo, e si torna al libro con un tocco
+      + (s.default_from === "storico" && s.default_book && s.grid[s.default_book] ? '<div class="catstart" id="catstart">' + ic("info") + '<span>Barre di partenza: la combinazione migliore nello storico (con abbastanza partite). Va confermata dal vivo.</span>'
+        + '<button class="chip" type="button" id="catbook">Valori di libro</button></div>' : "")
       + '<button class="primary" type="button" id="catgear" style="width:100%;margin-bottom:12px;">' + ic("strategie") + ' Personalizza</button>'
       + '<div id="catsliders" hidden>' + s.params.map(function (p, i) {
+        var kind = paramKind(p);
+        if (kind === "switch") {   // scelta si'/no: interruttore ("qualsiasi" = spento, "solo ..." = acceso)
+          return '<div class="slrow slsw"><label class="slh" for="catsw' + i + '"><span>' + esc(p.label) + '</span><b id="catv' + i + '"></b></label>'
+            + '<span class="switch"><input type="checkbox" role="switch" id="catsw' + i + '" data-sw="' + i + '"' + (idx[i] === 1 ? " checked" : "") + ' aria-label="' + esc(p.label + ": " + p.labels[1]) + '"><span class="slider"></span></span></div>';
+        }
+        if (kind === "two") {      // due alternative (Over/Under, chi ha riposato/chi e' stanco): due pulsanti
+          return '<div class="slrow"><div class="slh"><span>' + esc(p.label) + '</span><b id="catv' + i + '"></b></div><div class="segbar sl2" role="group" aria-label="' + esc(p.label) + '">'
+            + p.labels.map(function (l, n) { return '<button type="button" data-two="' + i + '" data-n="' + n + '" aria-pressed="' + (idx[i] === n) + '">' + esc(l) + '</button>'; }).join("") + '</div></div>';
+        }
         return '<div class="slrow"><div class="slh"><span>' + esc(p.label) + '</span><b id="catv' + i + '"></b></div>'
           + '<input type="range" min="0" max="' + (p.values.length - 1) + '" step="1" value="' + idx[i] + '" data-i="' + i + '" aria-label="' + esc(p.label) + '"></div>';
       }).join("") + '<button class="linkbtn" type="button" id="catreset">Torna alla regola standard</button></div>'
@@ -1467,14 +1628,36 @@
       + (liveOf(cs) ? 'Con l\'interruttore acceso (scheda Strategie) i segnali con le tue impostazioni compaiono nella lista Segnali; le notifiche sul telefono arriveranno con l\'app pubblica. '
         : 'Le notifiche con le tue soglie arriveranno con l\'app pubblica. ') + esc(method) + '</div>';
     $("catgear").addEventListener("click", function () { var p = $("catsliders"); p.hidden = !p.hidden; });
+    function setParam(i, v) { idx[i] = v; catSel[s.id] = idx.join("_"); saveCatSel(); draw(); renderStrategie(); }
     $("catsliders").addEventListener("input", function (e) {
-      var r = e.target.closest("input[type=range]"); if (!r) return;
-      idx[Number(r.dataset.i)] = Number(r.value);
-      catSel[s.id] = idx.join("_"); saveCatSel(); draw(); renderStrategie();
+      var r = e.target.closest("input[type=range]"); if (r) setParam(Number(r.dataset.i), Number(r.value));
+    });
+    $("catsliders").addEventListener("change", function (e) {
+      var w = e.target.closest("input[data-sw]"); if (w) setParam(Number(w.dataset.sw), w.checked ? 1 : 0);
+    });
+    $("catsliders").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-two]"); if (!b) return;
+      setParam(Number(b.dataset.two), Number(b.dataset.n));
+      b.parentNode.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+    });
+    function syncControls() {
+      s.params.forEach(function (p, i) {
+        var r = $("catsliders").querySelector('input[data-i="' + i + '"]'), w = $("catsw" + i);
+        if (r) r.value = idx[i]; if (w) w.checked = idx[i] === 1;
+        $("catsliders").querySelectorAll('button[data-two="' + i + '"]').forEach(function (x) { x.setAttribute("aria-pressed", String(Number(x.dataset.n) === idx[i])); });
+      });
+    }
+    if ($("catbook")) $("catbook").addEventListener("click", function () {
+      idx = s.default_book.split("_").map(Number); catSel[s.id] = s.default_book; saveCatSel(); renderStrategie();
+      syncControls(); draw(); $("catsliders").hidden = false;
     });
     $("catreset").addEventListener("click", function () {
       idx = s.default.split("_").map(Number); delete catSel[s.id]; saveCatSel(); renderStrategie();
-      $("catsliders").querySelectorAll("input").forEach(function (r, i) { r.value = idx[i]; });
+      s.params.forEach(function (p, i) {
+        var r = $("catsliders").querySelector('input[data-i="' + i + '"]'), w = $("catsw" + i);
+        if (r) r.value = idx[i]; if (w) w.checked = idx[i] === 1;
+        $("catsliders").querySelectorAll('button[data-two="' + i + '"]').forEach(function (x) { x.setAttribute("aria-pressed", String(Number(x.dataset.n) === idx[i])); });
+      });
       draw();
     });
     draw();
@@ -1696,15 +1879,17 @@
   }
 
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "benvenuto", "notifiche", "leghe", "campionati", "album"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "benvenuto", "notifiche", "leghe", "campionati", "album", "pick"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
+    // matita del profilo aperta e cambio scheda senza salvare: la modifica si annulla (al ritorno il profilo normale)
+    if (meEdit && view !== "profilo") { meEdit = null; if (data) renderProfilo(); }
     $("tabbar").hidden = !unlocked || view === "benvenuto";
     // la barra della schedina: in tutte le pagine tranne il blocco e la schedina stessa
     $("slipbar").hidden = !unlocked || view === "schedina" || !slip.legs.length;
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario", campionati: "diario", album: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
+    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario", campionati: "diario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
     document.querySelectorAll(".tab").forEach(function (t) {
       if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -1725,29 +1910,173 @@
   var bview = "home";
   function team() { return (data && data.personaggi && data.personaggi.profiles) || []; }
   function personaOf(id) { return team().filter(function (p) { return p.id === id; })[0]; }
-  // avatar disegnato da noi (niente foto): pelle, capelli, occhiali, cappellino e sfondo dal nome
+  // ---------------------------------------------------------------- Avatar disegnati (rifatti il 04/10)
+  // Niente foto realistiche: 24 personaggi curati (12 donne, 12 uomini) con capelli, barba, occhiali, gioielli,
+  // vestiti e cappelli diversi, piu' 4 speciali sbloccati dal livello. Un avatar e' "av:N" (0-23) o "sp:nome";
+  // i semi vecchi (testo qualsiasi) si mappano su uno dei 24. I personaggi del Team hanno ognuno il suo.
+  var SKIN = ["#F7D9C4", "#EDBB94", "#D49A6A", "#B07650", "#82543A", "#5C3A26"];
+  var HAIR = { nero: "#1E1A18", castano: "#4A2E1C", marrone: "#7B4A26", biondo: "#D8B25F", rosso: "#B5472A", grigio: "#A3A8AD", rosa: "#E46F9C", platino: "#EFE4C6" };
+  // [donna, pelle, capelli, colore, barba, occhiali, gioiello, vestito, colore vestito, cappello, sfondo]
+  var AV = [
+    [1, 0, "lunghi", "castano", "", "", "orecchini", "maglia", "#1F8A8A", "", "#F29A4A"],
+    [1, 3, "coda", "nero", "", "", "", "felpa", "#D2463A", "", "#2E9C8F"],
+    [1, 4, "ricci", "castano", "", "", "cerchi", "maglione", "#E8B33A", "", "#7E57C2"],
+    [1, 1, "caschetto", "biondo", "", "tondi", "", "giacca", "#22406B", "", "#5DAA68"],
+    [1, 0, "chignon", "rosso", "", "", "collana", "maglia", "#F4F1EA", "", "#3D7BD9"],
+    [1, 5, "afro", "nero", "", "", "cerchi", "maglia", "#EE7A2E", "", "#E2B93B"],
+    [1, 1, "lunghi", "biondo", "", "", "", "felpa", "#8A96A3", "berretto", "#D9534F"],
+    [1, 2, "corti", "rosa", "", "", "piercing", "giacca", "#2B2B2B", "", "#21857A"],
+    [1, 1, "coda", "biondo", "", "quadrati", "", "maglia_sport", "#2F6FD6", "", "#F08A3C"],
+    [1, 2, "lisci", "nero", "", "", "collana", "maglione", "#C0392B", "", "#4FA3D9"],
+    [1, 3, "lunghi", "marrone", "", "", "orecchini", "maglia", "#3C8D4E", "cuffia", "#E06C9F"],
+    [1, 1, "caschetto", "grigio", "", "tondi", "collana", "giacca", "#6A3FA0", "", "#D7B98E"],
+    [0, 0, "corti", "nero", "barba", "", "", "maglia", "#2F6FD6", "", "#F29A4A"],
+    [0, 5, "rasati", "nero", "barbetta", "", "", "felpa", "#262626", "", "#5DAA68"],
+    [0, 1, "riga", "marrone", "", "quadrati", "", "giacca", "#5B6670", "", "#7E57C2"],
+    [0, 4, "ricci", "nero", "baffi", "", "", "maglia_sport", "#C0392B", "", "#2E9C8F"],
+    [0, 1, "cresta", "biondo", "", "", "orecchino", "maglia", "#1E1E1E", "", "#D9534F"],
+    [0, 2, "calvo", "grigio", "barba", "tondi", "", "maglione", "#22406B", "", "#E2B93B"],
+    [0, 2, "codino", "castano", "barba", "", "", "felpa", "#6B7B3A", "", "#4FA3D9"],
+    [0, 3, "corti", "nero", "barbetta", "", "", "maglia", "#F4F1EA", "cappellino", "#3D7BD9"],
+    [0, 5, "afro", "nero", "", "", "", "giacca", "#E07B2C", "", "#8E5BC9"],
+    [0, 0, "corti", "rosso", "baffi", "", "", "maglione", "#3C8D4E", "", "#D7B98E"],
+    [0, 1, "riga", "grigio", "barbetta", "quadrati", "", "giacca", "#1F3550", "", "#21857A"],
+    [0, 4, "corti", "nero", "barba", "", "", "felpa", "#E8B33A", "cuffia", "#D2463A"]
+  ];
+  var AV_SPECIAL = [
+    { id: "rocker", name: "Rocker", level: 5 }, { id: "punk", name: "Punk", level: 10 },
+    { id: "campione", name: "Campione", level: 20 }, { id: "astronauta", name: "Astronauta", level: 30 }
+  ];
+  function shade(hex, k) {   // scurisce (k<0) o schiarisce (k>0) un colore #RRGGBB
+    var n = parseInt(hex.slice(1), 16), r = n >> 16, g = n >> 8 & 255, b = n & 255;
+    function f(c) { return Math.max(0, Math.min(255, Math.round(k < 0 ? c * (1 + k) : c + (255 - c) * k))); }
+    return "#" + ((1 << 24) + (f(r) << 16) + (f(g) << 8) + f(b)).toString(16).slice(1);
+  }
+  function avIndex(seed) {
+    var m = /^av:(\d+)$/.exec(seed || "");
+    if (m) return Number(m[1]) % AV.length;
+    var t = team(), i = t.findIndex ? t.findIndex(function (p) { return p.id === seed; }) : -1;
+    if (i >= 0) return (i * 7) % AV.length;          // personaggi del Team: tutti diversi
+    var h = 0; for (var j = 0; j < String(seed).length; j++) h = (h * 33 + String(seed).charCodeAt(j)) >>> 0;
+    return h % AV.length;
+  }
+  // pezzi del disegno (viewBox 64x64: testa al centro, spalle in basso)
+  function avBody(kind, c, skin) {
+    var d = shade(c, -0.25), out = '<path d="M7 64c1.5-10.5 10.5-17 25-17s23.5 6.5 25 17z" fill="' + c + '"/>';
+    out += '<path d="M27 42h10v6.5c0 2.8-2.2 4.5-5 4.5s-5-1.7-5-4.5z" fill="' + skin + '"/><path d="M27 45.5c3 1.6 7 1.6 10 0" stroke="' + shade(skin, -0.18) + '" stroke-width="1.4" fill="none"/>';
+    if (kind === "felpa") out += '<path d="M19 50c3-4.5 8-6 13-6s10 1.5 13 6l-3 3.5c-2.5-3-6-4.5-10-4.5s-7.5 1.5-10 4.5z" fill="' + d + '"/><path d="M29 52v6M35 52v6" stroke="#fff" stroke-opacity=".8" stroke-width="1.2" stroke-linecap="round"/>';
+    else if (kind === "giacca") out += '<path d="M26.5 48.5L32 64l5.5-15.5c-1.6-.6-3.5-1-5.5-1s-3.9.4-5.5 1z" fill="#F4F1EA"/><path d="M26.5 48.5L32 64M37.5 48.5L32 64" stroke="' + d + '" stroke-width="2.2"/><path d="M24 49.5l4 6.5M40 49.5l-4 6.5" stroke="' + shade(c, 0.25) + '" stroke-width="1.3"/>';
+    else if (kind === "maglione") out += '<path d="M9.5 56h45M8.5 60h47" stroke="' + shade(c, 0.35) + '" stroke-width="2"/><path d="M26 48c3.5 2.6 8.5 2.6 12 0" stroke="' + d + '" stroke-width="2.6" fill="none"/>';
+    else if (kind === "maglia_sport") out += '<path d="M27.5 48l4.5 6 4.5-6" stroke="#fff" stroke-width="2" fill="none"/><path d="M12 54l5 10M52 54l-5 10" stroke="#fff" stroke-opacity=".85" stroke-width="2.2"/>';
+    else out += '<path d="M26.5 48c3.3 2.2 7.7 2.2 11 0" stroke="' + d + '" stroke-width="2" fill="none"/>';
+    return out;
+  }
+  function avHairBack(style, hc) {
+    if (style === "lunghi") return '<path d="M17.5 30c-1-12 6-18 14.5-18s15.5 6 14.5 18l1.5 20c-4 3-9 3-11 0v-17h-10v17c-2 3-7 3-11 0z" fill="' + hc + '"/>';
+    if (style === "lisci") return '<path d="M18 29c-.5-11.5 6-17 14-17s14.5 5.5 14 17l.5 22h-7v-19h-15v19h-7z" fill="' + hc + '"/>';
+    if (style === "ricci") return '<g fill="' + hc + '"><circle cx="19" cy="24" r="6"/><circle cx="45" cy="24" r="6"/><circle cx="17.5" cy="33" r="5.5"/><circle cx="46.5" cy="33" r="5.5"/><circle cx="18.5" cy="41" r="5"/><circle cx="45.5" cy="41" r="5"/><circle cx="21" cy="47" r="4"/><circle cx="43" cy="47" r="4"/></g>';
+    if (style === "afro") return '<circle cx="32" cy="25" r="19" fill="' + hc + '"/>';
+    if (style === "caschetto") return '<path d="M18 29c0-11 6.5-17 14-17s14 6 14 17v11c-2 2.5-5 2.5-6.5 0v-10h-15v10c-1.5 2.5-4.5 2.5-6.5 0z" fill="' + hc + '"/>';
+    if (style === "coda") return '<path d="M43 19c8-1 11 7 9.5 15-.8 4.5-2.5 9-5 11 .5-5-.2-10-2.5-14z" fill="' + hc + '"/><circle cx="44.5" cy="20.5" r="2.2" fill="#E84A5F"/>';
+    if (style === "chignon") return '<circle cx="32" cy="11" r="6.5" fill="' + hc + '"/>';
+    if (style === "codino") return '<circle cx="32" cy="12" r="4.2" fill="' + hc + '"/>';
+    return "";
+  }
+  function avHairFront(style, hc) {
+    var hl = shade(hc, 0.2);
+    switch (style) {
+      case "lunghi": case "lisci": case "coda": return '<path d="M20 28c-.5-10 5.5-15 12-15s12.5 5 12 15c-3-5-8-8.5-14-8.5-2.5 2.5-6.5 5.5-10 8.5z" fill="' + hc + '"/><path d="M27 16c3-1.5 7-1.5 10 0" stroke="' + hl + '" stroke-width="1.4" fill="none" stroke-linecap="round"/>';
+      case "caschetto": return '<path d="M20 25c0-8 5.5-12 12-12s12 4 12 12c-4-2.2-8-3-12-3s-8 .8-12 3z" fill="' + hc + '"/>';
+      case "chignon": case "codino": return '<path d="M20.5 26c.5-8.5 5.5-12.5 11.5-12.5S43 17.5 43.5 26c-3-4-7-6-11.5-6s-8.5 2-11.5 6z" fill="' + hc + '"/>';
+      case "ricci": return '<g fill="' + hc + '"><circle cx="22" cy="20" r="5"/><circle cx="28" cy="15.5" r="5.2"/><circle cx="35" cy="15" r="5.2"/><circle cx="41.5" cy="19" r="5"/><circle cx="44" cy="25" r="3.6"/><circle cx="20" cy="25.5" r="3.6"/></g>';
+      case "afro": return '<path d="M20 24c1-7 6-10 12-10s11 3 12 10c-3.5-2.5-7.5-3.5-12-3.5S23.5 21.5 20 24z" fill="' + shade(hc, 0.08) + '"/>';
+      case "corti": return '<path d="M20 27c-.5-9.5 5-14.5 12-14.5S44.5 17.5 44 27c-2-4.5-4.5-7-7.5-7.8-3 1.8-9 2.4-13 1.4C21.5 22 20.5 24 20 27z" fill="' + hc + '"/>';
+      case "riga": return '<path d="M20 28c-1-10 5.5-16 13-16 6.5 0 12 4.5 11 16-1.5-5-4-8.5-8-9.5-3.5 3.5-9.5 5.5-16 9.5z" fill="' + hc + '"/><path d="M36 18.5c-1.5 2-3.5 3.2-6 4" stroke="' + hl + '" stroke-width="1.2" fill="none"/>';
+      case "rasati": return '<path d="M20.4 25c.6-7.5 5.4-11 11.6-11s11 3.5 11.6 11c-3-3.2-7-4.6-11.6-4.6S23.4 21.8 20.4 25z" fill="' + hc + '" fill-opacity=".55"/>';
+      case "cresta": return '<path d="M20.4 25c.6-7.5 5.4-11 11.6-11s11 3.5 11.6 11c-3-3.2-7-4.6-11.6-4.6S23.4 21.8 20.4 25z" fill="' + hc + '" fill-opacity=".4"/><path d="M28.5 21l1-9 2.5 4 2.5-6 1.5 6 2-3-.5 8z" fill="' + hc + '"/>';
+      default: return "";
+    }
+  }
+  function avFace(fem, skin, hc, beard) {
+    var dk = shade(skin, -0.3), out = "";
+    out += '<path d="M25 25.6q2.6-1.6 5.2-.2M33.8 25.4q2.6-1.4 5.2.2" stroke="' + shade(hc, -0.1) + '" stroke-width="' + (fem ? 1.2 : 1.7) + '" fill="none" stroke-linecap="round"/>';
+    out += '<ellipse cx="27.5" cy="29.6" rx="1.9" ry="2.2" fill="#1C1C1C"/><ellipse cx="36.5" cy="29.6" rx="1.9" ry="2.2" fill="#1C1C1C"/><circle cx="28.1" cy="29" r=".6" fill="#fff"/><circle cx="37.1" cy="29" r=".6" fill="#fff"/>';
+    if (fem) out += '<path d="M25.2 28.2l-1.2-1M38.8 28.2l1.2-1" stroke="#1C1C1C" stroke-width=".9" stroke-linecap="round"/>';
+    out += '<path d="M32 30.5c-.6 1.8-1 3-.3 3.6.5.4 1.3.3 1.8 0" stroke="' + dk + '" stroke-width="1.1" fill="none" stroke-linecap="round"/>';
+    out += '<circle cx="25" cy="33.6" r="2.2" fill="#F07D7D" fill-opacity=".22"/><circle cx="39" cy="33.6" r="2.2" fill="#F07D7D" fill-opacity=".22"/>';
+    if (!(beard === "barba")) out += fem ? '<path d="M28.6 36.6q3.4 2.6 6.8 0q-3.4 1-6.8 0z" fill="#C2525A" stroke="#C2525A" stroke-width="1" stroke-linejoin="round"/>'
+      : '<path d="M28.8 36.6q3.2 2.4 6.4 0" stroke="#7A3B2E" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+    return out;
+  }
+  function avBeard(kind, hc) {
+    if (kind === "barba") return '<path d="M20.3 30c.2 9.5 5 15.5 11.7 15.5S43.5 39.5 43.7 30c-1.6 4.5-3.6 6.2-6.2 6.5-1.5-1.3-3.2-1.8-5.5-1.8s-4 .5-5.5 1.8c-2.6-.3-4.6-2-6.2-6.5z" fill="' + hc + '"/><path d="M29 38.2q3 1.8 6 0" stroke="#5A2A20" stroke-width="1.3" fill="none" stroke-linecap="round"/>';
+    if (kind === "barbetta") return '<path d="M21 31c.5 8 5 13.5 11 13.5S42.5 39 43 31c-2 4-5 6-11 6s-9-2-11-6z" fill="' + hc + '" fill-opacity=".35"/>';
+    if (kind === "baffi") return '<path d="M27.2 35.6c1.8-1.6 3.6-1.4 4.8-.2 1.2-1.2 3-1.4 4.8.2-1.5 1.1-3.2 1.2-4.8.6-1.6.6-3.3.5-4.8-.6z" fill="' + hc + '"/>';
+    return "";
+  }
+  function avGlasses(kind) {
+    if (kind === "tondi") return '<g fill="none" stroke="#2A2A2A" stroke-width="1.4"><circle cx="27.5" cy="29.6" r="4.2"/><circle cx="36.5" cy="29.6" r="4.2"/><path d="M31.7 29.4h.6M23.3 29l-3-1M40.7 29l3-1"/></g>';
+    if (kind === "quadrati") return '<g fill="none" stroke="#2A2A2A" stroke-width="1.5"><rect x="22.8" y="26.4" width="9" height="6.6" rx="1.6"/><rect x="32.2" y="26.4" width="9" height="6.6" rx="1.6"/><path d="M22.8 28.5l-2.6-1M41.2 28.5l2.6-1"/></g>';
+    if (kind === "sole") return '<path d="M22 27h20v2.5c0 3-2 4.8-4.8 4.8-2.6 0-4-1.6-4.6-3.6h-1.2c-.6 2-2 3.6-4.6 3.6C24 34.3 22 32.5 22 29.5z" fill="#141414"/><path d="M24 28.6l3 0M34.4 28.6l3 0" stroke="#fff" stroke-opacity=".5" stroke-width="1"/>';
+    return "";
+  }
+  function avJewel(kind) {
+    if (kind === "orecchini") return '<circle cx="19.6" cy="35" r="1.3" fill="#E9B949"/><circle cx="44.4" cy="35" r="1.3" fill="#E9B949"/>';
+    if (kind === "cerchi") return '<circle cx="19.4" cy="36" r="2.2" fill="none" stroke="#E9B949" stroke-width="1.1"/><circle cx="44.6" cy="36" r="2.2" fill="none" stroke="#E9B949" stroke-width="1.1"/>';
+    if (kind === "orecchino") return '<circle cx="44.4" cy="35.2" r="1.3" fill="#D8DDE2"/>';
+    if (kind === "collana") return '<path d="M26 48.5q6 5 12 0" stroke="#E9B949" stroke-width="1.1" fill="none"/><circle cx="32" cy="52.6" r="1.6" fill="#E9B949"/>';
+    if (kind === "piercing") return '<circle cx="34" cy="33.4" r="1" fill="none" stroke="#D8DDE2" stroke-width=".9"/><circle cx="19.6" cy="35" r="1.1" fill="#D8DDE2"/>';
+    return "";
+  }
+  function avHat(kind, c) {
+    if (kind === "cappellino") return '<path d="M19 24c0-8 5.5-13.5 13-13.5S45 16 45 24z" fill="' + shade(c, -0.1) + '"/><path d="M19 23.5h28c0 2.6-2 4-5 4H19z" fill="' + shade(c, -0.3) + '"/><circle cx="32" cy="11" r="1.6" fill="' + shade(c, 0.3) + '"/>';
+    if (kind === "cuffia" || kind === "berretto") return '<path d="M18.5 25c0-9 6-15.5 13.5-15.5S45.5 16 45.5 25z" fill="' + c + '"/><rect x="17.5" y="21.5" width="29" height="5.5" rx="2.6" fill="' + shade(c, -0.2) + '"/>'
+      + (kind === "cuffia" ? '<circle cx="32" cy="9" r="3.2" fill="' + shade(c, 0.4) + '"/>' : "");
+    return "";
+  }
+  var avN = 0;
+  function avOpen(s) {   // svg con lo sfondo arrotondato che ritaglia tutto (spalle e capelli non escono dagli angoli)
+    var id = "avc" + (++avN);
+    return '<svg class="avatar" width="' + s + '" height="' + s + '" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="' + id + '"><rect width="64" height="64" rx="18"/></clipPath></defs><g clip-path="url(#' + id + ')">';
+  }
+  function avSpecial(id, s) {
+    var head = function (skin) { return '<ellipse cx="19.8" cy="31" rx="2.3" ry="3.2" fill="' + skin + '"/><ellipse cx="44.2" cy="31" rx="2.3" ry="3.2" fill="' + skin + '"/><ellipse cx="32" cy="29.5" rx="12.3" ry="14.2" fill="' + skin + '"/>'; };
+    var o = avOpen(s);
+    if (id === "rocker") {
+      o += '<rect width="64" height="64" rx="18" fill="#3A1F5C"/><path d="M50 6l-6 12h5l-4 10 10-14h-5l4-8z" fill="#FFD84A"/>' + avHairBack("lunghi", "#141414")
+        + avBody("giacca", "#1B1B1B", SKIN[1]) + '<circle cx="15" cy="58" r="1.2" fill="#D8DDE2"/><circle cx="49" cy="58" r="1.2" fill="#D8DDE2"/>'
+        + head(SKIN[1]) + avFace(false, SKIN[1], "#141414", "") + avBeard("barbetta", "#141414") + avHairFront("lunghi", "#141414") + avGlasses("sole") + avJewel("orecchino");
+    } else if (id === "punk") {
+      o += '<rect width="64" height="64" rx="18" fill="#E2457E"/><path d="M8 50l6-4 2 5 5-3" stroke="#fff" stroke-opacity=".5" stroke-width="1.5" fill="none"/>'
+        + avBody("giacca", "#262626", SKIN[0]) + '<path d="M14 54l3-2 1 3 3-2M43 53l3 2 1-3 3 2" stroke="#D8DDE2" stroke-width="1.3" fill="none"/>'
+        + head(SKIN[0]) + avFace(false, SKIN[0], "#2BB673", "") + '<path d="M20.4 25c.6-7.5 5.4-11 11.6-11s11 3.5 11.6 11c-3-3.2-7-4.6-11.6-4.6S23.4 21.8 20.4 25z" fill="#2BB673" fill-opacity=".35"/>'
+        + '<path d="M27 21l1-13 3 7 1-10 2 10 3-7 .5 13z" fill="#2BB673"/>' + avJewel("piercing") + '<circle cx="41.5" cy="25.6" r=".9" fill="#D8DDE2"/>';
+    } else if (id === "campione") {
+      o += '<rect width="64" height="64" rx="18" fill="#C98A12"/><circle cx="32" cy="30" r="26" fill="#FFD84A" fill-opacity=".35"/><path d="M10 12l1.2 2.6 2.8.3-2.1 1.9.6 2.8-2.5-1.4-2.5 1.4.6-2.8-2.1-1.9 2.8-.3zM54 10l1 2 2.2.3-1.6 1.5.4 2.2-2-1.1-2 1.1.4-2.2-1.6-1.5 2.2-.3z" fill="#fff"/>'
+        + avBody("maglia_sport", "#1F4FA0", SKIN[2]) + '<path d="M24 47l8 9 8-9" stroke="#C0392B" stroke-width="3" fill="none"/><circle cx="32" cy="58" r="3.4" fill="#FFD84A" stroke="#B57F00" stroke-width="1"/>'
+        + head(SKIN[2]) + avFace(false, SKIN[2], "#4A2E1C", "") + avHairFront("corti", "#4A2E1C")
+        + '<path d="M21 17l4 5 4-8 3 8 3-8 4 8 4-5-1.5 8h-19z" fill="#FFD84A" stroke="#B57F00" stroke-width="1"/><circle cx="32" cy="18" r="1.4" fill="#E84A5F"/>';
+    } else {
+      o += '<rect width="64" height="64" rx="18" fill="#101A33"/><circle cx="12" cy="12" r="1" fill="#fff"/><circle cx="52" cy="9" r="1.3" fill="#fff"/><circle cx="56" cy="40" r=".9" fill="#fff"/><circle cx="8" cy="38" r=".8" fill="#fff"/>'
+        + '<path d="M7 64c1.5-10.5 10.5-17 25-17s23.5 6.5 25 17z" fill="#E9EDF2"/><rect x="26" y="52" width="12" height="7" rx="1.5" fill="#2F6FD6"/><circle cx="29" cy="55.5" r="1.2" fill="#E84A5F"/><circle cx="34" cy="55.5" r="1.2" fill="#FFD84A"/>'
+        + '<circle cx="32" cy="29" r="19" fill="#E9EDF2" stroke="#B9C2CC" stroke-width="1.5"/>' + head(SKIN[3]) + avFace(true, SKIN[3], "#1E1A18", "")
+        + '<circle cx="32" cy="29" r="15.5" fill="#7FC4F0" fill-opacity=".22" stroke="#9FB0C2" stroke-width="1.2"/><path d="M22 20c3-4 8-5.5 12-5" stroke="#fff" stroke-opacity=".7" stroke-width="2" fill="none" stroke-linecap="round"/>';
+    }
+    return o + '</g></svg>';
+  }
   function avatar(seed, size) {
-    var h = 0; for (var i = 0; i < seed.length; i++) h = (h * 33 + seed.charCodeAt(i)) >>> 0;
-    function pick(arr, k) { return arr[(h >>> k) % arr.length]; }
-    var bg = pick(["#E8812F", "#1F7A45", "#2F6FD6", "#C0392B", "#8E44AD", "#16A085", "#D4A520", "#2C3E50"], 0);
-    var skin = pick(["#F5D0B0", "#E8B48E", "#C68A62", "#9C6644", "#6F4A32"], 3);
-    var hair = pick(["#1C1C1C", "#4A2F1D", "#8B5A2B", "#D9B26F", "#B33A1E", "#6E6E6E"], 6);
-    var style = (h >>> 9) % 4, glasses = (h >>> 12) % 3 === 0, cap = (h >>> 14) % 4 === 0, beard = (h >>> 16) % 4 === 0;
-    var s = size || 44;
-    return '<svg class="avatar" width="' + s + '" height="' + s + '" viewBox="0 0 64 64" aria-hidden="true">'
-      + '<rect width="64" height="64" rx="18" fill="' + bg + '"/>'
-      + '<path d="M14 64c2-12 9-18 18-18s16 6 18 18z" fill="#fff" fill-opacity=".9"/>'
-      + '<path d="M26 44h12v6a6 6 0 0 1-12 0z" fill="' + skin + '"/>'
-      + '<ellipse cx="32" cy="30" rx="13" ry="15" fill="' + skin + '"/>'
-      + (style === 0 ? '<path d="M19 28c0-11 7-15 13-15s13 4 13 15c-3-5-8-7-13-7s-10 2-13 7z" fill="' + hair + '"/>'
-        : style === 1 ? '<path d="M18 32c-1-13 6-19 14-19s15 6 14 19l-3-7c-3 2-8 3-11 3s-8-1-11-3z" fill="' + hair + '"/>'
-        : style === 2 ? '<path d="M18 36c-2-15 5-23 14-23s16 8 14 23c-1-6-2-9-3-11-5 2-17 2-22 0-1 2-2 5-3 11z" fill="' + hair + '"/><path d="M18 36c0 8 2 14 4 16l-2-16zM46 36c0 8-2 14-4 16l2-16z" fill="' + hair + '"/>'
-        : '<path d="M20 25c2-8 7-11 12-11s10 3 12 11c-4-2-8-3-12-3s-8 1-12 3z" fill="' + hair + '"/>')
-      + (cap ? '<path d="M17 25c1-9 8-13 15-13s14 4 15 13z" fill="#141414"/><path d="M30 25h22c0 3-2 4-5 4H30z" fill="#141414"/><circle cx="32" cy="17" r="2.5" fill="' + bg + '"/>' : "")
-      + '<circle cx="27" cy="31" r="1.8" fill="#1C1C1C"/><circle cx="37" cy="31" r="1.8" fill="#1C1C1C"/>'
-      + (glasses ? '<circle cx="27" cy="31" r="4.5" fill="none" stroke="#1C1C1C" stroke-width="1.6"/><circle cx="37" cy="31" r="4.5" fill="none" stroke="#1C1C1C" stroke-width="1.6"/><path d="M31.5 31h1" stroke="#1C1C1C" stroke-width="1.6"/>' : "")
-      + (beard ? '<path d="M21 34c1 9 6 12 11 12s10-3 11-12c-3 4-7 5-11 5s-8-1-11-5z" fill="' + hair + '" fill-opacity=".85"/>' : "")
-      + '<path d="M28 38c2 2 6 2 8 0" fill="none" stroke="#1C1C1C" stroke-width="1.6" stroke-linecap="round"/></svg>';
+    var s = size || 44, sp = /^sp:(\w+)$/.exec(seed || "");
+    if (sp) return avSpecial(sp[1], s);
+    var a = AV[avIndex(seed)], fem = a[0] === 1, skin = SKIN[a[1]], hc = HAIR[a[3]];
+    return avOpen(s)
+      + '<rect width="64" height="64" fill="' + a[10] + '"/><circle cx="50" cy="12" r="16" fill="#fff" fill-opacity=".12"/>'
+      + avHairBack(a[2], hc) + avBody(a[7], a[8], skin)
+      + (a[6] === "collana" ? avJewel("collana") : "")
+      + '<ellipse cx="19.8" cy="31" rx="2.3" ry="3.2" fill="' + skin + '"/><ellipse cx="44.2" cy="31" rx="2.3" ry="3.2" fill="' + skin + '"/>'
+      + '<ellipse cx="32" cy="29.5" rx="12.3" ry="14.2" fill="' + skin + '"/>'
+      + avFace(fem, skin, hc, a[4]) + avBeard(a[4], hc) + avHairFront(a[2], hc)
+      + (a[6] !== "collana" ? avJewel(a[6]) : "") + avGlasses(a[5]) + avHat(a[9], a[8] === "#F4F1EA" ? "#2F6FD6" : a[8])
+      + '</g></svg>';
   }
   function teamBadge() { return '<span class="teambadge"><img src="icon-192.png" alt="" width="12" height="12"> TEAM STATSIGHT</span>'; }
   function resTag(r) { return r == null ? '<span class="k">' + ic("clock") + ' in attesa</span>' : r === 1 ? '<span class="pos">' + ic("check") + ' vinta</span>' : r === 0 ? '<span class="neg">' + ic("x") + ' persa</span>' : '<span class="k">nulla</span>'; }
@@ -1872,12 +2201,23 @@
       + '<span class="k">' + wr + ' · ' + signed(p.pts) + ' punti</span></span></button>'
       + '<button class="chip" type="button" data-follow="' + p.id + '">Segui</button></div>';
   }
+  // multipla e sistema: tutte le gambe (partita, esito scelto, quota, esito della gamba), poi la quota totale
+  function legsHtml(legs) {
+    return '<div class="plegs">' + legs.map(function (l) {
+      return '<div class="pleg"><div class="plev">' + (EMOJI[l.sport] || "") + ' ' + esc(l.event) + '</div>'
+        + '<div class="pickrow"><span><b>' + esc(l.label) + '</b> @ ' + oddsTxt(l.odds) + '</span>' + resTag(l.result) + '</div></div>';
+    }).join("") + '</div>';
+  }
+  function pickBody(x) {
+    if (!x.legs) return '<div class="pickrow"><span>' + (x.label ? '<b>' + esc(x.label) + '</b> ' : "") + '@ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div>';
+    return legsHtml(x.legs) + '<div class="pickrow ptot"><span>Quota totale <b>' + oddsTxt(x.odds) + '</b>' + (x.points != null ? ' · ' + signed(x.points) + ' punti' : "") + '</span>' + resTag(x.result) + '</div>';
+  }
   function myPostCard(x) {
     var pid = "m:" + x.key;
     return '<div class="card post mine"><div class="phead">' + myAvatar(40) + '<span class="pwho"><b translate="no">' + esc(me.name || "Tu") + '</b></span><span class="time">' + whenLabel(x.ts) + '</span></div>'
       + (x.text ? '<div class="ptext" translate="no">' + esc(x.text) + '</div>' : "")
-      + '<div class="pev">' + (EMOJI[x.sport] || "") + ' ' + esc(x.event) + '</div>'
-      + '<div class="pickrow"><span>' + (x.label ? '<b>' + esc(x.label) + '</b> ' : "") + '@ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div>' + socialBar(pid, true) + '</div>';
+      + '<div class="pev">' + (EMOJI[x.sport] || ic("layers")) + ' ' + esc(x.event) + '</div>'
+      + pickBody(x) + socialBar(pid, true) + '</div>';
   }
   function renderBacheca() {
     if (!data) return;
@@ -1888,10 +2228,10 @@
         + '<button class="eyebtn' + (me.hist ? " on" : "") + '" type="button" data-mehist="1" aria-pressed="' + me.hist + '">' + ic(me.hist ? "eye" : "eyeoff") + ' ' + (me.hist ? "Visibili" : "Nascosti") + '</button></div>';
       var items = histItems().slice(0, 30);
       html += '<div class="' + (me.hist ? "" : "histoff") + '">' + (items.length ? items.map(function (x) {
-        return '<div class="card post"><div class="pev" style="margin-top:0;">' + (EMOJI[x.sport] || "") + ' ' + esc(x.event) + '<span class="k"> · ' + whenLabel(x.ts) + '</span></div>'
+        return '<div class="card post" data-pick="' + esc(x.key) + '" role="button" tabindex="0"><div class="pev" style="margin-top:0;">' + (EMOJI[x.sport] || ic("layers")) + ' ' + esc(x.event) + '<span class="k"> · ' + whenLabel(x.ts) + '</span>' + ic("chev", "pchev") + '</div>'
           + (x.text ? '<div class="ptext" translate="no">' + esc(x.text) + '</div>' : "")
-          + '<div class="pickrow"><span>' + (x.label ? '<b>' + esc(x.label) + '</b> ' : "") + '@ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div></div>';
-      }).map(function (h, i) { return esitiHi[items[i].key] ? h.replace('class="card post"', 'class="card post isnew"').replace('<span class="k"> · ', '<span class="newtag">NUOVO</span><span class="k"> · ') : h; }).join("")
+          + pickBody(x) + '</div>';
+      }).map(function (h, i) { return esitiHi[items[i].key] ? h.replace('class="card post" ', 'class="card post isnew" ').replace('<span class="k"> · ', '<span class="newtag">NUOVO</span><span class="k"> · ') : h; }).join("")
         : '<div class="note">Nessun pronostico ancora: premi le monete qui sopra e scegli una partita.</div>') + '</div>';
       $("bacheca").innerHTML = html; paintDots(); if (!inTick) setTimeout(newsTick, 0); return;
     }
@@ -1947,7 +2287,7 @@
   var ME_KEY = "statsight.profilo";
   var me = (function () {
     try { var m = JSON.parse(localStorage.getItem(ME_KEY)); if (m && typeof m === "object") return m; } catch (e) {}
-    return { name: "", bio: "", pic: null, seed: "io" + Math.floor(Math.random() * 1e6), hist: true };
+    return { name: "", bio: "", pic: null, seed: "av:" + Math.floor(Math.random() * AV.length), hist: true };
   })();
   var meEdit = false;
   function saveMe() { try { localStorage.setItem(ME_KEY, JSON.stringify(me)); return true; } catch (e) { return false; } }
@@ -2051,9 +2391,22 @@
       return names.some(function (n) { return f.nat ? n.trim() === f.key : n.indexOf(" " + f.key + " ") >= 0; });
     });
   }
+  // Nome del profilo (04/10): non puo' essere uguale (senza maiuscole, accenti, spazi e segni) a un personaggio
+  // del Team StatSight o a una parola riservata. Il controllo vero fra tutti gli utenti lo fa il server (nome
+  // univoco, indice unico senza maiuscole: docs/piano_server.md).
+  var NOMI_RISERVATI = ["statsight", "statsightteam", "teamstatsight", "team", "admin", "administrator", "amministratore", "moderatore", "moderatrice",
+    "moderator", "mod", "staff", "supporto", "support", "assistenza", "ufficiale", "official", "segnalatore", "ilsegnalatore", "sistema", "system", "root", "tu", "you"];
+  var NOMI_VIETATI_DENTRO = ["statsight", "admin", "moderat", "segnalatore"];
+  function nameKey(n) { return String(n || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, ""); }
+  function nameProblem(name) {
+    var k = nameKey(name);
+    if (!k) return null;   // senza nome si resta "Tu"
+    if (NOMI_RISERVATI.indexOf(k) >= 0 || NOMI_VIETATI_DENTRO.some(function (w) { return k.indexOf(w) >= 0; })) return "Questo nome è riservato: scegline un altro.";
+    var taken = team().some(function (p) { return [p.name, p.nick, p.name + p.nick, p.name + " " + p.nick].some(function (x) { return nameKey(x) === k; }); });
+    return taken ? "Questo nome è di un personaggio del Team StatSight: scegline un altro." : null;
+  }
   function startEdit() {
-    meEdit = Object.assign(newPick(me), { name: me.name || "", bio: me.bio || "", pic: me.pic, seed: me.seed,
-               base: me.seed.split("-")[0], more: [1, 2, 3, 4, 5, 6, 7] });
+    meEdit = Object.assign(newPick(me), { name: me.name || "", bio: me.bio || "", pic: me.pic, seed: me.seed });
     renderProfilo();
   }
   // pronostici da mostrare nello storico: singole una per una, multiple e sistemi come una riga sola
@@ -2062,7 +2415,7 @@
     allSlips().forEach(function (s) {
       if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, text: s.reason, ts: s.created_at, sport: l.sport, event: l.event, label: l.label, odds: l.odds, result: l.result }); });
       else out.push({ key: "s" + s.id, text: s.reason, ts: s.created_at, sport: "multi", event: (s.mode === "multipla" ? "Multipla" : "Sistema " + s.k + "/" + s.n) + " · " + s.legs.length + " partite", label: "",
-                      odds: s.odds, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null });
+                      odds: s.odds, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null, legs: s.legs, points: s.resolved_at ? s.points : null });
     });
     (dz.bets || []).forEach(function (b) { out.push({ key: "b" + b.id, text: b.reason, ts: b.created_at, sport: b.sport, event: b.event, label: b.pick || "giocata libera", odds: b.odds, result: b.result }); });
     return out.sort(function (a, b) { return b.ts - a.ts; });
@@ -2075,16 +2428,23 @@
     var streak = 0; closed.forEach(function (b) { streak = b.result === 1 ? streak + 1 : 0; });
     var html;
     if (meEdit) {
-      var d = meEdit, seeds = [d.seed].concat(d.more.map(function (i) { return d.base + "-" + i; })).filter(function (s, i, a) { return a.indexOf(s) === i; }).slice(0, 8);
+      var d = meEdit, lvl = rewardState(pronostici()).level, curAv = /^(av|sp):/.test(d.seed) ? d.seed : "av:" + avIndex(d.seed);
       html = '<div class="card meedit">'
         + '<div class="mepicrow">' + avOf(d, 88) + '<div class="mepicbtns">'
         + '<button class="chip" type="button" data-mefoto="1">' + ic("camera") + ' Scegli una foto</button>'
         + (d.pic ? '<button class="chip" type="button" data-menofoto="1">' + ic("trash") + ' Togli la foto</button>' : "") + '</div></div>'
         + '<div class="k" style="margin:10px 0 6px;">Oppure un avatar disegnato:</div>'
-        + '<div class="seedrow">' + seeds.map(function (s) {
-          return '<button type="button" class="seedbtn' + (!d.pic && s === d.seed ? " on" : "") + '" data-meseed="' + esc(s) + '">' + avatar(s, 48) + '</button>';
-        }).join("") + '<button type="button" class="seedbtn more" data-meseed="nuovi" aria-label="Altri avatar">' + ic("next") + '</button></div>'
-        + '<label class="melabel" for="mename">Nome</label><input id="mename" class="meinput" maxlength="24" value="' + esc(d.name) + '" placeholder="Come ti vedono gli altri" translate="no">'
+        + '<div class="seedrow">' + AV.map(function (a, i) {
+          var sd = "av:" + i;
+          return '<button type="button" class="seedbtn' + (!d.pic && sd === curAv ? " on" : "") + '" data-meseed="' + sd + '" aria-label="Avatar ' + (i + 1) + '">' + avatar(sd, 48) + '</button>';
+        }).join("") + '</div>'
+        + '<div class="k" style="margin:12px 0 6px;">Avatar speciali, si sbloccano salendo di livello:</div>'
+        + '<div class="seedrow">' + AV_SPECIAL.map(function (x) {
+          var sd = "sp:" + x.id, open = lvl >= x.level;
+          return '<button type="button" class="seedbtn sp' + (open ? "" : " locked") + (!d.pic && sd === curAv ? " on" : "") + '"' + (open ? ' data-meseed="' + sd + '"' : " disabled") + ' aria-label="' + esc(x.name) + '">'
+            + avatar(sd, 56) + (open ? "" : '<span class="splock">' + ic("lock") + ' Liv. ' + x.level + '</span>') + '<span class="spname">' + esc(x.name) + '</span></button>';
+        }).join("") + '</div>'
+        + '<label class="melabel" for="mename">Nome</label><input id="mename" class="meinput" maxlength="24" value="' + esc(d.name) + '" placeholder="Come ti vedono gli altri" translate="no"><div class="note namemsg" id="menamemsg" role="alert" hidden></div>'
         + '<label class="melabel" for="mebio">Bio</label><textarea id="mebio" class="meinput" maxlength="160" rows="3" placeholder="Due righe su di te: sport preferiti, come giochi">' + esc(d.bio) + '</textarea>'
         + '<div class="k" id="mebion" style="text-align:right;">' + d.bio.length + '/160</div>'
         + '<div class="melabel">Cosa segui</div>' + pickerHtml(d)
@@ -2306,6 +2666,13 @@
     var words = s.replace(/\b(fc|ac|sc|cf|afc|cd|sd|fk|sk|if|bk|club|de|del|la|el)\b\.?/gi, " ").trim().split(/\s+/).filter(Boolean);
     var ini = sport === "tennis" ? (words[words.length - 1] || s).slice(0, 2) : words.length > 1 ? words[0][0] + words[1][0] : (words[0] || s).slice(0, 2);
     // colori sociali (anagrafica.js) e disegno: strisce, a meta', diagonale o pieno. Mai lo stemma vero.
+    if (sport === "tennis" && window.ANAGRAFICA) {   // tennisti: cerchio coi colori della bandiera
+      var naz = window.ANAGRAFICA.nazioneTennista(s), F = naz && window.ANAGRAFICA.BANDIERE[naz];
+      if (F) {
+        var n = F.length - 1, stops = F.slice(1).map(function (c, k) { return c + " " + (k * 100 / n).toFixed(1) + "% " + ((k + 1) * 100 / n).toFixed(1) + "%"; });
+        return '<span class="tlogo round flag" aria-hidden="true" title="' + esc(naz) + '" style="background:linear-gradient(' + (F[0] === "v" ? "90deg" : "180deg") + "," + stops.join(",") + ')">' + esc(ini.toUpperCase()) + '</span>';
+      }
+    }
     var C = window.ANAGRAFICA && window.ANAGRAFICA.COLORI[s];
     var c1 = C ? C[0] : "hsl(" + a + " 68% 46%)", c2 = C ? C[1] : "hsl(" + b + " 60% 32%)", kind = C ? C[2] : ["d", "h", "s", "d"][Math.abs(h >> 4) % 4];
     var bg = kind === "s" ? "repeating-linear-gradient(90deg," + c1 + " 0 22%," + c2 + " 22% 44%)"
@@ -2534,6 +2901,16 @@
         + '<div class="lo">' + oddsTxt(l.odds) + '</div><button class="iconbtn sm" type="button" data-del="' + i + '" aria-label="Togli">' + ic("x") + '</button></div>';
     }).join("") + '</div>';
     html += '<div class="slipsum"><span>' + (slip.mode === "singole" ? n + " pronostici singoli" : slip.mode === "multipla" ? "Quota totale" : "Quota media delle combinazioni") + '</span><b>' + (tot ? oddsTxt(tot) : "") + '</b></div>';
+    var st = stakeInfo();
+    html += '<div class="stakebox"><div class="stakehead">' + ic("coin") + '<b>Monete da puntare</b><span class="k">hai ' + st.coins + ' monete</span></div>'
+      + (st.max < STAKE_MIN ? '<div class="k">Servono almeno ' + STAKE_MIN * st.units + ' monete per puntare: il pronostico vale comunque punti lega e XP.</div>'
+        : '<div class="stakerow"><button class="iconbtn" type="button" data-stake="-1" aria-label="Meno monete"' + (st.stake <= STAKE_MIN ? " disabled" : "") + '>' + ic("minus") + '</button>'
+          + '<span class="stakev"><b>' + st.stake + '</b> ' + (slip.mode === "singole" && st.units > 1 ? "monete per esito" : "monete") + '</span>'
+          + '<button class="iconbtn" type="button" data-stake="1" aria-label="Più monete"' + (st.stake >= st.max ? " disabled" : "") + '>+</button>'
+          + '<button class="chip" type="button" data-stake="max">Tutte</button></div>'
+          + '<div class="k">' + (st.units > 1 ? "Totale " + st.cost + " monete. " : "")
+          + (tot && slip.mode !== "singole" ? "Se vince ricevi " + stakePayout(st.stake, tot - 1) + " monete. " : slip.mode === "singole" ? "Ogni esito vinto rende la puntata per la sua quota. " : "")
+          + 'Punti lega e XP non cambiano con la puntata.</div>') + '</div>';
     if (errs.length) html += '<div class="sliperr">' + errs.map(function (x) { return '<div>' + ic("alert") + ' ' + esc(x) + '</div>'; }).join("") + '</div>';
     html += '<label class="melabel" for="sliptext">Scrivi qualcosa (facoltativo)</label>'
       + '<textarea id="sliptext" class="meinput" maxlength="280" rows="3" placeholder="Perché la giochi? Chi ti segue lo vede nella Home insieme al pronostico" translate="no">' + esc(slipText) + '</textarea>'
@@ -2554,16 +2931,37 @@
   var slipText = "", slipMsg = "";
   function saveMySlips() { try { localStorage.setItem(MYSLIPS_KEY, JSON.stringify(mySlips)); } catch (e) {} }
   function allSlips() { return mySlips.concat((data.diario && data.diario.slips) || []).sort(function (a, b) { return b.created_at - a.created_at; }); }
+  // selezioni uguali (stessa partita + stesso esito) a un tuo pronostico ancora aperto: non si ripetono
+  function openSameLeg(l) {
+    return allSlips().some(function (s) {
+      return !s.resolved_at && s.legs.some(function (x) { return x.result == null && String(x.event_id) === String(l.event) && x.code === l.code; });
+    });
+  }
   function appSlipErrors() {
     var out = [], age = nowS() - ((data.diario && data.diario.at) || 0);
     slip.legs.forEach(function (l) {
+      if (openSameLeg(l)) out.push("Hai già un pronostico aperto uguale, toglilo dalla schedina: " + l.ename + " · " + l.label);
       var e = evById(l.event);
       if (!e || !e.mk[l.code]) out.push("Partita o quota non più disponibile: " + l.ename + ". Toglila dalla schedina.");
       else if (!e.live && e.start && e.start <= nowS()) out.push("La partita è già iniziata: " + l.ename + ". La quota pre-partita non vale più.");
       else if (e.live && age > LIVE_MAX_AGE) out.push("Quote live di più di 5 minuti fa (" + l.ename + "): aspetta il prossimo aggiornamento.");
     });
+    var st = stakeInfo();
+    if (st.cost > st.coins) out.push("Non hai abbastanza monete: ne servono " + st.cost + ", ne hai " + st.coins + ".");
     return out;
   }
+  // ---- monete puntate (richiesta 04/10): solo monete guadagnate, mai soldi. Minimo 5, a passi di 5, al massimo
+  // quelle che hai. Singole: la puntata vale per ogni esito. Si scala alla conferma; alla chiusura torna la puntata
+  // piu' puntata x punti (vinta: quota - 1; persa: -1; nulla: 0). Punti lega e XP non cambiano.
+  var STAKE_MIN = 5, STAKE_STEP = 5, STAKE_DEFAULT = 10;
+  function stakeInfo() {
+    var coins = rewardState(pronostici()).coins, units = slip.mode === "singole" ? Math.max(1, slip.legs.length) : 1;
+    var max = Math.floor(coins / units / STAKE_STEP) * STAKE_STEP;
+    if (slip.stake == null) slip.stake = STAKE_DEFAULT;
+    var stake = max < STAKE_MIN ? 0 : Math.max(STAKE_MIN, Math.min(slip.stake, max));
+    return { coins: coins, units: units, max: max, stake: stake, cost: stake * units };
+  }
+  function stakePayout(stake, points) { return stake + Math.round(stake * points); }
   function scoreOf(s) { var m = /(\d+)\D+(\d+)/.exec(s || ""); return m ? [Number(m[1]), Number(m[2])] : null; }
   function scoreAt(g, ts) { var s = null; g.forEach(function (x) { if (x[0] <= ts) s = [x[1], x[2]]; }); return s; }
   function legResult(l, created) {
@@ -2623,7 +3021,8 @@
       return { event_id: l.event, sport: l.sport, code: l.code, label: l.label, event: l.ename, comp: (e && e.comp) || "", odds: l.odds,
                src: l.src, live: l.live ? 1 : 0, minute: st.minute != null ? st.minute : null, score: e && e.live ? (st.score || null) : null, result: null };
     });
-    mySlips.push({ id: "L" + n, created_at: now, mode: slip.mode, k: slip.mode === "sistema" ? slip.k : null, n: legs.length,
+    var stk = stakeInfo();
+    mySlips.push({ id: "L" + n, created_at: now, mode: slip.mode, k: slip.mode === "sistema" ? slip.k : null, n: legs.length, stake: stk.stake,
                    odds: Regole.totalOdds(slip.mode, slip.k, legs.map(function (l) { return l.odds; })), points: null, won: null,
                    resolved_at: null, reason: text || null, note: null, legs: legs });
     saveMySlips();
@@ -2631,6 +3030,7 @@
     slipText = ""; slipMsg = ""; bview = "home";
     renderAll(); renderSchedina();
     show("profilo");
+    if (stk.cost) { fxToast("coin", "Pronostico pubblicato", "−" + stk.cost + " monete puntate"); var cb = coinEl(); if (cb) countUp(Number(cb.textContent) + stk.cost, Number(cb.textContent)); }
     var b = $("bacheca"); if (b) b.scrollIntoView();
   }
 
@@ -2708,6 +3108,12 @@
     var m = ev.target.closest("[data-mode]"); if (m) { slip.mode = m.dataset.mode; saveSlip(); paintSlipBar(); renderSchedina(); return; }
     var k = ev.target.closest("[data-k]"); if (k) { slip.k = Number(k.dataset.k); saveSlip(); paintSlipBar(); renderSchedina(); return; }
     if (ev.target.closest("#slipclear")) { slip.legs = []; slip.mode = "singole"; saveSlip(); paintSlipBar(); renderSchedina(); return; }
+    var sk = ev.target.closest("[data-stake]");
+    if (sk) {
+      var si = stakeInfo();
+      slip.stake = sk.dataset.stake === "max" ? si.max : Math.max(STAKE_MIN, Math.min(si.max, si.stake + Number(sk.dataset.stake) * STAKE_STEP));
+      saveSlip(); renderSchedina(); return;
+    }
     if (ev.target.closest("#slipgo")) publishSlip();
   });
   $("schedina").addEventListener("input", function (ev) { if (ev.target.id === "sliptext") { slipText = ev.target.value; slipMsg = ""; } });
@@ -2785,9 +3191,9 @@
     var dz = data.diario || {}, out = [];
     (dz.bets || []).forEach(function (b) { out.push({ key: "b" + b.id, ts: b.created_at, odds: b.odds, result: b.result, sport: b.sport, ev: b.sport + ":" + (b.event_id || b.event), code: b.code || "", event: b.event }); });
     allSlips().forEach(function (s) {
-      if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, ts: s.created_at, odds: l.odds, result: l.result, sport: l.sport, ev: l.sport + ":" + l.event_id, code: l.code, comp: l.comp, event: l.event }); });
+      if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, ts: s.created_at, odds: l.odds, result: l.result, sport: l.sport, ev: l.sport + ":" + l.event_id, code: l.code, comp: l.comp, event: l.event, stake: s.stake || 0 }); });
       else out.push({ key: "s" + s.id, ts: s.created_at, odds: s.odds || 1, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null, points: s.points,
-                      sport: "multi", ev: "s" + s.id, code: s.mode, legs: s.legs.length, events: s.legs.map(function (l) { return { sport: l.sport, event: l.event }; }) });
+                      sport: "multi", ev: "s" + s.id, code: s.mode, legs: s.legs.length, events: s.legs.map(function (l) { return { sport: l.sport, event: l.event }; }), stake: s.stake || 0 });
     });
     out.forEach(function (b) { b.jolly = jolly.used[b.key] || null; });
     return out;
@@ -2871,6 +3277,11 @@
     });
     var album = albumState(list);                                     // album delle squadre completi
     coins += album.done.length * ALBUM_COINS;
+    list.forEach(function (b) {                                       // monete puntate: scalate subito, rese alla chiusura
+      if (!(b.stake > 0)) return;
+      coins -= b.stake;
+      if (b.result != null) coins += stakePayout(b.stake, b.points != null ? b.points : b.result === 1 ? b.odds - 1 : b.result === 0 ? -1 : 0);
+    });
     coins -= jolly.spent;
     var chest = chestOf(prizes, thisWeek);   // i premi delle settimane chiuse arrivano in una cassa da aprire
     coins -= chest.coins;
@@ -3031,29 +3442,125 @@
       return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
     });
   }
-  function albumCard(R2) {
-    var tot = 0, got = 0, last = [];
+  // ---- rarita' delle figurine (04/10): si guadagnano coi pronostici, mai comprate. Squadre: comune col primo
+  // pronostico, rara con un vinto, oro con 3 vinti, leggendaria con 5 vinti o un vinto a quota 4 o piu'.
+  // Campionati: con 5 figurine dell'album; rara da meta', oro da tre quarti, leggendaria ad album completo.
+  // Team StatSight: seguendo il personaggio; la rarita' viene dal suo record.
+  var RAR = ["comune", "rara", "oro", "leggendaria"];
+  function stickerStats() {
+    var legs = [];
+    allSlips().forEach(function (s) { s.legs.forEach(function (l) { legs.push({ sport: l.sport, txt: " " + normName(l.event) + " ", res: l.result, odds: l.odds }); }); });
+    ((data.diario && data.diario.bets) || []).forEach(function (b) { legs.push({ sport: b.sport, txt: " " + normName(b.event) + " ", res: b.result, odds: b.odds }); });
+    return legs;
+  }
+  function teamRarity(legs, name, tennis) {
+    var k = stickerKey(name, tennis), sport = tennis ? "tennis" : "calcio", wins = 0, big = false;
+    legs.forEach(function (l) { if (l.sport === sport && l.res === 1 && l.txt.indexOf(" " + k + " ") >= 0) { wins++; if (l.odds >= 4) big = true; } });
+    return wins >= 5 || big ? 3 : wins >= 3 ? 2 : wins >= 1 ? 1 : 0;
+  }
+  function leagueRarity(have, tot) { var f = have / tot; return f >= 1 ? 3 : f >= 0.75 ? 2 : f >= 0.5 ? 1 : 0; }
+  function personaRarity(p) { return p.pts > 5 ? 3 : p.pts > 0 ? 2 : p.n >= 10 ? 1 : 0; }
+  function collection(R2) {
+    var legs = stickerStats(), out = { tot: 0, got: 0, r: [0, 0, 0, 0], leagues: [], teams: {}, team: [] };
     albumLeagues().forEach(function (id) {
-      tot += A.SQUADRE[id].length; got += R2.album.have[id].length;
-      R2.album.have[id].forEach(function (t) { if (last.length < 4) last.push([t, A.LEGHE.tennis.indexOf(id) >= 0 ? "tennis" : "calcio"]); });
+      var tennis = A.LEGHE.tennis.indexOf(id) >= 0, have = R2.album.have[id], tot = A.SQUADRE[id].length;
+      out.teams[id] = A.SQUADRE[id].map(function (t) { var on = have.indexOf(t) >= 0, r = on ? teamRarity(legs, t, tennis) : -1; if (on) { out.got++; out.r[r]++; } out.tot++; return { name: t, on: on, r: r, tennis: tennis }; });
+      var lon = have.length >= Math.min(5, tot), lr = lon ? leagueRarity(have.length, tot) : -1;
+      out.leagues.push({ id: id, on: lon, r: lr, have: have.length, tot: tot }); out.tot++; if (lon) { out.got++; out.r[lr]++; }
     });
+    team().forEach(function (p) { var on = follows.has(p.id), r = on ? personaRarity(p) : -1; out.team.push({ p: p, on: on, r: r }); out.tot++; if (on) { out.got++; out.r[r]++; } });
+    return out;
+  }
+  function stickerHtml(inner, name, on, r, extra) {
+    return '<div class="sticker ' + (on ? "got r" + r : "off") + '" title="' + esc(name) + (on ? " · " + RAR[r] : "") + '">'
+      + (on && r >= 2 ? '<span class="shine" aria-hidden="true"></span>' : "") + inner + '<span class="sn" translate="no">' + esc(name) + '</span>'
+      + (on ? '<span class="srar">' + esc(RAR[r]) + '</span>' : '<span class="srar">' + ic("lock") + '</span>') + (extra || "") + '</div>';
+  }
+  function leagueEmblem(id) {   // emblema disegnato da noi: scudo con i colori del paese e la sigla, mai il logo vero
+    var c = A.COMPS.filter(function (x) { return x.id === id; })[0], lab = c ? c.label : id;
+    var h = 0; for (var i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+    var col = ["#1F4FA0", "#B3261E", "#1E7A45", "#6A3FA0", "#C98A12", "#0F6E7A"][h % 6], ini = lab.replace(/[^A-Za-z0-9 ]/g, "").split(" ").map(function (w) { return w[0]; }).join("").slice(0, 3).toUpperCase();
+    return '<svg class="lemb" viewBox="0 0 40 44" aria-hidden="true"><path d="M20 2l16 6v12c0 10-7 18-16 22C11 38 4 30 4 20V8z" fill="' + col + '" stroke="#fff" stroke-opacity=".8" stroke-width="1.5"/>'
+      + '<path d="M20 7l11 4v9c0 7-5 13-11 16-6-3-11-9-11-16v-9z" fill="#fff" fill-opacity=".14"/><text x="20" y="25" text-anchor="middle" font-size="' + (ini.length > 2 ? 9 : 11) + '" font-weight="900" fill="#fff" font-family="Archivo,system-ui,sans-serif">' + esc(ini) + '</text></svg>';
+  }
+  function albumCard(R2) {
+    var C = collection(R2), last = [];
+    albumLeagues().forEach(function (id) { R2.album.have[id].forEach(function (t) { if (last.length < 4) last.push([t, A.LEGHE.tennis.indexOf(id) >= 0 ? "tennis" : "calcio"]); }); });
     return '<button class="card albumcard" type="button" data-album="1"><span class="ast">' + (last.length ? last.map(function (x) { return teamLogo(x[0], x[1]); }).join("") : ic("layers")) + '</span>'
-      + '<span><b>Album delle squadre</b><span class="k">' + got + ' figurine su ' + tot + (R2.album.done.length ? ' · ' + R2.album.done.length + (R2.album.done.length === 1 ? " album completo" : " album completi") : "") + '</span></span>' + ic("chev") + '</button>';
+      + '<span><b>Album delle squadre</b><span class="k">Collezione: ' + C.got + ' figurine su ' + C.tot + (C.r[2] + C.r[3] ? ' · ' + (C.r[2] + C.r[3]) + ' oro o leggendarie' : "")
+      + (R2.album.done.length ? ' · ' + R2.album.done.length + (R2.album.done.length === 1 ? " album completo" : " album completi") : "") + '</span></span>' + ic("chev") + '</button>';
   }
   function renderAlbum() {
-    var R2 = rewardState(pronostici());
-    $("album").innerHTML = '<div class="note" style="margin-bottom:6px;">Ogni pronostico su una partita sblocca la figurina delle due squadre (o dei due tennisti). Album completo: badge e ' + ALBUM_COINS + ' monete. Le figurine sono disegnate da noi con i colori sociali, non sono gli stemmi ufficiali.</div>'
+    var R2 = rewardState(pronostici()), C = collection(R2);
+    var pct = C.tot ? Math.round(C.got / C.tot * 100) : 0;
+    $("album").innerHTML = '<div class="card colcount"><div class="cchead"><b>Collezione</b><span><b>' + C.got + '</b> / ' + C.tot + '</span></div>'
+      + '<div class="albar"><div style="width:' + pct + '%"></div></div><div class="ccrar">' + ["comuni", "rare", "oro", "leggendarie"].map(function (r, i) { return '<span class="rr r' + i + '"><i></i>' + C.r[i] + ' ' + r + '</span>'; }).join("") + '</div></div>'
+      + '<div class="note" style="margin-bottom:6px;">Ogni pronostico su una partita sblocca la figurina delle due squadre (o dei due tennisti). Album completo: badge e ' + ALBUM_COINS + ' monete. Le figurine sono disegnate da noi con i colori sociali, non sono gli stemmi ufficiali.</div>'
+      + '<details class="card rarinfo"><summary><b>Come diventano rare</b></summary><div class="k" style="margin-top:6px;line-height:1.5;">Squadre e tennisti: comune col primo pronostico, rara con un pronostico vinto, oro con 3 vinti, leggendaria con 5 vinti o un vinto a quota 4 o più. Campionati: si sbloccano con 5 figurine dell\'album; rara da metà album, oro da tre quarti, leggendaria ad album completo. Team StatSight: seguendo il personaggio; la rarità viene dal suo record. Non si comprano: si guadagnano giocando.</div></details>'
+      + '<div class="alhead"><b>Campionati</b><span class="k">' + C.leagues.filter(function (x) { return x.on; }).length + '/' + C.leagues.length + '</span></div><div class="stickers">'
+      + albumOrder().map(function (id) { var L = C.leagues.filter(function (x) { return x.id === id; })[0]; return stickerHtml(leagueEmblem(id), albumName(id), L.on, L.r, '<span class="sprog">' + L.have + '/' + L.tot + '</span>'); }).join("") + '</div>'
+      + (C.team.length ? '<div class="alhead"><b>Team StatSight</b><span class="k">' + C.team.filter(function (x) { return x.on; }).length + '/' + C.team.length + '</span></div><div class="stickers">'
+        + C.team.map(function (x) { return stickerHtml(avatar(x.p.id, 44), x.p.nick, x.on, x.r); }).join("") + '</div>' : "")
       + albumOrder().map(function (id) {
-        var teams = A.SQUADRE[id], have = R2.album.have[id], tennis = A.LEGHE.tennis.indexOf(id) >= 0, done = R2.album.done.indexOf(id) >= 0;
+        var teams = C.teams[id], have = R2.album.have[id], done = R2.album.done.indexOf(id) >= 0;
         return '<div class="alhead"><b>' + esc(albumName(id)) + '</b>' + (done ? '<span class="aldone">' + ic("check") + ' completo · +' + ALBUM_COINS + '</span>' : '<span class="k">' + have.length + '/' + teams.length + '</span>') + '</div>'
           + '<div class="albar"><div style="width:' + (have.length / teams.length * 100).toFixed(0) + '%"></div></div>'
-          + '<div class="stickers">' + teams.map(function (t) {
-            var on = have.indexOf(t) >= 0;
-            return '<div class="sticker ' + (on ? "got" : "off") + '" title="' + esc(t) + '">' + teamLogo(t, tennis ? "tennis" : "calcio") + '<span class="sn" translate="no">' + esc(t) + '</span></div>';
-          }).join("") + '</div>';
+          + '<div class="stickers">' + teams.map(function (t) { return stickerHtml(teamLogo(t.name, t.tennis ? "tennis" : "calcio"), t.name, t.on, t.r); }).join("") + '</div>';
       }).join("");
   }
   $("profilo").addEventListener("click", function (e) { if (e.target.closest("[data-album]") && data) { renderAlbum(); show("album"); window.scrollTo(0, 0); } });
+
+  // ---------------------------------------------------------------- Dettaglio di un pronostico (richiesta 04/10)
+  // Da "I miei pronostici": partita per partita il risultato finale (cronologia dei gol di data.diario.esiti),
+  // quando l'hai giocato, quota ed esito di ogni gamba, punti e monete.
+  function goalsOf(evId) {
+    var E = data.diario && data.diario.esiti, x = E && E.ev && E.ev[String(evId)];
+    if (!x || !x.g || !x.g.length) return null;
+    var last = x.g[x.g.length - 1];
+    return { score: last[1] + " - " + last[2], fin: !!x.f, g: x.g };
+  }
+  function hhmm(ts) { var d = new Date(ts * 1000); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+  function fullDate(ts) { var d = new Date(ts * 1000); return String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0") + "/" + d.getFullYear() + " " + hhmm(ts); }
+  function pickLegHtml(l) {
+    var G = goalsOf(l.event_id), sc = G ? G.score : l.final_score || null;
+    var goals = G ? G.g.filter(function (y, i) { return i > 0 || y[1] + y[2] > 0; }) : [];
+    return '<div class="card pkleg"><div class="pkev">' + (EMOJI[l.sport] || "") + ' <b>' + esc(l.event) + '</b></div>'
+      + (l.comp ? '<div class="k">' + esc(shortComp(l.comp)) + '</div>' : "")
+      + '<div class="pkscore"><span class="k">' + (G ? (G.fin ? "Risultato finale" : "Ultimo punteggio") : "Risultato") + '</span><b>' + esc(sc || "non disponibile") + '</b></div>'
+      + (goals.length ? '<div class="pkgoals">' + goals.map(function (y) { return '<span>' + hhmm(y[0]) + ' · ' + y[1] + '-' + y[2] + '</span>'; }).join("") + '</div>' : "")
+      + '<div class="pickrow"><span><b>' + esc(l.label) + '</b> @ ' + oddsTxt(l.odds) + (l.live ? ' <b class="livetag">LIVE</b>' : "") + (l.minute != null ? ' <span class="k">' + l.minute + "'</span>" : "") + '</span>' + resTag(l.result) + '</div></div>';
+  }
+  function renderPick(key) {
+    var m = /^s(.+?)(?:-(\d+))?$/.exec(key), html = "", ts = 0;
+    if (key[0] === "b") {
+      var b = ((data.diario && data.diario.bets) || []).filter(function (x) { return "b" + x.id === key; })[0]; if (!b) return;
+      ts = b.created_at;
+      html = '<h1 class="dtitle">Giocata libera</h1><div class="k pkwhen">' + ic("clock") + ' Giocato il ' + fullDate(ts) + '</div>'
+        + pickLegHtml({ event_id: b.event_id, sport: b.sport, event: b.event, label: b.pick || "giocata libera", odds: b.odds, result: b.result, minute: b.minute, final_score: b.score })
+        + (b.reason ? '<div class="ptext" translate="no">“' + esc(b.reason) + '”</div>' : "");
+    } else if (m) {
+      var s = allSlips().filter(function (x) { return String(x.id) === m[1]; })[0]; if (!s) return;
+      var legs = m[2] != null ? [s.legs[Number(m[2])]] : s.legs, single = m[2] != null;
+      ts = s.created_at;
+      var head = single ? "Singola" : s.mode === "multipla" ? "Multipla" : "Sistema " + s.k + "/" + s.n;
+      var res = single ? legs[0].result : s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null;
+      var pts = single ? (res === 1 ? legs[0].odds - 1 : res === 0 ? -1 : res === -1 ? 0 : null) : s.resolved_at ? s.points : null;
+      var stake = s.stake || 0, back = stake && pts != null ? stakePayout(stake, pts) : null;
+      html = '<h1 class="dtitle">' + esc(head) + '</h1><div class="k pkwhen">' + ic("clock") + ' Giocato il ' + fullDate(ts) + '</div>'
+        + (s.reason ? '<div class="ptext" translate="no">“' + esc(s.reason) + '”</div>' : "")
+        + legs.map(pickLegHtml).join("")
+        + '<div class="card pksum">'
+        + (single ? "" : '<div class="pickrow"><span>Quota totale</span><b>' + oddsTxt(s.odds) + '</b></div>')
+        + '<div class="pickrow"><span>Esito</span>' + resTag(res) + '</div>'
+        + (pts != null ? '<div class="pickrow"><span>Punti lega</span><b class="' + (pts >= 0 ? "pos" : "neg") + '">' + signed(pts) + '</b></div>' : "")
+        + (stake ? '<div class="pickrow"><span>Monete puntate</span><b>' + stake + '</b></div>'
+          + '<div class="pickrow"><span>Monete tornate</span><b>' + (back == null ? "in attesa" : back) + '</b></div>' : "")
+        + (s.note ? '<div class="k" style="margin-top:6px;">' + esc(s.note) + '</div>' : "") + '</div>';
+    }
+    $("pick").innerHTML = html; show("pick"); window.scrollTo(0, 0);
+  }
+  $("bacheca").addEventListener("click", function (e) { var c = e.target.closest("[data-pick]"); if (c && data && !e.target.closest("button")) renderPick(c.dataset.pick); });
+  $("bacheca").addEventListener("keydown", function (e) { var c = e.target.closest("[data-pick]"); if (c && data && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); renderPick(c.dataset.pick); } });
 
   // ---------------------------------------------------------------- Grafica "addictive" (richiesta utente 03/10)
   // Pallini rossi sulle schede con le novita' (esiti nuovi, post nuovi dei seguiti, cassa da aprire), pioggia di
@@ -3194,7 +3701,7 @@
     fxBusy = true;
     wins.forEach(function (b) { news.cel[b.key] = 1; });
     news.level = Math.max(oldLevel, R2.level); saveNews();
-    var winCoins = wins.reduce(function (t, b) { return t + (b._xp > 0 ? COINS.closed + COINS.won : 0); }, 0);
+    var winCoins = wins.reduce(function (t, b) { return t + (b._xp > 0 ? COINS.closed + COINS.won : 0) + (b.stake > 0 ? stakePayout(b.stake, b.points != null ? b.points : b.odds - 1) : 0); }, 0);
     var winXp = wins.reduce(function (t, b) { return t + (b._xp || 0); }, 0);
     var lvCoins = up ? (R2.level - oldLevel) * COINS.level : 0, cur = coinShown();
     var base = cur == null ? null : cur - lvCoins;
@@ -3292,7 +3799,7 @@
       + '<b>Stagione</b> (la lega che conta): segue il calendario della Premier League, ' + SEASON.rounds + ' giornate. Contano i pronostici a quota 1,50 o più, al massimo 10 al giorno: vinto = quota − 1, perso = −1. La lega dipende dai punti medi a settimana: Argento da 0, Oro da +0,5, Platino da +1, Diamante da +2, Elite da +3 (dall\'Oro in su almeno 3 pronostici a settimana). Con l\'app pubblica: classifica fra tutti, promozioni e retrocessioni a fine stagione.<br>'
       + '<b>Settimana:</b> stesse regole, da lunedì a domenica. Con almeno 10 pronostici e +3 punti si sale, con meno di 5 o −3 punti si scende.<br>'
       + '<b>Esperienza:</b> 5 XP per pronostico chiuso più 10 XP per ogni punto di quota sopra 1 se lo vinci (massimo 50). Sotto quota 1,30 niente XP; un pronostico per partita; al giorno i primi 10 valgono pieno, dall\'11 al 20 la metà, poi niente.<br>'
-      + '<b>Monete:</b> 100 di benvenuto, 10 per ogni pronostico chiuso che dà XP più 10 se vinto, 50 a ogni livello, e a fine settimana un premio secondo la lega (da 10 in Bronzo a 150 in Elite) più quelli delle sfide per competizione (25 o 50 ciascuna); a fine mese i premi delle sfide a tema (da 30 a 100); 100 per ogni album delle squadre completo. Servono solo per i jolly: non si comprano e non valgono soldi.</div></details>';
+      + '<b>Monete:</b> 100 di benvenuto, 10 per ogni pronostico chiuso che dà XP più 10 se vinto, 50 a ogni livello, e a fine settimana un premio secondo la lega (da 10 in Bronzo a 150 in Elite) più quelli delle sfide per competizione (25 o 50 ciascuna); a fine mese i premi delle sfide a tema (da 30 a 100); 100 per ogni album delle squadre completo. Servono per i jolly e per le puntate sulle schedine: non si comprano e non valgono soldi.<br><b>Puntate:</b> alla conferma della schedina scegli quante monete mettere (minimo 5, a passi di 5; nelle singole per ogni esito). Vinta: ti tornano la puntata e la puntata per (quota − 1). Persa: la perdi. Nulla: ti torna. Punti lega e XP non cambiano con la puntata.</div></details>';
 
     $("occhioclassifica").innerHTML = team().length ? leaderboardHtml(R2)
       : '<div class="note">La classifica arriva con il prossimo aggiornamento dei dati.</div>';
@@ -3397,12 +3904,14 @@
     if (ds.mefoto) { $("fotoinput").click(); return; }
     if (ds.menofoto) { meEdit.pic = null; renderProfilo(); return; }
     if (ds.meseed) {
-      if (ds.meseed === "nuovi") meEdit.more = meEdit.more.map(function (i) { return i + 7; });
-      else { meEdit.seed = ds.meseed; meEdit.pic = null; }
+      var spx = AV_SPECIAL.filter(function (x) { return "sp:" + x.id === ds.meseed; })[0];
+      if (!spx || rewardState(pronostici()).level >= spx.level) { meEdit.seed = ds.meseed; meEdit.pic = null; }
       keepScroll($("profilo"), renderProfilo); return;
     }
     if (ds.meannulla) { meEdit = false; renderProfilo(); return; }
     if (ds.mesalva) {
+      var np = nameProblem(meEdit.name), nm = $("menamemsg");
+      if (np) { nm.textContent = np; nm.hidden = false; $("mename").focus(); return; }
       var why = checkText(meEdit.name) || checkText(meEdit.bio);
       if (why && why !== "lungo") { alert(MOD_MSG[why]); return; }
       var old = JSON.parse(JSON.stringify(me));
@@ -3417,8 +3926,8 @@
   $("benvenuto").addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return;
     if (pickerClick(pick, b)) { keepScroll($("benvenuto"), renderBenvenuto); return; }
-    if (b.dataset.pkgo) { commitPick(pick); me.onboarded = true; saveMe(); if (data) renderAll(); show("segnali"); window.scrollTo(0, 0); return; }
-    if (b.dataset.pkskip) { me.onboarded = true; saveMe(); show("segnali"); }
+    if (b.dataset.pkgo) { commitPick(pick); me.onboarded = true; saveMe(); if (data) renderAll(); show("segnali"); window.scrollTo(0, 0); tutorialFirst(); return; }
+    if (b.dataset.pkskip) { me.onboarded = true; saveMe(); show("segnali"); tutorialFirst(); }
   });
   $("fotoinput").addEventListener("change", function () {
     var f = this.files && this.files[0]; this.value = "";
@@ -3486,7 +3995,10 @@
       var env = await fetchEnvelope();
       if (env.iv === lastIv) return;
       var fresh = await decrypt(env, pw);
+      var before = signalKeys(data);
       lastIv = env.iv; data = fresh; renderAll();
+      var nuovi = signalKeys(data).filter(function (k) { return before.indexOf(k) < 0; });
+      if (nuovi.length) cheer();                                     // segnale nuovo con l'app aperta: lo stadio esulta
     } catch (e) { /* rete assente: si riprova al giro dopo */ }
   }
   setInterval(poll, 30000);
@@ -3697,6 +4209,135 @@
   $("strategie").addEventListener("click", function (e) { if (e.target.closest("[data-leghe]") && data) openLeghe("strategie"); });
   $("legachips").addEventListener("click", function (e) { var b = e.target.closest("button[data-lega]"); if (b && data) setLega(b.dataset.lega); });
 
+  // ---------------------------------------------------------------- Barre in orizzontale (04/10)
+  // Con l'altezza piccola (telefono girato) le barre sono compatte; scorrendo verso il basso si nascondono,
+  // tornano scorrendo verso l'alto o in cima alla pagina.
+  (function () {
+    var lastY = new WeakMap();
+    function small() { return innerHeight <= 500; }
+    function setH() { var t = document.querySelector(".topbar"); if (t) document.documentElement.style.setProperty("--topbar-h", t.offsetHeight + "px"); }
+    document.addEventListener("scroll", function (e) {
+      var el = e.target; if (!el || !el.classList || !el.classList.contains("view")) return;
+      if (!small()) { document.body.classList.remove("hidebars"); return; }
+      var y = el.scrollTop, prev = lastY.get(el) || 0;
+      if (y > prev + 8 && y > 40) { setH(); document.body.classList.add("hidebars"); }
+      else if (y < prev - 8 || y < 20) document.body.classList.remove("hidebars");
+      lastY.set(el, y);
+    }, true);
+    window.addEventListener("resize", function () { if (!small()) document.body.classList.remove("hidebars"); setH(); });
+  })();
+
+  // ---------------------------------------------------------------- Tutorial (richiesta 04/10)
+  // Dopo il benvenuto (una volta sola, si salta) e da Impostazioni > Rivedi il tutorial: quattro passi con
+  // l'elemento evidenziato. Ricordato su questo telefono (statsight.tutorial).
+  var TUT_KEY = "statsight.tutorial", tutStep = -1;
+  var TUT = [
+    { view: "strategie", go: function () { renderStrategie(); }, target: "#strategie .card .strat, #strategie .card, #strategie .hero",
+      title: "Le strategie", text: ["Ogni strategia è una regola fissa che dice quando una giocata ha senso, provata sullo storico.",
+        "Le barre (in \"… altro\", poi Personalizza) le adatti a te e vedi subito come sarebbe andata.",
+        "I numeri sono onesti: quante volte è successo, quanti vinti e il rendimento contro la quota, con vinti e persi. Se il rendimento è negativo, la strategia perde."] },
+    { view: "notifiche", go: function () { renderNotifiche(); }, target: "#notifiche .nrow, #notifiche .note",
+      title: "Scegli i tuoi avvisi", text: ["Accendi l'interruttore delle strategie che vuoi seguire e scegli cosa leggere nel messaggio: rendimento, % vinti, partite, quota.",
+        "Quando esce un segnale lo trovi in Segnali; le notifiche sul telefono arrivano con l'app pubblica."] },
+    { view: "radar", go: function () { renderRadar(); }, target: "#radar table, #view-radar .radarwrap",
+      title: "Il Radar, per chi fa da solo", text: ["Le partite live con le statistiche: minuto, risultato, quote 1 X 2, poi casa - ospite per tiri in porta, tiri, xG, angoli, possesso, attacchi pericolosi e rossi. Tocca una riga per aprire la partita."],
+      legend: [["#E8862A", "Arancio: una squadra domina (almeno 3 e 2,6 volte l'altra)."], ["#E08268", "Rosso: domina nettamente (almeno 4 e 3,6 volte l'altra)."]] },
+    { view: "profilo", go: function () { renderProfilo(); }, target: "#profilo .coinbtn, #profilo",
+      title: "Il Diario", text: ["Il tuo profilo con livello e lega. Le monete si guadagnano coi pronostici: non si comprano.",
+        "Da qui vai alle Partite: tocchi le quote, si riempie la schedina e la pubblichi. La Home mostra le giocate di chi segui; in Il mio occhio ci sono leghe, sfide e badge.",
+        "È un gioco a punti: niente soldi."] }
+  ];
+  function tutorialFirst() { var d = null; try { d = localStorage.getItem(TUT_KEY); } catch (e) {} if (!d) setTimeout(function () { startTutorial(); }, 400); }
+  function startTutorial() { if (!data) return; tutStep = 0; tutRender(); }
+  function endTutorial(how) {
+    try { localStorage.setItem(TUT_KEY, how); } catch (e) {}
+    tutStep = -1; var t = $("tut"); if (t) t.remove();
+    window.removeEventListener("resize", tutPlace);
+  }
+  function tutTarget(st) { var sels = st.target.split(","); for (var i = 0; i < sels.length; i++) { var el = document.querySelector(sels[i].trim()); if (el && el.offsetParent !== null) return el; } return null; }
+  function tutPlace() {
+    var t = $("tut"); if (!t || tutStep < 0) return;
+    var el = tutTarget(TUT[tutStep]), sp = t.querySelector(".tspot"), card = t.querySelector(".tcard"), H = innerHeight;
+    if (!el) { sp.style.cssText = "left:50%;top:40%;width:0;height:0"; card.style.top = ""; card.style.bottom = "20px"; return; }
+    var r = el.getBoundingClientRect(), pad = 6, top = Math.max(8, r.top - pad), h = Math.min(r.height + 2 * pad, H * 0.45);
+    sp.style.cssText = "left:" + Math.max(6, r.left - pad) + "px;top:" + top + "px;width:" + Math.min(innerWidth - 12, r.width + 2 * pad) + "px;height:" + h + "px";
+    if (top + h / 2 > H / 2) { card.style.bottom = ""; card.style.top = "calc(env(safe-area-inset-top,0px) + 16px)"; }
+    else { card.style.top = ""; card.style.bottom = "calc(env(safe-area-inset-bottom,0px) + 16px)"; }
+  }
+  function tutRender() {
+    var st = TUT[tutStep], last = tutStep === TUT.length - 1;
+    st.go(); show(st.view);
+    var t = $("tut");
+    if (!t) {
+      t = document.createElement("div"); t.id = "tut"; t.setAttribute("role", "dialog"); t.setAttribute("aria-modal", "true"); document.body.appendChild(t);
+      t.addEventListener("click", function (e) {
+        var b = e.target.closest("button"); if (!b) return;
+        if (b.dataset.tut === "skip") endTutorial("saltato");
+        else if (b.dataset.tut === "next") { if (tutStep >= TUT.length - 1) endTutorial("fatto"); else { tutStep++; tutRender(); } }
+      });
+      window.addEventListener("resize", tutPlace);
+    }
+    t.innerHTML = '<div class="tspot"></div><div class="tcard"><div class="tstep">Passo ' + (tutStep + 1) + ' di ' + TUT.length
+      + '<span class="tdots">' + TUT.map(function (x, i) { return '<i class="' + (i <= tutStep ? "on" : "") + '"></i>'; }).join("") + '</span></div>'
+      + '<h3>' + esc(st.title) + '</h3><div class="ttext">' + st.text.map(function (x) { return '<p>' + esc(x) + '</p>'; }).join("")
+      + (st.legend ? st.legend.map(function (l) { return '<p class="tleg"><span class="sw" style="background:' + l[0] + '66"></span><span>' + esc(l[1]) + '</span></p>'; }).join("") : "") + '</div>'
+      + '<div class="tbtns"><button class="linkbtn" type="button" data-tut="skip">' + (last ? "Chiudi" : "Salta") + '</button>'
+      + '<button class="primary" type="button" data-tut="next">' + (last ? "Fine" : "Avanti") + ' ' + ic("chev") + '</button></div></div>';
+    var el = tutTarget(st);
+    if (el) el.scrollIntoView({ block: "center", behavior: "instant" in document.documentElement.style ? "instant" : "auto" });
+    tutPlace(); setTimeout(tutPlace, 120);
+    t.querySelector('[data-tut="next"]').focus();
+  }
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && tutStep >= 0) endTutorial("saltato"); });
+  $("tutbtn").addEventListener("click", function () { if (data) startTutorial(); });
+
+  // ---------------------------------------------------------------- Suono "stadio che esulta" (richiesta 04/10)
+  // Quando arriva un segnale nuovo con l'app aperta. Sintetizzato con Web Audio (niente file): boato della folla
+  // (rumore filtrato che sale e scende), voci che salgono di tono e qualche applauso, ~1,8 s. Il browser lo
+  // permette solo dopo un tocco dell'utente; si spegne in Impostazioni > Notifiche (statsight.suono).
+  var SOUND_KEY = "statsight.suono", actx = null;
+  function soundOn() { try { return localStorage.getItem(SOUND_KEY) !== "0"; } catch (e) { return true; } }
+  function audioReady() {   // il contesto audio nasce (o si sveglia) solo dentro un tocco
+    var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    try { if (!actx) actx = new AC(); if (actx.state === "suspended") actx.resume(); } catch (e) {}
+  }
+  document.addEventListener("pointerdown", audioReady, { passive: true });
+  document.addEventListener("keydown", audioReady);
+  function signalKeys(d) {
+    return ((d && d.feed) || []).filter(function (f) { return f.kind === "signal" && (!f.main || on(f.main)); }).map(function (f) { return f.key || (f.sport + ":" + f.ts + ":" + f.event); });
+  }
+  function cheer(force) {
+    if ((!force && !soundOn()) || !actx || actx.state !== "running") return false;
+    var t0 = actx.currentTime + 0.02, dur = 1.8, sr = actx.sampleRate;
+    var master = actx.createGain(); master.gain.value = 0.55; master.connect(actx.destination);
+    // folla: rumore rosa-ish filtrato a banda, con un'onda che sale e cala
+    var buf = actx.createBuffer(1, Math.floor(sr * dur), sr), ch = buf.getChannelData(0), b0 = 0, b1 = 0;
+    for (var i = 0; i < ch.length; i++) { var w = Math.random() * 2 - 1; b0 = 0.97 * b0 + 0.03 * w; b1 = 0.6 * b1 + 0.4 * w; ch[i] = (b0 * 3 + b1) * 0.5; }
+    var noise = actx.createBufferSource(); noise.buffer = buf;
+    var bp = actx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.setValueAtTime(700, t0); bp.frequency.linearRampToValueAtTime(1400, t0 + 0.6); bp.Q.value = 0.7;
+    var ng = actx.createGain(); ng.gain.setValueAtTime(0.0001, t0); ng.gain.exponentialRampToValueAtTime(0.6, t0 + 0.35); ng.gain.setValueAtTime(0.6, t0 + 0.9); ng.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    noise.connect(bp); bp.connect(ng); ng.connect(master); noise.start(t0); noise.stop(t0 + dur);
+    // voci: tante sorgenti leggermente stonate che salgono insieme ("ohhh!")
+    for (var v = 0; v < 7; v++) {
+      var o = actx.createOscillator(), g = actx.createGain(), f = actx.createBiquadFilter(), lfo = actx.createOscillator(), lg = actx.createGain();
+      var base = 260 + Math.random() * 260, st = t0 + Math.random() * 0.15;
+      o.type = "sawtooth"; o.frequency.setValueAtTime(base, st); o.frequency.exponentialRampToValueAtTime(base * 1.45, st + 0.45); o.frequency.exponentialRampToValueAtTime(base * 1.2, st + 1.4);
+      lfo.frequency.value = 5 + Math.random() * 3; lg.gain.value = base * 0.02; lfo.connect(lg); lg.connect(o.frequency);
+      f.type = "lowpass"; f.frequency.value = 1800;
+      g.gain.setValueAtTime(0.0001, st); g.gain.exponentialRampToValueAtTime(0.045, st + 0.3); g.gain.exponentialRampToValueAtTime(0.0001, st + 1.5);
+      o.connect(f); f.connect(g); g.connect(master); o.start(st); lfo.start(st); o.stop(st + 1.55); lfo.stop(st + 1.55);
+    }
+    // applausi: colpi brevi di rumore acuto
+    for (var c = 0; c < 14; c++) {
+      var cb = actx.createBufferSource(), cbuf = actx.createBuffer(1, Math.floor(sr * 0.03), sr), cd = cbuf.getChannelData(0);
+      for (var j = 0; j < cd.length; j++) cd[j] = (Math.random() * 2 - 1) * (1 - j / cd.length);
+      cb.buffer = cbuf; var hp = actx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 1500;
+      var cg = actx.createGain(); cg.gain.value = 0.18 + Math.random() * 0.15;
+      cb.connect(hp); hp.connect(cg); cg.connect(master); cb.start(t0 + 0.25 + Math.random() * 1.2);
+    }
+    return true;
+  }
+
   // ---------------------------------------------------------------- Notifiche (richiesta 03/10, idea BetMines)
   // Per ogni strategia accesa e per "Le tue barre": notifica si'/no e cosa mostrare nel messaggio. Oggi sono solo
   // preferenze su questo telefono (statsight.notifiche); le notifiche vere partono col server (docs/piano_server.md).
@@ -3744,7 +4385,10 @@
   }
   function renderNotifiche() {
     var L = notifItems();
-    $("notifiche").innerHTML = '<div class="note" style="margin-bottom:10px;">Scegli da quali strategie vuoi la notifica e cosa leggere nel messaggio. Le notifiche sul telefono arrivano con l\'app pubblica; intanto le tue scelte restano salvate qui.</div>'
+    $("notifiche").innerHTML = '<div class="card sndrow"><div class="nhead">' + ic("bell") + '<label class="nm" for="sndsw">Suono quando arriva un segnale<span class="k">L\'esultanza dello stadio, con l\'app aperta</span></label>'
+      + '<span class="switch"><input type="checkbox" role="switch" id="sndsw" data-sound="1"' + (soundOn() ? " checked" : "") + ' aria-label="Suono quando arriva un segnale"><span class="slider"></span></span></div>'
+      + '<button class="linkbtn" type="button" data-soundtest="1" style="margin-top:6px;">' + ic("play") + ' Prova il suono</button></div>'
+      + '<div class="note" style="margin-bottom:10px;">Scegli da quali strategie vuoi la notifica e cosa leggere nel messaggio. Le notifiche sul telefono arrivano con l\'app pubblica; intanto le tue scelte restano salvate qui.</div>'
       + '<h2 class="sectiontitle">Le nostre strategie</h2>'
       + (L.ours.length ? '<div class="card">' + L.ours.map(notifRow).join("") + '</div>' : '<div class="note">Nessuna strategia accesa: accendile nella scheda Strategie.</div>')
       + '<h2 class="sectiontitle">Le tue barre</h2>'
@@ -3752,10 +4396,13 @@
   }
   $("notifbtn").addEventListener("click", function () { if (data) { renderNotifiche(); show("notifiche"); window.scrollTo(0, 0); } });
   $("notifiche").addEventListener("change", function (e) {
+    var sw = e.target.closest("input[data-sound]");
+    if (sw) { try { localStorage.setItem(SOUND_KEY, sw.checked ? "1" : "0"); } catch (er) {} return; }
     var t = e.target.closest("input[data-notif]"); if (!t) return;
     var k = t.dataset.notif, cfg = notifOf(k); cfg.on = t.checked; notif[k] = cfg; saveNotif(); renderNotifiche();
   });
   $("notifiche").addEventListener("click", function (e) {
+    if (e.target.closest("[data-soundtest]")) { audioReady(); setTimeout(function () { cheer(true); }, 60); return; }
     var b = e.target.closest("button[data-nfield]"); if (!b) return;
     var k = b.dataset.nkey, f = b.dataset.nfield, cfg = notifOf(k), i = cfg.show.indexOf(f);
     if (i >= 0) cfg.show.splice(i, 1); else cfg.show = NOTIF_FIELDS.map(function (x) { return x[0]; }).filter(function (x) { return x === f || cfg.show.indexOf(x) >= 0; });
@@ -3801,6 +4448,9 @@
     var b = e.target.closest("button[data-more]"); if (b && data) renderDetail(b.dataset.more);
     var x = e.target.closest("button[data-escluso]"); if (x && data) renderEscluso(x.dataset.escluso);
     var c = e.target.closest("button[data-cat]"); if (c && data) renderCat(c.dataset.cat);
+    var si = e.target.closest("[data-sportinfo]"); if (si && data) { renderSportInfo(si.dataset.sportinfo); return; }
+    var cs2 = e.target.closest("button[data-catsport]");
+    if (cs2 && data) { stratSport = cs2.dataset.catsport; try { localStorage.setItem(SPORT_KEY, stratSport); } catch (er) {} renderStrategie(); var sec = $("catsec"); if (sec) sec.scrollIntoView({ block: "start" }); return; }
     var sp = e.target.closest("button[data-ssport]");
     if (sp && data) { stratSport = sp.dataset.ssport; try { localStorage.setItem(SPORT_KEY, stratSport); } catch (er) {} renderStrategie(); window.scrollTo(0, 0); }
   });
