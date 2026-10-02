@@ -586,6 +586,17 @@ window.I18N_EN = {
   "I personaggi del Team StatSight sono della casa: giocano con una regola fissa, scritta qui sopra, alle quote vere di quel momento. I risultati non sono aggiustati.": "The Team StatSight characters belong to the house: they play a fixed rule, written above, at the real odds of that moment. Results are not adjusted.",
   "Classifica della settimana con il Team StatSight. Con l'app pubblica ci saranno anche gli altri utenti.": "This week's leaderboard with Team StatSight. With the public app other users will be here too.",
   "Tu": "You",
+  // schedina salvata nell'app
+  "Scrivi qualcosa (facoltativo)": "Write something (optional)",
+  "Perché la giochi? Chi ti segue lo vede nella Home insieme al pronostico": "Why this pick? Your followers will see it in their Home with the pick",
+  "Pubblica il pronostico": "Publish the pick", "valgono queste quote": "these odds count",
+  "Vale la quota che vedi (dati di *": "The odds you see count (data from *",
+  "Lo chiudiamo noi con il risultato della partita, con lo stesso regolamento dei bookmaker.": "We settle it with the match result, under the same rules as bookmakers.",
+  "Nessun soldo in gioco: valgono punti, livelli e lega.": "No money involved: it's for points, levels and leagues.",
+  "Partita non più in lista: toglila dalla schedina.": "Match no longer listed: remove it from the slip.",
+  "Partita o quota non più disponibile: *": "Match or odds no longer available: *",
+  "La partita è già iniziata: *": "The match has already started: *",
+  "Quote live di più di 5 minuti fa (*": "Live odds older than 5 minutes (*",
   // profilazione e sfide per competizione
   "Raccontaci cosa segui": "Tell us what you follow",
   "Così ti mettiamo in primo piano i tuoi campionati, la tua squadra e i tuoi tennisti, e le sfide giuste. Si cambia quando vuoi dalla matita.": "So we can put your leagues, your team and your players first, and the right challenges. Change it anytime with the pencil.",
