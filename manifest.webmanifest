@@ -1,12 +1,12 @@
 {
-  "name": "Il Segnalatore",
-  "short_name": "Segnalatore",
-  "description": "Stato dei motori, andamento e segnali di tennis, ippica e calcio.",
+  "name": "StatSight",
+  "short_name": "StatSight",
+  "description": "Statistiche live, strategie e segnali: calcio, tennis, hockey, basket e ippica.",
   "lang": "it",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#101E28",
   "theme_color": "#101E28",
   "icons": [
