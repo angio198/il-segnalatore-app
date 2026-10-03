@@ -725,6 +725,150 @@
   .colcount .cchead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;} .colcount .cchead span b{font-size:1.4rem;font-weight:900;}
   .ccrar{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:0.76rem;color:var(--ink-soft);} .ccrar i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px;}
   .rr.r0 i{background:#8A949C;} .rr.r1 i{background:#3B82F6;} .rr.r2 i{background:linear-gradient(135deg,#FFE27A,#C98A12);} .rr.r3 i{background:linear-gradient(135deg,#FF6BD5,#FFD84A,#5AE0FF);}
+  /* barra in basso con il tasto centrale (04/10): il logo tondo apre il Radar, la home */
+  .tab.hub{position:relative;justify-content:flex-end;}
+  .tab.hub .hubic{width:62px;height:62px;margin:-38px 0 7px;border-radius:50%;display:grid;place-items:center;background:var(--surface);
+    box-shadow:0 0 0 3px var(--surface),0 6px 16px -6px rgba(0,0,0,.6),0 0 0 5px color-mix(in srgb, var(--accent) 40%, transparent);transition:transform .2s,box-shadow .2s;}
+  .tab.hub .hubic img{width:54px;height:54px;border-radius:50%;}
+  .tab.hub[aria-current="page"] .hubic{transform:scale(1.06);box-shadow:0 0 0 3px var(--surface),0 6px 18px -6px rgba(0,0,0,.6),0 0 0 6px var(--accent),0 0 18px 2px color-mix(in srgb, var(--accent) 45%, transparent);}
+  .tab.hub:not([aria-current="page"]) .hubic img{filter:saturate(.75);}
+  @media (max-height:500px){ .tab.hub .hubic{width:40px;height:40px;margin:-12px 0 0;} .tab.hub .hubic img{width:34px;height:34px;} .tab.hub{flex-direction:row;align-items:center;justify-content:center;} }
+  @media (prefers-reduced-motion: reduce){ .tab.hub .hubic{transition:none;} }
+  /* Radar a schede (04/10) */
+  .rgroup{margin:0 -6px 12px;padding:8px 6px 2px;border-radius:16px;background:color-mix(in srgb, var(--tint) 11%, transparent);border:1px solid color-mix(in srgb, var(--tint) 28%, transparent);}
+  .rghead{font-size:0.78rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase;margin:0 4px 8px;display:flex;align-items:center;gap:6px;}
+  .rcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer;position:relative;}
+  .rtop{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:8px;}
+  .rmin{color:var(--bad);font-weight:800;font-size:0.82rem;font-variant-numeric:tabular-nums;}
+  .rteams{display:flex;flex-direction:column;font-weight:700;font-size:0.92rem;min-width:0;} .rteams span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .rscore{display:flex;flex-direction:column;align-items:center;min-width:30px;padding:2px 8px;border-radius:8px;font-size:1.05rem;font-variant-numeric:tabular-nums;transition:background .4s;}
+  .rscore.gl{background:color-mix(in srgb, #2BB673 30%, transparent);color:var(--ink);box-shadow:0 0 0 1px #2BB67399;}
+  .rbadges{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;} .rbadges:empty{display:none;}
+  .rb,.hottag{display:inline-flex;align-items:center;gap:4px;font-size:0.7rem;font-weight:800;padding:2px 8px;border-radius:999px;}
+  .rb .ico,.hottag .ico{width:13px;height:13px;}
+  .rb.gol{background:#2BB673;color:#04210f;} .rb.red{background:#E5322D;color:#fff;} .rb.sus{background:#F2A93B;color:#2A1A00;animation:pulse2 1.4s ease-in-out infinite;}
+  .rb.stale{background:color-mix(in srgb, var(--ink-soft) 25%, transparent);color:var(--ink);}
+  .hottag{background:linear-gradient(120deg,#FFD866,#E8812F);color:#2A1A00;} .hottag .lk{display:inline-flex;align-items:center;gap:2px;opacity:.85;}
+  .rcard.hotm{border-color:#E8A800;box-shadow:0 0 0 1px #E8A80088,0 0 18px -6px #E8812F;}
+  .rcard.susp{border-style:dashed;border-color:#F2A93B;}
+  .rcard.flashg{animation:goalflash 2.4s ease-out 1;}
+  .rcard.redal{animation:redalert .5s ease-in-out 6;}
+  @keyframes goalflash{0%{box-shadow:0 0 0 0 #2BB673cc;background:color-mix(in srgb, #2BB673 35%, var(--surface));}100%{box-shadow:0 0 0 14px #2BB67300;}}
+  @keyframes redalert{0%,100%{box-shadow:0 0 0 1px #E5322D55;}50%{box-shadow:0 0 0 3px #E5322D,0 0 16px #E5322D88;}}
+  @keyframes pulse2{50%{opacity:.6;}}
+  .rstats{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .rchip,.rodds{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;padding:3px 8px;border-radius:8px;background:var(--bg-alt);font-variant-numeric:tabular-nums;}
+  .rchip i,.rodds i{font-style:normal;color:var(--ink-soft);margin-right:2px;} .rchip.warm{background:color-mix(in srgb, #E8862A 24%, var(--bg-alt));} .rchip.hot{background:color-mix(in srgb, var(--bad) 28%, var(--bg-alt));}
+  .rchip.locked .blur{filter:blur(4px);} .rchip.locked .ico{width:11px;height:11px;}
+  .rodds{margin-left:auto;gap:6px;} .rodds span{font-weight:700;}
+  .tcard .thead,.tcard .trow{display:grid;grid-template-columns:18px minmax(0,1fr) 30px repeat(var(--nset,5),26px) 40px;align-items:center;gap:4px;}
+  .tcard .thead{font-size:0.62rem;text-align:center;} .tcard .thead span:nth-child(2){text-align:left;}
+  .tcard .trow{padding:3px 0;font-variant-numeric:tabular-nums;}
+  .tname{font-weight:700;font-size:0.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .tsw{text-align:center;font-weight:900;} .tset{text-align:center;color:var(--ink-soft);font-weight:600;}
+  .tset.cur{background:color-mix(in srgb, #3BA3F0 30%, transparent);color:var(--ink);border-radius:6px;font-weight:800;}
+  .tpt{text-align:center;font-weight:900;background:#3BA3F0;color:#06233a;border-radius:6px;padding:1px 0;}
+  .tball{display:grid;place-items:center;} .tball .ico{width:14px;height:14px;} .tball.on .ico{animation:blink 1.1s ease-in-out infinite;}
+  @keyframes blink{50%{opacity:.25;transform:scale(.85);}}
+  @media (prefers-reduced-motion: reduce){.rcard.flashg,.rcard.redal,.rb.sus,.tball.on .ico{animation:none;}}
+  .hotblock{border-color:#E8A800;background:linear-gradient(135deg,color-mix(in srgb,#FFD866 14%,var(--surface)),var(--surface));} .hotblock .ico{color:#E8812F;}
+  .hbrow{padding:4px 0 8px;border-bottom:1px dashed var(--line);margin-bottom:6px;} .hbrow:last-of-type{border-bottom:none;}
+  .hbt{display:flex;align-items:center;gap:6px;} .hbp{margin-left:auto;font-weight:900;font-size:1.1rem;color:var(--accent-strong);} .hbnote{font-size:0.72rem;}
+  #segview{margin-bottom:10px;}
+  .tglink{display:inline-flex;align-items:center;gap:6px;margin-top:10px;margin-left:8px;font-size:0.8rem;font-weight:800;color:#fff;background:#2AABEE;border-radius:999px;padding:5px 12px;text-decoration:none;}
+  .tglink .ico{width:14px;height:14px;}
+  .bkt .kpis{grid-template-columns:repeat(4,minmax(0,1fr));} .bkth{margin-bottom:8px;}
+  .topsw{display:flex;align-items:center;gap:12px;} .topsw .slh{flex:1;margin:0;cursor:pointer;} .topsw .slh > span{display:flex;flex-direction:column;}
+  .lastres{display:flex;align-items:center;gap:4px;margin-top:6px;} .lastres .k{font-size:0.7rem;margin-right:4px;}
+  .lastres i{width:10px;height:10px;border-radius:50%;display:inline-block;} .lastres i.w{background:var(--good);} .lastres i.l{background:var(--bad);}
+  /* Strategie a gruppi (03/10): in verticale i gruppi, dentro ogni gruppo le strategie scorrono di lato */
+  .carousel{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px 6px;padding:0 16px 8px;scroll-padding:0 16px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .carousel::-webkit-scrollbar{display:none;}
+  .carousel>.strat{flex:0 0 84%;max-width:360px;scroll-snap-align:start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 14px;}
+  .carousel>.strat:last-child{border-bottom:1px solid var(--line);}
+  .carousel>.strat:only-child{flex-basis:100%;max-width:none;}
+  #catsliders.editing{background:color-mix(in srgb, var(--accent) 10%, var(--surface));border:2px solid var(--accent-strong);border-radius:14px;padding:14px 14px 8px;margin-bottom:12px;box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);}
+  .slends{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--ink-soft);margin-top:-2px;}
+  .catedit{position:sticky;bottom:88px;z-index:5;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--accent-strong);border-radius:14px;padding:10px 12px;margin:0 0 12px;box-shadow:0 6px 18px rgba(0,0,0,.25);}
+  .catedit .k{flex:1;font-size:0.78rem;} .catedit .primary{width:auto;padding:9px 16px;margin:0;}
+  .catedit.shake{animation:cshake .45s;}
+  @keyframes cshake{20%{transform:translateX(-8px);}40%{transform:translateX(7px);}60%{transform:translateX(-5px);}80%{transform:translateX(3px);}}
+  .mebar{display:flex;align-items:center;gap:8px;margin:2px 0 10px;}
+  .meav{display:flex;align-items:center;gap:10px;flex:1;min-width:0;background:none;border:none;padding:0;color:inherit;font:inherit;text-align:left;cursor:pointer;}
+  .meav .avatar{flex:none;box-shadow:0 0 0 2px var(--accent-strong);border-radius:50%;}
+  .mew{display:flex;flex-direction:column;min-width:0;} .mew b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .mew .k{font-size:0.74rem;}
+  #mebtns{display:flex;gap:6px;}
+  .coinpill{margin:0;border:none;border-radius:999px;padding:7px 12px;background:linear-gradient(135deg,#FFD66B,#E9A93A);color:#2A1A00;font:inherit;font-weight:900;cursor:pointer;}
+  .coinpill .ico{width:20px;height:20px;}
+  .ptype{display:inline-block;font-size:0.62rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:2px 6px;margin-right:6px;vertical-align:1px;background:var(--line);color:var(--ink-soft);}
+  .ptype.t-analisi{background:#2F6FD633;color:#5B9BFF;} .ptype.t-statistica{background:#2BB67333;color:#2BB673;} .ptype.t-notizia{background:#E9A93A33;color:#E9A93A;}
+  .feedmore{width:100%;margin:6px 0 12px;}
+  .prows{margin-top:8px;border-top:1px dashed var(--line);} .prow{display:flex;justify-content:space-between;gap:10px;font-size:0.84rem;padding:5px 0;border-bottom:1px dashed var(--line);}
+  .psrc{font-size:0.72rem;margin-top:6px;}
+  .greed{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:0 0 12px;}
+  .greed .slh{margin:0 0 6px;} .greed .k{font-size:0.72rem;margin-top:4px;}
+  .gbar{height:8px;border-radius:99px;background:var(--line);position:relative;overflow:hidden;}
+  .gbar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#2BB673,#E9A93A,#E5322D);}
+  .greed.g-prudente b{color:#2BB673;} .greed.g-medio b{color:#E9A93A;} .greed.g-aggressivo b{color:#E5322D;}
+  .gchip{display:inline-flex;align-items:center;gap:3px;margin-left:6px;font-size:0.6rem;font-weight:900;color:#fff;background:#E5322D;border-radius:6px;padding:2px 6px;vertical-align:1px;}
+  .gchip .ico{width:10px;height:10px;}
+  .zona{font-size:0.78rem;margin-top:4px;display:flex;align-items:center;gap:4px;} .zona .ico{width:14px;height:14px;}
+  .copybtn{margin-top:8px;} .copybtn .ico{width:15px;height:15px;}
+  .cmbox{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;}
+  .cmprev{display:flex;align-items:center;gap:14px;margin-bottom:10px;} .cmprev svg{border-radius:22px;}
+  .cmbox .hscroll{margin:0 -12px;padding:4px 12px 10px;} .cmtabs{margin-bottom:6px;} .cmlab{font-size:0.76rem;font-weight:800;color:var(--ink-soft);margin:8px 0 4px;}
+  .cmopts{gap:8px;} .cmopt{position:relative;flex:none;padding:0;border:none;background:none;cursor:pointer;border-radius:14px;display:flex;flex-direction:column;align-items:center;}
+  .cmopt svg{border-radius:14px;} .cmopt.on svg,.cmopt.on .cmsw{outline:3px solid var(--accent);outline-offset:2px;}
+  .cmsw{display:block;width:34px;height:34px;border-radius:50%;border:2px solid var(--line);margin:4px;}
+  .cmopt.locked svg,.cmopt.locked .cmsw{opacity:.35;filter:grayscale(.7);} .cmopt.locked{cursor:default;}
+  .cmlock{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);white-space:nowrap;font-size:0.56rem;font-weight:800;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:0 4px;display:flex;align-items:center;gap:2px;}
+  .cmlock .ico{width:9px;height:9px;}
+  .wheelbtn{position:relative;} .wheelbtn .ico{width:24px;height:24px;} .wheelbtn .ndot{top:2px;right:2px;}
+  .wheelwrap{position:relative;width:240px;height:240px;margin:6px auto 16px;}
+  .wheel{transition:transform 4.2s cubic-bezier(.17,.67,.12,1);filter:drop-shadow(0 6px 14px rgba(0,0,0,.35));}
+  .wpointer{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:22px solid #fff;z-index:2;filter:drop-shadow(0 2px 2px rgba(0,0,0,.4));}
+  .wres{display:flex;align-items:center;gap:8px;} .wlist .wrow{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:0.86rem;} .wlist .wrow .k{margin-left:auto;}
+  .wdot{width:10px;height:10px;border-radius:50%;flex:none;}
+  .stkrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;} .stk{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 4px;}
+  .stk .ico{width:30px;height:30px;} .stk small{font-size:0.62rem;text-align:center;} .stk.no{opacity:.4;}
+  @media (prefers-reduced-motion: reduce){ .wheel{transition:none;} }
+  .fintro{display:flex;gap:12px;align-items:flex-start;} .fintro > .ico{width:40px;height:40px;flex:none;}
+  .fvs{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0 14px;padding:14px;border-radius:16px;background:linear-gradient(90deg,#2F6FD633,transparent 45%,transparent 55%,#E5322D33);}
+  .fside{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;text-align:center;min-width:0;} .fside b{font-size:0.86rem;}
+  .fvsx{font-size:2rem;font-weight:900;font-style:italic;background:linear-gradient(180deg,#FFD84A,#E07B2C);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .fvs.anim .me{animation:fin-l .6s cubic-bezier(.2,1.4,.5,1) both;} .fvs.anim .opp{animation:fin-r .6s cubic-bezier(.2,1.4,.5,1) .15s both;} .fvs.anim .fvsx{animation:fvs-pop .5s cubic-bezier(.3,1.8,.5,1) .55s both;}
+  @keyframes fin-l{from{transform:translateX(-120%);opacity:0;}} @keyframes fin-r{from{transform:translateX(120%);opacity:0;}} @keyframes fvs-pop{from{transform:scale(3);opacity:0;}}
+  .segbar.f3{grid-template-columns:1fr 1fr 1fr;margin:8px 0 0;} .segbar.f3 small{font-weight:600;opacity:.8;}
+  .fpicks{display:flex;flex-direction:column;gap:4px;margin-top:8px;font-size:0.84rem;} .fp{padding:6px 10px;border-radius:9px;background:var(--bg);border:1px solid var(--line);}
+  .fp.me{border-left:4px solid #2F6FD6;} .fp.opp{border-left:4px solid #E5322D;} .fp.ok{background:color-mix(in srgb, #2BB673 18%, var(--surface));} .fp.ko{opacity:.6;text-decoration:line-through;}
+  .fresult{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px;border-radius:14px;margin-bottom:12px;animation:fvs-pop .5s cubic-bezier(.3,1.8,.5,1) both;}
+  .fresult b{font-size:1.3rem;} .fresult.win{background:linear-gradient(135deg,#2BB673,#1E7F52);color:#fff;} .fresult.lose{background:var(--surface);border:1px solid var(--line);} .fresult.draw{background:linear-gradient(135deg,#E9A93A,#B57F00);color:#2A1A00;}
+  .fhrow{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);} .fhrow:last-child{border-bottom:none;} .fhrow > span:nth-child(2){flex:1;min-width:0;}
+  .fr{font-size:0.66rem;font-weight:900;border-radius:6px;padding:2px 6px;} .fr.win{background:#2BB673;color:#fff;} .fr.lose{background:var(--line);} .fr.draw{background:#E9A93A;color:#2A1A00;}
+  .dserver{display:flex;gap:10px;align-items:flex-start;font-size:0.84rem;} .dserver .ico{flex:none;width:20px;height:20px;}
+  .dconvs{padding:4px 12px;} .dconv{display:flex;align-items:center;gap:10px;width:100%;padding:10px 0;border:none;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;}
+  .dconv:last-child{border-bottom:none;} .dcw{flex:1;display:flex;flex-direction:column;min-width:0;} .dcw .k{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.78rem;}
+  .dav{width:40px;height:40px;border-radius:50%;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;} .dav .ico{width:22px;height:22px;}
+  .dun{min-width:20px;height:20px;border-radius:10px;background:#E5322D;color:#fff;font-size:0.72rem;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 5px;}
+  .dshare{display:flex;align-items:center;gap:10px;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer;} .dshare > span{flex:1;display:flex;flex-direction:column;}
+  .dcode{font-family:ui-monospace,monospace;font-size:0.72rem;word-break:break-all;background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:8px;margin:6px 0 10px;}
+  .dhead{display:flex;align-items:center;gap:10px;margin:4px 0 12px;}
+  .dlist{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 330px);overflow-y:auto;padding:2px;}
+  .dmsg{align-self:flex-start;max-width:88%;background:var(--surface);border:1px solid var(--line);border-radius:14px 14px 14px 4px;padding:8px 10px;}
+  .dmsg.mine{align-self:flex-end;border-radius:14px 14px 4px 14px;background:color-mix(in srgb, var(--accent) 16%, var(--surface));}
+  .dmsg.sys{align-self:center;font-size:0.78rem;color:var(--ink-soft);background:none;border:none;}
+  .dmeta{display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:4px;font-size:0.7rem;}
+  .dslip{min-width:230px;} .dsh{margin-bottom:6px;} .dleg{display:flex;justify-content:space-between;gap:10px;font-size:0.8rem;padding:4px 0;border-bottom:1px dashed var(--line);} .dleg.tot{border-bottom:none;}
+  .dform{margin-top:10px;} #direct{padding-bottom:72px;}   /* la barra della schedina non copre "Apri" */
+  .rlist{padding:4px 12px;} .rrow{display:flex;align-items:center;gap:10px;width:100%;padding:10px 0;border:none;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;}
+  .rrow:last-child{border-bottom:none;} .rtime{font-weight:900;font-size:0.82rem;min-width:62px;} .rw{flex:1;display:flex;flex-direction:column;min-width:0;} .rw .k{font-size:0.76rem;}
+  .hcard summary{display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none;} .hcard summary::-webkit-details-marker{display:none;}
+  .hno{width:30px;height:30px;border-radius:8px;background:var(--ink);color:var(--bg);font-weight:900;display:flex;align-items:center;justify-content:center;flex:none;}
+  .hw{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;} .hw .k{font-size:0.74rem;} .hq{font-weight:900;}
+  .aff{align-self:flex-start;font-size:0.7rem;font-weight:800;border-radius:6px;padding:2px 7px;background:var(--line);}
+  .aff-ok{background:#2BB67333;color:#2BB673;} .aff-mid{background:#E9A93A33;color:#E9A93A;} .aff-bad{background:#E5322D33;color:#E5322D;}
+  .hsec{font-size:0.74rem;font-weight:800;color:var(--ink-soft);margin:12px 0 4px;text-transform:uppercase;letter-spacing:.04em;}
+  .hrow{display:grid;grid-template-columns:48px 1fr auto auto;gap:8px;font-size:0.8rem;padding:4px 0;border-bottom:1px dashed var(--line);} .hrow:last-child{border-bottom:none;}
   /* colonna stretta solo su schermi alti (computer, tablet); il telefono in orizzontale usa tutta la larghezza (Radar) */
   @media (min-width:600px) and (min-height:560px){
     body{max-width:480px;margin-inline:auto;box-shadow:0 0 0 1px var(--line);}
@@ -778,6 +922,7 @@
     <symbol id="tb-segnali" viewBox="0 0 24 24"><path d="M6.6 6.2a8 8 0 0 0 0 11.6M17.4 6.2a8 8 0 0 1 0 11.6" fill="none" stroke="#FF8A65" stroke-width="2" stroke-linecap="round"/><path d="M9.1 8.8a4.4 4.4 0 0 0 0 6.4M14.9 8.8a4.4 4.4 0 0 1 0 6.4" fill="none" stroke="url(#g-red)" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="12" r="2.6" fill="url(#g-flame)" stroke="#C2361A" stroke-width=".8"/><path d="M12 14.6v6.4" stroke="#E0663F" stroke-width="1.8" stroke-linecap="round"/><path d="M9.4 21h5.2" stroke="#E0663F" stroke-width="1.8" stroke-linecap="round"/></symbol>
     <symbol id="tb-strategie" viewBox="0 0 24 24"><path d="M6.5 21h11l-1-3h-9z" fill="#1F4FA0"/><path d="M8 18c.3-3 1.6-4.6 3-5.8-1.5.2-2.7.8-3.6 1.3L6 11.6c1.6-2.2 3-4 3.6-6.3l1.2-2.1.8 1.8C15.5 5.2 18 8.4 17.4 18z" fill="url(#g-blue)" stroke="#1F4FA0" stroke-width="1" stroke-linejoin="round"/><circle cx="10.6" cy="8.2" r="1" fill="#fff"/><path d="M13.6 7.4c1.6 1.3 2.4 3.4 2.4 6" stroke="#fff" stroke-opacity=".55" stroke-width="1.1" fill="none" stroke-linecap="round"/></symbol>
     <symbol id="tb-diario" viewBox="0 0 24 24"><rect x="4.5" y="3" width="13" height="18" rx="2.2" fill="url(#g-amber)" stroke="#B5650A" stroke-width="1"/><path d="M8 3v18" stroke="#B5650A" stroke-width="1"/><path d="M10.5 8h4.5M10.5 11h3.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M3.4 6.5h2.4M3.4 10.5h2.4M3.4 14.5h2.4" stroke="#7A4B1E" stroke-width="1.4" stroke-linecap="round"/><path d="M14.6 18.8l1-3.4 5.2-5.2a1.4 1.4 0 0 1 2 2l-5.2 5.2z" fill="url(#g-green)" stroke="#146B3C" stroke-width=".9" stroke-linejoin="round"/></symbol>
+    <symbol id="tb-direct" viewBox="0 0 24 24"><path d="M3.5 5.5a2.5 2.5 0 0 1 2.5-2.5h9a2.5 2.5 0 0 1 2.5 2.5v6a2.5 2.5 0 0 1-2.5 2.5H9.5l-4 3.2V14H6a2.5 2.5 0 0 1-2.5-2.5z" fill="url(#g-blue)" stroke="#1F4FA0" stroke-width="1"/><path d="M8.6 10.8h5.8c1.4 0 2.6 1.1 2.6 2.5v4.2c0 1.4-1.2 2.5-2.6 2.5h-.4l3 2.3v-2.3h1.4c1.4 0 2.6-1.1 2.6-2.5v-4.2c0-1.4-1.2-2.5-2.6-2.5" fill="#8E5BC9" stroke="#5B2E8C" stroke-width="1" stroke-linejoin="round"/><path d="M7 7h6.5M7 9.6h4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></symbol>
     <symbol id="tb-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="#0F3B2A" stroke="url(#g-green)" stroke-width="1.8"/><circle cx="12" cy="12" r="5.6" fill="none" stroke="#45D483" stroke-opacity=".55" stroke-width="1"/><path d="M12 12L12 2.4A9.6 9.6 0 0 1 20.3 7.2z" fill="#45D483" fill-opacity=".55"/><path d="M12 12l8.3-4.8" stroke="#B8F5CF" stroke-width="1.6" stroke-linecap="round"/><circle cx="15.6" cy="6.8" r="1.4" fill="#FFE27A"/><circle cx="8" cy="15.4" r="1.2" fill="#FF8A65"/><circle cx="12" cy="12" r="1.3" fill="#B8F5CF"/></symbol>
     <symbol id="i-bell" viewBox="0 0 24 24"><path d="M12 3.2c3.5 0 6 2.6 6 6.2v3.8l1.8 3.1H4.2L6 13.2V9.4c0-3.6 2.5-6.2 6-6.2z" fill="url(#g-amber)" stroke="#B5650A" stroke-width="1.1"/><path d="M9.6 18.6a2.5 2.5 0 0 0 4.8 0" fill="#7A4B1E" stroke="#7A4B1E" stroke-width="1"/><circle cx="17.6" cy="5.6" r="2.6" fill="#E5322D" stroke="none"/></symbol>
     <symbol id="i-staro" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
@@ -818,6 +963,8 @@
     <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
     <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 5l8 13H4z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 19L4 6h16z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-vs" viewBox="0 0 24 24"><path d="M12 1.5A10.5 10.5 0 0 0 12 22.5z" fill="#2F6FD6"/><path d="M12 1.5a10.5 10.5 0 0 1 0 21z" fill="#E5322D"/><path d="M13.5 2l-4 9.5h3.2L10.5 22l5-12h-3.3z" fill="url(#g-gold)" stroke="#8A5D00" stroke-width=".6"/></symbol>
+    <symbol id="i-wheel" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#E9A93A" stroke="#8A5D00" stroke-width="1"/><path d="M12 12V2A10 10 0 0 1 21.5 8.9z" fill="#2F6FD6"/><path d="M12 12l9.5-3.1A10 10 0 0 1 17.9 20z" fill="#E46F9C"/><path d="M12 12l5.9 8.1A10 10 0 0 1 6.1 20z" fill="#3C8D4E"/><path d="M12 12L6.1 20.1A10 10 0 0 1 2.5 8.9z" fill="#8E5BC9"/><circle cx="12" cy="12" r="2.6" fill="#fff" stroke="#8A5D00" stroke-width=".8"/><path d="M12 .5l-2 3h4z" fill="#C0392B"/></symbol>
     <symbol id="i-chest" viewBox="0 0 24 24"><path d="M3 11h18v9.5H3z" fill="#8A5524" stroke="#4E2C0E" stroke-width="1"/><path d="M3 11.5V9c0-2.8 4-5 9-5s9 2.2 9 5v2.5z" fill="#A5672E" stroke="#4E2C0E" stroke-width="1"/><path d="M5.5 5.8v14.7M18.5 5.8v14.7M3 13h18" stroke="url(#g-gold)" stroke-width="1.8"/><rect x="10" y="11" width="4" height="5" rx="1" fill="url(#g-gold)" stroke="#8A5D00" stroke-width=".8"/></symbol>
   </defs>
 </svg>
@@ -860,6 +1007,10 @@
 </main>
 
 <main class="view" id="view-segnali" hidden>
+  <div class="segbar" id="segview" role="tablist">
+    <button type="button" data-segv="nuovi" aria-pressed="true"><svg class="ico"><use href="#i-bolt"/></svg> Nuovi <span class="cnt" id="nnuovi"></span></button>
+    <button type="button" data-segv="storico" aria-pressed="false"><svg class="ico"><use href="#i-trend"/></svg> Storico</button>
+  </div>
   <div class="chips" id="timechips" role="group" aria-label="Filtra per momento" style="margin-bottom:8px;">
     <button class="chip" type="button" data-when="all" aria-pressed="true">Tutti</button>
     <button class="chip" type="button" data-when="subito" aria-pressed="false"><svg class="ico"><use href="#i-bolt"/></svg> Da giocare subito</button>
@@ -880,6 +1031,7 @@
   </div>
   <div id="today"></div>
   <div id="feed"></div>
+  <div id="storico" hidden></div>
 </main>
 
 <main class="view" id="view-strategie" hidden>
@@ -919,7 +1071,7 @@
   </div>
   <div class="note" style="margin-top:10px;">Cambia solo come vedi le quote: punti, monete e classifiche si calcolano sempre sulla quota decimale.</div>
   <h2 class="sectiontitle">Guida</h2>
-  <button class="card navcard" type="button" id="tutbtn"><svg class="ico"><use href="#i-book"/></svg><span><b>Rivedi il tutorial</b><span class="k">Strategie, avvisi, Radar e Diario in quattro passi</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
+  <button class="card navcard" type="button" id="tutbtn"><svg class="ico"><use href="#i-book"/></svg><span><b>Rivedi il tutorial</b><span class="k">Radar, segnali, strategie, avvisi, Diario e Direct in sei passi</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <h2 class="sectiontitle">Notifiche</h2>
   <button class="card navcard" type="button" id="notifbtn"><svg class="ico"><use href="#i-bell"/></svg><span><b>Notifiche delle strategie</b><span class="k">Quali strategie e cosa mostrare nel messaggio</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <h2 class="sectiontitle">Piano</h2>
@@ -932,13 +1084,23 @@
   <div id="informativa"></div>
 </main>
 
+<main class="view" id="view-direct" hidden>
+  <h1 class="dtitle">Direct</h1>
+  <div id="direct"><div class="note">I messaggi con gli amici arrivano qui.</div></div>
+</main>
+
+<main class="view" id="view-chat" hidden>
+  <button class="back" type="button" data-back="direct">‹ Direct</button>
+  <div id="chat"></div>
+</main>
+
 <main class="view" id="view-pick" hidden>
   <button class="back" type="button" data-back="profilo">‹ I miei pronostici</button>
   <div id="pick"></div>
 </main>
 
 <main class="view" id="view-album" hidden>
-  <button class="back" type="button" data-back="profilo">‹ Profilo</button>
+  <button class="back" type="button" data-back="mio">‹ Profilo</button>
   <h1 class="dtitle">Album delle squadre</h1>
   <div id="album"></div>
 </main>
@@ -964,7 +1126,7 @@
 
 <main class="view" id="view-diario" hidden>
   <div class="chips subtabs" role="tablist">
-    <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-user"/></svg> Profilo</button>
+    <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Home</button>
     <button class="chip" type="button" data-sub="diario" aria-pressed="true"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
     <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
@@ -983,7 +1145,7 @@
 
 <main class="view" id="view-occhio" hidden>
   <div class="chips subtabs" role="tablist">
-    <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-user"/></svg> Profilo</button>
+    <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Home</button>
     <button class="chip" type="button" data-sub="diario" aria-pressed="false"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
     <button class="chip" type="button" data-sub="occhio" aria-pressed="true"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
@@ -1004,13 +1166,36 @@
 
 <main class="view" id="view-profilo" hidden>
   <div class="chips subtabs" role="tablist">
-    <button class="chip" type="button" data-sub="profilo" aria-pressed="true"><svg class="ico"><use href="#i-user"/></svg> Profilo</button>
+    <button class="chip" type="button" data-sub="profilo" aria-pressed="true"><svg class="ico"><use href="#i-handshake"/></svg> Home</button>
     <button class="chip" type="button" data-sub="diario" aria-pressed="false"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
     <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
-  <div id="profilo"></div>
+  <div id="mebar"></div>
   <div id="bacheca"></div>
   <input type="file" id="fotoinput" accept="image/*" hidden>
+</main>
+
+<main class="view" id="view-ruota" hidden>
+  <button class="back" type="button" data-back="profilo">‹ Home</button>
+  <h1 class="dtitle">Ruota del giorno</h1>
+  <div id="ruota"></div>
+</main>
+
+<main class="view" id="view-fight" hidden>
+  <button class="back" type="button" data-back="profilo">‹ Home</button>
+  <h1 class="dtitle">StatsFight</h1>
+  <div id="fight"></div>
+</main>
+
+<main class="view" id="view-corsa" hidden>
+  <button class="back" type="button" data-back="strategie">‹ Ippica</button>
+  <div id="corsa"></div>
+</main>
+
+<main class="view" id="view-mio" hidden>
+  <button class="back" type="button" data-back="profilo">‹ Home</button>
+  <div id="profilo"></div>
+  <div id="miosfide"></div>
 </main>
 
 <main class="view" id="view-persona" hidden>
@@ -1020,7 +1205,6 @@
 
 <main class="view" id="view-radar" hidden>
   <div class="radarhead"><div class="eyebrow" style="margin:0;">Radar live</div><span class="k" id="radarage"></span></div>
-  <div class="note rotate">Gira il telefono in orizzontale per vedere tutte le colonne.</div>
   <div class="chips" id="radarchips" role="group" aria-label="Sport" style="margin:8px 0;">
     <button class="chip" type="button" data-rsport="calcio" aria-pressed="true"><svg class="ico"><use href="#i-calcio"/></svg> Calcio</button>
     <button class="chip" type="button" data-rsport="tennis" aria-pressed="false"><svg class="ico"><use href="#i-tennis"/></svg> Tennis</button>
@@ -1048,15 +1232,18 @@
 <div id="fx" aria-hidden="true"></div>
 
 <nav class="tabbar" id="tabbar" hidden>
-  <button class="tab" type="button" data-view="segnali" aria-current="page"><span class="ic"><svg class="ico"><use href="#tb-segnali"/></svg></span>Segnali</button>
+  <button class="tab" type="button" data-view="segnali"><span class="ic"><svg class="ico"><use href="#tb-segnali"/></svg></span>Segnali</button>
   <button class="tab" type="button" data-view="strategie"><span class="ic"><svg class="ico"><use href="#tb-strategie"/></svg></span>Strategie</button>
+  <button class="tab hub" type="button" data-view="radar" aria-current="page" aria-label="Radar"><span class="hubic"><img src="icon-192.png" alt="" width="56" height="56"></span>Radar</button>
   <button class="tab" type="button" data-view="diario"><span class="ic"><svg class="ico"><use href="#tb-diario"/></svg></span>Diario</button>
-  <button class="tab" type="button" data-view="radar"><span class="ic"><svg class="ico"><use href="#tb-radar"/></svg></span>Radar</button>
+  <button class="tab" type="button" data-view="direct"><span class="ic"><svg class="ico"><use href="#tb-direct"/></svg></span>Direct</button>
 </nav>
 
 <script src="regole.js"></script>
 <script src="moderazione.js"></script>
 <script src="anagrafica.js"></script>
+<script src="feed_rank.js"></script>
+<script src="condividi.js"></script>
 <script>
 (function () {
   "use strict";
@@ -1270,14 +1457,46 @@
       + (best ? '<span>quota più alta vinta <b class="pos">' + oddsTxt(best.odds) + '</b>' + (idx >= 0 ? ' ›' : "") + '</span>' : "") + '</div>';
   }
 
+  // ---------------------------------------------------------------- Segnali: Nuovi e Storico (richiesta 03/10)
+  // Nuovi = segnali ancora giocabili e non chiusi (regola in docs/segnali_nuovi.md): nessun esito con la stessa
+  // chiave; live da al massimo 30 minuti, corsa 20 minuti, pre-partita fino a 18 ore. Storico = esiti (vinti e
+  // persi), quota piu' alta presa oggi e grafici di backtest delle strategie dei segnali.
+  var segv = "nuovi", NEW_LIVE_S = 30 * 60, NEW_RACE_S = 20 * 60, NEW_PRE_S = 18 * 3600, TG_BOT = "https://t.me/Ilsegna_latorebot";
+  function closedSignalKeys() { var k = {}; (data.feed || []).forEach(function (f) { if (f.kind === "outcome" && f.key) k[f.key] = 1; }); return k; }
+  function isNewSignal(f, closed) {
+    if (f.kind !== "signal" || (f.key && closed[f.key])) return false;
+    var age = nowS() - f.ts;
+    if (f.start && f.timing === "prepartita") return f.start > nowS();
+    return age <= (f.timing === "live" ? NEW_LIVE_S : f.timing === "corsa" ? NEW_RACE_S : NEW_PRE_S);
+  }
+  function storicoHtml() {
+    var ids = {}, oddsBy = {};
+    (data.feed || []).forEach(function (f) {
+      var sid = f.main || f.strategy; if (!sid || !on(sid) || (filter !== "all" && f.sport !== filter)) return;
+      ids[sid] = 1; if (f.kind === "signal" && f.odds) (oddsBy[sid] = oddsBy[sid] || []).push(f.odds);
+    });
+    var cat = data.catalog || [];
+    var rows = Object.keys(ids).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(function (s) { return s && s.detail && (s.detail.curve || []).length > 1; });
+    if (!rows.length) return '<div class="note">I grafici di backtest compaiono quando le strategie dei segnali hanno una serie storica.</div>';
+    return '<h2 class="sectiontitle">Le strategie dei segnali</h2>' + rows.map(function (s) {
+      var st = s.detail.stats || {}, o = oddsBy[s.id] || [], avg = o.length ? o.reduce(function (a, b) { return a + b; }, 0) / o.length : null;
+      return '<div class="card bkt"><div class="bkth">' + EMOJI[s.sport] + ' <b>' + esc(s.name) + '</b></div>'
+        + '<div class="kpis"><div class="kpi"><div class="v">' + (st.n || 0) + '</div><div class="l">casi</div></div>'
+        + '<div class="kpi"><div class="v">' + (st.n ? Math.round(st.wins / st.n * 100) + "%" : "—") + '</div><div class="l">strike</div></div>'
+        + '<div class="kpi"><div class="v">' + (avg ? oddsTxt(avg) : "—") + '</div><div class="l">quota media</div></div>'
+        + '<div class="kpi"><div class="v ' + (st.roi >= 0 ? "pos" : "neg") + '">' + (st.roi != null ? pct(st.roi) : "—") + '</div><div class="l">rendimento</div></div></div>'
+        + '<div class="chart"><h3>Andamento cumulato (1 unità per segnale)</h3>' + lineChart(s.detail.curve) + '</div></div>';
+    }).join("") + '<div class="k" style="margin-top:6px;">Quota media dei segnali di queste strategie che vedi qui; casi, strike e rendimento sono quelli di tutta la serie storica, vinti e persi.</div>';
+  }
   function renderFeed() {
     var n = Array.from(hidden).filter(known).length;
     $("filternote").hidden = n === 0;
     $("filtertext").textContent = n === 1 ? "Filtro attivo: 1 strategia nascosta" : "Filtro attivo: " + n + " strategie nascoste";
     paintLegaChips();
-    var G = activeGroup(), skippedG = 0;
+    var G = activeGroup(), skippedG = 0, closedKeys = closedSignalKeys();
     var html = data.feed.map(function (f, i) {
       if (filter !== "all" && f.sport !== filter) return "";
+      if (segv === "nuovi" ? !isNewSignal(f, closedKeys) : f.kind !== "outcome") return "";   // Nuovi: solo giocabili; Storico: esiti
       if (G && !sigInGroup(f, G)) { skippedG++; return ""; }
       if (!whenOk(f.timing)) return "";
       var extra = (f.extra || []).filter(function (e) { return on(e.strategy); });
@@ -1298,21 +1517,27 @@
       return '<div class="card feedcard" data-idx="' + i + '">' + top
         + '<div class="pickrow"><span>Indicazione: <b>' + esc(f.pick) + '</b></span>' + ev + '</div>'
         + '<div class="meta">' + esc(f.prob_label) + ' ' + f.prob + '% · Quota ' + oddsTxt(f.odds) + (f.strategy ? " · " + esc(f.strategy) : "") + '</div>'
-        + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml + '</div>';
+        + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml
+        + (f.timing !== "prepartita" ? '<a class="tglink" href="' + TG_BOT + '" target="_blank" rel="noopener">' + ic("send") + ' Collega Telegram</a>' : "") + '</div>';
     });
     // segnali delle strategie con le barre accese su questo telefono, in ordine di tempo con gli altri
     var list = data.feed.map(function (f, i) { return { ts: f.ts, html: html[i] }; }).filter(function (x) { return x.html; });
-    if (whenOk("live")) {
+    if (whenOk("live") && segv === "nuovi") {
       catLiveItems().forEach(function (x) {
+        if (x.m.w === 1 || x.m.w === 2 || nowS() - x.ts > NEW_LIVE_S) return;   // chiuso o non piu' giocabile
         if (G && !sigInGroup({ sport: x.sport, event: (x.m.r || []).join(" v "), cat: x.m.lv || "" }, G)) return;
         if (filter === "all" || filter === x.sport) list.push({ ts: x.ts, html: catLiveCard(x) });
       });
       list.sort(function (a, b) { return b.ts - a.ts; });
     }
     var cards = list.map(function (x) { return x.html; });
-    $("today").innerHTML = todayCard();
+    document.querySelectorAll("#segview [data-segv]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.segv === segv)); });
+    $("nnuovi").textContent = segv === "nuovi" ? cards.length : "";
+    $("today").innerHTML = segv === "storico" ? todayCard() : "";
+    $("storico").hidden = segv !== "storico";
+    if (segv === "storico") { $("storico").innerHTML = storicoHtml(); $("feed").innerHTML = '<h2 class="sectiontitle">Vinti e persi</h2>' + (cards.length ? cards.join("") : '<div class="note">Nessun esito per questo filtro, per ora.</div>'); return; }
     $("feed").innerHTML = (cards.length ? cards.join("")
-      : '<div class="note">Nessun segnale per questo filtro, per ora.' + (G ? ' È attivo il gruppo "' + esc(G.name) + '".' : '') + (top5On ? ' È attivo "Solo le top 5".' : '')
+      : '<div class="note">' + (segv === "nuovi" ? "Nessun segnale nuovo da giocare adesso. I chiusi sono nello Storico." : "Nessun segnale per questo filtro, per ora.") + ' ' + (G ? ' È attivo il gruppo "' + esc(G.name) + '".' : '') + (top5On ? ' È attivo "Solo le top 5".' : '')
         + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>');
   }
 
@@ -1337,6 +1562,40 @@
     ippica: svgBg('<rect x="30" y="20" width="340" height="100" rx="50" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="10"/><rect x="30" y="20" width="340" height="100" rx="50" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1.5"/><line x1="300" y1="14" x2="300" y2="34" stroke="#fff" stroke-opacity=".8" stroke-width="2"/>', "#4E7A3B")
   };
 
+  // Interruttori Top (03/10): "Top 5" accende tutte le Top 5 e spegne le altre; "6-10" aggiunge le 6-10 (le Top 5
+  // restano accese); oltre la 10 si spengono. Usa lo stesso filtro delle strategie nascoste (segnalatore.filtri).
+  var TOPMODE_KEY = "statsight.topmode";
+  function topMode() { try { return Number(localStorage.getItem(TOPMODE_KEY)) || 0; } catch (e) { return 0; } }
+  function setTopMode(m) {
+    try { localStorage.setItem(TOPMODE_KEY, String(m)); } catch (e) {}
+    var keep = topIds().slice(0, m), all = (data.catalog || []).map(function (s) { return s.id; });
+    if (m) all.forEach(function (id) { if (keep.indexOf(id) >= 0) hidden.delete(id); else hidden.add(id); });
+    else hidden.clear();
+    saveHidden(); renderFeed(); renderStrategie();
+  }
+  function topSwitchHtml(R) {
+    var m = topMode(), on6 = R[0] > 0, checked = on6 ? m >= 10 : m >= 5;
+    return '<div class="card topsw"><label class="slh" for="topsw"><span><b>' + (on6 ? "Aggiungi le 6-10" : "Solo le Top 5") + '</b><span class="k">'
+      + (on6 ? "Si accendono anche le strategie dalla 6 alla 10; le Top 5 restano accese, quelle oltre la 10 si spengono." : "Si accendono tutte le Top 5 e si spengono tutte le altre.") + '</span></span></label>'
+      + '<span class="switch"><input type="checkbox" role="switch" id="topsw" data-topsw="' + (on6 ? 10 : 5) + '"' + (checked ? " checked" : "") + '><span class="slider"></span></span></div>';
+  }
+  // ultimi 10 esiti di una strategia (dagli esiti nei dati): pallini vinto/perso
+  function lastResultsHtml(id) {
+    var res = (data.feed || []).filter(function (f) { return f.kind === "outcome" && (f.main === id || f.strategy === id) && f.hit != null; })
+      .sort(function (a, b) { return b.ts - a.ts; }).slice(0, 10);
+    if (!res.length) return "";
+    return '<div class="lastres" aria-label="Ultimi esiti"><span class="k">Ultimi ' + res.length + '</span>' + res.reverse().map(function (f) {
+      return '<i class="' + (f.hit ? "w" : "l") + '" title="' + (f.hit ? "vinto" : "perso") + '"></i>'; }).join("") + '</div>';
+  }
+  function catLastHtml(sp, s) {   // ultimi 10 esiti dal vivo della combinazione scelta
+    var L = liveOf(sp), key = catKey(s), out = [];
+    ((L && L.recent) || []).forEach(function (m) {
+      var i = m.t && m.t[s.id] && m.t[s.id][key]; if (i == null || !(m.w === 1 || m.w === 2)) return;
+      var k = m.k[i]; out.push({ ts: k[0], hit: m.w === k[1] });
+    });
+    out.sort(function (a, b) { return b.ts - a.ts; }); out = out.slice(0, 10).reverse();
+    return out.length ? '<div class="lastres"><span class="k">Ultimi ' + out.length + '</span>' + out.map(function (x) { return '<i class="' + (x.hit ? "w" : "l") + '"></i>'; }).join("") + '</div>' : "";
+  }
   function renderStrategie() {
     var cat = data.catalog || [];
     if (!cat.length) { $("strategie").innerHTML = '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'; return; }
@@ -1362,7 +1621,7 @@
         + (s.retired ? '<span class="tm spenta">SPENTA DAL ' + esc(s.retired) + '</span>' : tmTag(s.timing))
         + (rank >= 0 && rank < 5 ? '<span class="tm top">TOP 5</span>' : rank >= 5 ? '<span class="tm top">TOP 10</span>' : "")
         + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
-        + perfBar("Storico", s.detail && s.detail.stats) + perfBar("Ultimi 3 giorni", s.recent) + '</div>'
+        + perfBar("Storico", s.detail && s.detail.stats) + perfBar("Ultimi 3 giorni", s.recent) + lastResultsHtml(s.id) + '</div>'
         + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
         + (hidden.has(s.id) ? "" : " checked") + ' aria-label="Mostra i segnali di ' + esc(s.name) + '"><span class="slider"></span></span></div>';
     }
@@ -1372,6 +1631,7 @@
       var mc = (data.top5 && data.top5.min_cases) || 100;
       $("strategie").innerHTML = tabs + legheCard()
         + '<div class="hero" style="background-image:linear-gradient(120deg,#3B2F0B,#8A6A14 60%,#C9A227);"><div class="ht">' + ic("star") + (R[0] ? ' Dalla 6 alla 10' : ' Top 5') + '</div><div class="hs">Le strategie col rendimento storico più alto, tutti gli sport (almeno ' + mc + ' casi)</div></div>'
+        + topSwitchHtml(R)
         + (top.length ? '<h2 class="sectiontitle">' + (R[0] ? "Posizioni dalla 6 alla 10" : "Le prime 5") + '</h2>' + NOTE + '<div class="card">' + top.map(function (s) { return row(s, true); }).join("") + '</div>'
           : '<div class="note" style="margin-top:14px;">' + (R[0] && ids.length ? "Solo " + Math.min(ids.length, 5) + " strategie hanno abbastanza casi: sono tutte nella Top 5." : "Nessuna strategia ha ancora abbastanza casi per entrare in classifica.") + '</div>')
         + (top.length && top.length < R[1] - R[0] ? '<div class="note" style="margin-top:10px;">Solo ' + (R[0] + top.length) + ' strategie hanno abbastanza casi, per ora.</div>' : "");
@@ -1383,8 +1643,8 @@
       + '<span class="hinfo">Come funziona ›</span></div>';
     $("strategie").innerHTML = tabs + legheCard() + hero + [stratSport].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) { return row(s, false); }).join("");
-      return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2>' + NOTE + '<div class="card">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
-    }).join("") + catalogoHtml(stratSport) + (stratSport === "ippica" ? esteroHtml() : "");
+      return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2>' + NOTE + '<div class="carousel">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
+    }).join("") + catalogoHtml(stratSport) + (stratSport === "ippica" ? schedeHtml() + esteroHtml() : "");
   }
 
   // ---------------------------------------------------------------- Come funziona, sport per sport (04/10)
@@ -1429,6 +1689,49 @@
           return '<div class="ds" style="margin-top:6px;">' + whenLabel(r.ts) + ' · ' + esc(PAESI[r.country] || r.country) + ' · ' + esc(r.track) + ' corsa ' + r.race
             + ' · <b>' + esc(r.horse) + '</b> a ' + oddsTxt(r.odds) + ' · <span class="' + (r.status === "vinta" ? "pos" : r.status === "persa" ? "neg" : "k") + '">' + (STATUS[r.status] || r.status) + '</span></div>';
         }).join("") + '</details>' : "");
+  }
+
+  // ---------------------------------------------------------------- Schede dei cavalli (03/10, signals/ippica_schede.py)
+  // Solo informazioni prima della corsa: forma, affidabilita' (corse non finite), distanza, ippodromo, guidatore e
+  // allenatore. Niente consigli, nessun cavallo "sicuro". Storia solo dalle corse dei giorni prima.
+  var curRace = null;
+  var DISC = { T: "Trotto", G: "Galoppo", O: "Ostacoli" };
+  function schedeHtml() {
+    var S0 = data.ippica_schede;
+    if (!S0 || !S0.races || !S0.races.length) return "";
+    return '<h2 class="sectiontitle">Prossime corse <span class="k">schede dei cavalli</span></h2><div class="card rlist">' + S0.races.map(function (r) {
+      return '<button class="rrow" type="button" data-race="' + esc(r.key) + '"><span class="rtime">' + esc(startLabel(r.start)) + '</span><span class="rw"><b>' + esc(r.track || "") + ' · corsa ' + r.race_no + '</b>'
+        + '<span class="k">' + esc(PAESI[r.country] || r.country || "") + (r.disc ? ' · ' + esc(DISC[r.disc] || r.disc) : "") + (r.dist ? ' · ' + r.dist + ' m' : "") + ' · ' + r.runners.length + ' partenti</span></span>' + ic("chev") + '</button>';
+    }).join("") + '</div>';
+  }
+  function pctTxt(a, b) { return b ? Math.round(a / b * 100) + "%" : "—"; }
+  function wpTxt(x) { return x && x[0] ? x[1] + " vinte, " + x[2] + " nei primi 3 su " + x[0] : "nessuna corsa"; }
+  function runnerHtml(x) {
+    var A0 = x.aff, aff = A0 ? '<span class="aff aff-' + A0.lvl + '">Affidabilità: ' + A0.k + ' su ' + A0.n + ' non finite</span>' : '<span class="aff">Nessuna corsa nello storico</span>';
+    return '<details class="card hcard"><summary><span class="hno">' + (x.n != null ? x.n : "") + '</span><span class="hw"><b translate="no">' + esc(x.horse || "") + '</b>'
+      + aff + (x.starts ? '<span class="k">Vinte ' + pctTxt(x.wp[1], x.wp[0]) + ' · primi 3 ' + pctTxt(x.wp[2], x.wp[0]) + ' · ' + x.starts + ' corse</span>' : "") + '</span>'
+      + (x.odds ? '<span class="hq">' + oddsTxt(x.odds) + '</span>' : "") + '</summary>'
+      + (x.last && x.last.length ? '<div class="hsec">Ultime corse</div><div class="htab">' + x.last.map(function (l) {
+          var bad = !/°$/.test(l[2]);
+          return '<div class="hrow"><span>' + esc(dmy(l[0])) + '</span><span translate="no">' + esc(l[1]) + '</span><span class="' + (bad ? "neg" : l[2] === "1°" ? "pos" : "") + '">' + esc(l[2]) + '</span><span class="k">' + (l[3] ? oddsTxt(l[3]) : "") + (l[4] ? " · " + esc(l[4]) : "") + '</span></div>';
+        }).join("") + '</div>' : "")
+      + '<div class="hsec">Numeri</div><div class="facts">'
+      + (x.dist ? '<div><span class="k">Stessa distanza: </span>' + esc(wpTxt(x.dist)) + '</div>' : "")
+      + (x.track ? '<div><span class="k">Stesso ippodromo: </span>' + esc(wpTxt(x.track)) + '</div>' : "")
+      + (x.km ? '<div><span class="k">Tempo al km: </span>migliore ' + esc(x.km.best) + ' · ultimo ' + esc(x.km.last) + '</div>' : "")
+      + (x.jd ? '<div><span class="k">Guidatore/fantino (ultima corsa): </span><b translate="no">' + esc(x.jd.name) + '</b> · ' + x.jd.w + ' vinte e ' + x.jd.nf + ' non finite su ' + x.jd.n + '</div>' : "")
+      + (x.tr ? '<div><span class="k">Allenatore: </span><b translate="no">' + esc(x.tr.name) + '</b> · ' + x.tr.w + ' vinte e ' + x.tr.nf + ' non finite su ' + x.tr.n + '</div>' : "")
+      + '</div></details>';
+  }
+  function renderRace(key) {
+    var r = ((data.ippica_schede || {}).races || []).filter(function (x) { return x.key === key; })[0]; if (!r) return;
+    curRace = key;
+    $("corsa").innerHTML = '<h1 class="dtitle">' + esc(r.track || "") + ' · corsa ' + r.race_no + '</h1>'
+      + '<div class="dsub">' + esc(PAESI[r.country] || r.country || "") + (r.disc ? ' · ' + esc(DISC[r.disc] || r.disc) : "") + (r.dist ? ' · ' + r.dist + ' m' : "") + ' · ' + esc(startLabel(r.start)) + (r.name ? ' · ' + esc(r.name) : "") + '</div>'
+      + '<div class="note" style="margin-bottom:10px;">Schede informative, non consigli: nessun cavallo è sicuro. Affidabilità = corse non finite (squalificato, fermato, caduto) nelle ultime 8. Contano solo le corse dei giorni prima; i ritirati non contano. Quota: l\'ultima quota fissa vista.</div>'
+      + (r.history ? "" : '<div class="note">Lo storico delle corse non è ancora disponibile: per ora solo i partenti.</div>')
+      + r.runners.map(runnerHtml).join("");
+    show("corsa"); window.scrollTo(0, 0);
   }
 
   // Informativa (Impostazioni): regolamento del Diario, fonti dei dati, cosa non copriamo, avvertenze.
@@ -1552,7 +1855,7 @@
         : '. L\'interruttore le attiva nei tuoi segnali; il motore live di queste strategie è in arrivo, per ora conta lo storico.</div>')
       + groups.map(function (g) {
         var items = c.strategies.filter(function (s) { return s.group === g; });
-        return '<h2 class="sectiontitle">' + esc(g) + '</h2><div class="card">'
+        return '<h2 class="sectiontitle">' + esc(g) + ' <span class="k">' + items.length + '</span></h2><div class="carousel">'
           + items.map(function (s) {
             var cell = s.grid[catKey(s)], id = "cat-" + s.id, lock = catLocked(s.id);
             var st = { n: cell[0], roi: cell[3], wins: Math.round((cell[1] || 0) * cell[0]) };
@@ -1565,7 +1868,7 @@
               + (catSel[s.id] && catSel[s.id] !== s.default ? '<span class="tm top">TUA</span>' : "")
               + '<div class="ds">' + esc(s.pick) + (cell[0] ? ' · strike ' + Math.round(cell[1] * 100) + '% · quota ~' + it(cell[2], 2) : "")
               + '<button class="more" type="button" data-cat="' + esc(s.id) + '">… altro</button></div>'
-              + perfBar("Storico", st) + (live ? perfBar("Dal vivo", liveCell(sport, s, catKey(s))) : "") + '</div>'
+              + perfBar("Storico", st) + (live ? perfBar("Dal vivo", liveCell(sport, s, catKey(s))) + catLastHtml(sport, s) : "") + '</div>'
               + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-caton="' + esc(s.id) + '"' + (catOn.has(s.id) ? " checked" : "")
               + ' aria-label="Attiva nei segnali ' + esc(s.name) + '"><span class="slider"></span></span></div>';
           }).join("") + '</div>';
@@ -1578,6 +1881,22 @@
   // barre a due valori: "qualsiasi / solo X" e' un si'/no (interruttore); due alternative vere sono due pulsanti
   var SW_OFF = /^(qualsiasi|sempre|chiunque|tutt[aoie]|in casa o fuori|no\b|nessun)/i;
   function paramKind(p) { return p.values.length !== 2 ? "range" : SW_OFF.test(p.labels[0] || "") ? "switch" : "two"; }
+  // barre continue: parametri numerici con piu' di due valori
+  var CATRAW_KEY = "statsight.catraw", catEditing = false;
+  var catRaw = (function () { try { return JSON.parse(localStorage.getItem(CATRAW_KEY)) || {}; } catch (e) { return {}; } })();
+  function saveCatRaw() { try { localStorage.setItem(CATRAW_KEY, JSON.stringify(catRaw)); } catch (e) {} }
+  function contParam(p) { return paramKind(p) === "range" && p.values.length >= 2 && p.values.every(function (v) { return typeof v === "number"; }); }
+  function contStep(p) {
+    var ints = p.values.every(function (v) { return v % 1 === 0; });
+    if (ints) return 1;
+    var d = Math.abs(p.values[p.values.length - 1] - p.values[0]) / 40; return Math.max(0.01, Math.round(d * 100) / 100);
+  }
+  function nearestIdx(p, v) { var b = 0; p.values.forEach(function (x, n) { if (Math.abs(x - v) < Math.abs(p.values[b] - v)) b = n; }); return b; }
+  function fmtParam(p, v) {   // stesso aspetto delle etichette del catalogo ("75'", "1,80"...)
+    var l0 = String(p.labels[0]), n0 = String(p.values[0]).replace(".", ","), suf = l0.indexOf(n0) === 0 ? l0.slice(n0.length) : "";
+    var dec = p.values.some(function (x) { return x % 1 !== 0; }) ? Math.max.apply(null, p.values.map(function (x) { var t = String(x).split(".")[1]; return t ? t.length : 0; })) : 0;
+    return (dec ? it(v, dec) : String(Math.round(v))) + suf;
+  }
   function renderCat(id) {
     var s = null, cs = null;
     ["calcio", "tennis", "basket", "hockey"].forEach(function (sp) {
@@ -1594,10 +1913,17 @@
       return;
     }
     var idx = catKey(s).split("_").map(Number);
+    // barre continue (03/10): un valore qualsiasi fra il minimo e il massimo; i numeri sono quelli della
+    // combinazione piu' vicina dello storico finche' il PC non rigenera il catalogo a passo fine
+    var raw = s.params.map(function (p, n) { var r = catRaw[s.id]; return r && r[n] != null && contParam(p) ? r[n] : p.values[idx[n]]; });
+    var snap = null;
     function draw() {
       var key = idx.join("_"), cell = s.grid[key];
       $("catnums").innerHTML = cellHtml(cell, true) + '<div class="verdict">' + esc(catVerdict(cell)) + '</div>' + liveHtml(cs, s, key);
-      s.params.forEach(function (p, i) { $("catv" + i).textContent = p.labels[idx[i]]; });
+      s.params.forEach(function (p, n) {
+        var near = p.values[idx[n]], c = contParam(p);
+        $("catv" + n).innerHTML = c ? esc(fmtParam(p, raw[n])) + (raw[n] !== near ? ' <span class="k">· storico: ' + esc(p.labels[idx[n]]) + '</span>' : "") : esc(p.labels[idx[n]]);
+      });
       $("catreset").hidden = key === s.default;
       var st = $("catstart"); if (st) st.hidden = !!catSel[s.id];   // riga delle barre di partenza: finche' non le muovi
     }
@@ -1610,56 +1936,72 @@
       + (s.default_from === "storico" && s.default_book && s.grid[s.default_book] ? '<div class="catstart" id="catstart">' + ic("info") + '<span>Barre di partenza: la combinazione migliore nello storico (con abbastanza partite). Va confermata dal vivo.</span>'
         + '<button class="chip" type="button" id="catbook">Valori di libro</button></div>' : "")
       + '<button class="primary" type="button" id="catgear" style="width:100%;margin-bottom:12px;">' + ic("strategie") + ' Personalizza</button>'
-      + '<div id="catsliders" hidden>' + s.params.map(function (p, i) {
+      + '<div id="catsliders" hidden>' + s.params.map(function (p, n) {
         var kind = paramKind(p);
         if (kind === "switch") {   // scelta si'/no: interruttore ("qualsiasi" = spento, "solo ..." = acceso)
-          return '<div class="slrow slsw"><label class="slh" for="catsw' + i + '"><span>' + esc(p.label) + '</span><b id="catv' + i + '"></b></label>'
-            + '<span class="switch"><input type="checkbox" role="switch" id="catsw' + i + '" data-sw="' + i + '"' + (idx[i] === 1 ? " checked" : "") + ' aria-label="' + esc(p.label + ": " + p.labels[1]) + '"><span class="slider"></span></span></div>';
+          return '<div class="slrow slsw"><label class="slh" for="catsw' + n + '"><span>' + esc(p.label) + '</span><b id="catv' + n + '"></b></label>'
+            + '<span class="switch"><input type="checkbox" role="switch" id="catsw' + n + '" data-sw="' + n + '"' + (idx[n] === 1 ? " checked" : "") + ' aria-label="' + esc(p.label + ": " + p.labels[1]) + '"><span class="slider"></span></span></div>';
         }
         if (kind === "two") {      // due alternative (Over/Under, chi ha riposato/chi e' stanco): due pulsanti
-          return '<div class="slrow"><div class="slh"><span>' + esc(p.label) + '</span><b id="catv' + i + '"></b></div><div class="segbar sl2" role="group" aria-label="' + esc(p.label) + '">'
-            + p.labels.map(function (l, n) { return '<button type="button" data-two="' + i + '" data-n="' + n + '" aria-pressed="' + (idx[i] === n) + '">' + esc(l) + '</button>'; }).join("") + '</div></div>';
+          return '<div class="slrow"><div class="slh"><span>' + esc(p.label) + '</span><b id="catv' + n + '"></b></div><div class="segbar sl2" role="group" aria-label="' + esc(p.label) + '">'
+            + p.labels.map(function (l, m) { return '<button type="button" data-two="' + n + '" data-n="' + m + '" aria-pressed="' + (idx[n] === m) + '">' + esc(l) + '</button>'; }).join("") + '</div></div>';
         }
-        return '<div class="slrow"><div class="slh"><span>' + esc(p.label) + '</span><b id="catv' + i + '"></b></div>'
-          + '<input type="range" min="0" max="' + (p.values.length - 1) + '" step="1" value="' + idx[i] + '" data-i="' + i + '" aria-label="' + esc(p.label) + '"></div>';
+        if (contParam(p)) {
+          var lo = p.values[0], hi = p.values[p.values.length - 1];
+          return '<div class="slrow"><div class="slh"><span>' + esc(p.label) + '</span><b id="catv' + n + '"></b></div>'
+            + '<input type="range" min="' + Math.min(lo, hi) + '" max="' + Math.max(lo, hi) + '" step="' + contStep(p) + '" value="' + raw[n] + '" data-c="' + n + '" aria-label="' + esc(p.label) + '">'
+            + '<div class="slends"><span>' + esc(p.labels[0]) + '</span><span>' + esc(p.labels[p.labels.length - 1]) + '</span></div></div>';
+        }
+        return '<div class="slrow"><div class="slh"><span>' + esc(p.label) + '</span><b id="catv' + n + '"></b></div>'
+          + '<input type="range" min="0" max="' + (p.values.length - 1) + '" step="1" value="' + idx[n] + '" data-i="' + n + '" aria-label="' + esc(p.label) + '"></div>';
       }).join("") + '<button class="linkbtn" type="button" id="catreset">Torna alla regola standard</button></div>'
       + '<div id="catnums"></div>'
+      + '<div class="catedit" id="catedit" hidden><span class="k">Salva o annulla per uscire</span><button class="chip" type="button" id="catannulla">Annulla</button><button class="primary" type="button" id="catsalva">' + ic("check") + ' Salva</button></div>'
       + '<div class="note">Le tue impostazioni restano su questo telefono. '
       + (liveOf(cs) ? 'Con l\'interruttore acceso (scheda Strategie) i segnali con le tue impostazioni compaiono nella lista Segnali; le notifiche sul telefono arriveranno con l\'app pubblica. '
         : 'Le notifiche con le tue soglie arriveranno con l\'app pubblica. ') + esc(method) + '</div>';
-    $("catgear").addEventListener("click", function () { var p = $("catsliders"); p.hidden = !p.hidden; });
-    function setParam(i, v) { idx[i] = v; catSel[s.id] = idx.join("_"); saveCatSel(); draw(); renderStrategie(); }
+    function syncControls() {
+      s.params.forEach(function (p, n) {
+        var r = $("catsliders").querySelector('input[data-i="' + n + '"]'), c = $("catsliders").querySelector('input[data-c="' + n + '"]'), w = $("catsw" + n);
+        if (r) r.value = idx[n]; if (c) c.value = raw[n]; if (w) w.checked = idx[n] === 1;
+        $("catsliders").querySelectorAll('button[data-two="' + n + '"]').forEach(function (x) { x.setAttribute("aria-pressed", String(Number(x.dataset.n) === idx[n])); });
+      });
+    }
+    function setIdx(arr) { idx = arr.slice(); raw = s.params.map(function (p, n) { return p.values[idx[n]]; }); }
+    function editing(on) {
+      catEditing = on; $("catsliders").hidden = !on; $("catsliders").classList.toggle("editing", on);
+      $("catedit").hidden = !on; $("catgear").hidden = on;
+    }
+    // "Personalizza": la zona delle barre si evidenzia e per uscire servono Salva o Annulla
+    $("catgear").addEventListener("click", function () { snap = { idx: idx.slice(), raw: raw.slice() }; editing(true); });
+    $("catannulla").addEventListener("click", function () { idx = snap.idx; raw = snap.raw; syncControls(); draw(); editing(false); });
+    $("catsalva").addEventListener("click", function () {
+      var key = idx.join("_");
+      if (key === s.default && raw.every(function (v, n) { return v === s.params[n].values[idx[n]]; })) { delete catSel[s.id]; delete catRaw[s.id]; }
+      else { catSel[s.id] = key; catRaw[s.id] = raw.slice(); }
+      saveCatSel(); saveCatRaw(); editing(false); draw(); renderStrategie();
+    });
     $("catsliders").addEventListener("input", function (e) {
-      var r = e.target.closest("input[type=range]"); if (r) setParam(Number(r.dataset.i), Number(r.value));
+      var r = e.target.closest("input[data-i]"); if (r) { idx[Number(r.dataset.i)] = Number(r.value); raw[Number(r.dataset.i)] = s.params[Number(r.dataset.i)].values[Number(r.value)]; draw(); return; }
+      var c = e.target.closest("input[data-c]");
+      if (c) { var n = Number(c.dataset.c), v = Number(c.value); raw[n] = v; idx[n] = nearestIdx(s.params[n], v); draw(); }
     });
     $("catsliders").addEventListener("change", function (e) {
-      var w = e.target.closest("input[data-sw]"); if (w) setParam(Number(w.dataset.sw), w.checked ? 1 : 0);
+      var w = e.target.closest("input[data-sw]"); if (w) { var n = Number(w.dataset.sw); idx[n] = w.checked ? 1 : 0; raw[n] = s.params[n].values[idx[n]]; draw(); }
     });
     $("catsliders").addEventListener("click", function (e) {
       var b = e.target.closest("button[data-two]"); if (!b) return;
-      setParam(Number(b.dataset.two), Number(b.dataset.n));
+      var n = Number(b.dataset.two); idx[n] = Number(b.dataset.n); raw[n] = s.params[n].values[idx[n]]; draw();
       b.parentNode.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
     });
-    function syncControls() {
-      s.params.forEach(function (p, i) {
-        var r = $("catsliders").querySelector('input[data-i="' + i + '"]'), w = $("catsw" + i);
-        if (r) r.value = idx[i]; if (w) w.checked = idx[i] === 1;
-        $("catsliders").querySelectorAll('button[data-two="' + i + '"]').forEach(function (x) { x.setAttribute("aria-pressed", String(Number(x.dataset.n) === idx[i])); });
-      });
-    }
     if ($("catbook")) $("catbook").addEventListener("click", function () {
-      idx = s.default_book.split("_").map(Number); catSel[s.id] = s.default_book; saveCatSel(); renderStrategie();
-      syncControls(); draw(); $("catsliders").hidden = false;
+      setIdx(s.default_book.split("_").map(Number));
+      if (catEditing) { syncControls(); draw(); return; }
+      catSel[s.id] = s.default_book; delete catRaw[s.id]; saveCatSel(); saveCatRaw(); renderStrategie();
+      syncControls(); draw();
     });
-    $("catreset").addEventListener("click", function () {
-      idx = s.default.split("_").map(Number); delete catSel[s.id]; saveCatSel(); renderStrategie();
-      s.params.forEach(function (p, i) {
-        var r = $("catsliders").querySelector('input[data-i="' + i + '"]'), w = $("catsw" + i);
-        if (r) r.value = idx[i]; if (w) w.checked = idx[i] === 1;
-        $("catsliders").querySelectorAll('button[data-two="' + i + '"]').forEach(function (x) { x.setAttribute("aria-pressed", String(Number(x.dataset.n) === idx[i])); });
-      });
-      draw();
-    });
+    $("catreset").addEventListener("click", function () { setIdx(s.default.split("_").map(Number)); syncControls(); draw(); });
+    catEditing = false;
     draw();
     show("catalogo");
     window.scrollTo(0, 0);
@@ -1879,13 +2221,17 @@
   }
 
   function show(view) {
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "benvenuto", "notifiche", "leghe", "campionati", "album", "pick"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    if (catEditing && view !== "catalogo") {   // Personalizza aperto: si esce solo con Salva o Annulla
+      var ce = $("catedit"); if (ce) { ce.classList.remove("shake"); void ce.offsetWidth; ce.classList.add("shake"); ce.scrollIntoView({ block: "nearest" }); }
+      return;
+    }
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "mio", "ruota", "fight", "chat", "corsa", "benvenuto", "notifiche", "leghe", "campionati", "album", "pick", "direct"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
     // matita del profilo aperta e cambio scheda senza salvare: la modifica si annulla (al ritorno il profilo normale)
-    if (meEdit && view !== "profilo") { meEdit = null; if (data) renderProfilo(); }
+    if (meEdit && view !== "mio") { meEdit = null; if (data) renderProfilo(); }
     $("tabbar").hidden = !unlocked || view === "benvenuto";
     // la barra della schedina: in tutte le pagine tranne il blocco e la schedina stessa
-    $("slipbar").hidden = !unlocked || view === "schedina" || !slip.legs.length;
+    $("slipbar").hidden = !unlocked || view === "schedina" || view === "chat" || !slip.legs.length;   // in chat coprirebbe la riga per scrivere
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
@@ -1897,7 +2243,7 @@
   }
 
   function renderAll() {
-    settleMySlips(); renderStatus(); renderFeed(); renderStrategie(); renderDiario(); renderOcchio(); renderRadar(); renderBacheca(); renderProfilo();
+    settleMySlips(); settleFights(); renderStatus(); renderFeed(); renderStrategie(); renderDiario(); renderOcchio(); renderRadar(); renderBacheca(); renderProfilo();
     newsTick();
   }
 
@@ -2067,6 +2413,7 @@
   function avatar(seed, size) {
     var s = size || 44, sp = /^sp:(\w+)$/.exec(seed || "");
     if (sp) return avSpecial(sp[1], s);
+    if (/^cm:/.test(seed || "")) return avComposed(cmDecode(seed), s);
     var a = AV[avIndex(seed)], fem = a[0] === 1, skin = SKIN[a[1]], hc = HAIR[a[3]];
     return avOpen(s)
       + '<rect width="64" height="64" fill="' + a[10] + '"/><circle cx="50" cy="12" r="16" fill="#fff" fill-opacity=".12"/>'
@@ -2078,16 +2425,450 @@
       + (a[6] !== "collana" ? avJewel(a[6]) : "") + avGlasses(a[5]) + avHat(a[9], a[8] === "#F4F1EA" ? "#2F6FD6" : a[8])
       + '</g></svg>';
   }
+  // ---------------------------------------------------------------- Avatar componibile (03/10)
+  // Un avatar libero a strati SVG: sesso, pelle, eta', viso (occhi, mento, naso), capelli (taglio e colore), barba,
+  // vestiti, accessori, sfondo. La base e' libera; il resto si sblocca col livello, coi pronostici vinti o con la
+  // ruota del giorno (statsight.avparti). Seme "cm:" + gli indici delle parti, in ordine CM_PARTS.
+  var CM_PARTS = ["sex", "skin", "age", "eyes", "chin", "nose", "hair", "hc", "beard", "clothes", "ccol", "glasses", "jewel", "hat", "bg"];
+  var CM_COLORS = ["#2F6FD6", "#C0392B", "#3C8D4E", "#262626", "#E8B33A", "#6A3FA0", "#F4F1EA", "#E07B2C", "#21857A", "#E46F9C"];
+  var CM_BG = ["#4FA3D9", "#E2B93B", "#5DAA68", "#D9534F", "#8E5BC9", "#21857A", "#F29A4A", "#3D7BD9", "#1F2A44", "#E46F9C"];
+  var CM = {
+    sex: ["uomo", "donna"], skin: SKIN.map(function (x, i) { return String(i); }), age: ["giovane", "adulto", "maturo"],
+    eyes: ["tondi", "grandi", "sorridenti", "allungati"], chin: ["ovale", "tondo", "squadrato", "appuntito"], nose: ["piccolo", "dritto", "largo"],
+    hair: ["corti", "riga", "rasati", "calvo", "lunghi", "lisci", "caschetto", "coda", "ricci", "afro", "chignon", "codino", "cresta"],
+    hc: Object.keys(HAIR), beard: ["", "barbetta", "baffi", "barba"],
+    clothes: ["maglia", "felpa", "maglione", "giacca", "maglia_sport"], ccol: CM_COLORS,
+    glasses: ["", "tondi", "quadrati", "sole"], jewel: ["", "orecchini", "cerchi", "orecchino", "collana", "piercing"],
+    hat: ["", "cappellino", "berretto", "cuffia"], bg: CM_BG
+  };
+  // cosa si sblocca e come: lv = livello, w = pronostici vinti. Tutto il resto e' libero da subito.
+  var CM_LOCK = {
+    eyes: { sorridenti: { w: 1 }, allungati: { lv: 2 } },
+    hair: { ricci: { lv: 3 }, afro: { lv: 3 }, chignon: { lv: 4 }, codino: { lv: 4 }, cresta: { lv: 8 } },
+    hc: { rosso: { lv: 2 }, rosa: { lv: 6 }, platino: { lv: 6 } },
+    beard: { barbetta: { lv: 2 }, baffi: { lv: 3 }, barba: { lv: 4 } },
+    clothes: { giacca: { lv: 4 }, maglia_sport: { w: 5 } },
+    ccol: { "#E07B2C": { lv: 5 }, "#21857A": { lv: 5 }, "#E46F9C": { w: 3 } },
+    glasses: { tondi: { lv: 2 }, quadrati: { lv: 3 }, sole: { lv: 7 } },
+    jewel: { orecchini: { lv: 3 }, cerchi: { lv: 5 }, orecchino: { lv: 5 }, collana: { w: 3 }, piercing: { lv: 9 } },
+    hat: { cappellino: { lv: 4 }, berretto: { lv: 6 }, cuffia: { w: 10 } },
+    bg: { "#1F2A44": { lv: 5 }, "#E46F9C": { w: 3 } }
+  };
+  var CM_TABS = [["Aspetto", ["sex", "skin", "age"]], ["Viso", ["eyes", "chin", "nose"]], ["Capelli", ["hair", "hc"]], ["Barba", ["beard"]],
+                 ["Vestiti", ["clothes", "ccol"]], ["Accessori", ["glasses", "jewel", "hat"]], ["Sfondo", ["bg"]]];
+  var CM_LABEL = { sex: "Sesso", skin: "Pelle", age: "Età", eyes: "Occhi", chin: "Forma del viso", nose: "Naso", hair: "Taglio", hc: "Colore",
+                   beard: "Barba", clothes: "Vestito", ccol: "Colore del vestito", glasses: "Occhiali", jewel: "Gioielli", hat: "Cappello", bg: "Sfondo" };
+  var AVPARTS_KEY = "statsight.avparti";
+  var avParts = (function () { try { return JSON.parse(localStorage.getItem(AVPARTS_KEY)) || []; } catch (e) { return []; } })();
+  function saveAvParts() { try { localStorage.setItem(AVPARTS_KEY, JSON.stringify(avParts)); } catch (e) {} }
+  function cmDefault() { return { sex: 0, skin: 1, age: 0, eyes: 0, chin: 0, nose: 0, hair: 0, hc: 1, beard: 0, clothes: 0, ccol: 0, glasses: 0, jewel: 0, hat: 0, bg: 0 }; }
+  function cmEncode(P) { return "cm:" + CM_PARTS.map(function (k) { return P[k] || 0; }).join("."); }
+  function cmDecode(seed) {
+    var v = String(seed).slice(3).split("."), P = cmDefault();
+    CM_PARTS.forEach(function (k, i) { var n = Number(v[i]); if (n >= 0 && n < CM[k].length) P[k] = n; });
+    return P;
+  }
+  // la regola di sblocco di un valore (null = libero) e se e' aperto per te
+  function cmRule(part, i) { var L = CM_LOCK[part]; return (L && L[CM[part][i]]) || null; }
+  function cmOpen(part, i, lvl, won) {
+    var r = cmRule(part, i);
+    return !r || avParts.indexOf(part + ":" + CM[part][i]) >= 0 || (r.lv && lvl >= r.lv) || (r.w && won >= r.w);
+  }
+  function cmHead(chin, skin) {
+    if (chin === "tondo") return '<ellipse cx="32" cy="30" rx="13.4" ry="13.6" fill="' + skin + '"/>';
+    if (chin === "squadrato") return '<path d="M19.8 23c0-5.5 4-8.8 12.2-8.8s12.2 3.3 12.2 8.8v9c0 7.5-5 12-12.2 12s-12.2-4.5-12.2-12z" fill="' + skin + '"/>';
+    if (chin === "appuntito") return '<path d="M19.7 27c0-8 5.5-12.7 12.3-12.7S44.3 19 44.3 27c0 9-6.5 16.7-12.3 16.7S19.7 36 19.7 27z" fill="' + skin + '"/>';
+    return '<ellipse cx="32" cy="29.5" rx="12.3" ry="14.2" fill="' + skin + '"/>';
+  }
+  function cmFace(P, skin, hc) {
+    var fem = P.sex === 1, dk = shade(skin, -0.3), eyes = CM.eyes[P.eyes], nose = CM.nose[P.nose], age = CM.age[P.age], beard = CM.beard[P.beard], o = "";
+    o += '<path d="M25 25.6q2.6-1.6 5.2-.2M33.8 25.4q2.6-1.4 5.2.2" stroke="' + shade(hc, -0.1) + '" stroke-width="' + (fem ? 1.2 : 1.7) + '" fill="none" stroke-linecap="round"/>';
+    if (eyes === "sorridenti") o += '<path d="M25.6 30.2q1.9-2.2 3.8 0M34.6 30.2q1.9-2.2 3.8 0" stroke="#1C1C1C" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+    else {
+      var rx = eyes === "grandi" ? 2.4 : eyes === "allungati" ? 2.4 : 1.9, ry = eyes === "grandi" ? 2.8 : eyes === "allungati" ? 1.4 : 2.2;
+      o += '<ellipse cx="27.5" cy="29.6" rx="' + rx + '" ry="' + ry + '" fill="#1C1C1C"/><ellipse cx="36.5" cy="29.6" rx="' + rx + '" ry="' + ry + '" fill="#1C1C1C"/>'
+        + '<circle cx="28.2" cy="28.9" r="' + (eyes === "grandi" ? .9 : .6) + '" fill="#fff"/><circle cx="37.2" cy="28.9" r="' + (eyes === "grandi" ? .9 : .6) + '" fill="#fff"/>';
+    }
+    if (fem) o += '<path d="M25.2 28.2l-1.2-1M38.8 28.2l1.2-1" stroke="#1C1C1C" stroke-width=".9" stroke-linecap="round"/>';
+    if (nose === "dritto") o += '<path d="M32 27.5v5.6c0 .7.9 1.1 1.7.8" stroke="' + dk + '" stroke-width="1.1" fill="none" stroke-linecap="round"/>';
+    else if (nose === "largo") o += '<path d="M29.8 33.4c.9 1 3.5 1 4.4 0M32 29.5v2.8" stroke="' + dk + '" stroke-width="1.2" fill="none" stroke-linecap="round"/>';
+    else o += '<path d="M32 30.5c-.6 1.8-1 3-.3 3.6.5.4 1.3.3 1.8 0" stroke="' + dk + '" stroke-width="1.1" fill="none" stroke-linecap="round"/>';
+    if (age !== "giovane") o += '<path d="M25.4 32.6q2 .9 4 0M34.6 32.6q2 .9 4 0" stroke="' + dk + '" stroke-opacity=".45" stroke-width=".8" fill="none"/>';
+    if (age === "maturo") o += '<path d="M27 20.5q5-1.4 10 0M28 22.4q4-1 8 0M28.2 34.6q-1.2 1.6-.6 3.4M35.8 34.6q1.2 1.6.6 3.4" stroke="' + dk + '" stroke-opacity=".45" stroke-width=".8" fill="none" stroke-linecap="round"/>';
+    o += '<circle cx="25" cy="33.6" r="2.2" fill="#F07D7D" fill-opacity=".22"/><circle cx="39" cy="33.6" r="2.2" fill="#F07D7D" fill-opacity=".22"/>';
+    if (beard !== "barba") o += fem ? '<path d="M28.6 36.6q3.4 2.6 6.8 0q-3.4 1-6.8 0z" fill="#C2525A" stroke="#C2525A" stroke-width="1" stroke-linejoin="round"/>'
+      : '<path d="M28.8 36.6q3.2 2.4 6.4 0" stroke="#7A3B2E" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+    return o;
+  }
+  function avComposed(P, s) {
+    var skin = SKIN[P.skin], hc = HAIR[CM.hc[P.hc]], hair = CM.hair[P.hair], jewel = CM.jewel[P.jewel], cc = CM.ccol[P.ccol];
+    return avOpen(s) + '<rect width="64" height="64" fill="' + CM.bg[P.bg] + '"/><circle cx="50" cy="12" r="16" fill="#fff" fill-opacity=".12"/>'
+      + avHairBack(hair, hc) + avBody(CM.clothes[P.clothes], cc, skin) + (jewel === "collana" ? avJewel("collana") : "")
+      + '<ellipse cx="19.8" cy="31" rx="2.3" ry="3.2" fill="' + skin + '"/><ellipse cx="44.2" cy="31" rx="2.3" ry="3.2" fill="' + skin + '"/>'
+      + cmHead(CM.chin[P.chin], skin) + cmFace(P, skin, hc) + avBeard(CM.beard[P.beard], hc) + avHairFront(hair, hc)
+      + (jewel !== "collana" ? avJewel(jewel) : "") + avGlasses(CM.glasses[P.glasses]) + avHat(CM.hat[P.hat], cc === "#F4F1EA" ? "#2F6FD6" : cc)
+      + '</g></svg>';
+  }
+  var cmTab = 0;
+  function cmEditorHtml(d, lvl, won) {
+    var P = /^cm:/.test(d.seed) ? cmDecode(d.seed) : cmDefault();
+    var h = '<div class="cmbox"><div class="cmprev">' + avComposed(P, 96) + '<button class="chip" type="button" data-cmuse="1"' + (!d.pic && /^cm:/.test(d.seed) ? ' aria-pressed="true"' : "") + '>'
+      + (!d.pic && /^cm:/.test(d.seed) ? ic("check") + " In uso" : "Usa questo") + '</button></div>'
+      + '<div class="chips cmtabs" role="tablist">' + CM_TABS.map(function (t, i) { return '<button class="chip" type="button" data-cmtab="' + i + '" aria-pressed="' + (i === cmTab) + '">' + t[0] + '</button>'; }).join("") + '</div>';
+    CM_TABS[cmTab][1].forEach(function (part) {
+      var color = part === "skin" || part === "hc" || part === "ccol" || part === "bg";
+      h += '<div class="cmlab">' + CM_LABEL[part] + '</div><div class="hscroll cmopts">' + CM[part].map(function (v, i) {
+        var open = cmOpen(part, i, lvl, won), r = cmRule(part, i), on = P[part] === i;
+        var Q = Object.assign({}, P); Q[part] = i;
+        var face = color ? '<span class="cmsw" style="background:' + (part === "skin" ? SKIN[i] : part === "hc" ? HAIR[v] : v) + '"></span>' : avComposed(Q, 46);
+        return '<button class="cmopt' + (on ? " on" : "") + (open ? "" : " locked") + '" type="button"' + (open ? ' data-cm="' + part + ":" + i + '"' : " disabled")
+          + ' aria-label="' + esc(CM_LABEL[part] + " " + (i + 1)) + '">' + face
+          + (open ? "" : '<span class="cmlock">' + ic("lock") + (r.lv ? " Liv. " + r.lv : " " + r.w + " vinti") + '</span>') + '</button>';
+      }).join("") + '</div>';
+    });
+    return h + '<div class="k" style="margin-top:6px;">Si sbloccano salendo di livello, vincendo pronostici o con la ruota del giorno.</div></div>';
+  }
+  // ---------------------------------------------------------------- Ruota del giorno (03/10)
+  // Un giro al giorno (giorno del telefono), gratis. Premi: monete (sempre guadagnate, mai comprate), un jolly, un
+  // pezzo d'avatar ancora bloccato, un adesivo per il profilo. Regole e probabilita' in docs/sistema_rewarding.md.
+  // Oggi sul telefono (statsight.ruota); col server il premio lo estrae il server.
+  var WHEEL_KEY = "statsight.ruota";
+  var WHEEL = [
+    { k: "c10", t: "10 monete", ic: "coin", w: 25, c: 10, col: "#E9A93A" }, { k: "part", t: "Pezzo d'avatar", ic: "user", w: 14, col: "#8E5BC9" },
+    { k: "c20", t: "20 monete", ic: "coin", w: 15, c: 20, col: "#2F6FD6" }, { k: "assic", t: "Jolly Assicurazione", ic: "shield", w: 7, col: "#21857A" },
+    { k: "stk", t: "Adesivo", ic: "star", w: 16, col: "#E46F9C" }, { k: "c50", t: "50 monete", ic: "coin", w: 5, c: 50, col: "#C0392B" },
+    { k: "radd", t: "Jolly Raddoppio", ic: "bolt", w: 7, col: "#3C8D4E" }, { k: "c15", t: "15 monete", ic: "coin", w: 11, c: 15, col: "#E07B2C" }
+  ];
+  var STICKERS = [["flame", "In fiamme"], ["trophy", "Coppa"], ["star", "Stella"], ["rocket", "Razzo"], ["bolt", "Fulmine"], ["target", "Centro"],
+                  ["shield", "Scudo"], ["eye", "Occhio"], ["handshake", "Stretta di mano"], ["globe", "Giramondo"], ["snow", "Sangue freddo"], ["chest", "Tesoro"]];
+  var wheel = (function () {
+    try { var w = JSON.parse(localStorage.getItem(WHEEL_KEY)); if (w && w.spins) return w; } catch (e) {}
+    return { spins: {}, coins: 0, stickers: [] };
+  })();
+  function saveWheel() { try { localStorage.setItem(WHEEL_KEY, JSON.stringify(wheel)); } catch (e) {} }
+  function wheelCoins() { return wheel.coins || 0; }
+  function wheelToday() { return wheel.spins[dayKey(nowS())] || null; }
+  function wheelSvg() {
+    var R = 110, C = 120, n = WHEEL.length, a = 2 * Math.PI / n, out = "";
+    WHEEL.forEach(function (p, i) {
+      var a0 = i * a - Math.PI / 2, a1 = a0 + a, x0 = C + R * Math.cos(a0), y0 = C + R * Math.sin(a0), x1 = C + R * Math.cos(a1), y1 = C + R * Math.sin(a1);
+      var am = a0 + a / 2, ix = C + 72 * Math.cos(am) - 13, iy = C + 72 * Math.sin(am) - 13;
+      out += '<path d="M' + C + ' ' + C + 'L' + x0.toFixed(1) + ' ' + y0.toFixed(1) + 'A' + R + ' ' + R + ' 0 0 1 ' + x1.toFixed(1) + ' ' + y1.toFixed(1) + 'z" fill="' + p.col + '" stroke="#fff" stroke-width="2"/>'
+        + '<svg x="' + ix.toFixed(1) + '" y="' + iy.toFixed(1) + '" width="26" height="26" viewBox="0 0 24 24"><use href="#i-' + p.ic + '"/></svg>'
+        + (p.c ? '<text x="' + (C + 46 * Math.cos(am)).toFixed(1) + '" y="' + (C + 46 * Math.sin(am) + 4).toFixed(1) + '" text-anchor="middle" font-size="12" font-weight="900" fill="#fff">' + p.c + '</text>' : "");
+    });
+    return '<svg class="wheel" id="wheelsvg" viewBox="0 0 240 240" width="240" height="240" aria-hidden="true">' + out
+      + '<circle cx="120" cy="120" r="18" fill="#1F2A44" stroke="#fff" stroke-width="3"/><circle cx="120" cy="120" r="6" fill="url(#g-gold)"/></svg>';
+  }
+  function prizeLine(sp) {
+    var p = WHEEL.filter(function (x) { return x.k === sp.k; })[0]; if (!p) return "";
+    return p.k === "part" && sp.part ? "Pezzo d'avatar: " + (CM_LABEL[sp.part.split(":")[0]] || "") + " sbloccato"
+      : p.k === "stk" && sp.stk ? "Adesivo: " + sp.stk + (sp.dup ? " (doppio: +5 monete)" : "") : sp.alt ? sp.alt : p.t;
+  }
+  function renderRuota() {
+    var sp = wheelToday();
+    $("ruota").innerHTML = '<div class="coinbar">' + ic("coin") + '<b>' + rewardState(pronostici()).coins + '</b> monete</div><div class="wheelwrap"><div class="wpointer"></div>' + wheelSvg() + '</div>'
+      + (sp ? '<div class="card wres">' + ic("check") + ' <span>Oggi hai vinto: <b>' + esc(prizeLine(sp)) + '</b></span></div><div class="note" style="text-align:center;">Torna domani per un altro giro.</div>'
+        : '<button class="primary" type="button" id="wheelgo" style="width:100%;">Gira la ruota</button><div class="note" style="text-align:center;margin-top:8px;">Un giro al giorno, gratis. Le monete si guadagnano soltanto: non si comprano e non diventano soldi.</div>')
+      + '<h2 class="sectiontitle">Premi</h2><div class="card wlist">' + WHEEL.map(function (p) { return '<div class="wrow"><span class="wdot" style="background:' + p.col + '"></span>' + ic(p.ic) + ' <span>' + esc(p.t) + '</span><span class="k">' + p.w + '%</span></div>'; }).join("") + '</div>'
+      + '<h2 class="sectiontitle">I tuoi adesivi <span class="k">' + wheel.stickers.length + '/' + STICKERS.length + '</span></h2><div class="stkrow">' + STICKERS.map(function (s) {
+        var has = wheel.stickers.indexOf(s[0]) >= 0;
+        return '<span class="stk' + (has ? "" : " no") + '" title="' + esc(s[1]) + '">' + ic(has ? s[0] : "lock") + '<small>' + esc(has ? s[1] : "?") + '</small></span>';
+      }).join("") + '</div>';
+  }
+  function wheelPick() {
+    var r = Math.random() * 100, acc = 0;
+    for (var i = 0; i < WHEEL.length; i++) { acc += WHEEL[i].w; if (r < acc) return i; }
+    return 0;
+  }
+  function wheelApply(i) {
+    var p = WHEEL[i], sp = { k: p.k, ts: nowS() }, R2 = rewardState(pronostici()), won = R2.closed.filter(function (b) { return b.result === 1; }).length;
+    if (p.c) wheel.coins += p.c;
+    else if (p.k === "assic" || p.k === "radd") { jolly.inv[p.k] = (jolly.inv[p.k] || 0) + 1; saveJolly(); }
+    else if (p.k === "part") {
+      var locked = [];
+      Object.keys(CM_LOCK).forEach(function (part) { CM[part].forEach(function (v, j) { if (CM_LOCK[part][v] && !cmOpen(part, j, R2.level, won)) locked.push(part + ":" + v); }); });
+      if (locked.length) { sp.part = locked[Math.floor(Math.random() * locked.length)]; avParts.push(sp.part); saveAvParts(); }
+      else { wheel.coins += 20; sp.alt = "Hai già tutti i pezzi: 20 monete"; }
+    } else if (p.k === "stk") {
+      var s = STICKERS[Math.floor(Math.random() * STICKERS.length)];
+      sp.stk = s[1];
+      if (wheel.stickers.indexOf(s[0]) >= 0) { wheel.coins += 5; sp.dup = 1; } else wheel.stickers.push(s[0]);
+    }
+    wheel.spins[dayKey(nowS())] = sp; saveWheel();
+    return sp;
+  }
+  var wheelBusy = false;
+  function spinWheel() {
+    if (wheelBusy || wheelToday()) return;
+    wheelBusy = true;
+    var i = wheelPick(), deg = 360 * 5 + (360 - (i * 45 + 22.5)), svg = $("wheelsvg"), go = $("wheelgo");
+    if (go) go.disabled = true;
+    var before = coinShown();
+    var sp = wheelApply(i);   // salvato subito: chiudere l'app durante il giro non regala un secondo giro
+    svg.style.transform = "rotate(" + deg + "deg)";
+    var p = WHEEL[i], gain = p.c || (sp.alt ? 20 : sp.dup ? 5 : 0);
+    setTimeout(function () {
+      fxToast(p.ic, "Ruota del giorno", prizeLine(sp));
+      if (gain) fxCoins($("wheelsvg"), Math.min(14, 6 + Math.round(gain / 5)), before, before == null ? null : before + gain);
+      setTimeout(function () { wheelBusy = false; renderRuota(); renderProfilo(); renderOcchio(); newsTick(); }, REDUCED ? 0 : 1600);
+    }, REDUCED ? 0 : 4300);
+  }
+  // ---------------------------------------------------------------- StatsFight (03/10)
+  // Uno contro uno: 2 partite a caso (calcio, campionati conosciuti, partite equilibrate), esito 1X2 a scelta. Non si
+  // puntano monete proprie: 10 monete per ogni pronostico giusto, 30 a chi vince (piu' giusti; a parita' piu' punti),
+  // 10 a testa col pari. Una sfida al giorno. Senza server l'avversario e' un personaggio del Team, dichiarato.
+  // Regole in docs/sistema_rewarding.md (4g). Sul telefono: statsight.statsfight.
+  var FIGHT_KEY = "statsight.statsfight", FIGHT = { right: 10, win: 30, draw: 10 }, fightAnim = false;
+  var fights = (function () { try { var f = JSON.parse(localStorage.getItem(FIGHT_KEY)); if (Array.isArray(f)) return f; } catch (e) {} return []; })();
+  function saveFights() { try { localStorage.setItem(FIGHT_KEY, JSON.stringify(fights)); } catch (e) {} }
+  function fightCoins() { return fights.reduce(function (t, f) { return t + (f.res ? f.res.coins : 0); }, 0); }
+  function fightToday() { var d = dayKey(nowS()); return fights.filter(function (f) { return f.day === d; })[0] || null; }
+  function seeded(str) {
+    var h = 2166136261; for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    return function () { h = (Math.imul(h, 1103515245) + 12345) >>> 0; return h / 4294967296; };
+  }
+  function fightEvents() {
+    var now = nowS();
+    return evList().filter(function (e) {
+      return e.sport === "calcio" && !e.live && e.start > now + 1800 && A.compOf(e.comp)
+        && ["1", "X", "2"].every(function (c) { return e.mk[c] && e.mk[c][0] >= 1.5 && e.mk[c][0] <= 6; });
+    }).sort(function (a, b) { return a.id - b.id; });
+  }
+  function fightPick(p, odds) {   // il personaggio sceglie con la sua indole: aggressivo la quota piu' alta, gli altri la favorita
+    var cs = ["1", "X", "2"].sort(function (a, b) { return odds[a] - odds[b]; });
+    return p && p.greed && p.greed.lvl === "aggressivo" ? cs[2] : cs[0];
+  }
+  function newFight() {
+    var day = dayKey(nowS()), rnd = seeded(day + "|" + (me.name || "") + "|" + (me.seed || "")), evs = fightEvents(), T0 = team();
+    if (evs.length < 2 || !T0.length) return null;
+    var i = Math.floor(rnd() * evs.length), j = Math.floor(rnd() * (evs.length - 1)); if (j >= i) j++;
+    var opp = T0[Math.floor(rnd() * T0.length)];
+    var legs = [evs[i], evs[j]].map(function (e) {
+      return { event_id: e.id, sport: e.sport, comp: e.comp, ename: e.home + " - " + e.away, home: e.home, away: e.away, start: e.start,
+               odds: { 1: e.mk["1"][0], X: e.mk.X[0], 2: e.mk["2"][0] } };
+    });
+    var f = { id: "F" + Math.round(nowS()), day: day, ts: nowS(), opp: opp.id, legs: legs, mine: [null, null],
+              theirs: legs.map(function (l) { return fightPick(opp, l.odds); }), locked: false, res: null };
+    fights.push(f); saveFights();
+    return f;
+  }
+  function settleFights() {
+    if (!data || !data.diario) return;
+    var changed = false, now = nowS();
+    fights.forEach(function (f) {
+      if (f.res || f.void) return;
+      if (!f.locked) { if (f.legs.some(function (l) { return l.start <= now; })) { f.void = 1; changed = true; } return; }   // non confermata in tempo
+      var me1 = f.legs.map(function (l, i) { return legResult({ event_id: l.event_id, sport: l.sport, code: f.mine[i], live: false }, f.ts); });
+      var op1 = f.legs.map(function (l, i) { return legResult({ event_id: l.event_id, sport: l.sport, code: f.theirs[i], live: false }, f.ts); });
+      if (me1.concat(op1).some(function (r) { return r == null; })) {
+        if (now - f.ts > GIVE_UP) { f.void = 1; changed = true; }
+        return;
+      }
+      function pts(rs, codes) { return rs.reduce(function (t, r, i) { return t + (r === 1 ? f.legs[i].odds[codes[i]] - 1 : r === 0 ? -1 : 0); }, 0); }
+      var a = me1.filter(function (r) { return r === 1; }).length, b = op1.filter(function (r) { return r === 1; }).length;
+      var pa = pts(me1, f.mine), pb = pts(op1, f.theirs);
+      var r = a > b || (a === b && pa > pb + 1e-9) ? "win" : b > a || (a === b && pb > pa + 1e-9) ? "lose" : "draw";
+      f.res = { me: me1, opp: op1, r: r, right: a, oppRight: b, coins: a * FIGHT.right + (r === "win" ? FIGHT.win : r === "draw" ? FIGHT.draw : 0), at: now };
+      changed = true;
+    });
+    if (changed) saveFights();
+  }
+  var FIGHT_RES = { win: "Hai vinto la sfida", lose: "Sfida persa", draw: "Pareggio" };
+  function fightHead(f, anim) {
+    var p = personaOf(f.opp);
+    return '<div class="fvs' + (anim ? " anim" : "") + '"><div class="fside me">' + myAvatar(64) + '<b translate="no">' + esc(me.name || "Tu") + '</b></div>'
+      + '<div class="fvsx">VS</div><div class="fside opp">' + (p ? avatar(p.id, 64) + '<b>' + esc(p.name) + '</b>' + teamBadge() : "") + '</div></div>';
+  }
+  function fightLegHtml(f, i) {
+    var l = f.legs[i], my = f.mine[i], th = f.theirs[i], R = f.res;
+    var lab = function (c) { return c === "1" ? l.home : c === "2" ? l.away : "Pareggio"; };
+    return '<div class="card fleg"><div class="pev" style="margin-top:0;">' + flagOf(l) + ' ' + esc(l.ename) + '<span class="k"> · ' + esc(shortComp(l.comp)) + ' · ' + esc(startLabel(l.start)) + '</span></div>'
+      + (f.locked ? '<div class="fpicks"><span class="fp me' + (R ? (R.me[i] === 1 ? " ok" : R.me[i] === 0 ? " ko" : "") : "") + '">Tu: <b>' + esc(lab(my)) + '</b> @ ' + oddsTxt(l.odds[my]) + '</span>'
+          + '<span class="fp opp' + (R ? (R.opp[i] === 1 ? " ok" : R.opp[i] === 0 ? " ko" : "") : "") + '">' + esc((personaOf(f.opp) || {}).name || "") + ': <b>' + esc(lab(th)) + '</b> @ ' + oddsTxt(l.odds[th]) + '</span></div>'
+        : '<div class="segbar f3" role="group" aria-label="Esito">' + ["1", "X", "2"].map(function (c) {
+          return '<button type="button" data-fpick="' + i + ':' + c + '" aria-pressed="' + (my === c) + '"><span>' + (c === "X" ? "X" : c) + '</span> <small>' + oddsTxt(l.odds[c]) + '</small></button>';
+        }).join("") + '</div>') + '</div>';
+  }
+  function fightHistHtml(n) {
+    var done = fights.filter(function (f) { return f.res; }).slice(-n).reverse();
+    if (!done.length) return '<div class="note">Nessuna sfida chiusa, per ora.</div>';
+    return '<div class="card">' + done.map(function (f) {
+      var p = personaOf(f.opp);
+      return '<div class="fhrow">' + (p ? avatar(p.id, 32) : "") + '<span><b>' + esc(p ? p.name : "?") + '</b><span class="k"> · ' + esc(dayLabel(f.ts)) + ' · ' + f.res.right + '-' + f.res.oppRight + '</span></span>'
+        + '<span class="fr ' + f.res.r + '">' + (f.res.r === "win" ? "VINTA" : f.res.r === "lose" ? "PERSA" : "PARI") + '</span><span class="k">+' + f.res.coins + '</span></div>';
+    }).join("") + '</div>';
+  }
+  function renderFight() {
+    var f = fightToday(), h = "";
+    if (!f) {
+      var n = fightEvents().length;
+      h = '<div class="card fintro">' + ic("vs") + '<div><b>Uno contro uno</b><div class="k">Due partite a caso, scegli 1, X o 2. Non punti monete tue: 10 monete per ogni pronostico giusto, 30 se vinci la sfida. Una sfida al giorno.</div></div></div>'
+        + (n >= 2 && team().length ? '<button class="primary" type="button" data-fightgo="1" style="width:100%;">Trova un avversario</button>'
+          : '<div class="note">Servono almeno due partite pre-partita dei campionati conosciuti: riprova più tardi.</div>')
+        + '<div class="note" style="margin-top:8px;">Finché non c\'è l\'app pubblica l\'avversario è un personaggio del Team StatSight: lo vedi dal badge.</div>';
+    } else if (f.void) {
+      h = fightHead(f) + '<div class="note">Sfida annullata: le partite sono iniziate prima della conferma (o l\'esito non è arrivato). Torna domani.</div>';
+    } else {
+      h = fightHead(f, fightAnim);
+      if (f.res) h += '<div class="fresult ' + f.res.r + '"><b>' + FIGHT_RES[f.res.r] + '</b><span>' + f.res.right + ' a ' + f.res.oppRight + ' · +' + f.res.coins + ' monete</span></div>';
+      h += f.legs.map(function (l, i) { return fightLegHtml(f, i); }).join("");
+      if (!f.locked) h += '<button class="primary" type="button" data-fightok="1" style="width:100%;"' + (f.mine.every(Boolean) ? "" : " disabled") + '>Conferma le scelte</button>'
+        + '<div class="note" style="margin-top:8px;">L\'avversario ha già scelto: lo vedi dopo la conferma.</div>';
+      else if (!f.res) h += '<div class="note">' + ic("clock") + ' Si chiude con gli esiti delle due partite.</div>';
+    }
+    $("fight").innerHTML = '<div class="coinbar">' + ic("coin") + '<b>' + rewardState(pronostici()).coins + '</b> monete</div>' + h
+      + '<h2 class="sectiontitle">Le tue sfide</h2>' + fightHistHtml(10);
+    fightAnim = false;
+  }
+  // ---------------------------------------------------------------- Direct (03/10)
+  // Chat con gli amici: serve il server per consegnare i messaggi (server/chat/chat.js, schema "conversazioni" e
+  // "messaggi"), e l'app lo dice. Senza server funzionano gia': la conversazione "Promemoria" (scrivi a te stesso,
+  // testi e schedine), le schedine condivise con un codice o un link (app/condividi.js) che arrivano in "Schedine
+  // ricevute" con "Copia", e segnala/blocca su quello che ricevi. Filtro dei testi = commenti (moderazione.js).
+  var DIRECT_KEY = "statsight.direct", SH = window.CONDIVIDI, curConv = null, directMsg = "", shareOut = null;
+  var direct = (function () {
+    try { var d = JSON.parse(localStorage.getItem(DIRECT_KEY)); if (d && d.convs) return d; } catch (e) {}
+    return { convs: [{ id: "me", kind: "self", msgs: [], read: 0 }, { id: "recv", kind: "recv", msgs: [], read: 0 }], blocked: [], reports: [] };
+  })();
+  function saveDirect() { try { localStorage.setItem(DIRECT_KEY, JSON.stringify(direct)); } catch (e) {} }
+  function convOf(id) { return direct.convs.filter(function (c) { return c.id === id; })[0]; }
+  var CONV_NAME = { self: "Promemoria", recv: "Schedine ricevute" }, CONV_SUB = { self: "Solo tu: appunti e schedine", recv: "Arrivate con un codice o un link" };
+  function convUnread(c) { return c.msgs.filter(function (m) { return !m.mine && m.ts > (c.read || 0) && !m.hidden; }).length; }
+  function directUnread() { return direct.convs.reduce(function (t, c) { return t + convUnread(c); }, 0); }
+  function slipOfMine(s) {
+    return { mode: s.mode, k: s.k, stake: s.stake, by: me.name || "", legs: s.legs.map(function (l) { return { event: l.event_id, sport: l.sport, code: l.code, odds: l.odds, ename: l.event, label: l.label }; }) };
+  }
+  function shareLink(code) { return location.origin + location.pathname + "#s=" + code; }
+  function slipCardHtml(m) {
+    var S0 = m.slip, id = "d:" + m.id, open = S0.legs.some(function (l) { var e = evById(l.event); return e && e.mk[l.code] && (e.live || !e.start || e.start > nowS()); });
+    copyIdx[id] = { refs: S0.legs.map(function (l) { return { event: l.event, code: l.code }; }), stake: S0.stake, mode: S0.mode, k: S0.k };
+    var tot = Regole.totalOdds(S0.mode, S0.k, S0.legs.map(function (l) { return l.odds; }));
+    return '<div class="dslip"><div class="dsh">' + ic("diario") + ' <b>' + (S0.mode === "multipla" ? "Multipla" : S0.mode === "sistema" ? "Sistema " + S0.k + "/" + S0.legs.length : "Schedina") + '</b>'
+      + (S0.by ? '<span class="k"> · di <span translate="no">' + esc(S0.by) + '</span></span>' : "") + '</div>'
+      + S0.legs.map(function (l) { return '<div class="dleg"><span>' + (EMOJI[l.sport] || "") + ' ' + esc(l.ename) + '</span><span><b>' + esc(l.label || l.code) + '</b> @ ' + oddsTxt(l.odds) + '</span></div>'; }).join("")
+      + '<div class="dleg tot"><span>' + (S0.stake ? S0.stake + " monete" : "") + '</span><span>' + (tot ? 'Quota totale <b>' + oddsTxt(tot) + '</b>' : "") + '</span></div>'
+      + (open ? '<button class="chip copybtn" type="button" data-copy="' + esc(id) + '">' + ic("copy") + ' Copia</button>' : '<div class="k">Partite già iniziate o non più nei dati: non si copia.</div>') + '</div>';
+  }
+  function msgHtml(c, m) {
+    if (m.hidden) return '<div class="dmsg sys">' + ic("flag") + ' Messaggio segnalato: non lo vedi più. <button class="linkbtn" type="button" data-dunrep="' + esc(m.id) + '">Annulla</button></div>';
+    return '<div class="dmsg' + (m.mine ? " mine" : "") + '">' + (m.text ? '<div class="dtext" translate="no">' + esc(m.text) + '</div>' : "") + (m.slip ? slipCardHtml(m) : "")
+      + '<div class="dmeta"><span class="k">' + whenLabel(m.ts) + '</span>'
+      + (m.mine ? '<button class="cdel" type="button" data-ddel="' + esc(m.id) + '" aria-label="Elimina">' + ic("trash") + '</button>'
+                : '<button class="cdel" type="button" data-drep="' + esc(m.id) + '" aria-label="Segnala">' + ic("flag") + '</button>'
+                  + (m.slip && m.slip.by ? '<button class="linkbtn" type="button" data-dblock="' + esc(m.slip.by) + '">Blocca</button>' : "")) + '</div>'
+      + (reporting && reporting.id === m.id ? reasonsHtml(m.id, "messaggio") : "") + '</div>';
+  }
+  function renderChat() {
+    var c = convOf(curConv); if (!c) return;
+    c.read = nowS(); saveDirect();
+    var msgs = c.msgs.filter(function (m) { return !(m.slip && m.slip.by && direct.blocked.indexOf(m.slip.by) >= 0); });
+    $("chat").innerHTML = '<div class="dhead"><span class="dav">' + ic(c.kind === "self" ? "pen" : "diario") + '</span><div><b>' + CONV_NAME[c.kind] + '</b><div class="k">' + CONV_SUB[c.kind] + '</div></div></div>'
+      + '<div class="dlist">' + (msgs.length ? msgs.map(function (m) { return msgHtml(c, m); }).join("") : '<div class="note">' + (c.kind === "self" ? "Scrivi un appunto o condividi qui una schedina: la ritrovi quando vuoi." : "Quando apri un link o incolli un codice di una schedina, arriva qui.") + '</div>') + '</div>'
+      + (c.kind === "self" ? '<div class="cform dform"><input class="meinput" type="text" maxlength="1000" id="dtext" placeholder="Scrivi un messaggio" value="' + esc(drafts.direct || "") + '">'
+        + '<button class="primary" type="button" data-dsend="1" aria-label="Invia">' + ic("send") + '</button></div>' + (directMsg ? '<div class="cmsg">' + esc(directMsg) + '</div>' : "")
+        + '<div class="k" style="font-size:0.72rem;margin-top:4px;">Stesso filtro dei commenti: niente link, contatti o vendita di pronostici.</div>' : "");
+    var L = $("chat").querySelector(".dlist"); if (L) L.scrollTop = L.scrollHeight;
+    paintDirectDot();
+  }
+  function renderDirect() {
+    var open = mySlips.filter(function (s) { return !s.resolved_at; }).slice(-5).reverse();
+    var h = '<div class="card dserver">' + ic("info") + '<span>Le chat con gli amici arrivano con l\'app pubblica: per consegnare i messaggi serve il nostro server. Intanto le schedine si mandano con un codice o un link, e funzionano già.</span></div>'
+      + '<h2 class="sectiontitle">Conversazioni</h2><div class="card dconvs">' + direct.convs.map(function (c) {
+        var last = c.msgs.filter(function (m) { return !m.hidden; }).slice(-1)[0], un = convUnread(c);
+        return '<button class="dconv" type="button" data-conv="' + c.id + '"><span class="dav">' + ic(c.kind === "self" ? "pen" : "diario") + '</span><span class="dcw"><b>' + CONV_NAME[c.kind] + '</b><span class="k">'
+          + esc(last ? (last.text || (last.slip ? "Schedina · " + last.slip.legs.length + (last.slip.legs.length === 1 ? " partita" : " partite") : "")) : CONV_SUB[c.kind]) + '</span></span>'
+          + (un ? '<span class="dun">' + un + '</span>' : "") + ic("chev") + '</button>';
+      }).join("") + '</div>'
+      + '<h2 class="sectiontitle">Condividi una schedina</h2>'
+      + (slip.legs.length ? '<button class="card dshare" type="button" data-dshare="cur">' + ic("diario") + '<span><b>La schedina in preparazione</b><span class="k">' + slip.legs.length + (slip.legs.length === 1 ? " esito" : " esiti") + '</span></span>' + ic("chev") + '</button>' : "")
+      + (open.length ? open.map(function (s) {
+          return '<button class="card dshare" type="button" data-dshare="' + esc(s.id) + '">' + ic("diario") + '<span><b>' + esc(s.mode === "singole" ? s.legs[0].event : (s.mode === "multipla" ? "Multipla" : "Sistema " + s.k + "/" + s.n) + " · " + s.legs.length + " partite") + '</b><span class="k">' + esc(whenLabel(s.created_at)) + (s.stake ? " · " + s.stake + " monete" : "") + '</span></span>' + ic("chev") + '</button>';
+        }).join("") : (slip.legs.length ? "" : '<div class="note">Nessun pronostico aperto da condividere: scegline uno nelle Partite.</div>'))
+      + (shareOut ? '<div class="card dout"><div class="k">Codice della schedina</div><div class="dcode" translate="no">' + esc(shareOut) + '</div>'
+        + '<div class="duo"><button class="chip" type="button" data-dcopylink="1">' + ic("copy") + ' Copia il link</button><button class="chip" type="button" data-dtome="1">' + ic("pen") + ' Manda a Promemoria</button></div>'
+        + '<div class="k" id="dcopied" style="margin-top:6px;"></div></div>' : "")
+      + '<h2 class="sectiontitle">Hai un codice?</h2><div class="cform"><input class="meinput" type="text" id="dcodein" placeholder="Incolla il codice o il link" translate="no">'
+      + '<button class="primary" type="button" data-dopen="1">Apri</button></div>' + (directMsg && !curConv ? '<div class="cmsg">' + esc(directMsg) + '</div>' : "");
+    $("direct").innerHTML = h;
+    paintDirectDot();
+  }
+  function paintDirectDot() {
+    var t = document.querySelector('.tab[data-view="direct"]'); if (!t) return;
+    var d = t.querySelector(".ndot"), on = directUnread() > 0;
+    if (on && !d) t.insertAdjacentHTML("beforeend", '<span class="ndot"></span>'); else if (!on && d) d.remove();
+  }
+  // codice o link ricevuto: in "Schedine ricevute" (se chi lo manda non e' bloccato)
+  function receiveCode(text) {
+    var S0 = SH.decode(text);
+    if (!S0) return "Codice non valido: controlla di averlo copiato tutto.";
+    if (S0.by && direct.blocked.indexOf(S0.by) >= 0) return "Hai bloccato chi ha mandato questa schedina.";
+    var c = convOf("recv"), key = JSON.stringify(S0.legs);
+    if (!c.msgs.some(function (m) { return m.slip && JSON.stringify(m.slip.legs) === key; })) c.msgs.push({ id: "r" + Math.round(nowS() * 1000), ts: nowS(), slip: S0, mine: false });
+    saveDirect(); curConv = "recv"; renderChat(); show("chat"); window.scrollTo(0, 0);
+    return null;
+  }
+  function openShareHash() {
+    if (!/^#s=/.test(location.hash || "")) return;
+    var code = location.hash.slice(3);
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    var why = receiveCode(code); if (why) fxToast("alert", "Schedina condivisa", why);
+  }
+  // Greediness (03/10): quanto osa un profilo, dalla quota media delle ultime 30 giocate (1,5 -> 0, 6 o piu' -> 100).
+  // Stessa formula di signals/personaggi_post.greed.
+  function greedOf(odds) {
+    var xs = odds.filter(function (o) { return o > 1; }).slice(-30);
+    if (xs.length < 3) return null;
+    var avg = xs.reduce(function (a, b) { return a + b; }, 0) / xs.length;
+    var g = Math.max(0, Math.min(100, Math.round((Math.log(avg) - Math.log(1.5)) / (Math.log(6) - Math.log(1.5)) * 100)));
+    return { g: g, lvl: g >= 67 ? "aggressivo" : g >= 34 ? "medio" : "prudente", avg: Math.round(avg * 100) / 100 };
+  }
+  var GREED_TXT = { prudente: "Prudente", medio: "Equilibrato", aggressivo: "Aggressivo" };
+  function greedHtml(G) {
+    if (!G) return "";
+    return '<div class="greed g-' + G.lvl + '"><div class="slh"><span>Greediness</span><b>' + GREED_TXT[G.lvl] + '</b></div>'
+      + '<div class="gbar"><i style="width:' + Math.max(4, G.g) + '%;background-size:' + Math.round(10000 / Math.max(4, G.g)) + '% 100%"></i></div><div class="k">Quota media delle ultime giocate: ' + it(G.avg, 2) + '</div></div>';
+  }
+  function greedChip(G) { return G && G.lvl === "aggressivo" ? '<span class="gchip">' + ic("bolt") + ' AGGRESSIVO</span>' : ""; }
   function teamBadge() { return '<span class="teambadge"><img src="icon-192.png" alt="" width="12" height="12"> TEAM STATSIGHT</span>'; }
   function resTag(r) { return r == null ? '<span class="k">' + ic("clock") + ' in attesa</span>' : r === 1 ? '<span class="pos">' + ic("check") + ' vinta</span>' : r === 0 ? '<span class="neg">' + ic("x") + ' persa</span>' : '<span class="k">nulla</span>'; }
+  // "Copia" (03/10): il pronostico di un altro (o tuo) finisce nella TUA schedina con la stessa puntata, se le
+  // partite sono ancora giocabili; le regole di sempre valgono (niente doppioni di un pronostico aperto uguale).
+  var copyIdx = {};
+  function copyBtn(pid, x) {
+    var refs = x.refs || (x.eid != null && x.code ? [{ event: x.eid, code: x.code }] : null);
+    if (!refs || !refs.length || x.result != null) return "";
+    copyIdx[pid] = { refs: refs, stake: x.stake || null, mode: x.mode || "singole", k: x.k || null };
+    return '<button class="chip copybtn" type="button" data-copy="' + esc(pid) + '">' + ic("copy") + ' Copia</button>';
+  }
+  function copyPick(pid) {
+    var c = copyIdx[pid]; if (!c) return;
+    var added = 0, dup = 0, gone = 0;
+    c.refs.forEach(function (r) {
+      var e = evById(r.event);
+      if (!e || !e.mk[r.code] || (!e.live && e.start && e.start <= nowS())) { gone++; return; }
+      var leg = legOf(e, r.code);
+      if (openSameLeg({ event: leg.event, code: leg.code })) { dup++; return; }
+      if (!inSlip(e.id, r.code)) { toggleLeg(e, r.code); added++; }
+    });
+    if (added) {
+      if (c.mode !== "singole" && slip.legs.length === c.refs.length) { slip.mode = c.mode; slip.k = c.k; }
+      if (c.stake) slip.stake = c.stake;
+      saveSlip(); paintSlipBar();
+    }
+    var msg = added ? (added === 1 ? "1 esito copiato nella tua schedina" : added + " esiti copiati nella tua schedina") : "Niente da copiare";
+    var sub = [gone ? gone + " non più giocabil" + (gone === 1 ? "e" : "i") : "", dup ? dup + " già fra i tuoi pronostici aperti" : ""].filter(Boolean).join(" · ");
+    fxToast("copy", msg, sub || (c.stake ? "Stessa puntata: " + c.stake + " monete" : "Controlla e pubblica"));
+    if (added) { renderSchedina(); show("schedina"); window.scrollTo(0, 0); }
+  }
   function postCard(x) {
     var p = personaOf(x.p); if (!p) return "";
     var pid = "t:" + x.p + ":" + Math.round(x.ts);
     if (social.hidden[pid]) return reportedCard(pid);
     return '<div class="card post"><button class="phead" type="button" data-persona="' + p.id + '">' + avatar(p.id, 40)
-      + '<span class="pwho"><b>' + esc(p.name) + ' · ' + esc(p.nick) + '</b>' + teamBadge() + '</span><span class="time">' + whenLabel(x.ts) + '</span></button>'
+      + '<span class="pwho"><b>' + esc(p.name) + ' · ' + esc(p.nick) + '</b>' + teamBadge() + greedChip(p.greed) + '</span><span class="time">' + whenLabel(x.ts) + '</span></button>'
       + '<div class="pev">' + EMOJI[x.sport] + ' ' + esc(x.event) + '<span class="k"> · ' + esc(shortComp(x.comp || "")) + '</span></div>'
-      + '<div class="pickrow"><span><b>' + esc(x.label) + '</b> @ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div>' + socialBar(pid) + '</div>';
+      + '<div class="pickrow"><span><b>' + esc(x.label) + '</b> @ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div>' + copyBtn(pid, x) + socialBar(pid) + '</div>';
   }
 
   // ---------------------------------------------------------------- Reazioni, commenti, segnalazioni (02/10)
@@ -2153,7 +2934,8 @@
   function socialClick(e) {
     var b = e.target.closest("button"); if (!b) return false;
     var d = b.dataset, now = nowS();
-    if (d.react) { social.r[d.pid] = social.r[d.pid] === d.react ? undefined : d.react; saveSocial(); rerenderSocial(); return true; }
+    if (d.copy) { affPid("save", d.copy); copyPick(d.copy); return true; }
+    if (d.react) { social.r[d.pid] = social.r[d.pid] === d.react ? undefined : d.react; if (social.r[d.pid]) affPid("like", d.pid); saveSocial(); rerenderSocial(); return true; }
     if (d.comments) { if (openComments.has(d.comments)) openComments.delete(d.comments); else openComments.add(d.comments); rerenderSocial(); return true; }
     if (d.report) { reporting = reporting && reporting.id === d.report ? null : { id: d.report, kind: d.kind }; rerenderSocial(); return true; }
     if (d.repcancel) { reporting = null; rerenderSocial(); return true; }
@@ -2177,7 +2959,7 @@
         || (all.filter(function (c) { return dayKey(c.ts) === dayKey(now); }).length >= lim.commenti_al_giorno ? "troppi" : null);
       if (why) { commentMsg[pid] = MOD_MSG[why]; rerenderSocial(); return true; }
       (social.c[pid] = social.c[pid] || []).push({ id: "c" + Math.round(now * 1000), ts: now, text: text, mine: true });
-      drafts[pid] = ""; delete commentMsg[pid]; saveSocial(); rerenderSocial(); return true;
+      drafts[pid] = ""; delete commentMsg[pid]; affPid("comment", pid); saveSocial(); rerenderSocial(); return true;
     }
     return false;
   }
@@ -2219,9 +3001,46 @@
       + '<div class="pev">' + (EMOJI[x.sport] || ic("layers")) + ' ' + esc(x.event) + '</div>'
       + pickBody(x) + socialBar(pid, true) + '</div>';
   }
+  // Ordine del feed (social_v1 5.2) con app/feed_rank.js, la stessa funzione del server. L'affinita' (con chi e con
+  // cosa interagisci) oggi resta su questo telefono: statsight.affinity.
+  var AFF_KEY = "statsight.affinity", FR = window.FEEDRANK, feedIdx = {}, feedShown = 20;
+  var aff = (function () { try { var a = JSON.parse(localStorage.getItem(AFF_KEY)); if (a && a.a && a.t) return a; } catch (e) {} return FR.emptyState(); })();
+  function topicsOf(x) { var t = []; if (x.sport) t.push("sport:" + x.sport); if (x.comp) t.push("comp:" + x.comp); return t; }
+  function affTouch(kind, author, topics) { FR.interact(aff, kind, author, topics || []); try { localStorage.setItem(AFF_KEY, JSON.stringify(aff)); } catch (e) {} }
+  function affPid(kind, pid) { var x = feedIdx[pid]; if (x && !x.mine) affTouch(kind, x.p, topicsOf(x)); }
+  function postPid(x) { return x.mine ? "m:" + x.key : x.kind && x.kind !== "pronostico" ? "a:" + x.id : "t:" + x.p + ":" + Math.round(x.ts); }
+  function rankFeed(items) {
+    var now = nowS(), by = {};
+    var posts = items.map(function (x) {
+      var pid = postPid(x), p = x.mine ? null : personaOf(x.p), cs = social.c[pid] || [];
+      by[pid] = x; feedIdx[pid] = x;
+      return { id: pid, author: x.mine ? "me" : x.p, type: x.kind || "pronostico", ts: x.ts, topics: topicsOf(x),
+               likes_1h: social.r[pid] ? 1 : 0, comments_1h: cs.filter(function (c) { return now - c.ts < 3600; }).length,
+               author_n: p ? p.n : 0, author_w: p ? p.w : 0 };
+    });
+    return FR.rank(posts, aff, now).map(function (q) { return by[q.id]; });
+  }
+  function typeTag(k) {
+    var L = { pronostico: "Pronostico", analisi: "Analisi", statistica: "Statistica", notizia: "Notizia" };
+    return '<span class="ptype t-' + k + '">' + L[k] + '</span>';
+  }
+  // post di analisi, statistica o notizia dei personaggi del Team (signals/personaggi_post.py)
+  function infoPostCard(x) {
+    var p = personaOf(x.p); if (!p) return "";
+    var pid = postPid(x);
+    if (social.hidden[pid]) return reportedCard(pid);
+    return '<div class="card post info"><button class="phead" type="button" data-persona="' + p.id + '">' + avatar(p.id, 40)
+      + '<span class="pwho"><b>' + esc(p.name) + ' · ' + esc(p.nick) + '</b>' + teamBadge() + '</span><span class="time">' + whenLabel(x.ts) + '</span></button>'
+      + '<div class="pev">' + typeTag(x.kind) + (EMOJI[x.sport] || "") + ' ' + esc(x.title || "") + (x.comp ? '<span class="k"> · ' + esc(shortComp(x.comp)) + '</span>' : "") + '</div>'
+      + '<div class="ptext">' + esc(x.text || "") + '</div>'
+      + (x.rows && x.rows.length ? '<div class="prows">' + x.rows.map(function (r) { return '<div class="prow"><span>' + esc(r[0]) + '</span><b>' + esc(r[1]) + '</b></div>'; }).join("") + '</div>' : "")
+      + (x.src ? '<div class="k psrc">' + esc(x.src) + '</div>' : "")
+      + socialBar(pid) + '</div>';
+  }
+  function feedCard(x) { return x.mine ? myPostCard(x) : x.kind && x.kind !== "pronostico" ? infoPostCard(x) : postCard(x); }
   function renderBacheca() {
     if (!data) return;
-    var P = data.personaggi, html = '<div class="segbar" style="margin:16px 0 10px;"><button type="button" data-bview="home" aria-pressed="' + (bview === "home") + '">' + ic("handshake") + ' Home</button>'
+    var P = data.personaggi, html = '<div class="segbar" style="margin:4px 0 10px;"><button type="button" data-bview="home" aria-pressed="' + (bview === "home") + '">' + ic("star") + ' Per te</button>'
       + '<button type="button" data-bview="miei" aria-pressed="' + (bview === "miei") + '">' + ic("diario") + ' I miei pronostici</button></div>';
     if (bview === "miei") {
       html += '<div class="mehist"><span class="k">' + (me.hist ? "Chi ti segue vede i tuoi pronostici. Tocca l'occhio per nasconderli." : "Solo tu vedi i tuoi pronostici: gli altri vedono livello, lega e bio. Tocca l'occhio per mostrarli.") + '</span>'
@@ -2246,16 +3065,20 @@
         + top.map(suggestRow).join("")
         + '<button class="primary" type="button" data-followall="' + top.map(function (p) { return p.id; }).join(",") + '" style="width:100%;margin-top:10px;">Segui tutti e ' + top.length + '</button></div>'
         + '<h2 class="sectiontitle">Le ultime giocate</h2>'
-        + histItems().map(function (x) { return Object.assign({ mine: true }, x); }).concat((P.feed || []).slice(0, 10))
-          .sort(function (a, b) { return b.ts - a.ts; }).slice(0, 20).map(function (x) { return x.mine ? myPostCard(x) : postCard(x); }).join("");
+        + rankFeed(histItems().map(function (x) { return Object.assign({ mine: true }, x); }).concat((P.feed || []).slice(0, 10)).concat((P.posts || []).slice(0, 10)))
+          .slice(0, 20).map(feedCard).join("");
     } else {
-      var mine = histItems().map(function (x) { return Object.assign({ mine: true }, x); });
-      var feed = (P.feed || []).filter(function (x) { return follows.has(x.p); }).concat(mine).sort(function (a, b) { return b.ts - a.ts; }).slice(0, 40);
+      var mine = histItems().map(function (x) { return Object.assign({ mine: true }, x); }), mySp = me.sports || [];
+      // chi segui, le tue giocate e i post di dati del Team sui tuoi sport (o di chi segui)
+      var all = rankFeed((P.feed || []).filter(function (x) { return follows.has(x.p); })
+        .concat((P.posts || []).filter(function (x) { return follows.has(x.p) || !mySp.length || mySp.indexOf(x.sport) >= 0; })).concat(mine));
+      var feed = all.slice(0, feedShown);
       html += (sug.length ? '<div class="k" style="margin:0 2px 4px;">Consigliati per te · ' + esc(prefTxt) + '</div><div class="teamrow">' + sug.slice(0, 10).map(function (p) {
           return '<div class="tav"><button class="tavb" type="button" data-persona="' + p.id + '">' + avatar(p.id, 52) + '<span>' + esc(p.nick) + '</span></button>'
             + '<button class="tavf" type="button" data-follow="' + p.id + '">+ Segui</button></div>';
         }).join("") + '</div>' : "")
-        + (feed.length ? feed.map(function (x) { return x.mine ? myPostCard(x) : markNew(postCard(x), feedHi != null && x.ts > feedHi); }).join("") : '<div class="note">Nessuna giocata, per ora.</div>');
+        + (feed.length ? feed.map(function (x) { return x.mine ? myPostCard(x) : markNew(feedCard(x), feedHi != null && x.ts > feedHi); }).join("") : '<div class="note">Nessuna giocata, per ora.</div>')
+        + (all.length > feed.length ? '<button class="chip feedmore" type="button" data-feedmore="1">Altri post <span class="k">' + (all.length - feed.length) + '</span></button>' : "");
     }
     $("bacheca").innerHTML = html; paintDots();
     if (!inTick) setTimeout(newsTick, 0);   // un Segui nuovo o il cambio di Home/I miei pronostici aggiornano le novita'
@@ -2266,7 +3089,8 @@
     curPersona = id;
     var on = follows.has(p.id), wr = p.n ? Math.round(p.w / p.n * 100) : null;
     $("persona").innerHTML = '<div class="pcard">' + avatar(p.id, 88) + '<div><div class="dtitle" style="margin:0;">' + esc(p.name) + '</div><div class="pnick">' + esc(p.nick) + '</div>'
-      + teamBadge() + ' <span class="k">' + esc(PAESI[p.country] || p.country) + '</span></div></div>'
+      + teamBadge() + ' <span class="k">' + esc(PAESI[p.country] || p.country) + '</span>'
+      + (p.zona ? '<div class="zona">' + ic("globe") + ' Agente della zona <b>' + esc(p.zona) + '</b></div>' : "") + '</div></div>'
       + '<button class="primary" type="button" data-follow="' + p.id + '" style="width:100%;margin:12px 0;">' + (on ? ic("check") + " Segui già" : "Segui") + '</button>'
       + '<div class="facts"><div><span class="k">Strategia: </span><b>' + esc(p.desc) + '</b></div></div>'
       + '<div class="kpis"><div class="kpi"><div class="v">' + p.n + '</div><div class="l">pronostici chiusi</div></div>'
@@ -2275,6 +3099,8 @@
       + '<div class="kpis"><div class="kpi"><div class="v ' + (p.wpts >= 0 ? "pos" : "neg") + '">' + signed(p.wpts) + '</div><div class="l">punti questa settimana</div></div>'
       + '<div class="kpi"><div class="v">' + p.best + '</div><div class="l">serie migliore</div></div>'
       + '<div class="kpi"><div class="v">' + p.open + '</div><div class="l">in attesa</div></div></div>'
+      + greedHtml(p.greed)
+      + ((data.personaggi.posts || []).filter(function (x) { return x.p === p.id; }).length ? '<h2 class="sectiontitle">Dati della zona</h2>' + data.personaggi.posts.filter(function (x) { return x.p === p.id; }).slice(0, 3).map(infoPostCard).join("") : "")
       + '<h2 class="sectiontitle">Ultime giocate</h2>' + ((p.last || []).length ? p.last.map(postCard).join("") : '<div class="note">Ancora nessuna giocata.</div>')
       + '<div class="note" style="margin-top:10px;">I personaggi del Team StatSight sono della casa: giocano con una regola fissa, scritta qui sopra, alle quote vere di quel momento. I risultati non sono aggiustati.</div>';
     show("persona");
@@ -2413,9 +3239,11 @@
   function histItems() {
     var dz = data.diario || {}, out = [];
     allSlips().forEach(function (s) {
-      if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, text: s.reason, ts: s.created_at, sport: l.sport, event: l.event, label: l.label, odds: l.odds, result: l.result }); });
+      if (s.mode === "singole") s.legs.forEach(function (l, i) { out.push({ key: "s" + s.id + "-" + i, text: s.reason, ts: s.created_at, sport: l.sport, event: l.event, label: l.label, odds: l.odds, result: l.result,
+                                                                          refs: [{ event: l.event_id, code: l.code }], stake: s.stake, mode: "singole" }); });
       else out.push({ key: "s" + s.id, text: s.reason, ts: s.created_at, sport: "multi", event: (s.mode === "multipla" ? "Multipla" : "Sistema " + s.k + "/" + s.n) + " · " + s.legs.length + " partite", label: "",
-                      odds: s.odds, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null, legs: s.legs, points: s.resolved_at ? s.points : null });
+                      odds: s.odds, result: s.resolved_at ? (s.won === 1 ? 1 : s.won === 0 ? 0 : -1) : null, legs: s.legs, points: s.resolved_at ? s.points : null,
+                      refs: s.legs.map(function (l) { return { event: l.event_id, code: l.code }; }), stake: s.stake, mode: s.mode, k: s.k });
     });
     (dz.bets || []).forEach(function (b) { out.push({ key: "b" + b.id, text: b.reason, ts: b.created_at, sport: b.sport, event: b.event, label: b.pick || "giocata libera", odds: b.odds, result: b.result }); });
     return out.sort(function (a, b) { return b.ts - a.ts; });
@@ -2428,7 +3256,7 @@
     var streak = 0; closed.forEach(function (b) { streak = b.result === 1 ? streak + 1 : 0; });
     var html;
     if (meEdit) {
-      var d = meEdit, lvl = rewardState(pronostici()).level, curAv = /^(av|sp):/.test(d.seed) ? d.seed : "av:" + avIndex(d.seed);
+      var d = meEdit, lvl = rewardState(pronostici()).level, curAv = /^(av|sp|cm):/.test(d.seed) ? d.seed : "av:" + avIndex(d.seed);
       html = '<div class="card meedit">'
         + '<div class="mepicrow">' + avOf(d, 88) + '<div class="mepicbtns">'
         + '<button class="chip" type="button" data-mefoto="1">' + ic("camera") + ' Scegli una foto</button>'
@@ -2438,6 +3266,7 @@
           var sd = "av:" + i;
           return '<button type="button" class="seedbtn' + (!d.pic && sd === curAv ? " on" : "") + '" data-meseed="' + sd + '" aria-label="Avatar ' + (i + 1) + '">' + avatar(sd, 48) + '</button>';
         }).join("") + '</div>'
+        + '<div class="k" style="margin:12px 0 6px;">Oppure crea il tuo, pezzo per pezzo:</div>' + cmEditorHtml(d, lvl, won)
         + '<div class="k" style="margin:12px 0 6px;">Avatar speciali, si sbloccano salendo di livello:</div>'
         + '<div class="seedrow">' + AV_SPECIAL.map(function (x) {
           var sd = "sp:" + x.id, open = lvl >= x.level;
@@ -2461,12 +3290,25 @@
         + '<button class="iconbtn" type="button" data-meedit="1" aria-label="Modifica il profilo">' + ic("pen") + '</button></div>'
         + (me.bio ? '<div class="mebio" translate="no">' + esc(me.bio) + '</div>'
           : '<button class="linkbtn mebio empty" type="button" data-meedit="1">' + ic("pen") + ' Scrivi la tua bio</button>')
-        + heroesHtml(R2) + chestHtml(R2)
+        + heroesHtml(R2) + greedHtml(greedOf(histItems().slice().reverse().map(function (x) { return x.odds; })))
+        + '<button class="card sportpick" type="button" data-miei="1">' + ic("diario") + ' <b>I miei pronostici</b><span class="k">' + won + ' vinti su ' + closed.length + ' chiusi · tutto lo storico</span></button>'
         + albumCard(R2)
         + '<button class="coinbtn" type="button" data-megioca="1"><span class="cc">' + ic("coin") + '</span><span class="ct"><b>' + R2.coins + '</b> monete<span>Scegli le partite e fai il tuo pronostico</span></span>' + ic("chev") + '</button>'
         + (me.sport ? "" : '<button class="card sportpick" type="button" data-meedit="1">' + ic("star") + ' <b>Scegli il tuo sport e la tua squadra</b><span class="k">Mettiamo in primo piano il tuo campionato e le sfide giuste.</span></button>');
     }
     $("profilo").innerHTML = html;
+    $("miosfide").innerHTML = meEdit ? "" : '<h2 class="sectiontitle">Sfide <span class="k">StatsFight</span></h2>' + fightHistHtml(5);
+    renderMebar(R2, title);
+  }
+  // Home del Diario (03/10): in alto la tua riga (avatar -> il tuo profilo, monete -> partite), la cassa se c'e',
+  // poi il feed ordinato da feed_rank.js
+  function renderMebar(R2, title) {
+    $("mebar").innerHTML = '<div class="mebar"><button class="meav" type="button" data-mio="1" aria-label="Il tuo profilo">' + myAvatar(46)
+      + '<span class="mew"><b translate="no">' + esc(me.name || "Il tuo profilo") + '</b><span class="k"><span>' + esc(title) + '</span> · <span>livello ' + R2.level + '</span></span></span></button>'
+      + '<span id="mebtns"><button class="iconbtn wheelbtn" type="button" data-fight="1" aria-label="StatsFight">' + ic("vs") + (fightToday() ? "" : '<span class="ndot"></span>') + '</button>'
+      + '<button class="iconbtn wheelbtn" type="button" data-ruota="1" aria-label="Ruota del giorno">' + ic("wheel") + (wheelToday() ? "" : '<span class="ndot"></span>') + '</button></span>'
+      + '<button class="coinbar coinpill" type="button" data-megioca="1" aria-label="Monete: scegli le partite">' + ic("coin") + '<b>' + R2.coins + '</b></button></div>'
+      + chestHtml(R2);
   }
   // foto dal telefono: ritagliata quadrata e rimpicciolita a 160 px, cosi' sta comoda nella memoria del telefono
   function loadPhoto(file) {
@@ -2613,7 +3455,7 @@
   }
   function paintSlipBar() {
     var n = slip.legs.length, bar = $("slipbar");
-    bar.hidden = n === 0 || $("view-lock").hidden === false || $("view-schedina").hidden === false;
+    bar.hidden = n === 0 || $("view-lock").hidden === false || $("view-schedina").hidden === false || $("view-chat").hidden === false;
     if (!n) return;
     var tot = Regole.totalOdds(slip.mode, slip.k, slip.legs.map(function (l) { return l.odds; }));
     $("slipbartxt").innerHTML = ic("diario") + ' <b>Schedina</b> · ' + n + (n === 1 ? " esito" : " esiti") + ' · ' + esc(slip.mode === "sistema" ? "sistema " + slip.k + "/" + n : slip.mode)
@@ -2850,7 +3692,7 @@
       var lock = lockedCell(s[0]);
       return '<tr' + (lock ? ' class="locked"' : "") + '><td>' + (lock ? "88" : esc(s[1])) + '</td><td>' + esc(s[0]) + (lock ? " " + ic("lock") : "") + '</td><td>' + (lock ? "88" : esc(s[2])) + '</td></tr>';
     }).join("");
-    var html = '<div class="dsub">' + EMOJI[e.sport] + ' ' + esc(e.comp || NAME[e.sport]) + (e.live ? ' · <b class="livetag">LIVE</b>' : " · " + esc(startLabel(e.start))) + '</div>'
+    var html = hotBlock(e) + '<div class="dsub">' + EMOJI[e.sport] + ' ' + esc(e.comp || NAME[e.sport]) + (e.live ? ' · <b class="livetag">LIVE</b>' : " · " + esc(startLabel(e.start))) + '</div>'
       + '<div class="matchhead"><div class="mt">' + pname(e, 1) + '</div><div class="ms">' + (e.live ? esc(scoreTxt(e) || "–") : "vs") + '<div class="mm">' + esc(estMinute(e)) + '</div></div><div class="mt">' + pname(e, 2) + '</div></div>'
       + (stats ? '<table class="stt">' + stats + '</table>' + (!isFull() && /class="locked"/.test(stats) ? '<div class="upsell">' + ic("lock") + ' xG, attacchi pericolosi e possesso con <b>StatSight Full</b>.</div>' : "") : "")
       + '<div class="chips mtabs" role="tablist">' + tabs.map(function (t) { return '<button class="chip" type="button" data-mtab="' + esc(t) + '" aria-pressed="' + (t === curTab) + '">' + esc(t) + '</button>'; }).join("") + '</div>';
@@ -3130,36 +3972,110 @@
     var fmt = function (v) { return typeof v === "number" && v % 1 ? it(v, 2) : esc(v); };
     return '<td class="' + cls + '">' + fmt(h) + ' <span class="k">-</span> ' + fmt(a) + '</td>';
   }
+  // ---------------------------------------------------------------- Radar, la home (rifatto il 04/10)
+  // Schede per partita raggruppate per campionato (calcio, sfondo tenue diverso per campionato) o per torneo
+  // (tennis). Gol: punteggio evidenziato per 4 minuti e la scheda si illumina; espulsione: qualche secondo di
+  // attenzione; mercato Betfair sospeso o statistiche ferme: segnalati. Partite calde (signals/radar_caldi.py):
+  // bordo colorato e la strategia (col lucchetto per chi non ha Full).
+  var radarPrev = {}, radarFx = {}, GOAL_HI_S = 240, RED_HI_S = 8, STALE_S = 300;
+  function compTint(name) {
+    var h = 0; for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+    return "hsl(" + (h % 360) + " 65% 50%)";
+  }
+  function statPair(st, label) { var r = ((st && st.stats) || []).filter(function (x) { return x[0] === label; })[0]; return r ? [r[1], r[2]] : null; }
+  function radarTrack(e) {   // gol ed espulsioni rispetto all'ultimo giro
+    var st = e.st || {}, prev = radarPrev[e.id], now = nowS(), reds = statPair(st, "Rossi"), red = reds ? Number(reds[0]) + Number(reds[1]) : 0;
+    var fx = radarFx[e.id] || (radarFx[e.id] = {});
+    if (prev) {
+      if (st.score && prev.score && st.score !== prev.score) { fx.goal = now; fx.flash = true; }
+      if (red > prev.red) { fx.red = now; fx.redFlash = true; }
+    }
+    radarPrev[e.id] = { score: st.score, red: red };
+    return fx;
+  }
+  function chipStat(label, a, b, pct) {
+    if (a == null || b == null) return "";
+    if (lockedCell(label)) return '<span class="rchip locked"><i>' + esc(label) + '</i><span class="blur">8 - 8</span>' + ic("lock") + '</span>';
+    var nh = parseFloat(a), na = parseFloat(b), cls = "";
+    if (!pct && (nh >= 3 || na >= 3) && (nh >= 2.6 * Math.max(na, 0.01) || na >= 2.6 * Math.max(nh, 0.01))) cls = (Math.max(nh, na) >= 3.6 * Math.max(Math.min(nh, na), 0.01) && Math.max(nh, na) >= 4) ? " hot" : " warm";
+    var f = function (v) { return typeof v === "number" && v % 1 ? it(v, 1) : esc(v); };
+    return '<span class="rchip' + cls + '"><i>' + esc(label) + '</i><b>' + f(a) + '</b><span class="k">-</span><b>' + f(b) + '</b></span>';
+  }
+  function hotOf(e) { var H = data.radar_caldi && data.radar_caldi.items; return (H && H[String(e.id)]) || null; }
+  function hotTag(e) {
+    var h = hotOf(e); if (!h) return "";
+    if (!isFull()) return '<span class="hottag">' + ic("flame") + ' Partita calda <span class="lk">' + ic("lock") + ' Full</span></span>';
+    return '<span class="hottag">' + ic("flame") + ' ' + esc(h[0].name) + ' · ' + Math.round(h[0].p * 100) + '%</span>';
+  }
+  function calcioCard(e) {
+    var st = e.st || {}, fx = radarTrack(e), now = nowS();
+    var goalHi = fx.goal && now - fx.goal < GOAL_HI_S, redHi = fx.red && now - fx.red < RED_HI_S;
+    var stale = st.ts && now - st.ts > STALE_S, sc = scoreOf(st.score) || ["–", "–"];
+    var q = ["1", "X", "2"].map(function (c) { return '<span>' + (e.mk[c] ? oddsTxt(e.mk[c][0]) : "–") + '</span>'; }).join("");
+    var cls = "rcard" + (hotOf(e) ? " hotm" : "") + (fx.flash ? " flashg" : "") + (fx.redFlash || redHi ? " redal" : "") + (e.susp ? " susp" : "");
+    fx.flash = false; fx.redFlash = false;
+    return '<div class="' + cls + '" data-ev="' + e.id + '" role="button" tabindex="0">'
+      + '<div class="rtop"><span class="rmin">' + esc(estMinute(e) || "LIVE") + '</span>'
+      + '<span class="rteams"><span>' + pname(e, 1) + '</span><span>' + pname(e, 2) + '</span></span>'
+      + '<span class="rscore' + (goalHi ? " gl" : "") + '"><b>' + sc[0] + '</b><b>' + sc[1] + '</b></span></div>'
+      + '<div class="rbadges">' + hotTag(e)
+      + (goalHi ? '<span class="rb gol">' + ic("calcio") + ' GOL</span>' : "")
+      + (redHi || (fx.red && now - fx.red < 120) ? '<span class="rb red">' + ic("alert") + ' Espulsione</span>' : "")
+      + (e.susp ? '<span class="rb sus">' + ic("clock") + ' Mercato sospeso</span>' : "")
+      + (stale ? '<span class="rb stale">' + ic("info") + ' Statistiche ferme</span>' : "") + '</div>'
+      + '<div class="rstats">' + RADAR_COLS.map(function (c) { var v = statPair(st, c); return v ? chipStat(c, v[0], v[1], c === "Possesso") : ""; }).join("")
+      + '<span class="rodds"><i>1 X 2</i>' + q + '</span></div></div>';
+  }
+  function pctOf(v) { var m = /(\d+)\s*\/\s*(\d+)/.exec(String(v)); return m && Number(m[2]) ? Math.round(Number(m[1]) / Number(m[2]) * 100) : null; }
+  function tennisCard(e) {
+    var st = e.st || {}, srv = st.serve, games = st.games || [], sets = String(st.sets || "").split(/\s*-\s*/);
+    var cur = games.length - 1, pt = String(st.point || "").split(/\s*-\s*/);
+    function row(side) {
+      var cells = games.map(function (g, i) {
+        var p = String(g).split(/\s*-\s*/), v = p[side - 1] != null ? p[side - 1] : "";
+        return '<span class="tset' + (i === cur ? " cur" : "") + '">' + esc(String(v).replace(/\..*/, "")) + '</span>';
+      }).join("");
+      return '<div class="trow"><span class="tball' + (srv === side ? " on" : "") + '" aria-label="' + (srv === side ? "al servizio" : "") + '">' + (srv === side ? ic("tennis") : "") + '</span>'
+        + '<span class="tname">' + esc(side === 1 ? e.home : e.away) + '</span><span class="tsw">' + esc(sets[side - 1] != null && sets[side - 1] !== "" ? sets[side - 1] : "–") + '</span>'
+        + cells + (pt.length === 2 ? '<span class="tpt">' + esc(pt[side - 1]) + '</span>' : "") + '</div>';
+    }
+    var sv = statPair(st, "Punti vinti al servizio"), rv = statPair(st, "Punti vinti in risposta");
+    var chips = "";
+    if (sv) { var a = pctOf(sv[0]), b = pctOf(sv[1]); if (a != null && b != null) chips += chipStat("Punti vinti al servizio", a + "%", b + "%", true); }
+    if (rv) { var c = pctOf(rv[0]), d = pctOf(rv[1]); if (c != null && d != null) chips += chipStat("Punti vinti in risposta", c + "%", d + "%", true); }
+    ["Ace", "Doppi falli"].forEach(function (k) { var v = statPair(st, k); if (v) chips += chipStat(k, v[0], v[1], false); });
+    var q = e.mk.W1 || e.mk.W2 ? '<span class="rodds"><i>Vincente</i><span>' + oddsTxt(e.mk.W1 && e.mk.W1[0]) + '</span><span>' + oddsTxt(e.mk.W2 && e.mk.W2[0]) + '</span></span>' : "";
+    return '<div class="rcard tcard' + (e.susp ? " susp" : "") + '" style="--nset:' + Math.max(1, games.length) + '" data-ev="' + e.id + '" role="button" tabindex="0">'
+      + '<div class="thead"><span></span><span></span><span class="k">Set</span>' + games.map(function (g, i) { return '<span class="k">' + (i + 1) + '</span>'; }).join("") + (pt.length === 2 ? '<span class="k">Game</span>' : "") + '</div>'
+      + row(1) + row(2)
+      + (e.susp ? '<div class="rbadges"><span class="rb sus">' + ic("clock") + ' Mercato sospeso</span></div>' : "")
+      + '<div class="rstats">' + chips + q + '</div></div>';
+  }
+  // in cima alla scheda quote di una partita calda: la nostra strategia, perche', i numeri dello storico
+  function hotBlock(e) {
+    var H = hotOf(e); if (!H) return "";
+    if (!isFull()) return '<div class="card hotblock locked">' + ic("flame") + ' <b>Partita calda</b><div class="k">' + ic("lock") + ' Quale strategia, perché e i numeri dello storico si vedono con StatSight Full.</div></div>';
+    return '<div class="card hotblock">' + H.map(function (h) {
+      var hs = h.hist;
+      return '<div class="hbrow"><div class="hbt">' + ic("flame") + ' <b>' + esc(h.name) + '</b><span class="hbp">' + Math.round(h.p * 100) + '%</span></div>'
+        + '<div class="k">Si gioca: <b>' + esc(h.pick) + '</b>' + (h.why ? ' · ' + esc(h.why) : "") + '</div>'
+        + '<div class="k">' + (hs ? 'Nello storico: ' + hs.n + ' casi, ' + Math.round(hs.strike * 100) + '% vinti, quota media ' + oddsTxt(hs.odds) + ', rendimento ' + pct(hs.roi) : "I numeri dello storico per questa strategia arrivano col prossimo aggiornamento.") + '</div></div>';
+    }).join("") + '<div class="k hbnote">Probabilità nostra, dal mercato e dalla pressione della partita: si accende solo sopra una soglia alta, ma si può perdere.</div></div>';
+  }
   function renderRadar() {
     var dz = data.diario;
-    var evs = evList().filter(function (e) { return e.live && e.sport === rsport && e.st; });
+    var evs = evList().filter(function (e) { return e.live && e.sport === rsport && (e.st || e.susp); });
     $("radarage").textContent = dz ? "dati di " + ageTxt(dz.at) : "";
     if (!evs.length) { $("radar").innerHTML = '<div class="note">Nessuna partita live con statistiche in questo momento.</div>'; return; }
-    var lockHead = function (c) { return '<th>' + c + (lockedCell(c) ? " " + ic("lock") : "") + '</th>'; };
-    var html = '<table class="rt"><thead><tr>';
-    if (rsport === "calcio") {
-      evs.sort(function (a, b) { return ((b.st && b.st.minute) || 0) - ((a.st && a.st.minute) || 0); });
-      html += '<th>Min</th><th class="l">Partita</th><th>Ris.</th><th>1 X 2</th>' + RADAR_COLS.map(lockHead).join("") + '</tr></thead><tbody>'
-        + evs.map(function (e) {
-          var st = {}; ((e.st && e.st.stats) || []).forEach(function (r) { st[r[0]] = r; });
-          var q = ["1", "X", "2"].map(function (c) { return e.mk[c] ? oddsTxt(e.mk[c][0]) : "–"; }).join(" ");
-          return '<tr data-ev="' + e.id + '"><td class="mn">' + esc(estMinute(e) || "–") + '</td><td class="l"><b>' + pname(e, 1) + '</b><br><b>' + pname(e, 2) + '</b><div class="k">' + esc(e.comp) + '</div></td>'
-            + '<td class="sc">' + esc(scoreTxt(e)) + '</td><td>' + q + '</td>'
-            + RADAR_COLS.map(function (c) { var r = st[c]; return r ? domCell(c, r[1], r[2], c === "Possesso") : '<td class="k">–</td>'; }).join("") + '</tr>';
-        }).join("");
-    } else {
-      html += '<th class="l">Partita</th><th>Set</th><th>Game</th><th>Al servizio</th><th>Quote</th>' + ["Punti vinti al servizio", "Punti vinti in risposta"].map(lockHead).join("") + '<th>Ace</th><th>Doppi falli</th></tr></thead><tbody>'
-        + evs.map(function (e) {
-          var st = {}; ((e.st && e.st.stats) || []).forEach(function (r) { st[r[0]] = r; });
-          function c2(k) { var r = st[k]; if (!r) return '<td class="k">–</td>'; if (lockedCell(k)) return '<td class="locked"><span class="blur">88/88</span>' + ic("lock") + '</td>'; return '<td>' + esc(r[1]) + ' <span class="k">-</span> ' + esc(r[2]) + '</td>'; }
-          var srv = e.st && e.st.serve;
-          return '<tr data-ev="' + e.id + '"><td class="l"><b>' + pname(e, 1) + '</b><br><b>' + pname(e, 2) + '</b><div class="k">' + esc(e.comp) + '</div></td>'
-            + '<td class="sc">' + esc((e.st && e.st.sets) || "–") + '</td><td>' + esc(((e.st && e.st.games) || []).join(" ") || "–") + '</td><td>' + (srv ? ic("tennis") + " " + esc((srv === 1 ? e.home : e.away).split(" ").slice(-1)[0]) : "–") + '</td>'
-            + '<td>' + (e.mk.W1 || e.mk.W2 ? oddsTxt(e.mk.W1 && e.mk.W1[0]) + ' / ' + oddsTxt(e.mk.W2 && e.mk.W2[0]) : "–") + '</td>'
-            + c2("Punti vinti al servizio") + c2("Punti vinti in risposta") + c2("Ace") + c2("Doppi falli") + '</tr>';
-        }).join("");
-    }
-    $("radar").innerHTML = html + '</tbody></table>' + (!isFull() ? '<div class="upsell" style="margin-top:10px;">' + ic("lock") + ' Le colonne col lucchetto si vedono con <b>StatSight Full</b>.</div>' : "");
+    var groups = {}, order = [];
+    evs.forEach(function (e) { var k = e.comp || NAME[e.sport]; if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(e); });
+    var hotFirst = function (k) { return groups[k].some(function (e) { return !!hotOf(e); }) ? 1 : 0; };
+    order.sort(function (a, b) { return hotFirst(b) - hotFirst(a) || groups[b].length - groups[a].length || (a > b ? 1 : -1); });
+    $("radar").innerHTML = order.map(function (k) {
+      var list = groups[k].sort(function (a, b) { return (hotOf(b) ? 1 : 0) - (hotOf(a) ? 1 : 0) || ((b.st && b.st.minute) || 0) - ((a.st && a.st.minute) || 0); });
+      return '<section class="rgroup" style="--tint:' + compTint(k) + '"><div class="rghead">' + EMOJI[rsport] + ' ' + esc(shortComp(k)) + ' <span class="k">' + list.length + '</span></div>'
+        + list.map(function (e) { return rsport === "calcio" ? calcioCard(e) : tennisCard(e); }).join("") + '</section>';
+    }).join("") + (!isFull() ? '<div class="upsell" style="margin-top:10px;">' + ic("lock") + ' Le statistiche col lucchetto e le strategie delle partite calde si vedono con <b>StatSight Full</b>.</div>' : "");
   }
   $("radarchips").addEventListener("click", function (e) {
     var b = e.target.closest(".chip"); if (!b) return;
@@ -3167,7 +4083,8 @@
     $("radarchips").querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
     if (data) renderRadar();
   });
-  $("radar").addEventListener("click", function (e) { var r = e.target.closest("tr[data-ev]"); if (r && data) { curTab = null; renderGiocata(r.dataset.ev); } });
+  $("radar").addEventListener("click", function (e) { var r = e.target.closest("[data-ev]"); if (r && data) { curTab = null; renderGiocata(r.dataset.ev); } });
+  $("radar").addEventListener("keydown", function (e) { var r = e.target.closest("[data-ev]"); if (r && data && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); curTab = null; renderGiocata(r.dataset.ev); } });
 
   // ---------------------------------------------------------------- Il mio occhio: esperienza, leghe, badge
   // Regole in docs/sistema_rewarding.md. Oggi calcolate qui dai pronostici del diario; con l'app pubblica le stesse
@@ -3282,7 +4199,7 @@
       coins -= b.stake;
       if (b.result != null) coins += stakePayout(b.stake, b.points != null ? b.points : b.result === 1 ? b.odds - 1 : b.result === 0 ? -1 : 0);
     });
-    coins -= jolly.spent;
+    coins -= jolly.spent - wheelCoins() - fightCoins();   // monete fuori dai pronostici: jolly comprati (-), ruota e StatsFight (+)
     var chest = chestOf(prizes, thisWeek);   // i premi delle settimane chiuse arrivano in una cassa da aprire
     coins -= chest.coins;
     var cur = weeks[thisWeek] || { pts: 0, n: 0 };
@@ -3861,8 +4778,72 @@
   }
 
   // jolly: comprarli con le monete (Il mio occhio) e metterli su un pronostico aperto (Le mie giocate)
-  ["profilo", "occhiolevel"].forEach(function (id) {
+  $("ruota").addEventListener("click", function (e) { if (e.target.closest("#wheelgo") && data) spinWheel(); });
+  $("direct").addEventListener("click", function (e) {
+    if (!data) return;
+    var b = e.target.closest("button"); if (!b) return;
+    var d = b.dataset;
+    if (d.conv) { curConv = d.conv; directMsg = ""; renderChat(); show("chat"); window.scrollTo(0, 0); return; }
+    if (d.dshare) {
+      var S0 = d.dshare === "cur" ? { mode: slip.mode, k: slip.k, stake: stakeInfo().stake, by: me.name || "", legs: slip.legs.map(function (l) { return { event: l.event, sport: l.sport, code: l.code, odds: l.odds, ename: l.ename, label: l.label }; }) }
+        : slipOfMine(mySlips.filter(function (s) { return String(s.id) === d.dshare; })[0]);
+      shareOut = SH.encode(S0); renderDirect(); return;
+    }
+    if (d.dcopylink && shareOut) {
+      var link = shareLink(shareOut), done = function () { var x = $("dcopied"); if (x) x.textContent = "Link copiato: mandalo a chi vuoi."; };
+      try { navigator.clipboard.writeText(link).then(done, function () { var x = $("dcopied"); if (x) x.textContent = link; }); } catch (er) { var x = $("dcopied"); if (x) x.textContent = link; }
+      return;
+    }
+    if (d.dtome && shareOut) { convOf("me").msgs.push({ id: "m" + Math.round(nowS() * 1000), ts: nowS(), slip: SH.decode(shareOut), mine: true }); saveDirect(); shareOut = null; curConv = "me"; renderChat(); show("chat"); return; }
+    if (d.dopen) { directMsg = receiveCode($("dcodein").value) || ""; if (directMsg) renderDirect(); }
+  });
+  $("chat").addEventListener("input", function (e) { if (e.target.id === "dtext") drafts.direct = e.target.value; });
+  $("chat").addEventListener("keydown", function (e) { if (e.target.id === "dtext" && e.key === "Enter") { var s = $("chat").querySelector("[data-dsend]"); if (s) s.click(); } });
+  $("chat").addEventListener("click", function (e) {
+    if (!data) return;
+    var b = e.target.closest("button"); if (!b) return;
+    var d = b.dataset, c = convOf(curConv); if (!c) return;
+    if (d.copy) { copyPick(d.copy); return; }
+    if (d.dsend) {
+      var text = (drafts.direct || "").trim(); if (!text) return;
+      var why = checkText(text), mine = c.msgs.filter(function (m) { return m.mine && m.text; }), last = mine.length ? mine[mine.length - 1].ts : 0;
+      if (!why && nowS() - last < 1) why = "fretta";
+      if (why) { directMsg = MOD_MSG[why] || "Riprova."; renderChat(); return; }
+      c.msgs.push({ id: "m" + Math.round(nowS() * 1000), ts: nowS(), text: text, mine: true }); drafts.direct = ""; directMsg = ""; saveDirect(); renderChat(); return;
+    }
+    if (d.ddel) { c.msgs = c.msgs.filter(function (m) { return m.id !== d.ddel; }); saveDirect(); renderChat(); return; }
+    if (d.drep) { reporting = reporting && reporting.id === d.drep ? null : { id: d.drep, kind: "messaggio" }; renderChat(); return; }
+    if (d.repcancel) { reporting = null; renderChat(); return; }
+    if (d.repwhy) {
+      direct.reports.push({ id: d.repid, reason: d.repwhy, ts: nowS() });   // col server: va al bot delle segnalazioni
+      c.msgs.forEach(function (m) { if (m.id === d.repid) m.hidden = 1; }); reporting = null; saveDirect(); renderChat(); return;
+    }
+    if (d.dunrep) { c.msgs.forEach(function (m) { if (m.id === d.dunrep) delete m.hidden; }); direct.reports = direct.reports.filter(function (r) { return r.id !== d.dunrep; }); saveDirect(); renderChat(); return; }
+    if (d.dblock) { if (direct.blocked.indexOf(d.dblock) < 0) direct.blocked.push(d.dblock); saveDirect(); renderChat(); fxToast("x", "Bloccato", "Non ricevi più schedine da " + d.dblock); }
+  });
+  $("fight").addEventListener("click", function (e) {
+    if (!data) return;
+    var b = e.target.closest("button"); if (!b) return;
+    var f = fightToday();
+    if (b.dataset.fightgo && !f) { if (newFight()) { fightAnim = !REDUCED; renderFight(); renderProfilo(); } return; }
+    if (!f || f.locked) return;
+    if (b.dataset.fpick) { var kv = b.dataset.fpick.split(":"); f.mine[Number(kv[0])] = kv[1]; saveFights(); renderFight(); return; }
+    if (b.dataset.fightok && f.mine.every(Boolean)) {
+      if (f.legs.some(function (l) { return l.start <= nowS(); })) { f.void = 1; saveFights(); renderFight(); return; }
+      f.locked = true; f.ts = nowS(); saveFights(); renderFight(); renderProfilo();
+      fxToast("vs", "Sfida confermata", "Si chiude con gli esiti delle due partite");
+    }
+  });
+  ["profilo", "occhiolevel", "mebar"].forEach(function (id) {
     $(id).addEventListener("click", function (e) { var c = e.target.closest("[data-chest]"); if (c && data) openChest(c); });
+  });
+  $("mebar").addEventListener("click", function (e) {
+    if (!data) return;
+    var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.mio) { renderProfilo(); show("mio"); window.scrollTo(0, 0); return; }
+    if (b.dataset.megioca) { show("diario"); window.scrollTo(0, 0); return; }
+    if (b.dataset.ruota) { renderRuota(); show("ruota"); window.scrollTo(0, 0); return; }
+    if (b.dataset.fight) { settleFights(); renderFight(); show("fight"); window.scrollTo(0, 0); }
   });
   $("occhiolevel").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-buyjolly]"); if (!b || !data) return;
@@ -3898,11 +4879,19 @@
     var b = e.target.closest("button"); if (!b) return;
     var ds = b.dataset;
     if (ds.megioca) { show("diario"); window.scrollTo(0, 0); return; }
+    if (ds.miei) { bview = "miei"; renderBacheca(); show("profilo"); window.scrollTo(0, 0); return; }
     if (ds.meedit) { startEdit(); return; }
     if (!meEdit) return;
     if (pickerClick(meEdit, b)) { keepScroll($("profilo"), renderProfilo); return; }
     if (ds.mefoto) { $("fotoinput").click(); return; }
     if (ds.menofoto) { meEdit.pic = null; renderProfilo(); return; }
+    if (ds.cmtab) { cmTab = Number(ds.cmtab); keepScroll($("profilo"), renderProfilo); return; }
+    if (ds.cm || ds.cmuse) {
+      var P = /^cm:/.test(meEdit.seed) ? cmDecode(meEdit.seed) : cmDefault();
+      if (ds.cm) { var kv = ds.cm.split(":"); P[kv[0]] = Number(kv[1]); }
+      meEdit.seed = cmEncode(P); meEdit.pic = null;
+      keepScroll($("profilo"), renderProfilo); return;
+    }
     if (ds.meseed) {
       var spx = AV_SPECIAL.filter(function (x) { return "sp:" + x.id === ds.meseed; })[0];
       if (!spx || rewardState(pronostici()).level >= spx.level) { meEdit.seed = ds.meseed; meEdit.pic = null; }
@@ -3926,8 +4915,8 @@
   $("benvenuto").addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return;
     if (pickerClick(pick, b)) { keepScroll($("benvenuto"), renderBenvenuto); return; }
-    if (b.dataset.pkgo) { commitPick(pick); me.onboarded = true; saveMe(); if (data) renderAll(); show("segnali"); window.scrollTo(0, 0); tutorialFirst(); return; }
-    if (b.dataset.pkskip) { me.onboarded = true; saveMe(); show("segnali"); tutorialFirst(); }
+    if (b.dataset.pkgo) { commitPick(pick); me.onboarded = true; saveMe(); if (data) renderAll(); show("radar"); window.scrollTo(0, 0); tutorialFirst(); return; }
+    if (b.dataset.pkskip) { me.onboarded = true; saveMe(); show("radar"); tutorialFirst(); }
   });
   $("fotoinput").addEventListener("change", function () {
     var f = this.files && this.files[0]; this.value = "";
@@ -3947,12 +4936,16 @@
       if (socialClick(e)) return;
       var f = e.target.closest("[data-follow]");
       if (f) {
-        var pid = f.dataset.follow; if (follows.has(pid)) follows.delete(pid); else follows.add(pid); saveFollows(); renderBacheca();
+        var pid = f.dataset.follow;
+        if (follows.has(pid)) { follows.delete(pid); aff.a[pid] = (aff.a[pid] || 0) - FR.WEIGHTS.follow; affTouch("view", null); }   // smettere di seguire toglie il +1 (e salva)
+        else { follows.add(pid); affTouch("follow", pid); }
+        saveFollows(); renderBacheca();
         if (!$("view-persona").hidden) renderPersona(pid, true);
         return;
       }
       var fa = e.target.closest("[data-followall]");
-      if (fa) { fa.dataset.followall.split(",").forEach(function (x) { if (x) follows.add(x); }); saveFollows(); renderBacheca(); return; }
+      if (fa) { fa.dataset.followall.split(",").forEach(function (x) { if (x && !follows.has(x)) { follows.add(x); affTouch("follow", x); } }); saveFollows(); renderBacheca(); return; }
+      if (e.target.closest("[data-feedmore]")) { feedShown += 20; renderBacheca(); return; }
       var eh = e.target.closest("[data-mehist]");
       if (eh) { me.hist = !me.hist; saveMe(); renderBacheca(); return; }
       var v = e.target.closest("[data-bview]"); if (v) { bview = v.dataset.bview; renderBacheca(); return; }
@@ -3970,7 +4963,8 @@
       storeSet(password);
       renderAll();
       // l'app si apre sui segnali; la prima volta col benvenuto (nazione, sport, campionato, squadra)
-      if (!$("view-lock").hidden) { if (me.onboarded || me.sport) show("segnali"); else { renderBenvenuto(); show("benvenuto"); } }
+      if (!$("view-lock").hidden) { if (me.onboarded || me.sport) show("radar"); else { renderBenvenuto(); show("benvenuto"); } }
+      if (me.onboarded || me.sport) openShareHash();   // link "#s=" di una schedina condivisa
       msg.textContent = "";
     } catch (e) {
       if (window.console) console.error(e);
@@ -4006,8 +5000,10 @@
   $("logout").addEventListener("click", function () { storeSet(null); data = null; $("pw").value = ""; show("lock"); });
   $("tabbar").addEventListener("click", function (e) { var b = e.target.closest(".tab"); if (!b) return;
     // il Diario si apre sul tuo profilo; il pulsante delle monete porta alle partite
-    if (b.dataset.view === "diario") { if (data) renderProfilo(); show("profilo"); } else show(b.dataset.view);
+    if (b.dataset.view === "diario") { if (data) renderProfilo(); show("profilo"); }
+    else { if (b.dataset.view === "direct" && data) { curConv = null; directMsg = ""; renderDirect(); } show(b.dataset.view); }
   });
+  $("segview").addEventListener("click", function (e) { var b = e.target.closest("[data-segv]"); if (b && data) { segv = b.dataset.segv; renderFeed(); } });
   $("timechips").addEventListener("click", function (e) {
     var b = e.target.closest(".chip"); if (!b) return;
     when = b.dataset.when;
@@ -4228,30 +5224,37 @@
   })();
 
   // ---------------------------------------------------------------- Tutorial (richiesta 04/10)
-  // Dopo il benvenuto (una volta sola, si salta) e da Impostazioni > Rivedi il tutorial: quattro passi con
+  // Dopo il benvenuto (una volta sola, si salta) e da Impostazioni > Rivedi il tutorial: sei passi con
   // l'elemento evidenziato. Ricordato su questo telefono (statsight.tutorial).
   var TUT_KEY = "statsight.tutorial", tutStep = -1;
   var TUT = [
-    { view: "strategie", go: function () { renderStrategie(); }, target: "#strategie .card .strat, #strategie .card, #strategie .hero",
-      title: "Le strategie", text: ["Ogni strategia è una regola fissa che dice quando una giocata ha senso, provata sullo storico.",
-        "Le barre (in \"… altro\", poi Personalizza) le adatti a te e vedi subito come sarebbe andata.",
-        "I numeri sono onesti: quante volte è successo, quanti vinti e il rendimento contro la quota, con vinti e persi. Se il rendimento è negativo, la strategia perde."] },
+    { view: "radar", go: function () { renderRadar(); }, target: "#radar .rcard, #view-radar .radarwrap",
+      title: "Il Radar, la tua home", text: ["Il logo al centro della barra ti riporta sempre qui: le partite live per campionato, con minuto, risultato e statistiche. Gol, espulsioni e mercato sospeso si accendono da soli.",
+        "Le partite calde sono quelle che stanno per rientrare in una strategia semplice, con una probabilità davvero alta. Tocca una partita per le quote."],
+      legend: [["#E8862A", "Arancio: una squadra domina (almeno 3 e 2,6 volte l'altra)."], ["#E08268", "Rosso: domina nettamente (almeno 4 e 3,6 volte l'altra)."]] },
+    { view: "segnali", go: function () { renderFeed(); }, target: "#segview, #view-segnali .card",
+      title: "Segnali: nuovi e storico", text: ["In Nuovi solo i segnali che puoi ancora giocare. In Storico vinti e persi, la quota più alta e il grafico di come è andata ogni strategia.",
+        "Con Collega Telegram i segnali ti arrivano anche sul bot."] },
+    { view: "strategie", go: function () { renderStrategie(); }, target: "#strategie .strat, #strategie .card, #strategie .hero",
+      title: "Le strategie", text: ["Ogni strategia è una regola fissa provata sullo storico. Con gli interruttori Top 5 e 6-10 accendi in un colpo le migliori.",
+        "Le barre (in \"… altro\", poi Personalizza) le adatti a te e vedi subito come sarebbe andata; per uscire salvi o annulli.",
+        "I numeri sono onesti: quante volte è successo, quanti vinti e il rendimento contro la quota, con vinti e persi."] },
     { view: "notifiche", go: function () { renderNotifiche(); }, target: "#notifiche .nrow, #notifiche .note",
       title: "Scegli i tuoi avvisi", text: ["Accendi l'interruttore delle strategie che vuoi seguire e scegli cosa leggere nel messaggio: rendimento, % vinti, partite, quota.",
         "Quando esce un segnale lo trovi in Segnali; le notifiche sul telefono arrivano con l'app pubblica."] },
-    { view: "radar", go: function () { renderRadar(); }, target: "#radar table, #view-radar .radarwrap",
-      title: "Il Radar, per chi fa da solo", text: ["Le partite live con le statistiche: minuto, risultato, quote 1 X 2, poi casa - ospite per tiri in porta, tiri, xG, angoli, possesso, attacchi pericolosi e rossi. Tocca una riga per aprire la partita."],
-      legend: [["#E8862A", "Arancio: una squadra domina (almeno 3 e 2,6 volte l'altra)."], ["#E08268", "Rosso: domina nettamente (almeno 4 e 3,6 volte l'altra)."]] },
-    { view: "profilo", go: function () { renderProfilo(); }, target: "#profilo .coinbtn, #profilo",
-      title: "Il Diario", text: ["Il tuo profilo con livello e lega. Le monete si guadagnano coi pronostici: non si comprano.",
-        "Da qui vai alle Partite: tocchi le quote, si riempie la schedina e la pubblichi. La Home mostra le giocate di chi segui; in Il mio occhio ci sono leghe, sfide e badge.",
-        "È un gioco a punti: niente soldi."] }
+    { view: "profilo", go: function () { renderProfilo(); renderBacheca(); }, target: "#mebar .mebar, #mebar",
+      title: "Il Diario", text: ["La Home: i pronostici di chi segui e i dati del Team StatSight, con Copia per metterli nella tua schedina. Tocca il tuo avatar per il profilo.",
+        "Qui accanto la sfida StatsFight e la ruota del giorno. Le monete si guadagnano soltanto: non si comprano.",
+        "È un gioco a punti: niente soldi."] },
+    { view: "direct", go: function () { renderDirect(); }, target: "#direct .dserver, #direct",
+      title: "Direct", text: ["Le schedine si mandano con un codice o un link: chi lo apre la vede e la copia. Le chat con gli amici arrivano con l'app pubblica."] }
   ];
   function tutorialFirst() { var d = null; try { d = localStorage.getItem(TUT_KEY); } catch (e) {} if (!d) setTimeout(function () { startTutorial(); }, 400); }
   function startTutorial() { if (!data) return; tutStep = 0; tutRender(); }
   function endTutorial(how) {
     try { localStorage.setItem(TUT_KEY, how); } catch (e) {}
     tutStep = -1; var t = $("tut"); if (t) t.remove();
+    show("radar");   // dopo il tutorial si arriva alla home, il Radar
     window.removeEventListener("resize", tutPlace);
   }
   function tutTarget(st) { var sels = st.target.split(","); for (var i = 0; i < sels.length; i++) { var el = document.querySelector(sels[i].trim()); if (el && el.offsetParent !== null) return el; } return null; }
@@ -4437,6 +5440,8 @@
     if (data) renderFeed();
   });
   $("strategie").addEventListener("change", function (e) {
+    var tsw = e.target.closest("input[data-topsw]");
+    if (tsw && data) { var lvl = Number(tsw.dataset.topsw); setTopMode(tsw.checked ? lvl : (lvl === 10 ? 5 : 0)); return; }
     var co = e.target.closest("input[data-caton]");
     if (co) { if (co.checked) catOn.add(co.dataset.caton); else catOn.delete(co.dataset.caton); saveCatOn(); renderFeed(); return; }
     var sw = e.target.closest("input[data-strategy]"); if (!sw) return;
@@ -4449,6 +5454,7 @@
     var x = e.target.closest("button[data-escluso]"); if (x && data) renderEscluso(x.dataset.escluso);
     var c = e.target.closest("button[data-cat]"); if (c && data) renderCat(c.dataset.cat);
     var si = e.target.closest("[data-sportinfo]"); if (si && data) { renderSportInfo(si.dataset.sportinfo); return; }
+    var rc = e.target.closest("[data-race]"); if (rc && data) { renderRace(rc.dataset.race); return; }
     var cs2 = e.target.closest("button[data-catsport]");
     if (cs2 && data) { stratSport = cs2.dataset.catsport; try { localStorage.setItem(SPORT_KEY, stratSport); } catch (er) {} renderStrategie(); var sec = $("catsec"); if (sec) sec.scrollIntoView({ block: "start" }); return; }
     var sp = e.target.closest("button[data-ssport]");
