@@ -869,6 +869,43 @@
   .aff-ok{background:#2BB67333;color:#2BB673;} .aff-mid{background:#E9A93A33;color:#E9A93A;} .aff-bad{background:#E5322D33;color:#E5322D;}
   .hsec{font-size:0.74rem;font-weight:800;color:var(--ink-soft);margin:12px 0 4px;text-transform:uppercase;letter-spacing:.04em;}
   .hrow{display:grid;grid-template-columns:48px 1fr auto auto;gap:8px;font-size:0.8rem;padding:4px 0;border-bottom:1px dashed var(--line);} .hrow:last-child{border-bottom:none;}
+  .topbar .brand{cursor:pointer;}
+  #refreshbtn.spin .ico{animation:lvspin .8s linear infinite;}
+  #ptr{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) - 44px);z-index:40;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;transform:translate(-50%,0);box-shadow:0 4px 12px rgba(0,0,0,.25);pointer-events:none;transition:transform .15s;}
+  #ptr .ico{width:20px;height:20px;} #ptr.ready{border-color:#2BB673;} body.ptrbusy #ptr{transform:translate(-50%,104px);animation:none;}
+  body.ptrbusy #ptr .ico{animation:lvspin .8s linear infinite;}
+  .rtrend{position:relative;margin:4px 0 2px;} .rtrend svg{display:block;} .rtrend .k{position:absolute;right:0;top:-2px;font-size:0.62rem;background:var(--surface);padding:0 3px;border-radius:4px;}
+  .rcard{position:relative;}
+  .rcard.stratm{box-shadow:0 0 0 2px var(--accent-strong) inset, 0 0 14px color-mix(in srgb, var(--accent) 30%, transparent);}
+  .rcard.wonm{box-shadow:0 0 0 2px #2BB673 inset;}
+  .rcard.winfx{animation:winfx 1.6s ease-out 1;}
+  @keyframes winfx{0%{box-shadow:0 0 0 0 #2BB673cc;transform:scale(1);}25%{transform:scale(1.02);}100%{box-shadow:0 0 0 18px #2BB67300;transform:scale(1);}}
+  .rwon{position:absolute;right:-6px;top:-6px;width:26px;height:26px;border-radius:50%;background:#2BB673;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.3);z-index:2;}
+  .rwon .ico{width:16px;height:16px;filter:brightness(10);} .winfx .rwon{animation:fvs-pop .6s cubic-bezier(.3,1.8,.5,1) .2s both;}
+  .rb.strat{background:color-mix(in srgb, var(--accent) 22%, var(--surface));} .rb.strat.won{background:#2BB673;color:#fff;} .rb.strat.lost{opacity:.6;}
+  .tab.hub.hubwin .hubic{animation:hubwin 2.4s ease-out;}
+  @keyframes hubwin{0%,100%{box-shadow:0 0 0 0 #2BB67300;transform:scale(1);}15%{transform:scale(1.15) rotate(-8deg);box-shadow:0 0 0 6px #2BB673aa;}35%{transform:scale(1.05) rotate(6deg);}60%{box-shadow:0 0 0 14px #2BB67300;transform:scale(1);}}
+  .irace{display:block;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer;} .irtop{display:flex;align-items:center;gap:4px;font-size:0.86rem;} .irtop .ico:last-child{margin-left:auto;}
+  .irfav{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:6px;font-size:0.8rem;} .irpick{margin-top:6px;font-size:0.82rem;display:flex;align-items:center;gap:6px;}
+  .irrec{padding:8px 0;border-bottom:1px solid var(--line);font-size:0.84rem;} .irrec:last-child{border-bottom:none;}
+  .trio{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px;} .trio i{font-style:normal;font-weight:900;color:var(--accent-strong);}
+  .lvavs .seedbtn{flex:none;} .lvavs .seedbtn.locked svg{opacity:.35;filter:grayscale(.8);}
+  #mebtns .daily{position:relative;margin-bottom:12px;} .daily .cdn{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);white-space:nowrap;font-size:0.58rem;font-weight:800;color:var(--ink-soft);}
+  .daily.ready .cdn{color:#2BB673;} .daily.ready{box-shadow:0 0 0 2px #2BB673;}
+  .beetbox textarea{width:100%;resize:vertical;} .beetrow{display:flex;align-items:center;justify-content:space-between;margin-top:8px;} .beetrow .primary{width:auto;padding:8px 16px;margin:0;}
+  .beettag{margin-top:6px;} .beetrefs .chip{flex:none;font-size:0.76rem;}
+  .mention{background:none;border:none;padding:0;font:inherit;font-weight:800;color:var(--accent-strong);cursor:pointer;} .mention.unk{color:var(--ink-soft);font-weight:600;cursor:help;}
+  .beetref{display:flex;align-items:center;gap:8px;width:100%;margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:inherit;font:inherit;font-size:0.82rem;text-align:left;cursor:pointer;}
+  .beetref > span{flex:1;min-width:0;} .beetst{margin-top:6px;font-size:0.82rem;font-weight:800;display:flex;align-items:center;gap:6px;} .beetst.live{color:#E5322D;}
+  .beetbtns{display:flex;gap:8px;margin-top:8px;} .beet .pwho .k{margin-left:6px;}
+  .userrow{display:flex;align-items:center;gap:6px;} .userrow > span{font-weight:900;color:var(--accent-strong);} .userrow input{flex:1;}
+  .dbeet{border-left:3px solid var(--accent-strong);padding-left:8px;}
+  .fgames{margin:8px 0 12px;} .fgames button{font-size:0.74rem;padding:8px 4px;}
+  .qq{margin:8px 0;font-size:0.92rem;line-height:1.4;} .qopts{display:flex;flex-wrap:wrap;gap:8px;} .qopt{font-weight:800;}
+  .qopt.right{background:#2BB673;color:#fff;border-color:#2BB673;opacity:1;} .qopt.wrong{background:#E5322D;color:#fff;border-color:#E5322D;opacity:1;}
+  .qres{margin-top:10px;font-weight:800;display:flex;align-items:center;gap:6px;}
+  .ippt{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;} .ippt .otile{flex-direction:row;justify-content:space-between;padding:8px 10px;text-align:left;} .ippt .ol{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.78rem;}
+  .irtop .linkbtn{margin-left:auto;display:inline-flex;align-items:center;}
   /* colonna stretta solo su schermi alti (computer, tablet); il telefono in orizzontale usa tutta la larghezza (Radar) */
   @media (min-width:600px) and (min-height:560px){
     body{max-width:480px;margin-inline:auto;box-shadow:0 0 0 1px var(--line);}
@@ -963,6 +1000,7 @@
     <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
     <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 5l8 13H4z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 19L4 6h16z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7" fill="none" stroke="#2BB673" stroke-width="2.4" stroke-linecap="round"/><path d="M20.5 4.5V11H14z" fill="#2BB673"/></symbol>
     <symbol id="i-vs" viewBox="0 0 24 24"><path d="M12 1.5A10.5 10.5 0 0 0 12 22.5z" fill="#2F6FD6"/><path d="M12 1.5a10.5 10.5 0 0 1 0 21z" fill="#E5322D"/><path d="M13.5 2l-4 9.5h3.2L10.5 22l5-12h-3.3z" fill="url(#g-gold)" stroke="#8A5D00" stroke-width=".6"/></symbol>
     <symbol id="i-wheel" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#E9A93A" stroke="#8A5D00" stroke-width="1"/><path d="M12 12V2A10 10 0 0 1 21.5 8.9z" fill="#2F6FD6"/><path d="M12 12l9.5-3.1A10 10 0 0 1 17.9 20z" fill="#E46F9C"/><path d="M12 12l5.9 8.1A10 10 0 0 1 6.1 20z" fill="#3C8D4E"/><path d="M12 12L6.1 20.1A10 10 0 0 1 2.5 8.9z" fill="#8E5BC9"/><circle cx="12" cy="12" r="2.6" fill="#fff" stroke="#8A5D00" stroke-width=".8"/><path d="M12 .5l-2 3h4z" fill="#C0392B"/></symbol>
     <symbol id="i-chest" viewBox="0 0 24 24"><path d="M3 11h18v9.5H3z" fill="#8A5524" stroke="#4E2C0E" stroke-width="1"/><path d="M3 11.5V9c0-2.8 4-5 9-5s9 2.2 9 5v2.5z" fill="#A5672E" stroke="#4E2C0E" stroke-width="1"/><path d="M5.5 5.8v14.7M18.5 5.8v14.7M3 13h18" stroke="url(#g-gold)" stroke-width="1.8"/><rect x="10" y="11" width="4" height="5" rx="1" fill="url(#g-gold)" stroke="#8A5D00" stroke-width=".8"/></symbol>
@@ -976,6 +1014,7 @@
     <button class="led" id="led" type="button" hidden aria-label="Stato del sistema"><span class="dot"></span><span id="ledtext">online</span></button>
   </div>
   <div class="topright" id="topright" hidden>
+    <button class="iconbtn" id="refreshbtn" type="button" aria-label="Aggiorna"><svg class="ico"><use href="#i-refresh"/></svg></button>
     <button class="iconbtn" id="settingsbtn" type="button" aria-label="Impostazioni"><svg class="ico"><use href="#i-gear"/></svg></button>
     <button class="iconbtn" id="logout" type="button" aria-label="Esci e dimentica la password"><svg class="ico"><use href="#i-exit"/></svg></button>
   </div>
@@ -1071,7 +1110,7 @@
   </div>
   <div class="note" style="margin-top:10px;">Cambia solo come vedi le quote: punti, monete e classifiche si calcolano sempre sulla quota decimale.</div>
   <h2 class="sectiontitle">Guida</h2>
-  <button class="card navcard" type="button" id="tutbtn"><svg class="ico"><use href="#i-book"/></svg><span><b>Rivedi il tutorial</b><span class="k">Radar, segnali, strategie, avvisi, Diario e Direct in sei passi</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
+  <button class="card navcard" type="button" id="tutbtn"><svg class="ico"><use href="#i-book"/></svg><span><b>Rivedi il tutorial</b><span class="k">Radar, segnali, strategie, avvisi, Diario e Direct, un passo alla volta</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <h2 class="sectiontitle">Notifiche</h2>
   <button class="card navcard" type="button" id="notifbtn"><svg class="ico"><use href="#i-bell"/></svg><span><b>Notifiche delle strategie</b><span class="k">Quali strategie e cosa mostrare nel messaggio</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <h2 class="sectiontitle">Piano</h2>
@@ -1138,6 +1177,7 @@
     <button class="chip" type="button" data-dsport="all" aria-pressed="true">Tutti</button>
     <button class="chip" type="button" data-dsport="calcio" aria-pressed="false"><svg class="ico"><use href="#i-calcio"/></svg> Calcio</button>
     <button class="chip" type="button" data-dsport="tennis" aria-pressed="false"><svg class="ico"><use href="#i-tennis"/></svg> Tennis</button>
+    <button class="chip" type="button" data-dsport="ippica" aria-pressed="false"><svg class="ico"><use href="#i-ippica"/></svg> Ippica</button>
   </div>
   <div id="diarioevents"></div>
   <div class="note" style="margin:14px 0 10px;">Partita che non c'è? Scrivi al bot: <b>/giocata Croazia-Italia U19 Under 1,5 2,00</b> (la quota alla fine). Per quelle l'esito lo scrivi tu con /esito.</div>
@@ -1208,6 +1248,7 @@
   <div class="chips" id="radarchips" role="group" aria-label="Sport" style="margin:8px 0;">
     <button class="chip" type="button" data-rsport="calcio" aria-pressed="true"><svg class="ico"><use href="#i-calcio"/></svg> Calcio</button>
     <button class="chip" type="button" data-rsport="tennis" aria-pressed="false"><svg class="ico"><use href="#i-tennis"/></svg> Tennis</button>
+    <button class="chip" type="button" data-rsport="ippica" aria-pressed="false"><svg class="ico"><use href="#i-ippica"/></svg> Ippica</button>
   </div>
   <div class="radarwrap" id="radar"></div>
 </main>
@@ -1726,6 +1767,8 @@
   function renderRace(key) {
     var r = ((data.ippica_schede || {}).races || []).filter(function (x) { return x.key === key; })[0]; if (!r) return;
     curRace = key;
+    var bk = document.querySelector("#view-corsa .back"), from = curView();   // si torna da dove si e' venuti
+    if (from !== "corsa") { bk.dataset.back = from === "radar" || from === "diario" ? from : "strategie"; bk.textContent = { radar: "‹ Radar", diario: "‹ Partite" }[from] || "‹ Ippica"; }
     $("corsa").innerHTML = '<h1 class="dtitle">' + esc(r.track || "") + ' · corsa ' + r.race_no + '</h1>'
       + '<div class="dsub">' + esc(PAESI[r.country] || r.country || "") + (r.disc ? ' · ' + esc(DISC[r.disc] || r.disc) : "") + (r.dist ? ' · ' + r.dist + ' m' : "") + ' · ' + esc(startLabel(r.start)) + (r.name ? ' · ' + esc(r.name) : "") + '</div>'
       + '<div class="note" style="margin-bottom:10px;">Schede informative, non consigli: nessun cavallo è sicuro. Affidabilità = corse non finite (squalificato, fermato, caduto) nelle ultime 8. Contano solo le corse dei giorni prima; i ritirati non contano. Quota: l\'ultima quota fissa vista.</div>'
@@ -2227,6 +2270,7 @@
     }
     ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "mio", "ruota", "fight", "chat", "corsa", "benvenuto", "notifiche", "leghe", "campionati", "album", "pick", "direct"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     var unlocked = view !== "lock";
+    if (view === "segnali" && data) setTimeout(segDot, 0);   // visti: il pallino si spegne
     // matita del profilo aperta e cambio scheda senza salvare: la modifica si annulla (al ritorno il profilo normale)
     if (meEdit && view !== "mio") { meEdit = null; if (data) renderProfilo(); }
     $("tabbar").hidden = !unlocked || view === "benvenuto";
@@ -2509,6 +2553,27 @@
       + (jewel !== "collana" ? avJewel(jewel) : "") + avGlasses(CM.glasses[P.glasses]) + avHat(CM.hat[P.hat], cc === "#F4F1EA" ? "#2F6FD6" : cc)
       + '</g></svg>';
   }
+  // un avatar nuovo per ogni livello (04/10): dal 2 al 50, composti a strati con un generatore fisso (stesso livello
+  // = stesso avatar per tutti), tutti diversi fra loro
+  var LEVEL_AV_MAX = 50;
+  var levelAvs = (function () {
+    var out = [], seen = {}, h = 2166136261;
+    function rnd(n) { h = (Math.imul(h ^ 0x9E3779B9, 16777619) + 12345) >>> 0; return h % n; }
+    for (var L = 2; L <= LEVEL_AV_MAX; L++) {
+      var seed;
+      do {
+        var P = {};
+        CM_PARTS.forEach(function (k) { P[k] = rnd(CM[k].length); });
+        if (P.sex === 1) P.beard = 0;
+        if (L % 3 === 0) P.glasses = 1 + rnd(3);
+        if (L % 4 === 0) P.hat = 1 + rnd(3);
+        if (L >= 25) P.jewel = 1 + rnd(5);
+        seed = cmEncode(P);
+      } while (seen[seed]);
+      seen[seed] = 1; out.push({ level: L, seed: seed });
+    }
+    return out;
+  })();
   var cmTab = 0;
   function cmEditorHtml(d, lvl, won) {
     var P = /^cm:/.test(d.seed) ? cmDecode(d.seed) : cmDefault();
@@ -2622,7 +2687,58 @@
   var FIGHT_KEY = "statsight.statsfight", FIGHT = { right: 10, win: 30, draw: 10 }, fightAnim = false;
   var fights = (function () { try { var f = JSON.parse(localStorage.getItem(FIGHT_KEY)); if (Array.isArray(f)) return f; } catch (e) {} return []; })();
   function saveFights() { try { localStorage.setItem(FIGHT_KEY, JSON.stringify(fights)); } catch (e) {} }
-  function fightCoins() { return fights.reduce(function (t, f) { return t + (f.res ? f.res.coins : 0); }, 0); }
+  function fightCoins() { return fights.reduce(function (t, f) { return t + (f.res ? f.res.coins : 0); }, 0) + quizCoins(); }
+  // Due giochi in piu' (04/10), dati veri, uno al giorno ciascuno, 15 monete se indovini (niente monete in gioco):
+  // "Quota giusta": una partita vera del Diario, scegli la quota vera fra quattro;
+  // "Cosa e' successo dopo": una partita finita dell'archivio fotografata al 55-70' (signals/quiz_storia.py).
+  var QUIZ_KEY = "statsight.quiz", QUIZ_WIN = 15, fgame = "duello";
+  var quiz = (function () { try { var q = JSON.parse(localStorage.getItem(QUIZ_KEY)); if (q && q.days) return q; } catch (e) {} return { days: {} }; })();
+  function saveQuiz() { try { localStorage.setItem(QUIZ_KEY, JSON.stringify(quiz)); } catch (e) {} }
+  function quizCoins() { var t = 0; Object.keys(quiz.days).forEach(function (d) { ["giusta", "dopo"].forEach(function (k) { var x = quiz.days[d][k]; if (x && x.ok) t += QUIZ_WIN; }); }); return t; }
+  function quizToday(kind) {   // la domanda del giorno (sempre la stessa oggi), creata alla prima apertura
+    var d = dayKey(nowS()), day = quiz.days[d] = quiz.days[d] || {}, rnd = seeded(d + "|" + kind + "|" + (me.user || me.name || ""));
+    if (day[kind]) return day[kind];
+    if (kind === "giusta") {
+      var evs = evList().filter(function (e) { return !e.live && e.start > nowS() + 600 && (e.mk["1"] || e.mk.W1); });
+      if (!evs.length) return null;
+      var e = evs[Math.floor(rnd() * evs.length)], code = e.mk["1"] ? "1" : "W1", real = e.mk[code][0], opts = [real];
+      [0.55, 1.6, 2.4, 0.75, 1.3].forEach(function (k) { var o = Math.max(1.05, Math.round(real * k * 100) / 100); if (opts.length < 4 && opts.indexOf(o) < 0) opts.push(o); });
+      for (var i = opts.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)), t = opts[i]; opts[i] = opts[j]; opts[j] = t; }
+      day[kind] = { event: e.home + " - " + e.away, who: e.home, sport: e.sport, comp: e.comp, start: e.start, opts: opts, real: real, choice: null, ok: null };
+    } else {
+      var Q = (data.quiz && data.quiz.dopo) || [];
+      if (!Q.length) return null;
+      var x = Q[Math.floor(rnd() * Q.length)];
+      day[kind] = Object.assign({}, x, { choice: null, ok: null });
+    }
+    saveQuiz();
+    return day[kind];
+  }
+  function fightReady() {   // c'e' ancora qualcosa da giocare oggi: il duello o uno dei due giochi
+    var d = quiz.days[dayKey(nowS())] || {};
+    return !fightToday() || !(d.giusta && d.giusta.choice != null) || (!(d.dopo && d.dopo.choice != null) && !!(data.quiz && data.quiz.dopo && data.quiz.dopo.length));
+  }
+  function quizHtml(kind) {
+    var q = quizToday(kind);
+    if (!q) return '<div class="note">' + (kind === "giusta" ? "Servono partite pre-partita nel Diario: riprova più tardi." : "Le situazioni dall'archivio arrivano con il prossimo aggiornamento dei dati.") + '</div>';
+    var done = q.choice != null, h = '<div class="card quiz">';
+    if (kind === "giusta") {
+      h += '<div class="pev" style="margin-top:0;">' + (EMOJI[q.sport] || "") + ' ' + esc(q.event) + '<span class="k"> · ' + esc(shortComp(q.comp || "")) + ' · ' + esc(startLabel(q.start)) + '</span></div>'
+        + '<div class="qq">Quanto paga la vittoria di <b translate="no">' + esc(q.who) + '</b>?</div><div class="qopts">' + q.opts.map(function (o) {
+          var cls = done ? (o === q.real ? " right" : o === q.choice ? " wrong" : "") : "";
+          return '<button class="chip qopt' + cls + '" type="button" data-quiz="giusta" data-q="' + o + '"' + (done ? " disabled" : "") + '>' + oddsTxt(o) + '</button>'; }).join("") + '</div>';
+      if (done) h += '<div class="qres ' + (q.ok ? "pos" : "neg") + '">' + ic(q.ok ? "check" : "x") + ' ' + (q.ok ? "Giusto! +" + QUIZ_WIN + " monete" : "La quota vera è " + oddsTxt(q.real)) + '</div>';
+    } else {
+      var lab = { 1: "Vince " + q.event.split(" - ")[0], X: "Pareggio", 2: "Vince " + q.event.split(" - ")[1] };
+      h += '<div class="pev" style="margin-top:0;">' + ic("calcio") + ' ' + esc(q.event) + '<span class="k"> · ' + esc(shortComp(q.comp || "")) + '</span></div>'
+        + '<div class="qq">Minuto ' + q.minute + ', punteggio <b>' + esc(q.score) + '</b>, quote 1 X 2: <b>' + oddsTxt(q.q["1"]) + ' · ' + oddsTxt(q.q.X) + ' · ' + oddsTxt(q.q["2"]) + '</b>. Com\'è finita?</div><div class="qopts">'
+        + ["1", "X", "2"].map(function (c) {
+          var cls = done ? (c === q.answer ? " right" : c === q.choice ? " wrong" : "") : "";
+          return '<button class="chip qopt' + cls + '" type="button" data-quiz="dopo" data-q="' + c + '"' + (done ? " disabled" : "") + ' translate="no">' + esc(lab[c]) + '</button>'; }).join("") + '</div>';
+      if (done) h += '<div class="qres ' + (q.ok ? "pos" : "neg") + '">' + ic(q.ok ? "check" : "x") + ' ' + (q.ok ? "Giusto! +" + QUIZ_WIN + " monete" : "Non questa volta") + ' · finale ' + esc(q.final) + '</div>';
+    }
+    return h + '</div><div class="note" style="margin-top:8px;">Un gioco al giorno, dati veri. Non punti monete: se indovini ne guadagni ' + QUIZ_WIN + '.</div>';
+  }
   function fightToday() { var d = dayKey(nowS()); return fights.filter(function (f) { return f.day === d; })[0] || null; }
   function seeded(str) {
     var h = 2166136261; for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
@@ -2717,7 +2833,10 @@
         + '<div class="note" style="margin-top:8px;">L\'avversario ha già scelto: lo vedi dopo la conferma.</div>';
       else if (!f.res) h += '<div class="note">' + ic("clock") + ' Si chiude con gli esiti delle due partite.</div>';
     }
-    $("fight").innerHTML = '<div class="coinbar">' + ic("coin") + '<b>' + rewardState(pronostici()).coins + '</b> monete</div>' + h
+    var tabs = '<div class="segbar f3 fgames" role="tablist">' + [["duello", "1 contro 1"], ["giusta", "Quota giusta"], ["dopo", "Cosa è successo dopo"]].map(function (t) {
+      return '<button type="button" data-fgame="' + t[0] + '" aria-pressed="' + (fgame === t[0]) + '">' + t[1] + '</button>'; }).join("") + '</div>';
+    if (fgame !== "duello") h = quizHtml(fgame);
+    $("fight").innerHTML = '<div class="coinbar">' + ic("coin") + '<b>' + rewardState(pronostici()).coins + '</b> monete</div>' + tabs + h
       + '<h2 class="sectiontitle">Le tue sfide</h2>' + fightHistHtml(10);
     fightAnim = false;
   }
@@ -2752,7 +2871,9 @@
   }
   function msgHtml(c, m) {
     if (m.hidden) return '<div class="dmsg sys">' + ic("flag") + ' Messaggio segnalato: non lo vedi più. <button class="linkbtn" type="button" data-dunrep="' + esc(m.id) + '">Annulla</button></div>';
-    return '<div class="dmsg' + (m.mine ? " mine" : "") + '">' + (m.text ? '<div class="dtext" translate="no">' + esc(m.text) + '</div>' : "") + (m.slip ? slipCardHtml(m) : "")
+    return '<div class="dmsg' + (m.mine ? " mine" : "") + '">' + (m.text ? '<div class="dtext" translate="no">' + esc(m.text) + '</div>' : "")
+      + (m.slip && m.slip.text ? '<div class="dtext dbeet" translate="no">' + ic("chat") + ' ' + beetText(m.slip.text) + '</div>' : "")
+      + (m.slip && m.slip.legs.length ? slipCardHtml(m) : "") + (m.slip && m.slip.by && !m.slip.legs.length ? '<div class="k">di <span translate="no">' + esc(m.slip.by) + '</span></div>' : "")
       + '<div class="dmeta"><span class="k">' + whenLabel(m.ts) + '</span>'
       + (m.mine ? '<button class="cdel" type="button" data-ddel="' + esc(m.id) + '" aria-label="Elimina">' + ic("trash") + '</button>'
                 : '<button class="cdel" type="button" data-drep="' + esc(m.id) + '" aria-label="Segnala">' + ic("flag") + '</button>'
@@ -2777,7 +2898,7 @@
       + '<h2 class="sectiontitle">Conversazioni</h2><div class="card dconvs">' + direct.convs.map(function (c) {
         var last = c.msgs.filter(function (m) { return !m.hidden; }).slice(-1)[0], un = convUnread(c);
         return '<button class="dconv" type="button" data-conv="' + c.id + '"><span class="dav">' + ic(c.kind === "self" ? "pen" : "diario") + '</span><span class="dcw"><b>' + CONV_NAME[c.kind] + '</b><span class="k">'
-          + esc(last ? (last.text || (last.slip ? "Schedina · " + last.slip.legs.length + (last.slip.legs.length === 1 ? " partita" : " partite") : "")) : CONV_SUB[c.kind]) + '</span></span>'
+          + esc(last ? (last.text || (last.slip && last.slip.text ? "Beet · " + last.slip.text : last.slip ? "Schedina · " + last.slip.legs.length + (last.slip.legs.length === 1 ? " partita" : " partite") : "")) : CONV_SUB[c.kind]) + '</span></span>'
           + (un ? '<span class="dun">' + un + '</span>' : "") + ic("chev") + '</button>';
       }).join("") + '</div>'
       + '<h2 class="sectiontitle">Condividi una schedina</h2>'
@@ -2803,8 +2924,8 @@
     var S0 = SH.decode(text);
     if (!S0) return "Codice non valido: controlla di averlo copiato tutto.";
     if (S0.by && direct.blocked.indexOf(S0.by) >= 0) return "Hai bloccato chi ha mandato questa schedina.";
-    var c = convOf("recv"), key = JSON.stringify(S0.legs);
-    if (!c.msgs.some(function (m) { return m.slip && JSON.stringify(m.slip.legs) === key; })) c.msgs.push({ id: "r" + Math.round(nowS() * 1000), ts: nowS(), slip: S0, mine: false });
+    var c = convOf("recv"), key = JSON.stringify([S0.legs, S0.text || ""]);
+    if (!c.msgs.some(function (m) { return m.slip && JSON.stringify([m.slip.legs, m.slip.text || ""]) === key; })) c.msgs.push({ id: "r" + Math.round(nowS() * 1000), ts: nowS(), slip: S0, mine: false });
     saveDirect(); curConv = "recv"; renderChat(); show("chat"); window.scrollTo(0, 0);
     return null;
   }
@@ -2814,12 +2935,99 @@
     try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
     var why = receiveCode(code); if (why) fxToast("alert", "Schedina condivisa", why);
   }
+  // ---------------------------------------------------------------- Beet (04/10)
+  // Un post corto (al massimo 280 caratteri) nella Home, con @username degli altri e, se vuoi, un tuo pronostico
+  // collegato: toccandolo si vede com'e' adesso (live col punteggio, vinto, perso, in attesa). Si inoltra in Direct
+  // come le schedine (codice o link, app/condividi.js). Senza server i tag riconosciuti sono il Team StatSight
+  // (@ + il suo id) e tu; gli altri restano testo, finche' col server non ci sono gli utenti veri.
+  var BEET_KEY = "statsight.beet", BEET_MAX = 280, beetDraft = "", beetRef = null, beetMsg = "", beetOpen = {};
+  var beets = (function () { try { var b = JSON.parse(localStorage.getItem(BEET_KEY)); if (Array.isArray(b)) return b; } catch (e) {} return []; })();
+  function saveBeets() { try { localStorage.setItem(BEET_KEY, JSON.stringify(beets)); } catch (e) {} }
+  var HANDLE_RE = /^[a-z0-9_]{3,20}$/;
+  function teamHandle(p) { return p.id; }
+  function handleProblem(h) {
+    if (!h) return null;
+    if (!HANDLE_RE.test(h)) return "Lo @username va da 3 a 20 caratteri: lettere minuscole, numeri e _.";
+    if (team().some(function (p) { return teamHandle(p) === h; }) || NOMI_RISERVATI.indexOf(h.replace(/_/g, "")) >= 0) return "Questo @username è già preso: scegline un altro.";
+    return checkText(h) ? "Questo @username non va bene: scegline un altro." : null;
+  }
+  function handleOwner(h) {
+    if (me.user && h === me.user) return { me: true };
+    var p = team().filter(function (x) { return teamHandle(x) === h; })[0];
+    return p ? { p: p } : null;
+  }
+  function beetText(t) {   // testo con i tag: @team -> pagina del personaggio, @tu, @sconosciuto (arriva col server)
+    return esc(t).replace(/@([a-z0-9_]{3,20})/g, function (m, h) {
+      var o = handleOwner(h);
+      if (o && o.p) return '<button class="mention" type="button" data-persona="' + o.p.id + '">@' + h + '</button>';
+      if (o && o.me) return '<span class="mention">@' + h + '</span>';
+      return '<span class="mention unk" title="Utente non trovato: i tag degli altri utenti arrivano con l\'app pubblica">@' + h + '</span>';
+    });
+  }
+  function pickStatus(key) {   // com'e' adesso il pronostico collegato
+    var x = histItems().filter(function (h) { return h.key === key; })[0];
+    if (!x) return { cls: "", txt: "Pronostico non trovato" };
+    if (x.result === 1) return { cls: "pos", txt: "Vinto" };
+    if (x.result === 0) return { cls: "neg", txt: "Perso" };
+    if (x.result === -1) return { cls: "", txt: "Nullo" };
+    var e = x.refs && x.refs.length === 1 ? evById(x.refs[0].event) : null;
+    if (e && e.live) { var st = e.st || {}; return { cls: "live", txt: "Live" + (st.score ? " · " + st.score : "") + (st.minute != null ? " · " + st.minute + "'" : st.sets ? " · set " + st.sets : "") }; }
+    return { cls: "", txt: "In attesa" + (e && e.start ? " · inizia " + startLabel(e.start) : "") };
+  }
+  function beetCard(b) {
+    var pid = "b:" + b.id, x = b.ref ? histItems().filter(function (h) { return h.key === b.ref; })[0] : null;
+    var st = b.ref && beetOpen[b.id] ? pickStatus(b.ref) : null;
+    return '<div class="card post beet mine"><div class="phead">' + myAvatar(40) + '<span class="pwho"><b translate="no">' + esc(me.name || "Tu") + '</b>'
+      + (me.user ? '<span class="k" translate="no">@' + esc(me.user) + '</span>' : "") + '</span><span class="time">' + whenLabel(b.ts) + '</span></div>'
+      + '<div class="ptext" translate="no">' + beetText(b.text) + '</div>'
+      + (x ? '<button class="beetref" type="button" data-beetref="' + esc(b.id) + '">' + (EMOJI[x.sport] || ic("layers")) + ' <span>' + esc(x.event) + (x.label ? ' · <b>' + esc(x.label) + '</b>' : "") + ' @ ' + oddsTxt(x.odds) + '</span>' + ic("chev") + '</button>'
+        + (st ? '<div class="beetst ' + st.cls + '">' + ic(st.cls === "pos" ? "check" : st.cls === "neg" ? "x" : st.cls === "live" ? "radar" : "clock") + ' ' + esc(st.txt) + '</div>' : "") : "")
+      + '<div class="beetbtns"><button class="chip" type="button" data-beetfwd="' + esc(b.id) + '">' + ic("send") + ' Inoltra</button>'
+      + '<button class="chip" type="button" data-beetdel="' + esc(b.id) + '">' + ic("trash") + ' Elimina</button></div>'
+      + socialBar(pid, true) + '</div>';
+  }
+  function beetComposer() {
+    var open = histItems().filter(function (h) { return h.result == null; }).slice(0, 6);
+    var m = /@([a-z0-9_]*)$/.exec(beetDraft), sug = [];
+    if (m) sug = team().filter(function (p) { return teamHandle(p).indexOf(m[1]) === 0; }).slice(0, 6);
+    return '<div class="card beetbox"><textarea class="meinput" id="beetin" maxlength="' + BEET_MAX + '" rows="2" placeholder="Scrivi un beet: un pensiero sulla giornata, @ per taggare">' + esc(beetDraft) + '</textarea>'
+      + (sug.length ? '<div class="chips beettag">' + sug.map(function (p) { return '<button class="chip" type="button" data-beettag="' + teamHandle(p) + '">@' + teamHandle(p) + ' <span class="k">' + esc(p.name) + '</span></button>'; }).join("") + '</div>' : "")
+      + (open.length ? '<div class="k" style="margin:6px 0 4px;">Collega un tuo pronostico (facoltativo):</div><div class="hscroll beetrefs">' + open.map(function (h) {
+        return '<button class="chip" type="button" data-beetpick="' + esc(h.key) + '" aria-pressed="' + (beetRef === h.key) + '">' + esc(h.event) + (h.label ? " · " + esc(h.label) : "") + '</button>'; }).join("") + '</div>' : "")
+      + '<div class="beetrow"><span class="k" id="beetn">' + beetDraft.length + '/' + BEET_MAX + '</span><button class="primary" type="button" data-beetsend="1">' + ic("send") + ' Pubblica</button></div>'
+      + (beetMsg ? '<div class="cmsg">' + esc(beetMsg) + '</div>' : "") + '</div>';
+  }
+  function refreshBeetBox() {
+    var box = document.querySelector("#bacheca .beetbox"); if (!box) return;
+    var tmp = document.createElement("div"); tmp.innerHTML = beetComposer(); box.replaceWith(tmp.firstChild);
+    var t = $("beetin"); if (t) { t.focus(); t.setSelectionRange(t.value.length, t.value.length); }
+  }
+  function beetSend() {
+    var t = beetDraft.trim(), now = nowS();
+    if (!t) return;
+    var last = beets.reduce(function (m, b) { return Math.max(m, b.ts); }, 0);
+    // i tag @username sono la funzione dei beet: il filtro (che boccia gli @ come contatti esterni) guarda il resto;
+    // col server un tag vale solo se l'utente esiste
+    var why = t.length > BEET_MAX ? "lungo" : checkText(t.replace(/@[a-z0-9_]{3,20}\b/g, "")) || (now - last < 30 ? "fretta" : null);
+    if (why) { beetMsg = MOD_MSG[why] || "Riprova."; renderBacheca(); return; }
+    beets.push({ id: "B" + Math.round(now * 1000), ts: now, text: t, ref: beetRef });
+    saveBeets(); beetDraft = ""; beetRef = null; beetMsg = ""; renderBacheca();
+  }
+  function beetForward(id) {   // in Direct, come una schedina condivisa: codice o link (anche solo testo)
+    var b = beets.filter(function (x) { return x.id === id; })[0]; if (!b) return;
+    var s0 = b.ref ? mySlips.filter(function (s) { return b.ref === "s" + s.id || b.ref.indexOf("s" + s.id + "-") === 0; })[0] : null;
+    var sl = s0 ? slipOfMine(s0) : { mode: "singole", legs: [], by: me.name || "" };
+    if (s0 && s0.mode === "singole" && /-(\d+)$/.test(b.ref)) sl.legs = [sl.legs[Number(/-(\d+)$/.exec(b.ref)[1])]].filter(Boolean);
+    sl.text = b.text; sl.by = me.user ? "@" + me.user : (me.name || "");
+    shareOut = SH.encode(sl); curConv = null; directMsg = ""; renderDirect(); show("direct"); window.scrollTo(0, 0);
+    fxToast("send", "Beet pronto da inoltrare", "Copia il link o mandalo a Promemoria");
+  }
   // Greediness (03/10): quanto osa un profilo, dalla quota media delle ultime 30 giocate (1,5 -> 0, 6 o piu' -> 100).
   // Stessa formula di signals/personaggi_post.greed.
-  function greedOf(odds) {
-    var xs = odds.filter(function (o) { return o > 1; }).slice(-30);
+  function greedOf(odds) {   // mediana delle ultime 30 SINGOLE (04/10: stile aggressivo o no; le multiple non contano)
+    var xs = odds.filter(function (o) { return o > 1; }).slice(-30).sort(function (a, b) { return a - b; });
     if (xs.length < 3) return null;
-    var avg = xs.reduce(function (a, b) { return a + b; }, 0) / xs.length;
+    var n = xs.length, avg = n % 2 ? xs[(n - 1) / 2] : (xs[n / 2 - 1] + xs[n / 2]) / 2;
     var g = Math.max(0, Math.min(100, Math.round((Math.log(avg) - Math.log(1.5)) / (Math.log(6) - Math.log(1.5)) * 100)));
     return { g: g, lvl: g >= 67 ? "aggressivo" : g >= 34 ? "medio" : "prudente", avg: Math.round(avg * 100) / 100 };
   }
@@ -2827,7 +3035,7 @@
   function greedHtml(G) {
     if (!G) return "";
     return '<div class="greed g-' + G.lvl + '"><div class="slh"><span>Greediness</span><b>' + GREED_TXT[G.lvl] + '</b></div>'
-      + '<div class="gbar"><i style="width:' + Math.max(4, G.g) + '%;background-size:' + Math.round(10000 / Math.max(4, G.g)) + '% 100%"></i></div><div class="k">Quota media delle ultime giocate: ' + it(G.avg, 2) + '</div></div>';
+      + '<div class="gbar"><i style="width:' + Math.max(4, G.g) + '%;background-size:' + Math.round(10000 / Math.max(4, G.g)) + '% 100%"></i></div><div class="k">Quota mediana delle ultime singole: ' + it(G.avg, 2) + '</div></div>';
   }
   function greedChip(G) { return G && G.lvl === "aggressivo" ? '<span class="gchip">' + ic("bolt") + ' AGGRESSIVO</span>' : ""; }
   function teamBadge() { return '<span class="teambadge"><img src="icon-192.png" alt="" width="12" height="12"> TEAM STATSIGHT</span>'; }
@@ -3008,7 +3216,7 @@
   function topicsOf(x) { var t = []; if (x.sport) t.push("sport:" + x.sport); if (x.comp) t.push("comp:" + x.comp); return t; }
   function affTouch(kind, author, topics) { FR.interact(aff, kind, author, topics || []); try { localStorage.setItem(AFF_KEY, JSON.stringify(aff)); } catch (e) {} }
   function affPid(kind, pid) { var x = feedIdx[pid]; if (x && !x.mine) affTouch(kind, x.p, topicsOf(x)); }
-  function postPid(x) { return x.mine ? "m:" + x.key : x.kind && x.kind !== "pronostico" ? "a:" + x.id : "t:" + x.p + ":" + Math.round(x.ts); }
+  function postPid(x) { return x.beet ? "b:" + x.id : x.mine ? "m:" + x.key : x.kind && x.kind !== "pronostico" ? "a:" + x.id : "t:" + x.p + ":" + Math.round(x.ts); }
   function rankFeed(items) {
     var now = nowS(), by = {};
     var posts = items.map(function (x) {
@@ -3037,7 +3245,7 @@
       + (x.src ? '<div class="k psrc">' + esc(x.src) + '</div>' : "")
       + socialBar(pid) + '</div>';
   }
-  function feedCard(x) { return x.mine ? myPostCard(x) : x.kind && x.kind !== "pronostico" ? infoPostCard(x) : postCard(x); }
+  function feedCard(x) { return x.beet ? beetCard(x) : x.mine ? myPostCard(x) : x.kind && x.kind !== "pronostico" ? infoPostCard(x) : postCard(x); }
   function renderBacheca() {
     if (!data) return;
     var P = data.personaggi, html = '<div class="segbar" style="margin:4px 0 10px;"><button type="button" data-bview="home" aria-pressed="' + (bview === "home") + '">' + ic("star") + ' Per te</button>'
@@ -3064,20 +3272,24 @@
         + '<div class="k" style="margin:10px 0 4px;">Consigliati per te · ' + esc(prefTxt) + '</div>'
         + top.map(suggestRow).join("")
         + '<button class="primary" type="button" data-followall="' + top.map(function (p) { return p.id; }).join(",") + '" style="width:100%;margin-top:10px;">Segui tutti e ' + top.length + '</button></div>'
+        + beetComposer()
         + '<h2 class="sectiontitle">Le ultime giocate</h2>'
-        + rankFeed(histItems().map(function (x) { return Object.assign({ mine: true }, x); }).concat((P.feed || []).slice(0, 10)).concat((P.posts || []).slice(0, 10)))
+        + rankFeed(histItems().map(function (x) { return Object.assign({ mine: true }, x); }).concat((P.feed || []).slice(0, 10)).concat((P.posts || []).slice(0, 10))
+          .concat(beets.map(function (b) { return Object.assign({ beet: 1, mine: true }, b); })))
           .slice(0, 20).map(feedCard).join("");
     } else {
       var mine = histItems().map(function (x) { return Object.assign({ mine: true }, x); }), mySp = me.sports || [];
       // chi segui, le tue giocate e i post di dati del Team sui tuoi sport (o di chi segui)
       var all = rankFeed((P.feed || []).filter(function (x) { return follows.has(x.p); })
-        .concat((P.posts || []).filter(function (x) { return follows.has(x.p) || !mySp.length || mySp.indexOf(x.sport) >= 0; })).concat(mine));
+        .concat((P.posts || []).filter(function (x) { return follows.has(x.p) || !mySp.length || mySp.indexOf(x.sport) >= 0; })).concat(mine)
+        .concat(beets.map(function (b) { return Object.assign({ beet: 1, mine: true }, b); })));
       var feed = all.slice(0, feedShown);
       html += (sug.length ? '<div class="k" style="margin:0 2px 4px;">Consigliati per te · ' + esc(prefTxt) + '</div><div class="teamrow">' + sug.slice(0, 10).map(function (p) {
           return '<div class="tav"><button class="tavb" type="button" data-persona="' + p.id + '">' + avatar(p.id, 52) + '<span>' + esc(p.nick) + '</span></button>'
             + '<button class="tavf" type="button" data-follow="' + p.id + '">+ Segui</button></div>';
         }).join("") + '</div>' : "")
-        + (feed.length ? feed.map(function (x) { return x.mine ? myPostCard(x) : markNew(feedCard(x), feedHi != null && x.ts > feedHi); }).join("") : '<div class="note">Nessuna giocata, per ora.</div>')
+        + beetComposer()
+        + (feed.length ? feed.map(function (x) { return x.mine ? feedCard(x) : markNew(feedCard(x), feedHi != null && x.ts > feedHi); }).join("") : '<div class="note">Nessuna giocata, per ora.</div>')
         + (all.length > feed.length ? '<button class="chip feedmore" type="button" data-feedmore="1">Altri post <span class="k">' + (all.length - feed.length) + '</span></button>' : "");
     }
     $("bacheca").innerHTML = html; paintDots();
@@ -3193,6 +3405,8 @@
   function renderBenvenuto() {
     $("benvenuto").innerHTML = '<div class="welcome"><img src="icon-192.png" alt="" width="64" height="64"><h1 class="dtitle" style="margin:8px 0 2px;">Benvenuto in StatSight</h1>'
       + '<div class="k">Raccontaci cosa segui: mettiamo in primo piano il tuo campionato e la tua squadra, e ti proponiamo le sfide giuste. Si cambia quando vuoi dal Diario.</div></div>'
+      + '<div class="pkstep">Il tuo @username</div><div class="userrow"><span>@</span><input class="meinput" id="bvuser" maxlength="20" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="come ti taggano gli altri" value="' + esc(pick.user || me.user || "") + '" translate="no"></div>'
+      + '<div class="note namemsg" id="bvusermsg" role="alert"' + (pick.userMsg ? "" : " hidden") + '>' + esc(pick.userMsg || "") + '</div>'
       + pickerHtml(pick)
       + '<button class="primary block" type="button" data-pkgo="1" style="margin-top:16px;"' + (pick.sport ? "" : " disabled") + '>Inizia</button>'
       + '<button class="linkbtn" type="button" data-pkskip="1" style="display:block;margin:10px auto;">Salta, lo faccio dopo</button>';
@@ -3232,7 +3446,7 @@
     return taken ? "Questo nome è di un personaggio del Team StatSight: scegline un altro." : null;
   }
   function startEdit() {
-    meEdit = Object.assign(newPick(me), { name: me.name || "", bio: me.bio || "", pic: me.pic, seed: me.seed });
+    meEdit = Object.assign(newPick(me), { name: me.name || "", bio: me.bio || "", pic: me.pic, seed: me.seed, user: me.user || "" });
     renderProfilo();
   }
   // pronostici da mostrare nello storico: singole una per una, multiple e sistemi come una riga sola
@@ -3266,6 +3480,12 @@
           var sd = "av:" + i;
           return '<button type="button" class="seedbtn' + (!d.pic && sd === curAv ? " on" : "") + '" data-meseed="' + sd + '" aria-label="Avatar ' + (i + 1) + '">' + avatar(sd, 48) + '</button>';
         }).join("") + '</div>'
+        + '<div class="k" style="margin:12px 0 6px;">Avatar dei livelli: uno nuovo a ogni livello (sei al ' + lvl + '):</div>'
+        + '<div class="hscroll lvavs">' + levelAvs.map(function (x) {
+          var open = lvl >= x.level;
+          return '<button type="button" class="seedbtn sp' + (open ? "" : " locked") + (!d.pic && d.seed === x.seed ? " on" : "") + '"' + (open ? ' data-meseed="' + x.seed + '"' : " disabled") + ' aria-label="Avatar del livello ' + x.level + '">'
+            + avatar(x.seed, 52) + '<span class="spname">' + (open ? "" : ic("lock") + " ") + 'Liv. ' + x.level + '</span></button>';
+        }).join("") + '</div>'
         + '<div class="k" style="margin:12px 0 6px;">Oppure crea il tuo, pezzo per pezzo:</div>' + cmEditorHtml(d, lvl, won)
         + '<div class="k" style="margin:12px 0 6px;">Avatar speciali, si sbloccano salendo di livello:</div>'
         + '<div class="seedrow">' + AV_SPECIAL.map(function (x) {
@@ -3274,6 +3494,7 @@
             + avatar(sd, 56) + (open ? "" : '<span class="splock">' + ic("lock") + ' Liv. ' + x.level + '</span>') + '<span class="spname">' + esc(x.name) + '</span></button>';
         }).join("") + '</div>'
         + '<label class="melabel" for="mename">Nome</label><input id="mename" class="meinput" maxlength="24" value="' + esc(d.name) + '" placeholder="Come ti vedono gli altri" translate="no"><div class="note namemsg" id="menamemsg" role="alert" hidden></div>'
+        + '<label class="melabel" for="meuser">@username</label><div class="userrow"><span>@</span><input id="meuser" class="meinput" maxlength="20" autocapitalize="none" autocomplete="off" spellcheck="false" value="' + esc(d.user || "") + '" placeholder="come ti taggano gli altri" translate="no"></div><div class="note namemsg" id="meusermsg" role="alert" hidden></div>'
         + '<label class="melabel" for="mebio">Bio</label><textarea id="mebio" class="meinput" maxlength="160" rows="3" placeholder="Due righe su di te: sport preferiti, come giochi">' + esc(d.bio) + '</textarea>'
         + '<div class="k" id="mebion" style="text-align:right;">' + d.bio.length + '/160</div>'
         + '<div class="melabel">Cosa segui</div>' + pickerHtml(d)
@@ -3290,7 +3511,7 @@
         + '<button class="iconbtn" type="button" data-meedit="1" aria-label="Modifica il profilo">' + ic("pen") + '</button></div>'
         + (me.bio ? '<div class="mebio" translate="no">' + esc(me.bio) + '</div>'
           : '<button class="linkbtn mebio empty" type="button" data-meedit="1">' + ic("pen") + ' Scrivi la tua bio</button>')
-        + heroesHtml(R2) + greedHtml(greedOf(histItems().slice().reverse().map(function (x) { return x.odds; })))
+        + heroesHtml(R2) + greedHtml(greedOf(histItems().slice().reverse().filter(function (x) { return !x.legs; }).map(function (x) { return x.odds; })))
         + '<button class="card sportpick" type="button" data-miei="1">' + ic("diario") + ' <b>I miei pronostici</b><span class="k">' + won + ' vinti su ' + closed.length + ' chiusi · tutto lo storico</span></button>'
         + albumCard(R2)
         + '<button class="coinbtn" type="button" data-megioca="1"><span class="cc">' + ic("coin") + '</span><span class="ct"><b>' + R2.coins + '</b> monete<span>Scegli le partite e fai il tuo pronostico</span></span>' + ic("chev") + '</button>'
@@ -3302,11 +3523,21 @@
   }
   // Home del Diario (03/10): in alto la tua riga (avatar -> il tuo profilo, monete -> partite), la cassa se c'e',
   // poi il feed ordinato da feed_rank.js
+  // cerchi di StatsFight e della ruota (04/10): "pronto" col pallino quando si puo' giocare, altrimenti quanto manca
+  // al giorno dopo (mezzanotte del telefono)
+  function untilTomorrow() {
+    var d = new Date(); d.setHours(24, 0, 0, 0);
+    var m = Math.max(1, Math.ceil((d.getTime() - Date.now()) / 60000)), h = Math.floor(m / 60);
+    return h ? h + "h " + String(m % 60).padStart(2, "0") + "m" : m + "m";
+  }
+  function dailyBtn(kind, icon, label, ready) {
+    return '<button class="iconbtn wheelbtn daily' + (ready ? " ready" : "") + '" type="button" data-' + kind + '="1" aria-label="' + esc(label) + '">' + ic(icon)
+      + (ready ? '<span class="ndot"></span>' : "") + '<span class="cdn">' + (ready ? "pronto" : untilTomorrow()) + '</span></button>';
+  }
   function renderMebar(R2, title) {
     $("mebar").innerHTML = '<div class="mebar"><button class="meav" type="button" data-mio="1" aria-label="Il tuo profilo">' + myAvatar(46)
       + '<span class="mew"><b translate="no">' + esc(me.name || "Il tuo profilo") + '</b><span class="k"><span>' + esc(title) + '</span> · <span>livello ' + R2.level + '</span></span></span></button>'
-      + '<span id="mebtns"><button class="iconbtn wheelbtn" type="button" data-fight="1" aria-label="StatsFight">' + ic("vs") + (fightToday() ? "" : '<span class="ndot"></span>') + '</button>'
-      + '<button class="iconbtn wheelbtn" type="button" data-ruota="1" aria-label="Ruota del giorno">' + ic("wheel") + (wheelToday() ? "" : '<span class="ndot"></span>') + '</button></span>'
+      + '<span id="mebtns">' + dailyBtn("fight", "vs", "StatsFight", fightReady()) + dailyBtn("ruota", "wheel", "Ruota del giorno", !wheelToday()) + '</span>'
       + '<button class="coinbar coinpill" type="button" data-megioca="1" aria-label="Monete: scegli le partite">' + ic("coin") + '<b>' + R2.coins + '</b></button></div>'
       + chestHtml(R2);
   }
@@ -3374,8 +3605,44 @@
   function nowS() { return Date.now() / 1000; }
   function regole() { return (data.diario && data.diario.regole) || null; }
   function evList() { return (data.diario && data.diario.v === 2 && data.diario.events) || []; }
-  function evById(id) { return evList().find(function (e) { return e.id === id; }); }
-  function mktOf(sport, code) { var r = regole(); return r && r.markets[sport] ? r.markets[sport][code] : null; }
+  function evById(id) { return evList().find(function (e) { return e.id === id; }) || ippicaEvents().find(function (e) { return e.id === id; }); }
+  function mktOf(sport, code) { var r = regole(); if (sport === "ippica") return Regole.marketOf({}, sport, code); return r && r.markets[sport] ? r.markets[sport][code] : null; }
+  // ---- Ippica nel Diario (04/10, signals/ippica_diario.py): le corse delle schede sugli ippodromi con lo storico dei
+  // cavalli, Vincente con l'ultima quota fissa (Piazzato quando la fonte da' la quota), stesse regole delle schedine
+  function normH(n) { return String(n || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/\([A-Z]{2,3}\)/g, " ").replace(/[^A-Z0-9]+/g, " ").trim(); }
+  var ippCache = { at: null, list: [] };
+  function ippicaEvents() {
+    var S0 = data && data.ippica_schede, D0 = data && data.ippica_diario;
+    if (!S0 || !S0.races || !D0) return [];
+    if (ippCache.at === S0.at && ippCache.d === D0.at) return ippCache.list;
+    var tracks = {}; (D0.tracks || []).forEach(function (t) { tracks[t] = 1; });
+    var list = S0.races.filter(function (r) { return tracks[String(r.track || "").trim().toUpperCase()]; }).map(function (r) {
+      var mk = {};
+      r.runners.forEach(function (x) { if (x.odds > 1) mk["V:" + normH(x.horse)] = [x.odds, 0, "b", S0.at]; if (x.place_odds > 1) mk["P:" + normH(x.horse)] = [x.place_odds, 0, "b", S0.at]; });
+      return { id: r.key, sport: "ippica", comp: (PAESI[r.country] || r.country || "") + " · " + (r.track || ""), country: r.country, home: (r.track || "") + " corsa " + r.race_no, away: "",
+               start: r.start, live: false, mk: mk, runners: r.runners, race: r };
+    });
+    ippCache = { at: S0.at, d: D0.at, list: list };
+    return list;
+  }
+  function ippicaDiarioHtml() {
+    var evs = ippicaEvents().filter(function (e) { return e.start > nowS(); });
+    if (!evs.length) return '<div class="note">Nessuna corsa in arrivo sugli ippodromi di cui abbiamo lo storico dei cavalli.</div>';
+    var by = {}, order = [];
+    evs.forEach(function (e) { var k = e.country || "?"; if (!by[k]) { by[k] = []; order.push(k); } by[k].push(e); });
+    return '<div class="note" style="margin-bottom:8px;">Vincente: vince se il cavallo arriva primo; ritirato = nullo. Quota fissa vista ora. Si pronostica solo sugli ippodromi di cui abbiamo lo storico.</div>'
+      + order.map(function (k) {
+        return '<h2 class="sectiontitle">' + esc(PAESI[k] || k) + ' <span class="k">' + by[k].length + '</span></h2>' + by[k].map(function (e) {
+          var rs = e.runners.filter(function (x) { return x.odds > 1; }).sort(function (a, b) { return a.odds - b.odds; });
+          return '<div class="card irace"><div class="irtop"><span><b>' + esc(startLabel(e.start)) + '</b> · ' + esc(e.home) + '</span>'
+            + '<button class="linkbtn" type="button" data-race="' + esc(e.id) + '">Schede ' + ic("chev") + '</button></div>'
+            + '<div class="otiles ippt">' + rs.map(function (x) {
+              var code = "V:" + normH(x.horse), on = inSlip(e.id, code);
+              return '<button class="otile' + (on ? " on" : "") + '" type="button" data-iev="' + esc(e.id) + '" data-code="' + esc(code) + '" aria-pressed="' + on + '"><span class="ol" translate="no">' + (x.n != null ? x.n + " " : "") + esc(x.horse) + '</span><b>' + oddsTxt(x.odds) + '</b></button>';
+            }).join("") + '</div></div>';
+        }).join("");
+      }).join("");
+  }
   function estMinute(e) {
     var st = e.st;
     if (!st || e.sport !== "calcio" || st.minute == null) return "";
@@ -3420,9 +3687,13 @@
   function legOf(e, code) {
     var v = e.mk[code];
     return { event: e.id, sport: e.sport, code: code, odds: v[0], src: v[2], fresh: v[3], live: !!e.live, start: e.start,
-             ename: e.home + " - " + e.away, label: legLabel(e, code) };
+             ename: e.sport === "ippica" ? e.home : e.home + " - " + e.away, label: legLabel(e, code) };
   }
   function legLabel(e, code) {
+    if (e.sport === "ippica") {
+      var nm = code.slice(2), x = (e.runners || []).filter(function (r) { return normH(r.horse) === nm; })[0];
+      return (code[0] === "V" ? "Vincente: " : "Piazzato: ") + (x ? x.horse : nm);
+    }
     var r = regole(), m = mktOf(e.sport, code);
     if (!m) return code;
     var lab = m.label;
@@ -3560,6 +3831,10 @@
     if (!dz) { $("diarioevents").innerHTML = '<div class="note">Diario non disponibile in questo aggiornamento.</div>'; return; }
     if (dz.v !== 2) { $("diarioevents").innerHTML = '<div class="note">Le partite arrivano con il prossimo aggiornamento dei dati.</div>'; return; }
     refreshSlip(); paintSlipBar();
+    if (dsport === "ippica") {
+      document.querySelectorAll("#diariochips [data-dsport]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.dsport === dsport)); });
+      $("diarioevents").innerHTML = ippicaDiarioHtml(); return;
+    }
     var all = evList().filter(function (e) { return dsport === "all" || e.sport === dsport; });
     // pre-partita gia' iniziate (i dati hanno qualche minuto): fuori dall'elenco, la quota pre-partita non vale piu'
     var live = all.filter(function (e) { return e.live; }), pre = all.filter(function (e) { return !e.live && (!e.start || e.start > nowS()); });
@@ -3807,6 +4082,13 @@
   function scoreOf(s) { var m = /(\d+)\D+(\d+)/.exec(s || ""); return m ? [Number(m[1]), Number(m[2])] : null; }
   function scoreAt(g, ts) { var s = null; g.forEach(function (x) { if (x[0] <= ts) s = [x[1], x[2]]; }); return s; }
   function legResult(l, created) {
+    if (l.sport === "ippica") {   // arrivo dallo storico SNAI (signals/ippica_diario.py): ritirato o assente = nullo
+      var IE = data.ippica_diario && data.ippica_diario.esiti && data.ippica_diario.esiti[String(l.event_id)];
+      if (!IE || !IE.done) return null;
+      var nm = String(l.code).slice(2), pos = IE.pos[nm];
+      if ((IE.wd || []).indexOf(nm) >= 0 || pos === undefined) return -1;
+      return l.code[0] === "V" ? (pos === 1 ? 1 : 0) : (pos != null && pos <= 3 ? 1 : 0);
+    }
     var E = data.diario && data.diario.esiti, x = E && E.ev && E.ev[String(l.event_id)], r = regole();
     if (!x || !r) return null;
     var base = scoreOf(l.score);
@@ -3927,6 +4209,9 @@
       else { var e0 = st.dataset.star === "ev" ? evById(Number(k)) || evById(k) : null; bag[k] = st.dataset.star === "ev" ? (e0 && e0.start) || nowS() : 1; }
       savePrefs(); renderDiario(); return;
     }
+    var ie = ev.target.closest("button.otile[data-iev]");
+    if (ie) { var ei = evById(ie.dataset.iev); if (ei) { toggleLeg(ei, ie.dataset.code); renderDiario(); } return; }
+    var rc2 = ev.target.closest("button[data-race]"); if (rc2) { renderRace(rc2.dataset.race); return; }
     var t = ev.target.closest("button.otile[data-code]");
     if (t) { var e = evById(Number(t.dataset.ev)); if (e) { toggleLeg(e, t.dataset.code); renderDiario(); } return; }
     var o = ev.target.closest("[data-open]"); if (o) { curTab = null; renderGiocata(o.dataset.open); }
@@ -4007,22 +4292,98 @@
     if (!isFull()) return '<span class="hottag">' + ic("flame") + ' Partita calda <span class="lk">' + ic("lock") + ' Full</span></span>';
     return '<span class="hottag">' + ic("flame") + ' ' + esc(h[0].name) + ' · ' + Math.round(h[0].p * 100) + '%</span>';
   }
+  // Strategie NOSTRE sulle partite del Radar (04/10): i segnali live delle strategie accese (data.feed, con l'esito
+  // quando arriva) e il motore dei cataloghi (data.catalogo_live: tutte le strategie dello sport, con le tue barre
+  // o quelle di partenza). In corso = la partita si evidenzia; vinta = tick verde, una piccola festa sul Radar e sul
+  // logo al centro della barra (una volta sola: statsight.radarvinte).
+  function nameKey2(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, " ").trim(); }
+  function lastWord(s) { var w = nameKey2(s).split(/\s+/).filter(function (x) { return x.length > 1; }); return w[w.length - 1] || ""; }
+  function sameMatch(e, text) {
+    var t = " " + nameKey2(text) + " ", a = lastWord(e.home), b = lastWord(e.away);
+    return a && b && t.indexOf(" " + a + " ") >= 0 && t.indexOf(" " + b + " ") >= 0;
+  }
+  function radarStrats(e) {
+    var out = [], closed = {}, outc = {};
+    (data.feed || []).forEach(function (f) { if (f.kind === "outcome" && f.key) { closed[f.key] = 1; outc[f.key] = f; } });
+    (data.feed || []).forEach(function (f) {
+      if (f.kind !== "signal" || f.sport !== e.sport || nowS() - f.ts > 4 * 3600 || !sameMatch(e, f.event)) return;
+      var sid = f.main || f.strategy, o = f.key && outc[f.key];
+      out.push({ id: "f:" + (f.key || sid), name: nameOf(sid) || sid, lock: catLocked(sid), done: !!o, hit: !!(o && o.hit), pick: f.pick, odds: f.odds });
+    });
+    var L = liveOf(e.sport), c = catOf(e.sport);
+    if (L && c && c.strategies) c.strategies.forEach(function (s) {
+      var key = catKey(s);
+      (L.recent || []).forEach(function (m) {
+        var i = m.t[s.id] && m.t[s.id][key];
+        if (i == null || !sameMatch(e, (m.r || []).join(" v "))) return;
+        var k = m.k[i], done = m.w === 1 || m.w === 2;
+        out.push({ id: "c:" + s.id + ":" + (m.r || []).join("|"), name: s.name, lock: catLocked(s.id), done: done, hit: done && m.w === k[1], pick: m.r[k[1] - 1], odds: k[2] });
+      });
+    });
+    return out;
+  }
+  var RADARWIN_KEY = "statsight.radarvinte", radarWins = (function () { try { return JSON.parse(localStorage.getItem(RADARWIN_KEY)) || {}; } catch (e) { return {}; } })();
+  function stratBadges(e) {
+    var S0 = radarStrats(e); if (!S0.length) return { html: "", cls: "" };
+    var html = S0.slice(0, 3).map(function (x) {
+      if (x.lock) return '<span class="rb strat">' + ic("lock") + ' Strategia Full</span>';
+      return '<span class="rb strat' + (x.hit ? " won" : x.done ? " lost" : "") + '">' + ic(x.hit ? "check" : x.done ? "x" : "strategie") + ' ' + esc(x.name)
+        + (x.hit ? ' · VINTA' : x.done ? ' · persa' : ' · ' + esc(x.pick || "") + (x.odds ? ' @ ' + oddsTxt(x.odds) : "")) + '</span>';
+    }).join("");
+    var won = S0.filter(function (x) { return x.hit && !x.lock; }), live = S0.some(function (x) { return !x.done && !x.lock; });
+    var fresh = won.filter(function (x) { return !radarWins[x.id]; });
+    if (fresh.length) { fresh.forEach(function (x) { radarWins[x.id] = nowS(); }); try { localStorage.setItem(RADARWIN_KEY, JSON.stringify(radarWins)); } catch (er) {} radarWinFx = true; }
+    return { html: html, cls: (won.length ? " wonm" : live ? " stratm" : "") + (fresh.length ? " winfx" : "") };
+  }
+  var radarWinFx = false;
+  function hubWin() {   // piccola festa sul logo al centro della barra
+    var h = document.querySelector(".tab.hub"); if (!h) return;
+    h.classList.remove("hubwin"); void h.offsetWidth; h.classList.add("hubwin");
+    setTimeout(function () { h.classList.remove("hubwin"); }, 2600);
+  }
+  // grafichetto dell'andamento (04/10, signals/diario_eventi.trend): pressione (attacchi pericolosi ogni 5 minuti,
+  // casa in su, ospite in giu') oppure, senza statistiche, la probabilita' di vittoria dalle quote nel tempo
+  function trendSvg(tr) {
+    if (!tr || !tr.p || tr.p.length < 2) return "";
+    var W = 300, H = 36, n = tr.p.length, bw = W / n, mid = H / 2, out = "";
+    if (tr.k === "da") {
+      var mx = Math.max.apply(null, tr.p.map(function (p) { return Math.max(p[1], p[2]); })) || 1;
+      tr.p.forEach(function (p, i) {
+        var hh = (p[1] / mx) * (mid - 2), ha = (p[2] / mx) * (mid - 2), x = (i * bw + 1).toFixed(1), w = Math.max(1, bw - 2).toFixed(1);
+        out += '<rect x="' + x + '" y="' + (mid - hh).toFixed(1) + '" width="' + w + '" height="' + hh.toFixed(1) + '" rx="1.5" fill="var(--accent-strong)"/>'
+          + '<rect x="' + x + '" y="' + mid + '" width="' + w + '" height="' + ha.toFixed(1) + '" rx="1.5" fill="#E5322D" fill-opacity=".8"/>';
+      });
+      out += '<line x1="0" y1="' + mid + '" x2="' + W + '" y2="' + mid + '" stroke="var(--line)" stroke-width="1"/>';
+    } else {
+      function line(k, col) {
+        return '<polyline fill="none" stroke="' + col + '" stroke-width="2" stroke-linejoin="round" points="' + tr.p.map(function (p, i) {
+          return (i * W / (n - 1)).toFixed(1) + "," + (H - 2 - p[k] / 100 * (H - 4)).toFixed(1); }).join(" ") + '"/>';
+      }
+      out = line(1, "var(--accent-strong)") + line(2, "#E5322D");
+    }
+    var lab = tr.k === "da" ? "Pressione (attacchi pericolosi ogni 5 minuti)" : "Probabilità di vittoria dalle quote";
+    return '<div class="rtrend" title="' + lab + '"><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" width="100%" height="' + H + '" role="img" aria-label="' + lab + '">' + out + '</svg>'
+      + '<span class="k">' + (tr.k === "da" ? "Pressione" : "Quote") + " · " + tr.p[tr.p.length - 1][0] + "'" + '</span></div>';
+  }
   function calcioCard(e) {
     var st = e.st || {}, fx = radarTrack(e), now = nowS();
     var goalHi = fx.goal && now - fx.goal < GOAL_HI_S, redHi = fx.red && now - fx.red < RED_HI_S;
     var stale = st.ts && now - st.ts > STALE_S, sc = scoreOf(st.score) || ["–", "–"];
     var q = ["1", "X", "2"].map(function (c) { return '<span>' + (e.mk[c] ? oddsTxt(e.mk[c][0]) : "–") + '</span>'; }).join("");
-    var cls = "rcard" + (hotOf(e) ? " hotm" : "") + (fx.flash ? " flashg" : "") + (fx.redFlash || redHi ? " redal" : "") + (e.susp ? " susp" : "");
+    var SB = stratBadges(e);
+    var cls = "rcard" + (hotOf(e) ? " hotm" : "") + (fx.flash ? " flashg" : "") + (fx.redFlash || redHi ? " redal" : "") + (e.susp ? " susp" : "") + SB.cls;
     fx.flash = false; fx.redFlash = false;
     return '<div class="' + cls + '" data-ev="' + e.id + '" role="button" tabindex="0">'
       + '<div class="rtop"><span class="rmin">' + esc(estMinute(e) || "LIVE") + '</span>'
       + '<span class="rteams"><span>' + pname(e, 1) + '</span><span>' + pname(e, 2) + '</span></span>'
       + '<span class="rscore' + (goalHi ? " gl" : "") + '"><b>' + sc[0] + '</b><b>' + sc[1] + '</b></span></div>'
-      + '<div class="rbadges">' + hotTag(e)
+      + (SB.cls.indexOf("wonm") >= 0 ? '<span class="rwon">' + ic("check") + '</span>' : "")
+      + '<div class="rbadges">' + hotTag(e) + SB.html
       + (goalHi ? '<span class="rb gol">' + ic("calcio") + ' GOL</span>' : "")
       + (redHi || (fx.red && now - fx.red < 120) ? '<span class="rb red">' + ic("alert") + ' Espulsione</span>' : "")
       + (e.susp ? '<span class="rb sus">' + ic("clock") + ' Mercato sospeso</span>' : "")
       + (stale ? '<span class="rb stale">' + ic("info") + ' Statistiche ferme</span>' : "") + '</div>'
+      + trendSvg(e.tr)
       + '<div class="rstats">' + RADAR_COLS.map(function (c) { var v = statPair(st, c); return v ? chipStat(c, v[0], v[1], c === "Possesso") : ""; }).join("")
       + '<span class="rodds"><i>1 X 2</i>' + q + '</span></div></div>';
   }
@@ -4045,10 +4406,12 @@
     if (rv) { var c = pctOf(rv[0]), d = pctOf(rv[1]); if (c != null && d != null) chips += chipStat("Punti vinti in risposta", c + "%", d + "%", true); }
     ["Ace", "Doppi falli"].forEach(function (k) { var v = statPair(st, k); if (v) chips += chipStat(k, v[0], v[1], false); });
     var q = e.mk.W1 || e.mk.W2 ? '<span class="rodds"><i>Vincente</i><span>' + oddsTxt(e.mk.W1 && e.mk.W1[0]) + '</span><span>' + oddsTxt(e.mk.W2 && e.mk.W2[0]) + '</span></span>' : "";
-    return '<div class="rcard tcard' + (e.susp ? " susp" : "") + '" style="--nset:' + Math.max(1, games.length) + '" data-ev="' + e.id + '" role="button" tabindex="0">'
+    var SB = stratBadges(e);
+    return '<div class="rcard tcard' + (e.susp ? " susp" : "") + SB.cls + '" style="--nset:' + Math.max(1, games.length) + '" data-ev="' + e.id + '" role="button" tabindex="0">'
+      + (SB.cls.indexOf("wonm") >= 0 ? '<span class="rwon">' + ic("check") + '</span>' : "")
       + '<div class="thead"><span></span><span></span><span class="k">Set</span>' + games.map(function (g, i) { return '<span class="k">' + (i + 1) + '</span>'; }).join("") + (pt.length === 2 ? '<span class="k">Game</span>' : "") + '</div>'
       + row(1) + row(2)
-      + (e.susp ? '<div class="rbadges"><span class="rb sus">' + ic("clock") + ' Mercato sospeso</span></div>' : "")
+      + (e.susp || SB.html ? '<div class="rbadges">' + SB.html + (e.susp ? '<span class="rb sus">' + ic("clock") + ' Mercato sospeso</span>' : "") + '</div>' : "")
       + '<div class="rstats">' + chips + q + '</div></div>';
   }
   // in cima alla scheda quote di una partita calda: la nostra strategia, perche', i numeri dello storico
@@ -4062,20 +4425,45 @@
         + '<div class="k">' + (hs ? 'Nello storico: ' + hs.n + ' casi, ' + Math.round(hs.strike * 100) + '% vinti, quota media ' + oddsTxt(hs.odds) + ', rendimento ' + pct(hs.roi) : "I numeri dello storico per questa strategia arrivano col prossimo aggiornamento.") + '</div></div>';
     }).join("") + '<div class="k hbnote">Probabilità nostra, dal mercato e dalla pressione della partita: si accende solo sopra una soglia alta, ma si può perdere.</div></div>';
   }
+  // Radar ippica (04/10, signals/ippica_radar.py): Prossime con i partenti e il NOSTRO pronostico (FROZEN_TOP3, la
+  // strategia dichiarata piu' vincente, un cavallo da primi tre; Full), Recenti col trio d'arrivo
+  function renderRadarIppica() {
+    var S0 = data.ippica_schede || {}, R0 = data.ippica_radar || {}, races = (S0.races || []).slice(0, 15), rec = R0.record;
+    var head = '<div class="note" style="margin-bottom:10px;">' + ic("ippica") + ' Il nostro pronostico è quello di <b>' + esc(R0.strategy || "FROZEN_TOP3") + '</b>: un cavallo da primi tre, scelto 15 minuti prima del via.'
+      + (rec ? ' Finora ' + rec[1] + ' piazzati su ' + rec[0] + ' corse, rendimento ' + pct(rec[2]) + '.' : "") + ' Strategia in prova: nessun cavallo è sicuro.</div>';
+    var prox = races.length ? races.map(function (r) {
+      var fav = r.runners.filter(function (x) { return x.odds; }).sort(function (a, b) { return a.odds - b.odds; }).slice(0, 3);
+      var pk = (R0.picks || {})[r.key];
+      return '<button class="card irace" type="button" data-race="' + esc(r.key) + '"><div class="irtop"><span><b>' + esc(startLabel(r.start)) + '</b> · ' + esc(r.track || "") + ' · corsa ' + r.race_no
+        + '<span class="k"> · ' + esc(PAESI[r.country] || r.country || "") + ' · ' + r.runners.length + ' partenti</span></span>' + ic("chev") + '</div>'
+        + '<div class="irfav">' + fav.map(function (x) { return '<span translate="no">' + esc(x.horse) + ' <b>' + oddsTxt(x.odds) + '</b></span>'; }).join("") + '</div>'
+        + (pk ? (isFull() ? '<div class="irpick">' + ic("star") + '<span>Nostro pronostico: <b translate="no">' + esc(pk.horse) + '</b> piazzato' + (pk.odds ? ' @ ' + oddsTxt(pk.odds) : "") + '</span></div>'
+          : '<div class="irpick">' + ic("lock") + ' Nostro pronostico con StatSight Full</div>') : "") + '</button>';
+    }).join("") : '<div class="note">Nessuna corsa in partenza nelle prossime ore.</div>';
+    var recent = (R0.recent || []).length ? '<div class="card">' + R0.recent.map(function (x) {
+      var pk = x.pick;
+      return '<div class="irrec"><div><b>' + esc(x.track || "") + ' · corsa ' + x.race_no + '</b><span class="k"> · ' + esc(x.time || dmy(x.date)) + ' · ' + esc(PAESI[x.country] || x.country || "") + '</span></div>'
+        + '<div class="trio">' + x.trio.map(function (t, i) { return '<span><i>' + (i + 1) + '°</i> <span translate="no">' + esc(t[0]) + '</span>' + (t[1] ? ' <span class="k">' + oddsTxt(t[1]) + '</span>' : "") + '</span>'; }).join("") + '</div>'
+        + (pk && isFull() ? '<div class="irpick ' + (pk.hit === 1 ? "pos" : pk.hit === 0 ? "neg" : "") + '">' + ic(pk.hit === 1 ? "check" : pk.hit === 0 ? "x" : "clock") + ' Nostro pronostico: ' + esc(pk.horse) + (pk.hit === 1 ? " · piazzato" : pk.hit === 0 ? " · non piazzato" : " · in attesa") + '</div>' : "") + '</div>';
+    }).join("") + '</div>' : '<div class="note">Ancora nessun arrivo oggi.</div>';
+    $("radar").innerHTML = head + '<h2 class="sectiontitle">Prossime</h2>' + prox + '<h2 class="sectiontitle">Recenti</h2>' + recent;
+  }
   function renderRadar() {
+    if (rsport === "ippica") { $("radarage").textContent = ""; renderRadarIppica(); return; }
     var dz = data.diario;
     var evs = evList().filter(function (e) { return e.live && e.sport === rsport && (e.st || e.susp); });
     $("radarage").textContent = dz ? "dati di " + ageTxt(dz.at) : "";
     if (!evs.length) { $("radar").innerHTML = '<div class="note">Nessuna partita live con statistiche in questo momento.</div>'; return; }
     var groups = {}, order = [];
     evs.forEach(function (e) { var k = e.comp || NAME[e.sport]; if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(e); });
-    var hotFirst = function (k) { return groups[k].some(function (e) { return !!hotOf(e); }) ? 1 : 0; };
+    var hotFirst = function (k) { return groups[k].some(function (e) { return !!hotOf(e) || radarStrats(e).length > 0; }) ? 1 : 0; };
     order.sort(function (a, b) { return hotFirst(b) - hotFirst(a) || groups[b].length - groups[a].length || (a > b ? 1 : -1); });
     $("radar").innerHTML = order.map(function (k) {
-      var list = groups[k].sort(function (a, b) { return (hotOf(b) ? 1 : 0) - (hotOf(a) ? 1 : 0) || ((b.st && b.st.minute) || 0) - ((a.st && a.st.minute) || 0); });
+      var list = groups[k].sort(function (a, b) { return (hotOf(b) || radarStrats(b).length ? 1 : 0) - (hotOf(a) || radarStrats(a).length ? 1 : 0) || ((b.st && b.st.minute) || 0) - ((a.st && a.st.minute) || 0); });
       return '<section class="rgroup" style="--tint:' + compTint(k) + '"><div class="rghead">' + EMOJI[rsport] + ' ' + esc(shortComp(k)) + ' <span class="k">' + list.length + '</span></div>'
         + list.map(function (e) { return rsport === "calcio" ? calcioCard(e) : tennisCard(e); }).join("") + '</section>';
     }).join("") + (!isFull() ? '<div class="upsell" style="margin-top:10px;">' + ic("lock") + ' Le statistiche col lucchetto e le strategie delle partite calde si vedono con <b>StatSight Full</b>.</div>' : "");
+    if (radarWinFx) { radarWinFx = false; hubWin(); }
   }
   $("radarchips").addEventListener("click", function (e) {
     var b = e.target.closest(".chip"); if (!b) return;
@@ -4083,7 +4471,7 @@
     $("radarchips").querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
     if (data) renderRadar();
   });
-  $("radar").addEventListener("click", function (e) { var r = e.target.closest("[data-ev]"); if (r && data) { curTab = null; renderGiocata(r.dataset.ev); } });
+  $("radar").addEventListener("click", function (e) { var rc = e.target.closest("[data-race]"); if (rc && data) { renderRace(rc.dataset.race); return; } var r = e.target.closest("[data-ev]"); if (r && data) { curTab = null; renderGiocata(r.dataset.ev); } });
   $("radar").addEventListener("keydown", function (e) { var r = e.target.closest("[data-ev]"); if (r && data && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); curTab = null; renderGiocata(r.dataset.ev); } });
 
   // ---------------------------------------------------------------- Il mio occhio: esperienza, leghe, badge
@@ -4646,6 +5034,16 @@
     all('[data-bview="home"]', dots.feed);
     all('[data-bview="miei"]', dots.esiti);
   }
+  // pallino su Segnali (04/10): segnali nuovi (ancora giocabili) delle strategie accese, non ancora visti
+  var SEGSEEN_KEY = "statsight.segvisti";
+  function segDot() {
+    if (!data) return;
+    var closed = closedSignalKeys(), latest = (data.feed || []).filter(function (f) { return isNewSignal(f, closed) && on(f.main || f.strategy); })
+      .reduce(function (m, f) { return Math.max(m, f.ts); }, 0);
+    var seen = null; try { seen = localStorage.getItem(SEGSEEN_KEY); } catch (e) {}
+    if (seen == null || curView() === "segnali") { seen = Math.max(Number(seen) || 0, latest); try { localStorage.setItem(SEGSEEN_KEY, String(seen)); } catch (e) {} }
+    document.querySelectorAll('.tab[data-view="segnali"]').forEach(function (el) { setDot(el, latest > Number(seen)); });
+  }
   function markNew(html, on) {
     return on ? html.replace('class="card post"', 'class="card post isnew"').replace('<span class="time">', '<span class="newtag">NUOVO</span><span class="time">') : html;
   }
@@ -4672,7 +5070,7 @@
       }
       if (changed) saveNews();
       dots = { feed: feed.some(function (x) { return x.ts > news.feedTs; }), esiti: done.some(function (b) { return !news.seen[b.key]; }), chest: R2.chest.coins > 0 };
-      paintDots();
+      paintDots(); segDot();
       if (v === "profilo" || v === "occhio" || v === "diario") celebrate(list, R2);
     } finally { inTick = false; }
   }
@@ -4824,6 +5222,15 @@
   $("fight").addEventListener("click", function (e) {
     if (!data) return;
     var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.fgame) { fgame = b.dataset.fgame; renderFight(); return; }
+    if (b.dataset.quiz) {
+      var q = quizToday(b.dataset.quiz); if (!q || q.choice != null) return;
+      if (b.dataset.quiz === "giusta") { q.choice = Number(b.dataset.q); q.ok = q.choice === q.real; }
+      else { q.choice = b.dataset.q; q.ok = q.choice === q.answer; }
+      saveQuiz(); renderFight(); renderProfilo();
+      fxToast(q.ok ? "check" : "x", q.ok ? "Giusto!" : "Sbagliato", q.ok ? "+" + QUIZ_WIN + " monete" : "Riprova domani");
+      return;
+    }
     var f = fightToday();
     if (b.dataset.fightgo && !f) { if (newFight()) { fightAnim = !REDUCED; renderFight(); renderProfilo(); } return; }
     if (!f || f.locked) return;
@@ -4872,6 +5279,7 @@
     if (!meEdit) return;
     if (e.target.dataset.pkfree) { meEdit.free = e.target.value; return; }
     if (e.target.id === "mename") meEdit.name = e.target.value;
+    if (e.target.id === "meuser") meEdit.user = e.target.value.trim().toLowerCase().replace(/^@/, "");
     if (e.target.id === "mebio") { meEdit.bio = e.target.value; $("mebion").textContent = meEdit.bio.length + "/160"; }
   });
   $("profilo").addEventListener("click", function (e) {
@@ -4893,7 +5301,7 @@
       keepScroll($("profilo"), renderProfilo); return;
     }
     if (ds.meseed) {
-      var spx = AV_SPECIAL.filter(function (x) { return "sp:" + x.id === ds.meseed; })[0];
+      var spx = AV_SPECIAL.filter(function (x) { return "sp:" + x.id === ds.meseed; })[0] || levelAvs.filter(function (x) { return x.seed === ds.meseed; })[0];
       if (!spx || rewardState(pronostici()).level >= spx.level) { meEdit.seed = ds.meseed; meEdit.pic = null; }
       keepScroll($("profilo"), renderProfilo); return;
     }
@@ -4901,21 +5309,27 @@
     if (ds.mesalva) {
       var np = nameProblem(meEdit.name), nm = $("menamemsg");
       if (np) { nm.textContent = np; nm.hidden = false; $("mename").focus(); return; }
+      var hp = handleProblem(meEdit.user), hm = $("meusermsg");
+      if (hp) { hm.textContent = hp; hm.hidden = false; $("meuser").focus(); return; }
       var why = checkText(meEdit.name) || checkText(meEdit.bio);
       if (why && why !== "lungo") { alert(MOD_MSG[why]); return; }
       var old = JSON.parse(JSON.stringify(me));
-      me.name = meEdit.name.trim().slice(0, 24); me.bio = meEdit.bio.trim().slice(0, 160); me.pic = meEdit.pic; me.seed = meEdit.seed;
+      me.name = meEdit.name.trim().slice(0, 24); me.bio = meEdit.bio.trim().slice(0, 160); me.pic = meEdit.pic; me.seed = meEdit.seed; me.user = meEdit.user || me.user || "";
       commitPick(meEdit); me.onboarded = true;
       if (!saveMe()) { Object.keys(me).forEach(function (k) { delete me[k]; }); Object.assign(me, old); alert("La foto non entra nella memoria del telefono: provane un'altra."); return; }
       meEdit = false; renderAll();
     }
   });
   // prima apertura: benvenuto con il selettore (nazione, sport, campionato, squadra)
-  $("benvenuto").addEventListener("input", function (e) { if (e.target.dataset.pkfree) pick.free = e.target.value; });
+  $("benvenuto").addEventListener("input", function (e) { if (e.target.dataset.pkfree) pick.free = e.target.value; if (e.target.id === "bvuser") pick.user = e.target.value; });
   $("benvenuto").addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return;
     if (pickerClick(pick, b)) { keepScroll($("benvenuto"), renderBenvenuto); return; }
-    if (b.dataset.pkgo) { commitPick(pick); me.onboarded = true; saveMe(); if (data) renderAll(); show("radar"); window.scrollTo(0, 0); tutorialFirst(); return; }
+    if (b.dataset.pkgo) {
+      var u = ($("bvuser").value || "").trim().toLowerCase().replace(/^@/, ""), up = handleProblem(u);
+      if (up) { pick.user = u; pick.userMsg = up; keepScroll($("benvenuto"), renderBenvenuto); return; }
+      if (u) me.user = u;
+      commitPick(pick); me.onboarded = true; saveMe(); if (data) renderAll(); show("radar"); window.scrollTo(0, 0); tutorialFirst(); return; }
     if (b.dataset.pkskip) { me.onboarded = true; saveMe(); show("radar"); tutorialFirst(); }
   });
   $("fotoinput").addEventListener("change", function () {
@@ -4926,6 +5340,11 @@
   ["bacheca", "persona", "occhioclassifica", "occhiolevel"].forEach(function (id) {
     $(id).addEventListener("input", function (e) {
       var t = e.target.closest("[data-cin]"); if (t) drafts[t.dataset.cin] = t.value;
+      if (e.target.id === "beetin") {
+        var had = /@[a-z0-9_]*$/.test(beetDraft); beetDraft = e.target.value;
+        var n = $("beetn"); if (n) n.textContent = beetDraft.length + "/" + BEET_MAX;
+        if (had || /@[a-z0-9_]*$/.test(beetDraft)) refreshBeetBox();   // suggerimenti dei tag
+      }
     });
     $(id).addEventListener("keydown", function (e) {
       var t = e.target.closest("[data-cin]");
@@ -4933,6 +5352,13 @@
     });
     $(id).addEventListener("click", function (e) {
       if (!data) return;
+      var bb = e.target.closest("button");
+      if (bb && bb.dataset.beettag) { beetDraft = beetDraft.replace(/@[a-z0-9_]*$/, "@" + bb.dataset.beettag + " "); refreshBeetBox(); return; }
+      if (bb && bb.dataset.beetpick) { beetRef = beetRef === bb.dataset.beetpick ? null : bb.dataset.beetpick; refreshBeetBox(); return; }
+      if (bb && bb.dataset.beetsend) { beetSend(); return; }
+      if (bb && bb.dataset.beetref) { beetOpen[bb.dataset.beetref] = !beetOpen[bb.dataset.beetref]; renderBacheca(); return; }
+      if (bb && bb.dataset.beetfwd) { beetForward(bb.dataset.beetfwd); return; }
+      if (bb && bb.dataset.beetdel) { beets = beets.filter(function (x) { return x.id !== bb.dataset.beetdel; }); saveBeets(); renderBacheca(); return; }
       if (socialClick(e)) return;
       var f = e.target.closest("[data-follow]");
       if (f) {
@@ -4996,6 +5422,41 @@
     } catch (e) { /* rete assente: si riprova al giro dopo */ }
   }
   setInterval(poll, 30000);
+  // Aggiorna (04/10): tasto in alto e trascinando in giu' dalla cima della pagina (pull to refresh)
+  var refreshing = false;
+  async function refreshNow() {
+    var pw = storeGet(), b = $("refreshbtn");
+    if (!pw || !data || refreshing) return;
+    refreshing = true; b.classList.add("spin"); document.body.classList.add("ptrbusy");
+    var was = lastIv;
+    try {
+      var env = await fetchEnvelope();
+      if (env.iv !== lastIv) { var fresh = await decrypt(env, pw); lastIv = env.iv; data = fresh; renderAll(); }
+      fxToast("refresh", was === lastIv ? "Dati già aggiornati" : "Dati aggiornati", "");
+    } catch (e) { fxToast("alert", "Aggiornamento non riuscito", "Controlla la connessione e riprova."); }
+    finally { refreshing = false; b.classList.remove("spin"); document.body.classList.remove("ptrbusy"); }
+  }
+  $("refreshbtn").addEventListener("click", refreshNow);
+  // il logo in alto riporta alla home, il Radar (04/10)
+  document.querySelector(".topbar .brand").addEventListener("click", function (e) {
+    if (e.target.closest("#led") || !data || $("view-lock").hidden === false || $("view-benvenuto").hidden === false) return;
+    renderRadar(); show("radar"); window.scrollTo(0, 0);
+  });
+  (function () {
+    var y0 = null, x0 = 0, pulled = 0, ptr = document.createElement("div");
+    ptr.id = "ptr"; ptr.innerHTML = '<svg class="ico"><use href="#i-refresh"/></svg>'; document.body.appendChild(ptr);
+    document.addEventListener("touchstart", function (e) { y0 = window.scrollY <= 0 && e.touches.length === 1 ? e.touches[0].clientY : null; x0 = e.touches[0].clientX; pulled = 0; }, { passive: true });
+    document.addEventListener("touchmove", function (e) {
+      if (y0 == null || !data) return;
+      var dy = e.touches[0].clientY - y0, dx = Math.abs(e.touches[0].clientX - x0);
+      if (dy <= 0 || dx > dy) { pulled = 0; ptr.style.transform = ""; return; }
+      pulled = Math.min(dy, 120); ptr.style.transform = "translate(-50%," + (pulled * 0.9) + "px) rotate(" + pulled * 3 + "deg)"; ptr.classList.toggle("ready", pulled >= 80);
+    }, { passive: true });
+    document.addEventListener("touchend", function () {
+      if (pulled >= 80) refreshNow();
+      pulled = 0; y0 = null; ptr.style.transform = ""; ptr.classList.remove("ready");
+    }, { passive: true });
+  })();
   document.addEventListener("visibilitychange", function () { if (!document.hidden) poll(); });
   $("logout").addEventListener("click", function () { storeSet(null); data = null; $("pw").value = ""; show("lock"); });
   $("tabbar").addEventListener("click", function (e) { var b = e.target.closest(".tab"); if (!b) return;
@@ -5224,30 +5685,36 @@
   })();
 
   // ---------------------------------------------------------------- Tutorial (richiesta 04/10)
-  // Dopo il benvenuto (una volta sola, si salta) e da Impostazioni > Rivedi il tutorial: sei passi con
+  // Dopo il benvenuto (una volta sola, si salta) e da Impostazioni > Rivedi il tutorial: passi brevi con
   // l'elemento evidenziato. Ricordato su questo telefono (statsight.tutorial).
   var TUT_KEY = "statsight.tutorial", tutStep = -1;
+  // 04/10: frasi corte e piu' passi; il riquadro va sempre dalla parte opposta all'elemento evidenziato
   var TUT = [
-    { view: "radar", go: function () { renderRadar(); }, target: "#radar .rcard, #view-radar .radarwrap",
-      title: "Il Radar, la tua home", text: ["Il logo al centro della barra ti riporta sempre qui: le partite live per campionato, con minuto, risultato e statistiche. Gol, espulsioni e mercato sospeso si accendono da soli.",
-        "Le partite calde sono quelle che stanno per rientrare in una strategia semplice, con una probabilità davvero alta. Tocca una partita per le quote."],
-      legend: [["#E8862A", "Arancio: una squadra domina (almeno 3 e 2,6 volte l'altra)."], ["#E08268", "Rosso: domina nettamente (almeno 4 e 3,6 volte l'altra)."]] },
-    { view: "segnali", go: function () { renderFeed(); }, target: "#segview, #view-segnali .card",
-      title: "Segnali: nuovi e storico", text: ["In Nuovi solo i segnali che puoi ancora giocare. In Storico vinti e persi, la quota più alta e il grafico di come è andata ogni strategia.",
-        "Con Collega Telegram i segnali ti arrivano anche sul bot."] },
-    { view: "strategie", go: function () { renderStrategie(); }, target: "#strategie .strat, #strategie .card, #strategie .hero",
-      title: "Le strategie", text: ["Ogni strategia è una regola fissa provata sullo storico. Con gli interruttori Top 5 e 6-10 accendi in un colpo le migliori.",
-        "Le barre (in \"… altro\", poi Personalizza) le adatti a te e vedi subito come sarebbe andata; per uscire salvi o annulli.",
-        "I numeri sono onesti: quante volte è successo, quanti vinti e il rendimento contro la quota, con vinti e persi."] },
+    { view: "radar", go: function () { renderRadar(); }, target: "#view-radar .radarwrap",
+      title: "Il Radar, la tua home", text: ["Qui ci sono le partite live, per campionato."] },
+    { view: "radar", go: function () { renderRadar(); }, target: "#radar .rcard",
+      title: "Partite che si accendono", text: ["Gol, espulsioni e partite calde si evidenziano da sole."],
+      legend: [["#E8862A", "Arancio: una squadra domina."], ["#E08268", "Rosso: domina nettamente."]] },
+    { view: "radar", go: function () { renderRadar(); }, target: ".tab.hub",
+      title: "Il logo al centro", text: ["Toccalo per tornare qui da ogni pagina."] },
+    { view: "segnali", go: function () { segv = "nuovi"; renderFeed(); }, target: "#segview",
+      title: "Segnali", text: ["Nuovi: solo quelli che puoi ancora giocare.", "Storico: vinti e persi, tutti."] },
+    { view: "strategie", go: function () { renderStrategie(); }, target: "#strategie .strat",
+      title: "Le strategie", text: ["Regole fisse, provate sullo storico.", "L'interruttore le accende nei tuoi segnali."] },
+    { view: "strategie", go: function () { renderStrategie(); }, target: "#strategie .more",
+      title: "Le barre", text: ["In \"… altro\" le adatti a te e vedi come sarebbe andata."] },
     { view: "notifiche", go: function () { renderNotifiche(); }, target: "#notifiche .nrow, #notifiche .note",
-      title: "Scegli i tuoi avvisi", text: ["Accendi l'interruttore delle strategie che vuoi seguire e scegli cosa leggere nel messaggio: rendimento, % vinti, partite, quota.",
-        "Quando esce un segnale lo trovi in Segnali; le notifiche sul telefono arrivano con l'app pubblica."] },
-    { view: "profilo", go: function () { renderProfilo(); renderBacheca(); }, target: "#mebar .mebar, #mebar",
-      title: "Il Diario", text: ["La Home: i pronostici di chi segui e i dati del Team StatSight, con Copia per metterli nella tua schedina. Tocca il tuo avatar per il profilo.",
-        "Qui accanto la sfida StatsFight e la ruota del giorno. Le monete si guadagnano soltanto: non si comprano.",
-        "È un gioco a punti: niente soldi."] },
+      title: "Gli avvisi", text: ["Scegli quali strategie ti avvisano."] },
+    { view: "profilo", go: function () { renderProfilo(); renderBacheca(); }, target: "#mebar .meav",
+      title: "Il Diario", text: ["Tocca il tuo avatar per il profilo."] },
+    { view: "profilo", go: function () { renderProfilo(); renderBacheca(); }, target: "#mebtns",
+      title: "Sfide e ruota", text: ["StatsFight e la ruota del giorno: monete solo guadagnate, mai comprate."] },
+    { view: "profilo", go: function () { renderProfilo(); renderBacheca(); }, target: "#bacheca .post, #bacheca .landing, #bacheca",
+      title: "La Home", text: ["I pronostici di chi segui. Copia li mette nella tua schedina.", "È un gioco a punti: niente soldi."] },
     { view: "direct", go: function () { renderDirect(); }, target: "#direct .dserver, #direct",
-      title: "Direct", text: ["Le schedine si mandano con un codice o un link: chi lo apre la vede e la copia. Le chat con gli amici arrivano con l'app pubblica."] }
+      title: "Direct", text: ["Le schedine si mandano con un codice o un link."] },
+    { view: "radar", go: function () { renderRadar(); }, target: "#refreshbtn",
+      title: "Aggiorna", text: ["Tocca qui o trascina in giù per i dati nuovi."] }
   ];
   function tutorialFirst() { var d = null; try { d = localStorage.getItem(TUT_KEY); } catch (e) {} if (!d) setTimeout(function () { startTutorial(); }, 400); }
   function startTutorial() { if (!data) return; tutStep = 0; tutRender(); }
@@ -5266,10 +5733,19 @@
     sp.style.cssText = "left:" + Math.max(6, r.left - pad) + "px;top:" + top + "px;width:" + Math.min(innerWidth - 12, r.width + 2 * pad) + "px;height:" + h + "px";
     if (top + h / 2 > H / 2) { card.style.bottom = ""; card.style.top = "calc(env(safe-area-inset-top,0px) + 16px)"; }
     else { card.style.top = ""; card.style.bottom = "calc(env(safe-area-inset-bottom,0px) + 16px)"; }
+    // se il riquadro copre ancora l'elemento (elemento grande o schermo basso), si scorre la pagina per allontanarlo
+    var c = card.getBoundingClientRect();
+    if (!tutMoved && c.top < top + h && c.bottom > top) {
+      tutMoved = true;
+      var dy = c.top > H / 2 ? (top + Math.min(h, 120)) - (c.top - 12) : (c.bottom + 12) - top;
+      window.scrollBy(0, c.top > H / 2 ? dy : -dy);
+      setTimeout(tutPlace, 60);
+    }
   }
+  var tutMoved = false;
   function tutRender() {
     var st = TUT[tutStep], last = tutStep === TUT.length - 1;
-    st.go(); show(st.view);
+    st.go(); show(st.view); tutMoved = false;
     var t = $("tut");
     if (!t) {
       t = document.createElement("div"); t.id = "tut"; t.setAttribute("role", "dialog"); t.setAttribute("aria-modal", "true"); document.body.appendChild(t);
@@ -5472,7 +5948,11 @@
   document.querySelectorAll("button[data-back]").forEach(function (b) {
     b.addEventListener("click", function () { show(b.dataset.back); });
   });
-  setInterval(function () { if (data) renderStatus(); }, 60000);  // il led invecchia anche senza ricaricare
+  setInterval(function () {
+    if (!data) return;
+    renderStatus();
+    if (curView() === "profilo") document.querySelectorAll("#mebtns .daily:not(.ready) .cdn").forEach(function (c) { c.textContent = untilTomorrow(); });   // il conto alla rovescia scorre
+  }, 60000);  // il led invecchia anche senza ricaricare
   $("showall").addEventListener("click", function () {
     hidden.clear(); saveHidden();
     if (data) { renderFeed(); renderStrategie(); }
