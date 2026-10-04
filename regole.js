@@ -46,10 +46,25 @@
     if (code === "TU25") return s === "20" || s === "02";
     return code === "S" + s;
   }
+  // Ippica (04/10): codici col nome del cavallo, "V:NOME" vincente, "P:NOME" piazzato (primi tre)
+  var IPPICA_RE = /^([VP]):([A-Z0-9 ]{1,40})$/;
+  function ippicaMarket(code) {
+    var m = IPPICA_RE.exec(code || ""); if (!m) return null;
+    return m[1] === "V" ? { sport: "ippica", group: "VIN", tab: "Corsa", label: "Vincente", src: "snai" }
+      : { sport: "ippica", group: "PIA:" + m[2], tab: "Corsa", label: "Piazzato", src: "snai" };
+  }
+  function marketOf(markets, sport, code) { return sport === "ippica" ? ippicaMarket(code) : (markets[sport] || {})[code]; }
   function all(arr, f) { for (var i = 0; i < arr.length; i++) if (!f(arr[i])) return false; return true; }
 
   function compatible(sport, codes) {
     if (sport === "tennis") return TENNIS_SPACE.some(function (s) { return all(codes, function (c) { return tennisWins(c, s); }); });
+    if (sport === "ippica") {
+      var ms = codes.map(function (c) { return IPPICA_RE.exec(c); });
+      if (!all(ms, function (m) { return !!m; })) return false;
+      var win = {}, top = {};
+      ms.forEach(function (m) { top[m[2]] = 1; if (m[1] === "V") win[m[2]] = 1; });
+      return Object.keys(win).length <= 1 && Object.keys(top).length <= 3;
+    }
     var dims = {};
     codes.forEach(function (c) { (dims[calcioDim(c)] = dims[calcioDim(c)] || []).push(c); });
     for (var d in dims) {
@@ -87,7 +102,7 @@
     function add(e) { if (err.indexOf(e) < 0) err.push(e); }
     if (!legs.length) return ["La schedina è vuota."];
     legs.forEach(function (g) {
-      var m = (markets[g.sport] || {})[g.code];
+      var m = marketOf(markets, g.sport, g.code);
       if (!m) { add("Mercato non disponibile: " + g.code + "."); return; }
       if (!g.odds || g.odds < LIMITS.min_odds) add("Quota non valida su " + (g.event_name || g.event) + ".");
       if (g.live) { if (g.fresh == null || now - g.fresh > LIMITS.live_fresh_s) add("Una quota live non è aggiornata: mercato sospeso, toglila o riprova tra poco."); }
@@ -97,7 +112,7 @@
     legs.forEach(function (g) { var key = g.sport + ":" + g.event; (byEvent[key] = byEvent[key] || []).push(g); });
     Object.keys(byEvent).forEach(function (key) {
       var gs = byEvent[key], sport = gs[0].sport;
-      var groups = gs.map(function (g) { var m = (markets[sport] || {})[g.code]; return m ? m.group : null; }).filter(Boolean);
+      var groups = gs.map(function (g) { var m = marketOf(markets, sport, g.code); return m ? m.group : null; }).filter(Boolean);
       if (new Set(groups).size !== groups.length) add("Due esiti dello stesso mercato sulla stessa partita: ne vale uno solo.");
       else if (!compatible(sport, gs.map(function (g) { return g.code; }))) add("Esiti in contraddizione sulla stessa partita (non possono vincere insieme).");
     });
@@ -143,5 +158,5 @@
     return { points: Math.round(p * 10000) / 10000, won: p > 0 };
   }
 
-  root.Regole = { compatible: compatible, validate: validate, totalOdds: totalOdds, settle: settle, combos: comb, LIMITS: LIMITS };
+  root.Regole = { compatible: compatible, validate: validate, totalOdds: totalOdds, settle: settle, combos: comb, LIMITS: LIMITS, marketOf: marketOf };
 })(typeof window !== "undefined" ? window : this);
