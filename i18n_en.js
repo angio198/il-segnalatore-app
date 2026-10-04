@@ -636,7 +636,7 @@ window.I18N_EN = {
   "La schedina in preparazione": "The slip you're building", "Nessun pronostico aperto da condividere: scegline uno nelle Partite.": "No open picks to share: choose one in Matches.",
   "Codice della schedina": "Slip code", "Copia il link": "Copy the link", "Manda a Promemoria": "Send to Notes", "Hai un codice?": "Got a code?",
   "Incolla il codice o il link": "Paste the code or the link", "Link copiato: mandalo a chi vuoi.": "Link copied: send it to anyone.",
-  "Le chat con gli amici arrivano con l'app pubblica: per consegnare i messaggi serve il nostro server. Intanto le schedine si mandano con un codice o un link, e funzionano già.": "Chats with friends come with the public app: delivering messages needs our server. Meanwhile slips travel with a code or a link, and that already works.",
+  "Le chat con gli amici arrivano con l'app pubblica: per consegnare i messaggi serve il nostro server. Si potrà scrivere solo fra maggiorenni che si seguono a vicenda. Intanto le schedine si mandano con un codice o un link, e funzionano già.": "Chats with friends come with the public app: delivering messages needs our server. Only adults who follow each other will be able to write. Meanwhile slips travel with a code or a link, and that already works.",
   "Scrivi un appunto o condividi qui una schedina: la ritrovi quando vuoi.": "Write a note or share a slip here: you'll find it whenever you want.",
   "Quando apri un link o incolli un codice di una schedina, arriva qui.": "When you open a link or paste a slip code, it lands here.",
   "Scrivi un messaggio": "Write a message", "Stesso filtro dei commenti: niente link, contatti o vendita di pronostici.": "Same filter as comments: no links, contacts or selling picks.",
