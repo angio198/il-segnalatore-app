@@ -14,10 +14,12 @@
     return typeof atob === "function" ? decodeURIComponent(escape(atob(s))) : Buffer.from(s, "base64").toString("utf8");
   }
   function sum(s) { var h = 7; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 1679616; return h.toString(36); }
-  // slip: { mode, k, stake, legs: [{ event, sport, code, odds, ename, label }], by (nome di chi condivide, facoltativo) }
+  // slip: { mode, k, stake, legs: [{ event, sport, code, odds, ename, label }], by (nome di chi condivide, facoltativo),
+  //         text (facoltativo, 04/10: un beet inoltrato, al massimo 280 caratteri; senza partite basta il testo) }
   function encode(slip) {
     var o = { m: slip.mode === "multipla" ? "m" : slip.mode === "sistema" ? "s" : "1", k: slip.k || 0, p: slip.stake || 0, b: (slip.by || "").slice(0, 24),
-              l: slip.legs.slice(0, 20).map(function (l) { return [l.event, l.sport, l.code, Math.round(l.odds * 100), (l.ename || "").slice(0, 60), (l.label || "").slice(0, 60)]; }) };
+              l: (slip.legs || []).slice(0, 20).map(function (l) { return [l.event, l.sport, l.code, Math.round(l.odds * 100), (l.ename || "").slice(0, 60), (l.label || "").slice(0, 60)]; }) };
+    if (slip.text) o.t = String(slip.text).slice(0, 280);
     var body = b64e(JSON.stringify(o));
     return PREFIX + body + "." + sum(body);
   }
@@ -29,9 +31,11 @@
     if (sum(body) !== parts[2]) return null;
     try {
       var o = JSON.parse(b64d(body));
-      if (!o || !Array.isArray(o.l) || !o.l.length) return null;
-      return { mode: o.m === "m" ? "multipla" : o.m === "s" ? "sistema" : "singole", k: o.k || null, stake: o.p || null, by: o.b || "",
+      if (!o || !Array.isArray(o.l) || (!o.l.length && !o.t)) return null;
+      var out = { mode: o.m === "m" ? "multipla" : o.m === "s" ? "sistema" : "singole", k: o.k || null, stake: o.p || null, by: o.b || "",
                legs: o.l.map(function (x) { return { event: x[0], sport: x[1], code: x[2], odds: x[3] / 100, ename: x[4], label: x[5] }; }) };
+      if (o.t) out.text = String(o.t).slice(0, 280);
+      return out;
     } catch (e) { return null; }
   }
   var API = { encode: encode, decode: decode };
