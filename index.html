@@ -2773,7 +2773,7 @@
   }
   function renderDirect() {
     var open = mySlips.filter(function (s) { return !s.resolved_at; }).slice(-5).reverse();
-    var h = '<div class="card dserver">' + ic("info") + '<span>Le chat con gli amici arrivano con l\'app pubblica: per consegnare i messaggi serve il nostro server. Intanto le schedine si mandano con un codice o un link, e funzionano già.</span></div>'
+    var h = '<div class="card dserver">' + ic("info") + '<span>Le chat con gli amici arrivano con l\'app pubblica: per consegnare i messaggi serve il nostro server. Si potrà scrivere solo fra maggiorenni che si seguono a vicenda. Intanto le schedine si mandano con un codice o un link, e funzionano già.</span></div>'
       + '<h2 class="sectiontitle">Conversazioni</h2><div class="card dconvs">' + direct.convs.map(function (c) {
         var last = c.msgs.filter(function (m) { return !m.hidden; }).slice(-1)[0], un = convUnread(c);
         return '<button class="dconv" type="button" data-conv="' + c.id + '"><span class="dav">' + ic(c.kind === "self" ? "pen" : "diario") + '</span><span class="dcw"><b>' + CONV_NAME[c.kind] + '</b><span class="k">'
