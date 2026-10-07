@@ -8,6 +8,7 @@
   function calcioDim(code) {
     if (code === "P1" || code === "PN" || code === "P2") return "next";
     if (/^C[OU]\d+$/.test(code)) return "corners";
+    if (/^K[OU]\d+$/.test(code)) return "cards";
     return "score";
   }
   function calcioWins(code, h, a, h1, a1) {
@@ -38,6 +39,7 @@
     return null;
   }
   function cornersWins(code, total) { var line = +code.slice(2) / 10; return code[1] === "O" ? total > line : total < line; }
+  var cardsWins = cornersWins;   // KO45: piu' di 4,5 cartellini (gialli + rossi), stessa regola degli angoli
   var TENNIS_SPACE = ["20", "21", "12", "02"];
   function tennisWins(code, s) {
     if (code === "W1") return s === "20" || s === "21";
@@ -74,6 +76,12 @@
         var okc = false;
         for (var t = 0; t <= 30 && !okc; t++) okc = all(cs, function (c) { return cornersWins(c, t); });
         if (!okc) return false;
+        continue;
+      }
+      if (d === "cards") {
+        var okk = false;
+        for (var tk = 0; tk <= 20 && !okk; tk++) okk = all(cs, function (c) { return cardsWins(c, tk); });
+        if (!okk) return false;
         continue;
       }
       var ok = false;

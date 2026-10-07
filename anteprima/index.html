@@ -121,6 +121,15 @@
   .serving{font-size:0.8em;}
   .chips.subtabs{margin-bottom:10px;}
   /* Diario stile bookmaker */
+  /* notifiche Telegram dei segnali (09/10): interruttore e formato del messaggio */
+  .tgrow{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-bottom:10px;}
+  .tgrow .tgic .ico{width:26px;height:26px;} .tgrow .tgt{flex:1;min-width:0;display:flex;flex-direction:column;} .tgrow .tgt b{font-size:0.88rem;} .tgrow .switch{margin-top:0;}
+  .tgmenu[aria-expanded="true"] .ico{transform:rotate(180deg);}
+  .tgdrop{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px;margin:-6px 0 10px;display:flex;flex-direction:column;gap:6px;}
+  .tgopt{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:8px;border-radius:10px;border:1px solid var(--line);background:none;color:inherit;font:inherit;cursor:pointer;}
+  .tgopt[aria-checked="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);}
+  .tgopt .tgdot{flex:none;width:16px;height:16px;margin-top:2px;border-radius:50%;border:2px solid var(--ink-soft);} .tgopt[aria-checked="true"] .tgdot{border-color:var(--accent);background:radial-gradient(var(--accent) 45%,transparent 50%);}
+  .tgopt span{display:flex;flex-direction:column;gap:2px;} .tgopt pre{margin:4px 0 0;font-size:0.68rem;white-space:pre-wrap;word-break:break-all;color:var(--ink-soft);}
   .segbar{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:10px;}
   .segbar button{font:inherit;font-weight:700;font-size:0.88rem;border:none;border-radius:9px;padding:9px 6px;background:none;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
   .segbar button[aria-pressed="true"]{background:var(--ink);color:var(--bg);}
@@ -1323,6 +1332,7 @@
     <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 6l7 6-7 6zM13 6l7 6-7 6z"/></symbol>
     <symbol id="i-one" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10.5 9l2-1.5V16"/></symbol>
     <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9.5a1 1 0 0 0 1 1h3.5"/></symbol>
+    <symbol id="i-telegram" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="#2AABEE" stroke="none"/><path d="M5.6 11.7l10.9-4.3c.5-.2 1 .1.8.9l-1.9 8.8c-.1.6-.5.8-1 .5l-2.9-2.1-1.4 1.3c-.2.2-.3.3-.6.3l.2-2.9 5.3-4.8c.2-.2 0-.3-.3-.1l-6.6 4.1-2.8-.9c-.6-.2-.6-.6.3-.8z" fill="#fff" stroke="none"/></symbol>
     <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3.5L3 10.8l6.6 2.6L12.2 20l3-5.2z"/><path d="M9.6 13.4L21 3.5"/></symbol>
     <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></symbol>
     <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4.2" fill="url(#g-amber)" stroke="none"/><path d="M4 20.5c.8-4.3 4-6.5 8-6.5s7.2 2.2 8 6.5z" fill="url(#g-green)" stroke="none"/></symbol>
@@ -1383,6 +1393,7 @@
     <button type="button" data-segv="storico" aria-pressed="false"><svg class="ico"><use href="#i-clock"/></svg> Storico</button>
     <button type="button" data-segv="stat" aria-pressed="false"><svg class="ico"><use href="#i-trend"/></svg> Statistiche</button>
   </div>
+  <div id="tgbar"></div>
   <div class="chips" id="chips" role="group" aria-label="Filtra per sport">
     <button class="chip" type="button" data-filter="all" aria-pressed="true">Tutti</button>
     <button class="chip" type="button" data-filter="tennis" aria-pressed="false"><svg class="ico"><use href="#i-tennis"/></svg> Tennis</button>
@@ -1934,7 +1945,35 @@
         + '<div class="chart"><h3>Andamento cumulato (1 unità per segnale)</h3>' + lineChart(s.detail.curve) + '</div></div>';
     }).join("") + '<div class="k" style="margin-top:6px;">Quota media dei segnali di queste strategie che vedi qui; casi, strike e rendimento sono quelli di tutta la serie storica, vinti e persi.</div>';
   }
+  // Notifiche Telegram dei segnali (09/10, richiesta utente): interruttore e formato (testo con emoji o JSON per le
+  // automazioni). La scelta la tiene il bot (telegram_access/preferences.notify_prefs): l'app apre Telegram col link
+  // t.me/<bot>?start=tg_on_json / tg_on_testo / tg_off e qui ricorda l'ultima scelta. Arrivano agli abbonati.
+  var TG_KEY = "statsight.tg", tgOpen = false;
+  function tgState() { try { var x = JSON.parse(localStorage.getItem(TG_KEY)); if (x && typeof x.on === "boolean") return x; } catch (e) {} return { on: true, fmt: "testo" }; }
+  var TG_FMT = { testo: ["Normale", "Testo con le emoji, come il canale", "⚽ Serie A · LIVE\nInter - Milan\nIndicazione: 1 @ 2,10"],
+                 json: ["JSON", "Dati per automazioni: bot, webhook, fogli di calcolo", '{"statsight":1,"signal":{"sport":"calcio","event":"Inter v Milan","pick":"1","odds":2.1,...}}'] };
+  function renderTg() {
+    var t = tgState(), F = TG_FMT[t.fmt] || TG_FMT.testo;
+    $("tgbar").innerHTML = '<div class="tgrow"><span class="tgic">' + ic("telegram") + '</span><span class="tgt"><b>Notifiche Telegram</b><span class="k">' + (t.on ? "Accese · " + F[0] : "Spente") + '</span></span>'
+      + '<span class="switch"><input type="checkbox" role="switch" id="tgsw"' + (t.on ? " checked" : "") + ' aria-label="Notifiche Telegram dei segnali"><span class="slider"></span></span>'
+      + '<button class="iconbtn sm tgmenu" type="button" data-tgmenu="1" aria-expanded="' + tgOpen + '" aria-label="Formato del messaggio">' + ic("down") + '</button></div>'
+      + (tgOpen ? '<div class="tgdrop" role="radiogroup" aria-label="Formato del messaggio">' + ["testo", "json"].map(function (k) {
+          return '<button class="tgopt" type="button" role="radio" data-tgfmt="' + k + '" aria-checked="' + (t.fmt === k) + '"><i class="tgdot"></i><span><b>' + TG_FMT[k][0] + '</b><span class="k">' + TG_FMT[k][1] + '</span><pre>' + esc(TG_FMT[k][2]) + '</pre></span></button>';
+        }).join("") + '<div class="k">Si apre Telegram per confermare la scelta al bot. Le notifiche arrivano agli abbonati; quelle delle strategie fatte nel builder arriveranno col server.</div></div>' : "");
+  }
+  function setTg(on, fmt) {
+    var t = { on: on, fmt: fmt }; try { localStorage.setItem(TG_KEY, JSON.stringify(t)); } catch (e) {}
+    renderTg();
+    var w = window.open(TG_BOT + "?start=" + (on ? "tg_on_" + fmt : "tg_off"), "_blank");
+    fxToast("send", on ? "Notifiche Telegram accese" : "Notifiche Telegram spente", w ? "Conferma su Telegram" : "Apri Telegram per confermare");
+  }
+  $("tgbar").addEventListener("change", function (e) { if (e.target.id === "tgsw") setTg(e.target.checked, tgState().fmt); });
+  $("tgbar").addEventListener("click", function (e) {
+    if (e.target.closest("[data-tgmenu]")) { tgOpen = !tgOpen; renderTg(); return; }
+    var o = e.target.closest("[data-tgfmt]"); if (o) { var t = tgState(); if (o.dataset.tgfmt !== t.fmt || !t.on) setTg(true, o.dataset.tgfmt); }
+  });
   function renderFeed() {
+    renderTg();
     var n = Array.from(hidden).filter(known).length;
     $("filternote").hidden = n === 0;
     $("filtertext").textContent = n === 1 ? "Filtro attivo: 1 strategia nascosta" : "Filtro attivo: " + n + " strategie nascoste";
@@ -6893,7 +6932,7 @@
   // ---------------------------------------------------------------- Strategy builder (08/10 sera, come Node-RED)
   // Una strategia e' un FLUSSO: a sinistra il nodo "Partite" manda ogni partita (live o in programma) lungo i fili;
   // i nodi la filtrano ("Se", con un'uscita "si'" e una "no"), la smistano su piu' rami ("Dividi"), calcolano
-  // variabili nuove ("Calcola"), aspettano piu' rami insieme ("Unisci"); a destra "Gioca" dice cosa giocare e
+  // variabili nuove ("Calcola"), aspettano piu' rami insieme ("Unisci"); a destra "Segnala" (09/10: prima "Gioca") dice cosa segnalare e
   // "Debug" mostra le partite che arrivano li'. Si puo' fare tutto quello che ha una logica: se poi vince o no, lo
   // dice lo storico (col server). Sotto ogni nodo, come in Node-RED, quante partite di adesso ci passano.
   // Le strategie StatSight sono flussi nostri col timbro, da aprire e copiare. Zoom con + / - / adatta o due dita.
@@ -6936,19 +6975,31 @@
       live: [["s1", "Set giocatore 1", "Punteggio"], ["s2", "Set giocatore 2", "Punteggio"], ["sn", "Set giocati", "Punteggio"], ["g1", "Game giocatore 1 (set in corso)", "Punteggio"], ["g2", "Game giocatore 2 (set in corso)", "Punteggio"],
         ["srv", "Chi serve (1 o 2)", "Punteggio"], ["sf", "Set del favorito", "Favorito"], ["sd", "Set dello sfavorito", "Favorito"], ["pf", "Quota del favorito prima del via", "Favorito"],
         ["v1", "Punti vinti al servizio % giocatore 1", "Servizio", 1], ["v2", "Punti vinti al servizio % giocatore 2", "Servizio", 1], ["vf", "Punti vinti al servizio % favorito", "Servizio", 1], ["vd", "Punti vinti al servizio % sfavorito", "Servizio", 1],
-        ["w1", "Quota giocatore 1 adesso", "Quote"], ["w2", "Quota giocatore 2 adesso", "Quote"]],
+        ["w1", "Quota giocatore 1 adesso", "Quote"], ["w2", "Quota giocatore 2 adesso", "Quote"], ["wf", "Quota del favorito adesso", "Quote"], ["wd", "Quota dello sfavorito adesso", "Quote"],
+        ["dur", "Minuti di gioco (dall'inizio)", "Punteggio"], ["gf1", "Game del favorito nel 1° set", "Favorito"], ["gd1", "Game dello sfavorito nel 1° set", "Favorito"],
+        ["brt", "Break nel set in corso", "Break e game"], ["br1", "Servizi persi nel set: giocatore 1", "Break e game"], ["br2", "Servizi persi nel set: giocatore 2", "Break e game"],
+        ["brf", "Servizi persi nel set: favorito", "Break e game"], ["brd", "Servizi persi nel set: sfavorito", "Break e game"],
+        ["bp13", "Palle break negli ultimi 3 game in risposta: giocatore 1", "Break e game"], ["bp23", "Palle break negli ultimi 3 game in risposta: giocatore 2", "Break e game"],
+        ["bpf3", "Palle break negli ultimi 3 game in risposta: favorito", "Break e game"], ["bpd3", "Palle break negli ultimi 3 game in risposta: sfavorito", "Break e game"],
+        ["lz", "Chi serve ha tenuto a zero tutti i suoi game del set (1 = sì)", "Break e game"], ["r040", "Ultimo game: chi ha salvato uno 0-40 e tenuto (1 o 2; 0 nessuno)", "Break e game"],
+        ["fs1", "Prime di servizio % giocatore 1", "Servizio"], ["fs2", "Prime di servizio % giocatore 2", "Servizio"], ["fsf", "Prime di servizio % favorito", "Servizio"], ["fsd", "Prime di servizio % sfavorito", "Servizio"],
+        ["ac1", "Ace giocatore 1", "Servizio"], ["ac2", "Ace giocatore 2", "Servizio"], ["df1", "Doppi falli giocatore 1", "Servizio"], ["df2", "Doppi falli giocatore 2", "Servizio"],
+        ["dff", "Doppi falli favorito", "Servizio"], ["dfd", "Doppi falli sfavorito", "Servizio"]],
       pre: [["w1", "Quota giocatore 1", "Quote"], ["w2", "Quota giocatore 2", "Quote"], ["pf", "Quota del favorito", "Quote"], ["hr", "Ore al via", "Partita"]]
     }
   };
   // uscite dinamiche (oltre ai mercati delle regole): risolte sulla partita
   var BDYN = { calcio: [["FAV", "Vince la favorita"], ["DOG", "Vince la sfavorita"], ["DCFAV", "Doppia chance con la favorita"], ["DCDOG", "Doppia chance con la sfavorita"],
                         ["FAVSC", "Segna la favorita"], ["PFAV", "Prossimo gol: la favorita"], ["OVNEXT", "Over (gol attuali + 0,5)"], ["UNNEXT", "Under (gol attuali + 0,5)"],
-                        ["LEAD", "Vince chi è in vantaggio"], ["DCLEAD", "Doppia chance con chi è in vantaggio"], ["TRAILSC", "Segna chi è in svantaggio"], ["PTRAIL", "Prossimo gol: chi è in svantaggio"]],
-               tennis: [["FAV", "Vince il favorito"], ["DOG", "Vince lo sfavorito"]] };
+                        ["LEAD", "Vince chi è in vantaggio"], ["DCLEAD", "Doppia chance con chi è in vantaggio"], ["TRAILSC", "Segna chi è in svantaggio"], ["PTRAIL", "Prossimo gol: chi è in svantaggio"],
+                        ["KONEXT", "Over cartellini (attuali + 0,5)"]],
+               tennis: [["FAV", "Vince il favorito"], ["DOG", "Vince lo sfavorito"], ["TXT", "Solo avviso, senza quota (scrivi il testo)"]] };
+  BDYN.calcio.push(["TXT", "Solo avviso, senza quota (scrivi il testo)"]);   // per i mercati che non registriamo (09/10)
+  var SURF = [["", "tutte le superfici"], ["terra", "terra"], ["erba", "erba"], ["cemento", "cemento all'aperto"], ["indoor", "cemento al coperto"], ["veloce", "veloci (erba e coperto)"]];
   // tipi di nodo: [colore, icona, ingressi, uscite (0 = dipende), categoria]
   var NT = { src: ["#A6BBCF", "radar", 0, 1, "Ingresso"], se: ["#E2D96E", "filter", 1, 0, "Funzione"], dividi: ["#E2D96E", "layers", 1, 0, "Funzione"],
-             calc: ["#FDD0A2", "pen", 1, 1, "Funzione"], storico: ["#C9E4F2", "clock", 1, 1, "Funzione"], unisci: ["#E6E0F8", "users", 1, 1, "Funzione"], gioca: ["#87A980", "coin", 1, 0, "Uscita"], debug: ["#87A980", "bug", 1, 0, "Uscita"], nota: ["#FFFFFF", "info", 0, 0, "Altro"] };
-  var NT_NAME = { src: "Partite", se: "Se", dividi: "Dividi", calc: "Calcola", storico: "Storico", unisci: "Unisci", gioca: "Gioca", debug: "Debug", nota: "Commento" };
+             calc: ["#FDD0A2", "pen", 1, 1, "Funzione"], storico: ["#C9E4F2", "clock", 1, 1, "Funzione"], unisci: ["#E6E0F8", "users", 1, 1, "Funzione"], gioca: ["#87A980", "bell", 1, 0, "Uscita"], debug: ["#87A980", "bug", 1, 0, "Uscita"], nota: ["#FFFFFF", "info", 0, 0, "Altro"] };
+  var NT_NAME = { src: "Partite", se: "Se", dividi: "Dividi", calc: "Calcola", storico: "Storico", unisci: "Unisci", gioca: "Segnala", debug: "Debug", nota: "Commento" };
   var OPS = [[">", ">"], [">=", "≥"], ["<", "<"], ["<=", "≤"], ["=", "="], ["!=", "≠"]], AOPS = [["+", "+"], ["-", "−"], ["*", "×"], ["/", "÷"], ["min", "min"], ["max", "max"], ["abs", "|a − b|"], ["pois", "Poisson: probabilità di almeno b gol con media a"]];
   // nodo Storico (09/10): la partita minuto per minuto (signals/diario_eventi.timeline), righe
   // [minuto, gol casa, gol ospite, poi casa e ospite di tiri in porta, tiri, angoli, xG, attacchi pericolosi, possesso]
@@ -7014,7 +7065,7 @@
   function nodeLabel(n, b) {
     var p = n.p || {}; b = b || bld;
     if (n.name) return n.name;
-    if (n.t === "src") return (b.mode === "live" ? "Partite live" : "Partite in programma") + (p.comp ? " · " + p.comp : "");
+    if (n.t === "src") return (b.mode === "live" ? "Partite live" : "Partite in programma") + (p.comp ? " · " + p.comp : "") + (p.surf ? " · " + (SURF.filter(function (x) { return x[0] === p.surf; })[0] || ["", p.surf])[1] : "");
     if (n.t === "se") return (p.rules || []).map(function (r) { return dLabel(r.a, b) + " " + opTxt(r.op) + " " + valTxt(r, b); }).join(p.any ? " o " : " e ") || "Se…";
     if (n.t === "dividi") return "Dividi per " + dLabel(p.a, b);
     if (n.t === "storico") return (p.name || "x") + " = " + ((ST_STATS.filter(function (x) { return x[0] === p.stat; })[0] || ["", "?"])[1] + " " + (ST_SIDES.filter(function (x) { return x[0] === p.side; })[0] || ["", ""])[1]).trim()
@@ -7022,6 +7073,7 @@
     if (n.t === "calc" && p.op === "pois") return (p.name || "x") + " = P(≥ " + valTxt({ bt: p.bt, b: p.b }, b) + " gol | media " + valTxt({ bt: p.at, b: p.a }, b) + ")";
     if (n.t === "calc") return (p.name || "x") + " = " + (p.op === "abs" ? "|" + valTxt({ bt: p.at, b: p.a }, b) + " − " + valTxt({ bt: p.bt, b: p.b }, b) + "|" : (p.op === "min" || p.op === "max" ? p.op + "(" + valTxt({ bt: p.at, b: p.a }, b) + ", " + valTxt({ bt: p.bt, b: p.b }, b) + ")" : valTxt({ bt: p.at, b: p.a }, b) + " " + opTxt(p.op, AOPS) + " " + valTxt({ bt: p.bt, b: p.b }, b)));
     if (n.t === "unisci") return p.any ? "Unisci: ne basta uno" : "Unisci: tutti";
+    if (n.t === "gioca" && p.pick === "TXT") return "Avviso: " + (p.txt || "…");
     if (n.t === "gioca") return pickName(p.pick, b.sport) + (p.min ? " · ≥ " + String(p.min).replace(".", ",") : "");
     if (n.t === "debug") return "Debug";
     return p.text || "Commento";
@@ -7047,6 +7099,28 @@
       var x = parseFloat(String(r[1 + i]).replace(",", ".")); return isNaN(x) ? null : x;
     };
     var sets = String(st.sets || "").split(/\s*-\s*/).map(Number), hasSets = sets.length === 2 && !isNaN(sets[0]);
+    if (e.sport === "tennis") {   // tennis (09/10): servizio, break e game dal punto per punto (datastore/api_tennis_live.pbp_compact)
+      var pbp = st.pbp || [], cur = hasSets ? sets[0] + sets[1] + 1 : 1, mm = /^(fs|ac|df|br)([12fd])$/.exec(k) || /^(bp)([12fd])3$/.exec(k);
+      if (mm) {
+        var who = mm[2] === "1" ? 1 : mm[2] === "2" ? 2 : F ? (mm[2] === "f" ? F.side : 3 - F.side) : 0; if (!who) return null;
+        if (mm[1] === "fs" || mm[1] === "ac" || mm[1] === "df") {
+          var pv = statPair(st, { fs: "Prime di servizio", ac: "Ace", df: "Doppi falli" }[mm[1]]); if (!pv) return null;
+          var raw = pv[who - 1], xv = pctOf(raw) != null ? pctOf(raw) : parseFloat(String(raw).replace(",", ".")); return isNaN(xv) ? null : xv;
+        }
+        if (!pbp.length) return null;
+        if (mm[1] === "br") return pbp.filter(function (g) { return g[0] === cur && g[2] === who && g[4]; }).length;
+        return pbp.filter(function (g) { return g[2] !== who && g[3]; }).slice(-3).reduce(function (a, g) { return a + g[5]; }, 0);
+      }
+      switch (k) {
+        case "brt": return pbp.length ? pbp.filter(function (g) { return g[0] === cur && g[4]; }).length : null;
+        case "lz": var sv = st.serve != null ? Number(st.serve) : 0; if (!sv || !pbp.length) return null;
+          var mine = pbp.filter(function (g) { return g[0] === cur && g[2] === sv && g[3]; }); return mine.length && mine.every(function (g) { return g[6]; }) ? 1 : 0;
+        case "r040": var done = pbp.filter(function (g) { return g[3]; }), lg = done[done.length - 1]; return lg ? (lg[7] ? lg[2] : 0) : null;
+        case "gf1": case "gd1": var g0 = (st.games || [])[0]; if (!g0 || !F) return null; var gp = String(g0).split(/\s*-\s*/).map(Number); var gv = k === "gf1" ? gp[F.side - 1] : gp[2 - F.side]; return isNaN(gv) ? null : gv;
+        case "wf": return F ? mk("W" + F.side) : null; case "wd": return F ? mk("W" + (3 - F.side)) : null;
+        case "dur": return e.start ? Math.round((nowS() - e.start) / 60) : null;
+      }
+    }
     switch (k) {
       case "min": return st.minute != null ? Number(st.minute) : (parseInt(estMinute(e), 10) || null);
       case "tempo": var m = st.minute != null ? Number(st.minute) : parseInt(estMinute(e), 10); return isNaN(m) ? null : (/^(2|HT|2H|SECOND)/i.test(String(st.state || "")) || m > 45 ? 2 : 1);
@@ -7090,11 +7164,16 @@
   function resolvePick(e, pick) {
     var F = favSide(e), sc = scoreOf((e.st || {}).score), tn = e.sport === "tennis";
     var c = pick;
+    if (pick === "TXT") return "TXT";
     if (pick === "FAV" || pick === "DOG") { if (!F) return null; var s = pick === "FAV" ? F.side : 3 - F.side; c = tn ? "W" + s : String(s); }
     else if (pick === "DCFAV" || pick === "DCDOG") { if (!F) return null; var s2 = pick === "DCFAV" ? F.side : 3 - F.side; c = s2 === 1 ? "1X" : "X2"; }
     else if (pick === "FAVSC") { if (!F) return null; c = "T" + F.side + "S"; }
     else if (pick === "PFAV") { if (!F) return null; c = "P" + F.side; }
     else if (pick === "OVNEXT" || pick === "UNNEXT") { var t = sc ? sc[0] + sc[1] : 0; c = (pick === "OVNEXT" ? "O" : "U") + t + "5"; }
+    else if (pick === "KONEXT") {   // cartellini = gialli + rossi (signals/regolamento.cards_wins)
+      var ky = statPair(e.st || {}, "Gialli"), kr = statPair(e.st || {}, "Rossi"); if (!ky) return null;
+      c = "KO" + (Number(ky[0]) + Number(ky[1]) + (kr ? Number(kr[0]) + Number(kr[1]) : 0)) + "5";
+    }
     else if (pick === "LEAD" || pick === "DCLEAD" || pick === "TRAILSC" || pick === "PTRAIL") {
       if (!sc || sc[0] === sc[1]) return null;
       var ld = sc[0] > sc[1] ? 1 : 2, tr = 3 - ld;
@@ -7117,6 +7196,7 @@
         if (b.mode === "live" ? !e.live : (e.live || !e.start || e.start <= nowS())) return;
         if (e.sport !== b.sport) return;
         if (p.comp && String(e.comp || "").toLowerCase().indexOf(String(p.comp).toLowerCase()) < 0) return;
+        if (p.surf && (!e.sup || (p.surf === "veloce" ? e.sup !== "erba" && e.sup !== "indoor" : e.sup !== p.surf))) return;
         ins = [{ msg: { e: e, v: {} } }];
       }
       if (!ins.length) return;
@@ -7150,6 +7230,7 @@
           var sv = storicoVal(e, p); if (sv == null) return;
           msg.v[p.name || "x"] = sv; send(n, 0, msg);
         } else if (n.t === "gioca") {
+          if (p.pick === "TXT") { res.push({ e: e, node: id, code: null, odds: null, txt: p.txt || "Avviso" }); return; }
           var code = resolvePick(e, p.pick), odds = code ? e.mk[code][0] : null;
           if (p.min && (!odds || odds < p.min)) return;
           res.push({ e: e, node: id, code: code, odds: odds });
@@ -7169,11 +7250,11 @@
     var out = [];
     if (!String(b.name || "").trim()) out.push("Dai un nome alla strategia.");
     if (!b.nodes.some(function (n) { return n.t === "src"; })) out.push("Serve un nodo Partite all'inizio.");
-    if (!b.nodes.some(function (n) { return n.t === "gioca"; })) out.push("Serve almeno un nodo Gioca alla fine.");
+    if (!b.nodes.some(function (n) { return n.t === "gioca"; })) out.push("Serve almeno un nodo Segnala alla fine.");
     b.nodes.forEach(function (n) {
       if (nIns(n) && !b.wires.some(function (w) { return w.t === n.id; })) out.push("Il nodo " + NT_NAME[n.t] + " (" + nodeLabel(n, b) + ") non riceve nessun filo.");
       if (n.t === "se" && !(n.p.rules || []).length) out.push("Il nodo Se non ha regole.");
-      if (n.t === "gioca" && !n.p.pick) out.push("Scegli cosa giocare nel nodo Gioca.");
+      if (n.t === "gioca" && !n.p.pick) out.push("Scegli cosa segnalare nel nodo Segnala.");
     });
     return out.filter(function (x, i, a) { return a.indexOf(x) === i; });
   }
@@ -7230,7 +7311,8 @@
       + (bldRO ? "" : '<button class="chip" type="button" data-bdel="' + n.id + '">' + ic("trash") + ' Elimina</button>') + '</div>';
     if (bldRO) return h + '<div class="k">' + esc(nodeLabel(n)) + '</div></div>';
     if (n.t !== "nota") h += '<input class="meinput" data-bf="name" maxlength="40" placeholder="Nome del nodo (facoltativo)" value="' + esc(n.name || "") + '">';
-    if (n.t === "src") h += '<label class="melabel">Solo i campionati che contengono</label><input class="meinput" data-bf="comp" maxlength="40" placeholder="es. Serie A (vuoto = tutti)" value="' + esc(p.comp || "") + '">';
+    if (n.t === "src") h += '<label class="melabel">Solo i campionati che contengono</label><input class="meinput" data-bf="comp" maxlength="40" placeholder="es. Serie A (vuoto = tutti)" value="' + esc(p.comp || "") + '">'
+      + (bld.sport === "tennis" ? '<label class="melabel">Superficie</label><select class="meinput" data-bf="surf">' + SURF.map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === (p.surf || "") ? " selected" : "") + '>' + esc(x[1]) + '</option>'; }).join("") + '</select><div class="k">Stimata dal nome del torneo: i tornei sconosciuti restano fuori quando scegli una superficie.</div>' : "");
     if (n.t === "se") {
       h += '<div class="k">Passa la partita quando ' + '<select class="meinput inl" data-bf="any"><option value="0"' + (!p.any ? " selected" : "") + '>tutte le regole</option><option value="1"' + (p.any ? " selected" : "") + '>almeno una regola</option></select> sono vere.</div>'
         + (p.rules || []).map(function (r, i) { return '<div class="brule">' + dataSelect("r" + i + "a", r.a) + opSelect("r" + i + "op", r.op) + valField("r" + i + "b", r.bt, r.b) + '<button class="iconbtn sm" type="button" data-brdel="' + i + '" aria-label="Togli">' + ic("x") + '</button></div>'; }).join("")
@@ -7253,7 +7335,8 @@
         + '<div class="k">La partita minuto per minuto (un punto ogni 3 minuti). Chi è in vantaggio o in svantaggio si guarda sul punteggio di adesso. La variabile si usa nei nodi dopo, nel gruppo "Variabili".</div>';
     }
     if (n.t === "unisci") h += '<select class="meinput" data-bf="any"><option value="0"' + (!p.any ? " selected" : "") + '>Passa se arriva da tutti i fili (E)</option><option value="1"' + (p.any ? " selected" : "") + '>Passa se arriva da almeno un filo (O)</option></select>';
-    if (n.t === "gioca") h += '<label class="melabel">Cosa giocare</label>' + pickSelect(p.pick) + '<label class="melabel">Quota minima</label><input class="meinput" data-bf="min" type="number" step="0.05" min="1" inputmode="decimal" value="' + esc(String(p.min || "")) + '">';
+    if (n.t === "gioca" && p.pick === "TXT") h += '<label class="melabel">Cosa segnalare</label>' + pickSelect(p.pick) + '<label class="melabel">Testo dell\'avviso</label><input class="meinput" data-bf="txt" maxlength="60" value="' + esc(p.txt || "") + '"><div class="k">Un avviso senza quota: va in Segnali ma non nello storico (senza quota non c\'è rendimento).</div>';
+    else if (n.t === "gioca") h += '<label class="melabel">Cosa segnalare</label>' + pickSelect(p.pick) + '<label class="melabel">Quota minima</label><input class="meinput" data-bf="min" type="number" step="0.05" min="1" inputmode="decimal" value="' + esc(String(p.min || "")) + '">';
     if (n.t === "nota") h += '<textarea class="meinput" data-bf="text" maxlength="200" rows="2">' + esc(p.text || "") + '</textarea>';
     return h + '</div>';
   }
@@ -7269,7 +7352,7 @@
     if (!bld) {   // elenco: le tue e quelle StatSight col timbro
       if (bldFull) { bldFull = false; document.body.classList.remove("bldfull"); }
       var mine = builds.slice().reverse();
-      box.innerHTML = '<div class="card bldhero"><b>Costruisci la tua strategia</b><span>Come un flusso: le partite entrano a sinistra, passano per i nodi che le filtrano, le dividono e calcolano, e a destra esce cosa giocare. Sotto ogni nodo vedi quante partite di adesso ci passano.</span>'
+      box.innerHTML = '<div class="card bldhero"><b>Costruisci la tua strategia</b><span>Come un flusso: le partite entrano a sinistra, passano per i nodi che le filtrano, le dividono e calcolano, e a destra esce il segnale. Sotto ogni nodo vedi quante partite di adesso ci passano.</span>'
         + '<div class="duo"><button class="primary" type="button" data-bnew="live">' + ic("radar") + ' Nuova live</button><button class="primary" type="button" data-bnew="pre">' + ic("calendar") + ' Nuova pre-partita</button></div></div>'
         + '<h2 class="sectiontitle">Le tue strategie</h2>' + (mine.length ? '<div class="card">' + mine.map(function (b) { return bldRow(b, "bopen"); }).join("") + '</div>' : '<div class="note">Nessuna strategia ancora: creane una o copia una delle nostre qui sotto.</div>')
         + '<h2 class="sectiontitle">Strategie StatSight <span class="k">' + TPL().length + '</span></h2><div class="k" style="margin:-4px 2px 8px;">Le nostre strategie tradotte in flussi, col timbro StatSight: aprile, guarda come sono fatte, copiale e cambiale.</div>'
@@ -7393,6 +7476,8 @@
       else if (f === "pick") p.pick = v;
       else if (f === "min") p.min = Number(String(v).replace(",", ".")) || null;
       else if (f === "text") p.text = v;
+      else if (f === "txt") p.txt = v.slice(0, 60);
+      else if (f === "surf") p.surf = v;
       else if ((m = /^r(\d+)(a|op|b|bt)$/.exec(f))) { var r = p.rules[Number(m[1])]; if (m[2] === "bt") { r.bt = v; r.b = v === "d" ? (dataList(bld)[0] || ["min"])[0] : 0; } else r[m[2]] = m[2] === "b" && r.bt !== "d" ? Number(String(v).replace(",", ".")) : v; }
       else if ((m = /^c(\d+)(op|v)$/.exec(f))) p.cases[Number(m[1])][m[2]] = m[2] === "v" ? Number(String(v).replace(",", ".")) : v;
       else if (f === "a" || f === "b") { if (n.t === "dividi") p.a = v; else p[f] = (p[f + "t"] || (f === "a" ? p.at : p.bt)) === "d" ? v : Number(String(v).replace(",", ".")); }
@@ -7637,7 +7722,7 @@
         N("b", "se", 360, 40, { rules: [R("t15h", ">=", 4)] }, "Casa: 4 tiri in porta negli ultimi 15'"),
         N("c", "se", 360, 200, { rules: [R("p15h", ">", 65)] }, "Casa: possesso oltre 65% negli ultimi 15'"),
         N("u", "unisci", 640, 120, {}), N("g", "gioca", 790, 120, { pick: "O15", min: 1.7 }), N("dbg", "debug", 360, 120),
-        N("n1", "nota", 140, 290, { text: "Puntata 2%: niente soldi, 1 unità" }), N("n2", "nota", 640, 220, { text: "Quota Over 1,5 ≥ 1,70 = quota minima di Gioca" })],
+        N("n1", "nota", 140, 290, { text: "Puntata 2%: niente soldi, 1 unità" }), N("n2", "nota", 640, 220, { text: "Quota Over 1,5 ≥ 1,70 = quota minima di Segnala" })],
       wires: [W("s", 0, "a"), W("a", 0, "b"), W("a", 0, "c"), W("a", 0, "dbg"), W("b", 0, "u"), W("c", 0, "u"), W("u", 0, "g")] });
     // dal secondo testo dell'utente (09/10 sera): quello che si puo' coi nostri dati; quello che manca e' in un Commento.
     // Niente puntate, coperture e cash out (niente soldi): l'azione diventa il mercato piu' vicino che abbiamo.
@@ -7700,14 +7785,75 @@
          N("d", "dividi", 0, 50, { a: "min", cases: [{ op: "<", v: 70 }] }), N("g1", "gioca", 0, 0, { pick: "U15", min: null }), N("g2", "gioca", 0, 90, { pick: "X", min: null })],
         [W("s", 0, "a"), W("a", 0, "b"), W("b", 0, "h1"), W("h1", 0, "h2"), W("h2", 0, "c"), W("c", 0, "d"), W("d", 0, "g1"), W("d", 1, "g2")]]
     ];
-    IMP.unshift(["nervosismo", "Soglia di Nervosismo", "Partita con rivalità alta (nei precedenti almeno il 20% di cartellini in più della media del campionato), almeno 3 gialli nel primo tempo e dal 75' risultato in bilico: partita da Over cartellini.",
+    IMP.unshift(["nervosismo", "Soglia di Nervosismo", "Partita con rivalità alta (nei precedenti almeno il 20% di cartellini in più della media del campionato), almeno 3 gialli nel primo tempo e dal 75' risultato in bilico: segnala Over cartellini (quelli di adesso + 0,5).",
         [N("s", "src", 0, 60), N("a", "se", 0, 60, { rules: [R("riv", ">=", 1.2), R("h2hn", ">=", 3)] }, "Rivalità alta nei precedenti"),
          N("b", "se", 0, 60, { rules: [R("min", ">=", 75), R("gd", ">=", -1), R("gd", "<=", 1)] }, "Dal 75', in bilico"),
          ST("h", 0, 60, "gialli_1t", "Gialli", "tot", "al", 45), N("c", "se", 0, 60, { rules: [R("var:gialli_1t", ">=", 3)] }, "Almeno 3 gialli nel 1° tempo"),
-         N("dbg", "debug", 0, 60, {}, "Over cartellini"),
-         N("n", "nota", 0, 160, { text: "Over cartellini: mercato che non registriamo ancora. Per ora la vedi in Debug" })],
-        [W("s", 0, "a"), W("a", 0, "b"), W("b", 0, "h"), W("h", 0, "c"), W("c", 0, "dbg")]]);
-    IMP.forEach(function (x, i) { out.unshift({ v: 2, id: "P_" + x[0], name: x[1], sport: "calcio", mode: "live", vis: "priv", lay: 1, ts: nowS() + 10 - i, desc: x[2], nodes: x[3], wires: x[4] }); });
+         N("g", "gioca", 0, 60, { pick: "KONEXT", min: null }), N("dbg", "debug", 0, 160, {}, "Partite nervose"),
+         N("n", "nota", 0, 160, { text: "Cartellini = gialli + rossi, contati dai nostri dati" })],
+        [W("s", 0, "a"), W("a", 0, "b"), W("b", 0, "h"), W("h", 0, "c"), W("c", 0, "g"), W("c", 0, "dbg")]]);
+    // dal testo dell'utente sul tennis (09/10 notte): 10 strategie. Quello che manca (statistiche pre-partita dei
+    // giocatori, scambi lunghi, tempo nei turni prima) e' nel Commento; i mercati che non registriamo (game del set,
+    // break, game a zero) diventano un "Solo avviso" senza quota.
+    var GS = function (id) { return N(id, "calc", 0, 60, { name: "game_set", at: "d", a: "g1", op: "+", bt: "d", b: "g2" }); };
+    var TXT = function (id, y, t) { return N(id, "gioca", 0, y, { pick: "TXT", txt: t }); };
+    var TEN = [
+      ["t_tiebreak", "Trappola del Tie-Break", "Superficie veloce (erba o cemento al coperto), primo set sul 5-5 senza nessun break: avviso Over 12,5 game nel 1° set (si va al tie-break).",
+        [N("s", "src", 0, 60, { surf: "veloce" }), N("a", "se", 0, 60, { rules: [R("sn", "=", 0), R("g1", "=", 5), R("g2", "=", 5)] }, "Primo set sul 5-5"),
+         N("b", "se", 0, 60, { rules: [R("brt", "=", 0)] }, "Nessun break nel set"), TXT("g", 60, "Over 12,5 game nel 1° set (tie-break)"),
+         N("n", "nota", 0, 160, { text: "Ace e tieni-servizio pre-partita: dati che non abbiamo" })],
+        [W("s", 0, "a"), W("a", 0, "b"), W("b", 0, "g")]],
+      ["t_controbreak", "Contro-Break Immediato", "Favorito netto (quota prima del via sotto 1,40) che a inizio secondo set perde il servizio ma negli ultimi 3 game in risposta ha avuto almeno una palla break. Con la quota del favorito salita ad almeno 1,60 si segnala lui, altrimenti l'avviso del contro-break.",
+        [N("s", "src", 0, 60), N("a", "se", 0, 60, { rules: [R("pf", "<", 1.4), R("sn", "=", 1)] }, "Favorito netto, secondo set"), GS("c"),
+         N("b", "se", 0, 60, { rules: [R("var:game_set", "<=", 4), R("brf", ">=", 1), R("bpf3", ">=", 1)] }, "Servizio perso, ma palle break"),
+         N("d", "dividi", 0, 50, { a: "wf", cases: [{ op: ">=", v: 1.6 }] }), N("g1", "gioca", 0, 0, { pick: "FAV", min: 1.6 }), TXT("g2", 100, "Break del favorito nel prossimo game")],
+        [W("s", 0, "a"), W("a", 0, "c"), W("c", 0, "b"), W("b", 0, "d"), W("d", 0, "g1"), W("d", 1, "g2")]],
+      ["t_crollo", "Crollo Fisico del Terzo Set", "Terzo set dopo più di 2 ore e 15 di gioco: chi mette molte meno prime di servizio (10 punti in meno) è il più stanco, si segnala l'altro.",
+        [N("s", "src", 0, 80), N("a", "se", 0, 80, { rules: [R("sn", "=", 2), R("dur", ">=", 135)] }, "Terzo set, oltre 2h15"),
+         N("c", "calc", 0, 80, { name: "diff_prime", at: "d", a: "fs1", op: "-", bt: "d", b: "fs2" }),
+         N("d", "dividi", 0, 70, { a: "var:diff_prime", cases: [{ op: ">=", v: 10 }, { op: "<=", v: -10 }] }),
+         N("g1", "gioca", 0, 0, { pick: "W1", min: 1.3 }), N("g2", "gioca", 0, 100, { pick: "W2", min: 1.3 }),
+         N("n", "nota", 0, 200, { text: "Tempo nei turni prima e prime degli ultimi 2 game: non li abbiamo, uso le prime della partita" })],
+        [W("s", 0, "a"), W("a", 0, "c"), W("c", 0, "d"), W("d", 0, "g1"), W("d", 1, "g2")]],
+      ["t_040", "Remuntada da 0-40", "In un game da fine set (dal 4-4 in poi) chi serve era sotto 0-40 e l'ha tenuto: avviso sul prossimo game a suo favore.",
+        [N("s", "src", 0, 60), N("a", "se", 0, 60, { rules: [R("r040", ">=", 1)] }, "Ha salvato uno 0-40"), GS("c"),
+         N("b", "se", 0, 60, { rules: [R("var:game_set", ">=", 9)] }, "Dal 4-4 in poi"), N("d", "dividi", 0, 50, { a: "r040", cases: [{ op: "=", v: 1 }, { op: "=", v: 2 }] }),
+         TXT("g1", 0, "Prossimo game al giocatore 1"), TXT("g2", 100, "Prossimo game al giocatore 2")],
+        [W("s", 0, "a"), W("a", 0, "c"), W("c", 0, "b"), W("b", 0, "d"), W("d", 0, "g1"), W("d", 1, "g2")]],
+      ["t_silenzio", "Set Chiuso in Silenzio", "Primo set sul 5-4 e chi serve ha tenuto a zero tutti i suoi game del set: avviso game a zero.",
+        [N("s", "src", 0, 60), GS("c"), N("m", "calc", 0, 60, { name: "piu_game", at: "d", a: "g1", op: "max", bt: "d", b: "g2" }),
+         N("a", "se", 0, 60, { rules: [R("sn", "=", 0), R("var:game_set", "=", 9), R("var:piu_game", "=", 5)] }, "Primo set sul 5-4"),
+         N("b", "se", 0, 60, { rules: [R("lz", "=", 1)] }, "Chi serve ha tenuto tutto a zero"), TXT("g", 60, "Game a zero di chi serve"),
+         N("n", "nota", 0, 160, { text: "Quota del set 1,25-1,30: mercato che non registriamo" })],
+        [W("s", 0, "c"), W("c", 0, "m"), W("m", 0, "a"), W("a", 0, "b"), W("b", 0, "g")]],
+      ["t_sottovalutato", "Ribaltone del Sottovalutato", "Il favorito perde il servizio nei primi game del primo set ma vince almeno tanti punti al servizio quanti l'avversario: si segnala il favorito a quota alzata (almeno 1,80).",
+        [N("s", "src", 0, 60), GS("c"), N("a", "se", 0, 60, { rules: [R("sn", "=", 0), R("var:game_set", "<=", 4), R("pf", "<=", 1.6), R("brf", ">=", 1)] }, "Favorito brekkato a inizio set"),
+         N("b", "se", 0, 60, { rules: [R("vf", ">=", "@vd")] }, "Al servizio non è peggio"), N("g", "gioca", 0, 60, { pick: "FAV", min: 1.8 }),
+         N("n", "nota", 0, 160, { text: "Punti negli scambi lunghi: non li abbiamo. Vincente del set: non registrato, si segnala il match" })],
+        [W("s", 0, "c"), W("c", 0, "a"), W("a", 0, "b"), W("b", 0, "g")]],
+      ["t_prima", "Dominio della Prima di Servizio", "Primo set sul 3-3 senza break, tutti e due mettono almeno il 65% di prime: avviso Under 10,5 game nel 1° set.",
+        [N("s", "src", 0, 60), N("a", "se", 0, 60, { rules: [R("sn", "=", 0), R("g1", "=", 3), R("g2", "=", 3), R("brt", "=", 0)] }, "3-3 senza break"),
+         N("b", "se", 0, 60, { rules: [R("fs1", ">=", 65), R("fs2", ">=", 65)] }, "Prime oltre il 65%"), TXT("g", 60, "Under 10,5 game nel 1° set"),
+         N("n", "nota", 0, 160, { text: "Punti vinti con la prima e durata degli scambi: non li abbiamo" })],
+        [W("s", 0, "a"), W("a", 0, "b"), W("b", 0, "g")]],
+      ["t_chiusura", "Gestione del Vantaggio Pesante", "Un giocatore è avanti di un set e 5-2 nel secondo, l'altro ha già fatto almeno 3 doppi falli: avviso chiusura del match in questo game.",
+        [N("s", "src", 0, 100), N("a", "se", 0, 20, { rules: [R("s1", "=", 1), R("s2", "=", 0), R("g1", "=", 5), R("g2", "=", 2), R("df2", ">=", 3)] }, "Giocatore 1 avanti, l'altro nervoso"),
+         N("b", "se", 0, 180, { rules: [R("s2", "=", 1), R("s1", "=", 0), R("g2", "=", 5), R("g1", "=", 2), R("df1", ">=", 3)] }, "Giocatore 2 avanti, l'altro nervoso"),
+         TXT("g1", 20, "Il giocatore 1 chiude in questo game"), TXT("g2", 180, "Il giocatore 2 chiude in questo game"),
+         N("n", "nota", 0, 280, { text: "Doppi falli dell'ultimo turno: abbiamo solo quelli della partita" })],
+        [W("s", 0, "a"), W("s", 0, "b"), W("a", 0, "g1"), W("b", 0, "g2")]],
+      ["t_riscatto", "Riscatto del Set Lasciato Andare", "Il favorito netto (fino a 1,30 prima del via) perde il primo set facendo al massimo 2 game; a inizio secondo set la sua quota è almeno 1,80: si segnala il favorito.",
+        [N("s", "src", 0, 60), N("a", "se", 0, 60, { rules: [R("sn", "=", 1), R("sd", "=", 1), R("gf1", "<=", 2), R("pf", "<=", 1.3)] }, "Primo set perso male"),
+         GS("c"), N("b", "se", 0, 60, { rules: [R("var:game_set", "<=", 2), R("wf", ">=", 1.8)] }, "Inizio 2° set, quota alta"), N("g", "gioca", 0, 60, { pick: "FAV", min: 1.8 }),
+         N("n", "nota", 0, 160, { text: "Energie risparmiate: non le misuriamo. Vincente del 2° set: non registrato, si segnala il match" })],
+        [W("s", 0, "a"), W("a", 0, "c"), W("c", 0, "b"), W("b", 0, "g")]],
+      ["t_break", "Battaglia dei Break Points", "Su terra, primo set con almeno 3 break nei primi 6-7 game: avviso un altro break nel prossimo game.",
+        [N("s", "src", 0, 60, { surf: "terra" }), GS("c"), N("a", "se", 0, 60, { rules: [R("sn", "=", 0), R("var:game_set", "<=", 7), R("brt", ">=", 3)] }, "3 break nei primi game"),
+         TXT("g", 60, "Un altro break nel prossimo game"), N("dbg", "debug", 0, 160, {}, "Partite da break")],
+        [W("s", 0, "c"), W("c", 0, "a"), W("a", 0, "g"), W("a", 0, "dbg")]]
+    ];
+    TEN.forEach(function (x, i) { out.unshift({ v: 2, id: "P_" + x[0], name: x[1], sport: "tennis", mode: "live", vis: "priv", lay: 1, ts: nowS() + 30 - i, desc: x[2], nodes: x[3], wires: x[4] }); });
+    IMP.forEach(function (x, i) { out.unshift({ v: 2, id: "P_" + x[0], name: x[1], sport: "calcio", mode: "live", vis: "priv", lay: 1, ts: nowS() + 10 - i, desc: x[2], nodes: x[3], wires: x[4], rev: x[0] === "nervosismo" ? 2 : 1 }); });
     return out;
   }
   (function () {   // gli esempi si mettono una volta sola (ognuno): se li cancelli non tornano
@@ -7715,7 +7861,11 @@
     try { seen = JSON.parse(localStorage.getItem(SEED_KEY)) || []; if (localStorage.getItem(PROVE_KEY)) for (var i = 1; i <= 10; i++) seen.push("P_prova" + i); } catch (e) {}
     if (seen.indexOf("*") >= 0) return;   // "*": nessun esempio (le prove del builder)
     var have = {}, ch = false; builds.forEach(function (b) { have[b.id] = 1; });
-    proveFlows().forEach(function (b) { if (seen.indexOf(b.id) < 0) { if (!have[b.id]) builds.push(b); seen.push(b.id); ch = true; } });
+    proveFlows().forEach(function (b) {
+      if (seen.indexOf(b.id) < 0) { if (!have[b.id]) builds.push(b); seen.push(b.id); ch = true; return; }
+      var k = builds.findIndex(function (x) { return x.id === b.id; });   // esempio rifatto (rev): si aggiorna
+      if (k >= 0 && (builds[k].rev || 1) < (b.rev || 1)) { b.sig = builds[k].sig; builds[k] = b; ch = true; }
+    });
     if (ch) { saveBuilds(); try { localStorage.setItem(SEED_KEY, JSON.stringify(seen)); localStorage.setItem(PROVE_KEY, "1"); } catch (e) {} }
   })();
   // gli esempi si dispongono a colonne la prima volta che si vedono coi dati (le etichette danno la larghezza dei nodi)
@@ -7829,15 +7979,15 @@
     builds.forEach(function (b) {
       if (!bldSigOn(b) || (filter !== "all" && filter !== b.sport)) return;
       bldFires(b).forEach(function (x) {
-        if (!x.code) return;
+        if (!x.code && !x.txt) return;
         var e = x.e;
         if (G && !sigInGroup({ sport: e.sport, event: e.home + " v " + e.away, cat: e.comp || "" }, G)) return;
         out.push({ ts: at, html: '<div class="card feedcard" data-bmatch="' + e.id + '"><div class="top"><span aria-hidden="true">' + EMOJI[e.sport] + '</span><span class="cat">' + esc(e.comp || NAME[e.sport]) + '</span>'
           + tmTag("live") + '<span class="time">' + whenLabel(at) + '</span></div>'
           + '<div class="event">' + esc(e.home + " - " + e.away) + '</div>'
-          + '<div class="pickrow"><span>Indicazione: <b>' + esc(pickName(x.code, e.sport)) + '</b></span>' + (x.odds > 1 ? '<span class="ev">' + Math.round(100 / x.odds) + '%</span>' : "") + '</div>'
+          + '<div class="pickrow"><span>' + (x.txt ? 'Avviso: <b>' + esc(x.txt) : 'Indicazione: <b>' + esc(pickName(x.code, e.sport))) + '</b></span>' + (x.odds > 1 ? '<span class="ev">' + Math.round(100 / x.odds) + '%</span>' : "") + '</div>'
           + '<div class="sname">Strategia: <b>' + esc(b.name) + '</b></div>'
-          + '<div class="meta">Quota ' + oddsTxt(x.odds) + ' · ' + esc((estMinute(e) || "LIVE") + (scoreTxt(e) ? " · " + scoreTxt(e) : "")) + '</div>'
+          + '<div class="meta">' + (x.txt ? "Senza quota" : "Quota " + oddsTxt(x.odds)) + ' · ' + esc((e.sport === "tennis" ? "" : (estMinute(e) || "LIVE") + " · ") + (scoreTxt(e) || "")) + '</div>'
           + '<span class="badge info">LA TUA STRATEGIA</span></div>' });
       });
     });
