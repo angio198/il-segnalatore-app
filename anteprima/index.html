@@ -531,7 +531,37 @@
   }
   .tab .ic{font-size:1.25rem;line-height:1;}
   .tab[aria-current="page"]{color:var(--accent-strong);}
-  .tab .ic{display:grid;place-items:center;width:54px;height:30px;border-radius:999px;transition:background .2s;}
+  .tab .ic{display:grid;place-items:center;width:46px;height:30px;border-radius:999px;transition:background .2s;}
+  /* barra a 7 (07/10 sera): etichette piccole, il Radar resta al centro */
+  .tabbar{padding-left:2px;padding-right:2px;} .tab{font-size:0.57rem;padding:6px 0;min-width:0;white-space:nowrap;letter-spacing:-0.02em;} .tab.hub{flex:0 0 70px;}
+  .tab .ic{width:40px;} .tab .ic .ico{width:22px;height:22px;}
+  @media (max-width:360px){ .tab{font-size:0.54rem;} .tab .ic{width:34px;} }
+  .brandwrap{display:flex;align-items:center;gap:8px;min-width:0;}
+  .brand{background:none;border:none;color:inherit;padding:4px 6px 4px 0;}
+  .topdirect{position:relative;} .topdirect .ndot{top:2px;right:2px;}
+  .topdirect[aria-current="page"]{box-shadow:0 0 0 2px var(--accent);}
+  .drawer{position:fixed;inset:0;z-index:70;background:rgba(6,12,16,0);transition:background .2s;}
+  .drawer.on{background:rgba(6,12,16,.55);}
+  .dwpanel{position:absolute;left:0;top:0;bottom:0;width:min(86vw,340px);background:var(--bg);overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 14px) 14px calc(env(safe-area-inset-bottom,0px) + 18px);
+    transform:translateX(-100%);transition:transform .22s cubic-bezier(.23,1,.32,1);box-shadow:8px 0 30px rgba(0,0,0,.35);}
+  .drawer.on .dwpanel{transform:none;}
+  .dwme{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:inherit;font:inherit;text-align:left;cursor:pointer;}
+  .dwme > span{flex:1;min-width:0;display:flex;flex-direction:column;} .dwh{font-weight:800;margin:16px 2px 8px;}
+  .dwquick{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;}
+  .dwq{flex:none;width:92px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:inherit;font:inherit;font-size:0.72rem;cursor:pointer;text-align:center;}
+  .dwq > span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;} .dwqi .ico{width:30px;height:30px;}
+  .dwlist{display:flex;flex-direction:column;margin-top:12px;border-top:1px solid var(--line);}
+  .dwitem{display:flex;align-items:center;gap:12px;padding:13px 4px;border:none;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;font-weight:600;text-align:left;cursor:pointer;}
+  .dwitem .ico{width:22px;height:22px;}
+  .attlist{padding:4px 0;} .attrow{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;border-bottom:1px solid var(--line);}
+  .attrow:last-child{border-bottom:none;} .attrow.new{background:color-mix(in srgb, var(--accent) 12%, transparent);}
+  .attw{flex:1;min-width:0;display:flex;flex-direction:column;} .attw .k{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .atti{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--bg);flex:none;} .atime{flex:none;font-size:0.72rem;}
+  .exrow{display:flex;align-items:center;gap:8px;width:100%;padding:9px 0;border:none;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;}
+  .exrow:last-child{border-bottom:none;} .exrow > span{flex:1;min-width:0;}
+  #esplq{margin:4px 0 6px;}
+  #view-diario.calmode .subtabs,#view-diario.calmode #dviewchips{display:none;} #view-diario:not(.calmode) .calttl{display:none;}
+  .meavbtn{border:none;background:none;padding:0;cursor:pointer;border-radius:22px;}
   .tab .ic .ico{transition:transform .2s;}
   .tab:not([aria-current="page"]) .ic .ico{opacity:.72;filter:saturate(.6);}
   .tab[aria-current="page"] .ic{background:color-mix(in srgb, var(--accent) 22%, transparent);}
@@ -1009,6 +1039,9 @@
     <symbol id="tb-strategie" viewBox="0 0 24 24"><path d="M6.5 21h11l-1-3h-9z" fill="#1F4FA0"/><path d="M8 18c.3-3 1.6-4.6 3-5.8-1.5.2-2.7.8-3.6 1.3L6 11.6c1.6-2.2 3-4 3.6-6.3l1.2-2.1.8 1.8C15.5 5.2 18 8.4 17.4 18z" fill="url(#g-blue)" stroke="#1F4FA0" stroke-width="1" stroke-linejoin="round"/><circle cx="10.6" cy="8.2" r="1" fill="#fff"/><path d="M13.6 7.4c1.6 1.3 2.4 3.4 2.4 6" stroke="#fff" stroke-opacity=".55" stroke-width="1.1" fill="none" stroke-linecap="round"/></symbol>
     <symbol id="tb-diario" viewBox="0 0 24 24"><rect x="4.5" y="3" width="13" height="18" rx="2.2" fill="url(#g-amber)" stroke="#B5650A" stroke-width="1"/><path d="M8 3v18" stroke="#B5650A" stroke-width="1"/><path d="M10.5 8h4.5M10.5 11h3.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M3.4 6.5h2.4M3.4 10.5h2.4M3.4 14.5h2.4" stroke="#7A4B1E" stroke-width="1.4" stroke-linecap="round"/><path d="M14.6 18.8l1-3.4 5.2-5.2a1.4 1.4 0 0 1 2 2l-5.2 5.2z" fill="url(#g-green)" stroke="#146B3C" stroke-width=".9" stroke-linejoin="round"/></symbol>
     <symbol id="tb-direct" viewBox="0 0 24 24"><path d="M3.5 5.5a2.5 2.5 0 0 1 2.5-2.5h9a2.5 2.5 0 0 1 2.5 2.5v6a2.5 2.5 0 0 1-2.5 2.5H9.5l-4 3.2V14H6a2.5 2.5 0 0 1-2.5-2.5z" fill="url(#g-blue)" stroke="#1F4FA0" stroke-width="1"/><path d="M8.6 10.8h5.8c1.4 0 2.6 1.1 2.6 2.5v4.2c0 1.4-1.2 2.5-2.6 2.5h-.4l3 2.3v-2.3h1.4c1.4 0 2.6-1.1 2.6-2.5v-4.2c0-1.4-1.2-2.5-2.6-2.5" fill="#8E5BC9" stroke="#5B2E8C" stroke-width="1" stroke-linejoin="round"/><path d="M7 7h6.5M7 9.6h4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="tb-live" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="3.5" fill="url(#g-red)" stroke="#A3201C" stroke-width="1"/><circle cx="7.4" cy="12" r="2.2" fill="#fff"/><path d="M11.4 9.6h6.4M11.4 12h4.6M11.4 14.4h5.6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.2"/><path d="M15.2 15.2l5 5"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="18.5" cy="12" r="1.6" fill="currentColor"/></symbol>
     <symbol id="tb-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="#0F3B2A" stroke="url(#g-green)" stroke-width="1.8"/><circle cx="12" cy="12" r="5.6" fill="none" stroke="#45D483" stroke-opacity=".55" stroke-width="1"/><path d="M12 12L12 2.4A9.6 9.6 0 0 1 20.3 7.2z" fill="#45D483" fill-opacity=".55"/><path d="M12 12l8.3-4.8" stroke="#B8F5CF" stroke-width="1.6" stroke-linecap="round"/><circle cx="15.6" cy="6.8" r="1.4" fill="#FFE27A"/><circle cx="8" cy="15.4" r="1.2" fill="#FF8A65"/><circle cx="12" cy="12" r="1.3" fill="#B8F5CF"/></symbol>
     <symbol id="i-bell" viewBox="0 0 24 24"><path d="M12 3.2c3.5 0 6 2.6 6 6.2v3.8l1.8 3.1H4.2L6 13.2V9.4c0-3.6 2.5-6.2 6-6.2z" fill="url(#g-amber)" stroke="#B5650A" stroke-width="1.1"/><path d="M9.6 18.6a2.5 2.5 0 0 0 4.8 0" fill="#7A4B1E" stroke="#7A4B1E" stroke-width="1"/><circle cx="17.6" cy="5.6" r="2.6" fill="#E5322D" stroke="none"/></symbol>
     <symbol id="i-staro" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
@@ -1057,15 +1090,14 @@
 </svg>
 
 <div class="topbar">
-  <div class="brand">
-    <img src="icon-192.png" width="26" height="26" alt="" style="border-radius:7px;flex:none;">
-    StatSight
+  <div class="brandwrap">
+    <button class="brand" id="brandbtn" type="button" aria-label="Menu" aria-haspopup="dialog"><img src="icon-192.png" width="26" height="26" alt="" style="border-radius:50%;flex:none;">StatSight</button>
     <button class="led" id="led" type="button" hidden aria-label="Stato del sistema"><span class="dot"></span><span id="ledtext">online</span></button>
   </div>
   <div class="topright" id="topright" hidden>
     <button class="iconbtn" id="refreshbtn" type="button" aria-label="Aggiorna"><svg class="ico"><use href="#i-refresh"/></svg></button>
-    <button class="iconbtn" id="settingsbtn" type="button" aria-label="Impostazioni"><svg class="ico"><use href="#i-gear"/></svg></button>
-    <button class="iconbtn" id="logout" type="button" aria-label="Esci e dimentica la password"><svg class="ico"><use href="#i-exit"/></svg></button>
+    <button class="iconbtn" id="searchbtn" type="button" aria-label="Esplora"><svg class="ico"><use href="#i-search"/></svg></button>
+    <button class="iconbtn topdirect" id="directbtn" type="button" aria-label="Direct"><svg class="ico"><use href="#tb-direct"/></svg></button>
   </div>
 </div>
 
@@ -1173,6 +1205,22 @@
   <div id="informativa"></div>
 </main>
 
+<main class="view" id="view-esplora" hidden>
+  <h1 class="dtitle">Esplora</h1>
+  <input id="esplq" class="meinput" type="search" placeholder="Cerca persone, squadre, campionati" autocomplete="off">
+  <div id="esplora"></div>
+</main>
+
+<main class="view" id="view-attivita" hidden>
+  <h1 class="dtitle">Notifiche</h1>
+  <div id="attivita"></div>
+</main>
+
+<main class="view" id="view-live" hidden>
+  <h1 class="dtitle">Live</h1>
+  <div id="livebets"></div>
+</main>
+
 <main class="view" id="view-direct" hidden>
   <h1 class="dtitle">Direct</h1>
   <div id="direct"><div class="note">I messaggi con gli amici arrivano qui.</div></div>
@@ -1214,6 +1262,7 @@
 </main>
 
 <main class="view" id="view-diario" hidden>
+  <h1 class="dtitle calttl">Calendario</h1>
   <div class="chips subtabs" role="tablist">
     <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Home</button>
     <button class="chip" type="button" data-sub="diario" aria-pressed="true"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
@@ -1322,12 +1371,25 @@
 
 <div id="fx" aria-hidden="true"></div>
 
+<div class="drawer" id="drawer" hidden>
+  <div class="dwpanel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div id="dwbody"></div>
+    <div class="dwlist">
+      <button class="dwitem" type="button" id="settingsbtn"><svg class="ico"><use href="#i-gear"/></svg> Impostazioni</button>
+      <button class="dwitem" type="button" data-dw="tutorial"><svg class="ico"><use href="#i-info"/></svg> Rivedi il tutorial</button>
+      <button class="dwitem" type="button" data-dw="stato"><svg class="ico"><use href="#i-alert"/></svg> Stato del sistema</button>
+      <button class="dwitem" type="button" id="logout"><svg class="ico"><use href="#i-exit"/></svg> Esci e dimentica la password</button>
+    </div>
+  </div>
+</div>
 <nav class="tabbar" id="tabbar" hidden>
   <button class="tab" type="button" data-view="segnali"><span class="ic"><svg class="ico"><use href="#tb-segnali"/></svg></span>Segnali</button>
   <button class="tab" type="button" data-view="strategie"><span class="ic"><svg class="ico"><use href="#tb-strategie"/></svg></span>Strategie</button>
+  <button class="tab" type="button" data-view="calendario"><span class="ic"><svg class="ico"><use href="#i-calendar"/></svg></span>Calendario</button>
   <button class="tab hub" type="button" data-view="radar" aria-current="page" aria-label="Radar"><span class="hubic"><img src="icon-192.png" alt="" width="56" height="56"></span>Radar</button>
+  <button class="tab" type="button" data-view="attivita"><span class="ic"><svg class="ico"><use href="#i-bell"/></svg></span>Notifiche</button>
   <button class="tab" type="button" data-view="diario"><span class="ic"><svg class="ico"><use href="#tb-diario"/></svg></span>Diario</button>
-  <button class="tab" type="button" data-view="direct"><span class="ic"><svg class="ico"><use href="#tb-direct"/></svg></span>Direct</button>
+  <button class="tab" type="button" data-view="live"><span class="ic"><svg class="ico"><use href="#tb-live"/></svg></span>Live</button>
 </nav>
 
 <script src="regole.js"></script>
@@ -1402,7 +1464,7 @@
   }
 
   async function fetchEnvelope() {
-    var res = await fetch("../data.enc.json?t=" + Date.now(), { cache: "no-store" });   // anteprima: i dati veri dell'app
+    var res = await fetch("../data.enc.json?t=" + Date.now(), { cache: "no-store" });
     if (res.status === 404) throw { code: "nodata" };
     if (!res.ok) throw { code: "network" };
     return res.json();
@@ -2325,7 +2387,8 @@
       var ce = $("catedit"); if (ce) { ce.classList.remove("shake"); void ce.offsetWidth; ce.classList.add("shake"); ce.scrollIntoView({ block: "nearest" }); }
       return;
     }
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "mio", "ruota", "fight", "chat", "corsa", "benvenuto", "notifiche", "leghe", "campionati", "album", "pick", "direct"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "mio", "ruota", "fight", "chat", "corsa", "benvenuto", "notifiche", "leghe", "campionati", "album", "pick", "direct", "esplora", "attivita", "live"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    closeDrawer();
     var unlocked = view !== "lock";
     if (view === "segnali" && data) setTimeout(segDot, 0);   // visti: il pallino si spegne
     // matita del profilo aperta e cambio scheda senza salvare: la modifica si annulla (al ritorno il profilo normale)
@@ -2336,15 +2399,82 @@
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario", campionati: "diario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
-    document.querySelectorAll(".tab").forEach(function (t) {
-      if (t.dataset.view === tabView) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
+    if (view === "diario") $("view-diario").classList.toggle("calmode", calMode); else calMode = false;
+    var tabView = view === "diario" && calMode ? "calendario" : { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario", campionati: "diario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
+    document.querySelectorAll(".tab, .topdirect").forEach(function (t) {
+      if ((t.dataset.view || (t.id === "directbtn" ? "direct" : "")) === ({ chat: "direct" }[tabView] || tabView)) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
     if (unlocked) setTimeout(newsTick, 0);   // novita' viste, pallini e feste del Diario
   }
 
+  // ---------------------------------------------------------------- Navigazione del 07/10 sera
+  // Barra in basso: Segnali, Strategie, Calendario | Radar | Notifiche, Diario, Live. In alto: logo = menu laterale,
+  // poi Aggiorna, Esplora (lente) e Direct. L'ingranaggio delle Impostazioni e' nel profilo e nel menu.
+  var calMode = false;
+  function openDrawer() { renderDrawer(); var d = $("drawer"); d.hidden = false; requestAnimationFrame(function () { d.classList.add("on"); }); }
+  function closeDrawer() { var d = $("drawer"); if (!d || d.hidden) return; d.classList.remove("on"); setTimeout(function () { d.hidden = true; }, 200); }
+  function renderDrawer() {
+    if (!data) return;
+    var R2 = rewardState(pronostici()), c = me.league && compById(me.league);
+    var quick = (me.team ? '<button class="dwq" type="button" data-dw="team">' + teamLogo(me.team, me.sport || "calcio") + '<span translate="no">' + esc(me.team) + '</span></button>' : "")
+      + (c ? '<button class="dwq" type="button" data-dw="team"><span class="dwqi">' + ic(me.sport || "calcio") + '</span><span>' + esc(c.label) + '</span></button>' : "")
+      + '<button class="dwq" type="button" data-dw="miei"><span class="dwqi">' + ic("diario") + '</span><span>I miei pronostici</span></button>';
+    $("dwbody").innerHTML = '<button class="dwme" type="button" data-dw="mio">' + myAvatar(44) + '<span><b translate="no">' + esc(me.name || "Il tuo profilo") + '</b><span class="k">livello ' + R2.level + ' · ' + R2.coins + ' monete</span></span>' + ic("chev") + '</button>'
+      + '<div class="dwh">I tuoi collegamenti rapidi</div><div class="dwquick">' + quick + (me.team ? "" : '<button class="dwq" type="button" data-dw="pick"><span class="dwqi">' + ic("star") + '</span><span>Scegli la tua squadra</span></button>') + '</div>'
+      + '<div class="dwlist">'
+      + '<button class="dwitem" type="button" data-dw="occhio">' + ic("eye") + ' Il mio occhio</button>'
+      + '<button class="dwitem" type="button" data-dw="fight">' + ic("vs") + ' StatsFight</button>'
+      + '<button class="dwitem" type="button" data-dw="ruota">' + ic("wheel") + ' Ruota del giorno</button>'
+      + '<button class="dwitem" type="button" data-dw="album">' + ic("layers") + ' Album delle squadre</button>'
+      + '<button class="dwitem" type="button" data-dw="leghe">' + ic("star") + ' Le mie leghe</button></div>';
+  }
+  // Esplora (lente): persone da seguire, post, ricerca di persone, squadre e campionati
+  var esplQ = "";
+  function renderEsplora() {
+    var P = data.personaggi || {}, q = nameKey2(esplQ), T0 = team();
+    var people = (q ? T0.filter(function (p) { return nameKey2(p.name + " " + p.nick + " " + (p.desc || "")).indexOf(q) >= 0; }) : suggested()).slice(0, 12);
+    var evs = q ? evList().filter(function (e) { return nameKey2(e.home + " " + e.away + " " + (e.comp || "")).indexOf(q) >= 0; }).slice(0, 10) : [];
+    var posts = q ? [] : (P.posts || []).filter(function (x) { return !follows.has(x.p); }).concat((P.feed || []).filter(function (x) { return !follows.has(x.p); })).sort(function (a, b) { return b.ts - a.ts; }).slice(0, 10);
+    $("esplora").innerHTML = (people.length ? '<h2 class="sectiontitle">' + (q ? "Persone" : "Persone da seguire") + '</h2>' + people.map(suggestRow).join("") : (q ? '<div class="note">Nessuna persona con questo nome.</div>' : ""))
+      + (evs.length ? '<h2 class="sectiontitle">Partite</h2><div class="card">' + evs.map(function (e) { return '<button class="exrow" type="button" data-open="' + e.id + '">' + (EMOJI[e.sport] || "") + ' <span><b>' + esc(e.home + " - " + e.away) + '</b><span class="k"> · ' + esc(shortComp(e.comp || "")) + ' · ' + (e.live ? "LIVE" : esc(startLabel(e.start))) + '</span></span>' + ic("chev") + '</button>'; }).join("") + '</div>' : "")
+      + (posts.length ? '<h2 class="sectiontitle">Post</h2>' + posts.map(feedCard).join("") : "")
+      + (q ? "" : '<div class="note">' + ic("info") + ' Amici dai contatti del telefono e utenti veri arrivano con l\'app pubblica.</div>');
+  }
+  // Notifiche: X ha pubblicato, il tuo pronostico e' vinto, nuovo segnale, sfida chiusa (visti: statsight.attivita)
+  var ATT_KEY = "statsight.attivita";
+  function attSeen() { try { return Number(localStorage.getItem(ATT_KEY)) || 0; } catch (e) { return 0; } }
+  function attItems() {
+    var out = [], P = data.personaggi || {};
+    (P.feed || []).forEach(function (x) { if (follows.has(x.p)) { var p = personaOf(x.p); if (p) out.push({ ts: x.ts, ic: "user", who: p.id, t: p.name + " ha pubblicato un pronostico", s: x.event + " · " + x.label + " @ " + oddsTxt(x.odds) }); } });
+    (P.posts || []).forEach(function (x) { if (follows.has(x.p)) { var p = personaOf(x.p); if (p) out.push({ ts: x.ts, ic: "chat", who: p.id, t: p.name + " ha pubblicato un post", s: x.title || "" }); } });
+    mySlips.forEach(function (s) { if (s.resolved_at) out.push({ ts: s.resolved_at, ic: s.won === 1 ? "check" : s.won === 0 ? "x" : "minus", t: s.won === 1 ? "Pronostico vinto" : s.won === 0 ? "Pronostico perso" : "Pronostico nullo", s: s.legs.map(function (l) { return l.event; }).join(", "), go: "miei" }); });
+    (data.feed || []).forEach(function (f) { if (f.kind === "signal" && (!f.main || on(f.main))) out.push({ ts: f.ts, ic: "segnali", t: "Nuovo segnale: " + (nameOf(f.main || f.strategy) || f.strategy || ""), s: f.event + " · " + f.pick, go: "segnali" }); });
+    fights.forEach(function (f) { if (f.res) { var p = personaOf(f.opp); out.push({ ts: f.res.at, ic: "vs", t: "Sfida con " + (p ? p.name : "?") + ": " + (f.res.r === "win" ? "vinta" : f.res.r === "lose" ? "persa" : "pari"), s: f.res.right + " a " + f.res.oppRight + " · +" + f.res.coins + " monete", go: "fight" }); } });
+    return out.filter(function (x) { return x.ts; }).sort(function (a, b) { return b.ts - a.ts; }).slice(0, 50);
+  }
+  function renderAttivita() {
+    var seen = attSeen(), items = attItems();
+    $("attivita").innerHTML = items.length ? '<div class="card attlist">' + items.map(function (x) {
+      return '<button class="attrow' + (x.ts > seen ? " new" : "") + '" type="button"' + (x.who ? ' data-persona="' + esc(x.who) + '"' : x.go ? ' data-attgo="' + x.go + '"' : "") + '>'
+        + (x.who ? avatar(x.who, 38) : '<span class="atti">' + ic(x.ic) + '</span>') + '<span class="attw"><b>' + esc(x.t) + '</b><span class="k">' + esc(x.s) + '</span></span><span class="k atime">' + whenLabel(x.ts) + '</span></button>';
+    }).join("") + '</div>' : '<div class="note">Nessuna notifica, per ora. Segui qualcuno del Team nella Home per vedere qui quello che pubblica.</div>';
+    try { localStorage.setItem(ATT_KEY, String(nowS())); } catch (e) {}
+    paintAttDot();
+  }
+  function renderLive() {
+    var open = histItems().filter(function (x) { return x.result == null; });
+    $("livebets").innerHTML = open.length ? open.map(function (x) { return '<div class="card post" data-pick="' + esc(x.key) + '">' + esc(x.event) + '</div>'; }).join("") : '<div class="note">Nessuna giocata in corso.</div>';
+  }
+  function paintAttDot() {
+    var t = document.querySelector('.tab[data-view="attivita"]'); if (!t || !data) return;
+    var seen = attSeen(), on2 = attItems().some(function (x) { return x.ts > seen; }), d = t.querySelector(".ndot");
+    if (on2 && !d) t.insertAdjacentHTML("beforeend", '<span class="ndot"></span>'); else if (!on2 && d) d.remove();
+  }
   function renderAll() {
     settleMySlips(); settleFights(); renderStatus(); renderFeed(); renderStrategie(); renderDiario(); renderOcchio(); renderRadar(); renderBacheca(); renderProfilo();
+    renderLive(); paintAttDot(); paintDirectDot();
+    if (!$("view-esplora").hidden) renderEsplora();
+    if (!$("view-attivita").hidden) renderAttivita();
     newsTick();
   }
 
@@ -3082,7 +3212,7 @@
     paintDirectDot();
   }
   function paintDirectDot() {
-    var t = document.querySelector('.tab[data-view="direct"]'); if (!t) return;
+    var t = $("directbtn"); if (!t) return;
     var d = t.querySelector(".ndot"), on = directUnread() > 0;
     if (on && !d) t.insertAdjacentHTML("beforeend", '<span class="ndot"></span>'); else if (!on && d) d.remove();
   }
@@ -3670,13 +3800,13 @@
         + '<button class="primary" type="button" data-mesalva="1">' + ic("check") + ' Salva</button></div></div>';
     } else {
       // ordine voluto dall'utente: profilo e bio, carte di stagione/livello/lega, monete; sotto la Home (#bacheca)
-      html = '<div class="mehead">' + myAvatar(88)
+      html = '<div class="mehead"><button class="meavbtn" type="button" data-meedit="1" aria-label="Modifica il profilo">' + myAvatar(88) + '</button>'
         + '<div class="mewho"><div class="dtitle" style="margin:0;" translate="no">' + esc(me.name || "Il tuo profilo") + '</div>'
         + '<div class="pnick">' + ic("eye") + ' ' + esc(title) + ' · livello ' + R2.level + '</div>'
         + '<div class="k">' + won + ' vinti su ' + closed.length + (streak > 1 ? ' · serie di ' + streak : "") + '</div>'
         + favLine()
         + '</div>'
-        + '<button class="iconbtn" type="button" data-meedit="1" aria-label="Modifica il profilo">' + ic("pen") + '</button></div>'
+        + '<button class="iconbtn" type="button" data-gosettings="1" aria-label="Impostazioni">' + ic("gear") + '</button></div>'
         + (me.bio ? '<div class="mebio" translate="no">' + esc(me.bio) + '</div>'
           : '<button class="linkbtn mebio empty" type="button" data-meedit="1">' + ic("pen") + ' Scrivi la tua bio</button>')
         + heroesHtml(R2) + greedHtml(greedOf(histItems().slice().reverse().filter(function (x) { return !x.legs; }).map(function (x) { return x.odds; })))
@@ -5623,6 +5753,7 @@
     if (ds.megioca) { show("diario"); window.scrollTo(0, 0); return; }
     if (ds.miei) { bview = "miei"; renderBacheca(); show("profilo"); window.scrollTo(0, 0); return; }
     if (ds.meedit) { startEdit(); return; }
+    if (ds.gosettings) { $("settingsbtn").click(); return; }
     if (!meEdit) return;
     if (pickerClick(meEdit, b)) { keepScroll($("profilo"), renderProfilo); return; }
     if (ds.mefoto) { $("fotoinput").click(); return; }
@@ -5671,7 +5802,7 @@
     if (f && /^image\//.test(f.type)) loadPhoto(f);
   });
   // Team StatSight: profilo, segui, filtro della bacheca
-  ["bacheca", "persona", "occhioclassifica", "occhiolevel"].forEach(function (id) {
+  ["bacheca", "persona", "occhioclassifica", "occhiolevel", "esplora", "attivita"].forEach(function (id) {
     $(id).addEventListener("input", function (e) {
       var t = e.target.closest("[data-cin]"); if (t) drafts[t.dataset.cin] = t.value;
       if (e.target.id === "beetin") {
@@ -5772,10 +5903,27 @@
     finally { refreshing = false; b.classList.remove("spin"); document.body.classList.remove("ptrbusy"); }
   }
   $("refreshbtn").addEventListener("click", refreshNow);
-  // il logo in alto riporta alla home, il Radar (04/10)
-  document.querySelector(".topbar .brand").addEventListener("click", function (e) {
-    if (e.target.closest("#led") || !data || $("view-lock").hidden === false || $("view-benvenuto").hidden === false) return;
-    renderRadar(); show("radar"); window.scrollTo(0, 0);
+  // il logo in alto apre il menu laterale (07/10, come Facebook); la home resta il Radar al centro della barra
+  $("brandbtn").addEventListener("click", function () {
+    if (!data || $("view-lock").hidden === false || $("view-benvenuto").hidden === false) return;
+    openDrawer();
+  });
+  $("drawer").addEventListener("click", function (e) {
+    if (e.target === $("drawer")) { closeDrawer(); return; }
+    var b = e.target.closest("[data-dw]"); if (!b || !data) return;
+    var k = b.dataset.dw; closeDrawer();
+    if (k === "mio") { renderProfilo(); show("mio"); }
+    else if (k === "miei") { bview = "miei"; mieiF = "tutti"; renderBacheca(); show("profilo"); }
+    else if (k === "occhio") { renderOcchio(); show("occhio"); }
+    else if (k === "ruota") { renderRuota(); show("ruota"); }
+    else if (k === "fight") { settleFights(); fightOpen = null; renderFight(); show("fight"); }
+    else if (k === "album") { renderAlbum(); show("album"); }
+    else if (k === "leghe") { openLeghe(); }
+    else if (k === "team") { if (me.team) { calMode = true; dview = "pre"; renderDiario(); show("diario"); } }
+    else if (k === "tutorial") startTutorial();
+    else if (k === "stato") { renderStatus(); show("stato"); }
+    else if (k === "pick") { renderProfilo(); show("mio"); startEdit(); }
+    window.scrollTo(0, 0);
   });
   (function () {
     var y0 = null, x0 = 0, pulled = 0, ptr = document.createElement("div");
@@ -5803,10 +5951,30 @@
   document.addEventListener("visibilitychange", function () { if (!document.hidden) poll(); });
   $("logout").addEventListener("click", function () { storeSet(null); data = null; $("pw").value = ""; show("lock"); });
   $("tabbar").addEventListener("click", function (e) { var b = e.target.closest(".tab"); if (!b) return;
-    // il Diario si apre sul tuo profilo; il pulsante delle monete porta alle partite
-    if (b.dataset.view === "diario") { if (data) renderProfilo(); show("profilo"); }
-    else { if (b.dataset.view === "direct" && data) { curConv = null; directMsg = ""; renderDirect(); } show(b.dataset.view); }
+    // il Diario si apre sul tuo profilo; il Calendario sono le partite pre-partita (07/10)
+    var v = b.dataset.view;
+    if (v === "diario") { if (data) renderProfilo(); show("profilo"); }
+    else if (v === "calendario") { calMode = true; dview = "pre"; if (data) renderDiario(); show("diario"); window.scrollTo(0, 0); }
+    else if (v === "attivita") { if (data) renderAttivita(); show("attivita"); }
+    else if (v === "live") { if (data) renderLive(); show("live"); }
+    else show(v);
   });
+  function openDirect() { if (!data) return; curConv = null; directMsg = ""; renderDirect(); show("direct"); window.scrollTo(0, 0); }
+  $("directbtn").addEventListener("click", openDirect);
+  $("esplq").addEventListener("input", function (e) { esplQ = e.target.value; if (data) renderEsplora(); });
+  $("esplora").addEventListener("click", function (e) {
+    var o = e.target.closest("[data-open]"); if (o && data) { curTab = null; renderGiocata(o.dataset.open); return; }
+    if (e.target.closest("[data-follow]")) setTimeout(function () { if (!$("view-esplora").hidden) renderEsplora(); }, 0);
+  });
+  $("attivita").addEventListener("click", function (e) {
+    var g = e.target.closest("[data-attgo]"); if (!g || !data) return;
+    var k = g.dataset.attgo;
+    if (k === "miei") { bview = "miei"; mieiF = "tutti"; renderBacheca(); show("profilo"); }
+    else if (k === "segnali") { segv = "nuovi"; renderFeed(); show("segnali"); }
+    else if (k === "fight") { settleFights(); fightOpen = null; renderFight(); show("fight"); }
+    window.scrollTo(0, 0);
+  });
+  $("searchbtn").addEventListener("click", function () { if (!data) return; renderEsplora(); show("esplora"); window.scrollTo(0, 0); });
   $("segview").addEventListener("click", function (e) { var b = e.target.closest("[data-segv]"); if (b && data) { segv = b.dataset.segv; renderFeed(); } });
   $("timechips").addEventListener("click", function (e) {
     var b = e.target.closest(".chip"); if (!b) return;
@@ -6330,7 +6498,7 @@
     if (data) { renderFeed(); renderStrategie(); }
   });
 
-  // anteprima: niente service worker (non tocca la cache dell'app vera)
+  // anteprima: niente service worker
   var saved = storeGet();
   if (saved) load(saved, false); else show("lock");
 })();

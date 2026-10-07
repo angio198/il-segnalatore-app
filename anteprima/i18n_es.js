@@ -3,6 +3,23 @@
 // in tutti e due i file (prova: node app/prova_spagnolo.js controlla che le chiavi siano le stesse).
 // In spagnolo i decimali restano con la virgola ("1,81").
 window.I18N_ES = {
+  "Calendario": "Calendario",
+  "Esplora": "Explorar",
+  "Menu": "Menú",
+  "Cerca persone, squadre, campionati": "Busca personas, equipos, ligas",
+  "I tuoi collegamenti rapidi": "Tus accesos directos",
+  "livello # · # monete": "nivel # · # monedas",
+  "Scegli la tua squadra": "Elige tu equipo",
+  "Persone da seguire": "Personas a las que seguir",
+  "Persone": "Personas",
+  "Nessuna persona con questo nome.": "Nadie con este nombre.",
+  "Post": "Publicaciones",
+  "Amici dai contatti del telefono e utenti veri arrivano con l'app pubblica.": "Los amigos de los contactos del teléfono y los usuarios reales llegarán con la app pública.",
+  "Pronostico perso": "Pronóstico perdido",
+  "Pronostico nullo": "Pronóstico nulo",
+  "Nuovo segnale: *": "Nueva señal: *",
+  "Nessuna notifica, per ora. Segui qualcuno del Team nella Home per vedere qui quello che pubblica.": "Ninguna notificación, por ahora. Sigue a alguien del Equipo en Inicio para ver aquí lo que publica.",
+  "Nessuna giocata in corso.": "Ninguna jugada en curso.",
   "Regole provate sullo storico, che puoi adattare a te.": "Reglas probadas sobre el histórico, que puedes adaptar a ti.",
   "Premendo \"… altro\" vedi più informazioni sulla strategia e imposti i parametri.": "Pulsando \"… más\" ves más información sobre la estrategia y ajustas los parámetros.",
   "Vedi subito come sarebbe andata.": "Ves enseguida cómo habría ido.",
