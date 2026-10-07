@@ -560,7 +560,6 @@
   .exrow{display:flex;align-items:center;gap:8px;width:100%;padding:9px 0;border:none;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;}
   .exrow:last-child{border-bottom:none;} .exrow > span{flex:1;min-width:0;}
   #esplq{margin:4px 0 6px;}
-  #view-diario.calmode .subtabs,#view-diario.calmode #dviewchips{display:none;} #view-diario:not(.calmode) .calttl{display:none;}
   .meavbtn{border:none;background:none;padding:0;cursor:pointer;border-radius:22px;}
   /* Live: le tue giocate in corso */
   .lvcard{padding:12px 14px;} .lvhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-bottom:6px;} .lvhead .k{margin-left:auto;font-size:0.76rem;}
@@ -658,6 +657,63 @@
   .starbtn:not(.on) .ico{opacity:.55;}
   .starbtn.on .ico{filter:drop-shadow(0 1px 2px rgba(196,138,0,.45));}
   .comphead .starbtn{margin-left:auto;padding:0 2px;}
+  /* Calendario come le app di risultati (07/10 sera): campionati a fisarmonica, righe compatte, scheda a tre schede */
+  .calsport{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px 8px;padding:0 16px 2px;}
+  .calsport .chip{flex:none;}
+  .calmeta{display:flex;align-items:center;gap:6px;font-size:0.76rem;color:var(--ink-soft);margin:2px 2px 4px;}
+  .calmeta > span{display:flex;align-items:center;gap:4px;} .calmeta .ico{width:14px;height:14px;}
+  .calmeta .linkbtn{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:0.78rem;}
+  .calsec{font-size:0.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:16px 2px 8px;display:flex;align-items:center;gap:6px;}
+  .calsec .ico{width:15px;height:15px;color:#E0A100;}
+  .calhint{margin:-2px 4px 6px;font-size:0.74rem;}
+  .lgcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;overflow:hidden;}
+  .lghead{display:flex;align-items:center;padding-right:6px;}
+  .lgcard.open .lghead{background:color-mix(in srgb, var(--accent) 10%, transparent);}
+  .lgtoggle{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:10px 4px 10px 12px;background:none;border:none;font:inherit;color:inherit;text-align:left;cursor:pointer;}
+  .lgtoggle .flag{font-size:1.25rem;line-height:1;flex:none;}
+  .lgn{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.2;}
+  .lgn b{font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .lgn small{font-size:0.72rem;color:var(--ink-soft);}
+  .lgc{font-size:0.8rem;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+  .lgcard.open .lgc{display:none;}
+  .lgchev{display:grid;place-items:center;} .lgchev .ico{width:16px;height:16px;transform:rotate(90deg);opacity:.6;transition:transform .2s;}
+  .lgcard.open .lgchev .ico{transform:rotate(-90deg);}
+  .lgcols{display:flex;justify-content:flex-end;gap:4px;padding:6px 10px 2px;font-size:0.66rem;font-weight:800;color:var(--ink-soft);}
+  .lgcols span{width:46px;text-align:center;}
+  .lgcard .evline{display:flex;align-items:center;gap:2px;background:none;border:none;border-radius:0;margin:0;padding:6px 10px 6px 2px;border-top:1px solid var(--line);}
+  .lgcols + .evline,.lgcard.mixed .evline:first-child{border-top:none;}
+  .lgcard .evmain{flex:1;min-width:0;display:grid;grid-template-columns:40px minmax(0,1fr);gap:6px;padding:2px;grid-column:auto;}
+  .lgcard .evtime{display:flex;flex-direction:column;align-items:center;font-size:0.78rem;font-variant-numeric:tabular-nums;color:var(--ink);}
+  .lgcard .evtime small{font-size:0.62rem;color:var(--ink-soft);font-weight:700;}
+  .livemin{color:var(--bad);font-weight:800;}
+  .lgcard .evteams{gap:3px;}
+  .lgcard .evteams > span{display:flex;align-items:center;min-width:0;}
+  .lgcard .evteams .tn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .lgcard .evteams .sc{margin:0 4px 0 6px;font-variant-numeric:tabular-nums;}
+  .evline.islive .sc{color:var(--bad);}
+  .lgcard .evteams .evcomp{display:block;font-size:0.68rem;color:var(--ink-soft);font-weight:500;}
+  .lgcard .evodds{display:flex;gap:4px;} .lgcard .evodds .otile{width:46px;padding:7px 0;}
+  .lgcard:not(.mixed) .evodds .ol{display:none;} .lgcard.mixed .evodds .otile{padding:4px 0;}
+  .lgcard .starbtn{padding:4px;} .lgcard .starbtn .ico{width:18px;height:18px;}
+  .mhcomp{display:flex;align-items:center;gap:10px;margin:6px 0 4px;}
+  .mhcomp .flag{font-size:1.4rem;line-height:1;} .mhc{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.2;}
+  .mhc small{font-size:0.7rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;font-weight:700;} .mhc b{font-size:0.95rem;}
+  .mh2{align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 8px;}
+  .mh2 .mt{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:0.92rem;line-height:1.2;}
+  .mh2 .mt .tlogo{width:54px;height:60px;font-size:18px;margin:0;vertical-align:0;} .mh2 .mt .tlogo.round{width:56px;height:56px;}
+  .mh2 .ms{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60px;}
+  .mh2 .mdt{font-size:0.8rem;color:var(--ink-soft);font-weight:700;} .mh2 .mhr{font-size:1.5rem;}
+  .mh2 .msc{font-size:1.8rem;color:var(--bad);}
+  .msheets{margin-bottom:12px;}
+  .msbars{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;}
+  .mstat .sbt{display:flex;justify-content:space-between;align-items:center;font-size:0.84rem;margin-bottom:5px;} .mstat .sbt span{color:var(--ink-soft);text-align:center;}
+  .mstat .sbt b{font-variant-numeric:tabular-nums;min-width:34px;} .mstat .sbt b:last-child{text-align:right;}
+  .mstat .sbl{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+  .mstat .sbl > span{height:6px;border-radius:3px;background:var(--line);display:flex;overflow:hidden;} .mstat .sbl .sh{justify-content:flex-end;}
+  .mstat .sbl i{display:block;height:100%;border-radius:3px;background:color-mix(in srgb, var(--ink-soft) 70%, transparent);} .mstat .sbl i.hi{background:var(--accent);}
+  .mstat.locked .sbt b{filter:blur(4px);user-select:none;} .mstat.locked i{opacity:.3;}
+  .minfo{display:flex;flex-direction:column;gap:8px;margin-top:10px;font-size:0.84rem;}
+  .minfo > div{display:flex;justify-content:space-between;gap:10px;} .minfo span{color:var(--ink-soft);}
+  .morebtn{display:block;width:100%;margin-top:10px;font:inherit;font-weight:700;font-size:0.88rem;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--accent-strong);cursor:pointer;}
   .comphead .starbtn .ico{width:17px;height:17px;}
   /* Notifiche (03/10) */
   .navcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;}
@@ -1271,7 +1327,7 @@
 </main>
 
 <main class="view" id="view-campionati" hidden>
-  <button class="back" type="button" data-back="diario">‹ Partite</button>
+  <button class="back" type="button" data-back="diario">‹ Calendario</button>
   <h1 class="dtitle">Campionati</h1>
   <input id="campq" class="meinput" type="search" placeholder="Cerca un paese o un campionato" autocomplete="off">
   <div id="campionati"></div>
@@ -1290,17 +1346,11 @@
 </main>
 
 <main class="view" id="view-diario" hidden>
-  <h1 class="dtitle calttl">Calendario</h1>
-  <div class="chips subtabs" role="tablist">
-    <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Home</button>
-    <button class="chip" type="button" data-sub="diario" aria-pressed="true"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
-    <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
-  </div>
   <div class="segbar" id="dviewchips" role="tablist">
     <button type="button" data-dview="live" aria-pressed="true"><span class="dot live"></span> Live <span class="cnt" id="nlive"></span></button>
     <button type="button" data-dview="pre" aria-pressed="false"><svg class="ico"><use href="#i-calendar"/></svg> Pre-partita <span class="cnt" id="npre"></span></button>
   </div>
-  <div class="chips" id="diariochips" role="group" aria-label="Filtra per sport">
+  <div class="chips calsport" id="diariochips" role="group" aria-label="Filtra per sport">
     <button class="chip" type="button" data-dsport="all" aria-pressed="true">Tutti</button>
     <button class="chip" type="button" data-dsport="calcio" aria-pressed="false"><svg class="ico"><use href="#i-calcio"/></svg> Calcio</button>
     <button class="chip" type="button" data-dsport="tennis" aria-pressed="false"><svg class="ico"><use href="#i-tennis"/></svg> Tennis</button>
@@ -1313,7 +1363,6 @@
 <main class="view" id="view-occhio" hidden>
   <div class="chips subtabs" role="tablist">
     <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Home</button>
-    <button class="chip" type="button" data-sub="diario" aria-pressed="false"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
     <button class="chip" type="button" data-sub="occhio" aria-pressed="true"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
   <div id="occhiolevel"></div>
@@ -1334,7 +1383,6 @@
 <main class="view" id="view-profilo" hidden>
   <div class="chips subtabs" role="tablist">
     <button class="chip" type="button" data-sub="profilo" aria-pressed="true"><svg class="ico"><use href="#i-handshake"/></svg> Home</button>
-    <button class="chip" type="button" data-sub="diario" aria-pressed="false"><svg class="ico"><use href="#i-diario"/></svg> Partite</button>
     <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
   </div>
   <div id="mebar"></div>
@@ -1386,12 +1434,12 @@
 </main>
 
 <main class="view" id="view-giocata" hidden>
-  <button class="back" type="button" data-back="diario">‹ Partite</button>
+  <button class="back" type="button" data-back="diario">‹ Calendario</button>
   <div id="giocata"></div>
 </main>
 
 <main class="view" id="view-schedina" hidden>
-  <button class="back" type="button" data-back="diario">‹ Partite</button>
+  <button class="back" type="button" data-back="diario">‹ Calendario</button>
   <div id="schedina"></div>
 </main>
 
@@ -1915,7 +1963,7 @@
     var r = ((data.ippica_schede || {}).races || []).filter(function (x) { return x.key === key; })[0]; if (!r) return;
     curRace = key;
     var bk = document.querySelector("#view-corsa .back"), from = curView();   // si torna da dove si e' venuti
-    if (from !== "corsa") { bk.dataset.back = from === "radar" || from === "diario" ? from : "strategie"; bk.textContent = { radar: "‹ Radar", diario: "‹ Partite" }[from] || "‹ Ippica"; }
+    if (from !== "corsa") { bk.dataset.back = from === "radar" || from === "diario" ? from : "strategie"; bk.textContent = { radar: "‹ Radar", diario: "‹ Calendario" }[from] || "‹ Ippica"; }
     $("corsa").innerHTML = '<h1 class="dtitle">' + esc(r.track || "") + ' · corsa ' + r.race_no + '</h1>'
       + '<div class="dsub">' + esc(PAESI[r.country] || r.country || "") + (r.disc ? ' · ' + esc(DISC[r.disc] || r.disc) : "") + (r.dist ? ' · ' + r.dist + ' m' : "") + ' · ' + esc(startLabel(r.start)) + (r.name ? ' · ' + esc(r.name) : "") + '</div>'
       + '<div class="note" style="margin-bottom:10px;">Schede informative, non consigli: nessun cavallo è sicuro. Affidabilità = corse non finite (squalificato, fermato, caduto) nelle ultime 8. Contano solo le corse dei giorni prima; i ritirati non contano. Quota: l\'ultima quota fissa vista.</div>'
@@ -2429,8 +2477,7 @@
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    if (view === "diario") $("view-diario").classList.toggle("calmode", calMode); else calMode = false;
-    var tabView = view === "diario" && calMode ? "calendario" : { dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "diario", catalogo: "strategie", occhio: "diario", campionati: "diario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
+    var tabView = { diario: "calendario", dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "calendario", catalogo: "strategie", occhio: "diario", campionati: "calendario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
     document.querySelectorAll(".tab, .topdirect").forEach(function (t) {
       if ((t.dataset.view || (t.id === "directbtn" ? "direct" : "")) === ({ chat: "direct" }[tabView] || tabView)) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -2440,7 +2487,6 @@
   // ---------------------------------------------------------------- Navigazione del 07/10 sera
   // Barra in basso: Segnali, Strategie, Calendario | Radar | Notifiche, Diario, Live. In alto: logo = menu laterale,
   // poi Aggiorna, Esplora (lente) e Direct. L'ingranaggio delle Impostazioni e' nel profilo e nel menu.
-  var calMode = false;
   function openDrawer() { renderDrawer(); var d = $("drawer"); d.hidden = false; requestAnimationFrame(function () { d.classList.add("on"); }); }
   function closeDrawer() { var d = $("drawer"); if (!d || d.hidden) return; d.classList.remove("on"); setTimeout(function () { d.hidden = true; }, 200); }
   function renderDrawer() {
@@ -4246,12 +4292,12 @@
     return String(c || "").replace(/\s+20\d\d$/, "").replace(/^(atp|wta|itf|challenger)\s+(men|women)\s+(singles|doubles)\s+·\s+/i, "").replace(/\s+-\s+qualification$/i, " (q)");
   }
   var dcomp = "all";
-  // ---------------------------------------------------------------- Giorni, preferiti, ordine (idee BetMines, 03/10)
-  // Striscia dei giorni (solo quelli presenti nei dati), stella sulle partite e sui campionati, "Ordina per".
-  // Preferiti e ordine stanno su questo telefono (statsight.preferiti, statsight.ordina); col server sull'account.
-  var PREF_KEY = "statsight.preferiti", SORT_KEY = "statsight.ordina";
+  // ---------------------------------------------------------------- Giorni e preferiti (idee BetMines, 03/10)
+  // Striscia dei giorni (solo quelli presenti nei dati), stella sulle partite e sui campionati ("Ordina per" tolto
+  // il 07/10 sera: ora le partite stanno per campionato, come nelle app di risultati).
+  // I preferiti stanno su questo telefono (statsight.preferiti); col server sull'account.
+  var PREF_KEY = "statsight.preferiti";
   var prefs = (function () { try { var p = JSON.parse(localStorage.getItem(PREF_KEY)); if (p && p.ev && p.comp) return p; } catch (e) {} return { ev: {}, comp: {} }; })();
-  var dsort = (function () { try { var v = localStorage.getItem(SORT_KEY); return v === "ora" || v === "quota" ? v : "camp"; } catch (e) { return "camp"; } })();
   var dday = "all";
   function savePrefs() {
     var old = nowS() - 2 * 86400;   // le partite gia' finite da due giorni escono dai preferiti
@@ -4267,11 +4313,6 @@
   }
   var WD = ["DOM", "LUN", "MAR", "MER", "GIO", "VEN", "SAB"];
   function dayOf(ts) { var d = new Date(ts * 1000); d.setHours(0, 0, 0, 0); return d.getTime(); }
-  // quota della favorita: la piu' bassa fra 1/X/2 (o i due giocatori)
-  function favOdds(e) {
-    var o = quickCodes(e).map(function (c) { return e.mk[c] && e.mk[c][0]; }).filter(function (v) { return typeof v === "number"; });
-    return o.length ? Math.min.apply(null, o) : Infinity;
-  }
 
   function renderDiario() {
     var dz = data.diario;
@@ -4288,11 +4329,10 @@
     var live = all.filter(function (e) { return e.live; }), pre = all.filter(function (e) { return !e.live && (!e.start || e.start > nowS()); });
     $("nlive").textContent = live.length; $("npre").textContent = pre.length;
     document.querySelectorAll("#dviewchips [data-dview]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.dview === dview)); });
-    var evs = dview === "live" ? live : pre;
-    var isPre = dview === "pre", html = "", G = activeGroup();
+    var isLive = dview === "live", evs = isLive ? live : pre, html = "", G = activeGroup();
     if (G) evs = evs.filter(function (e) { return evInGroup(e, G); });
     html += legaChipsHtml();
-    if (isPre) {   // striscia dei giorni: solo quelli che ci sono nei dati
+    if (!isLive) {   // striscia dei giorni: solo quelli che ci sono nei dati
       var days = {}, today = dayOf(nowS());
       pre.forEach(function (e) { if (e.start) { var d = dayOf(e.start); days[d] = (days[d] || 0) + 1; } });
       var dl = Object.keys(days).map(Number).sort(function (a, b) { return a - b; });
@@ -4304,98 +4344,59 @@
         }).join("") + '</div>';
       if (dday !== "all") evs = evs.filter(function (e) { return e.start && dayOf(e.start) === dday; });
     }
-    html += '<div class="k" style="margin:4px 2px 8px;font-size:0.76rem;">' + ic("clock") + ' Quote di ' + ageTxt(dz.at) + ' · valgono queste quote</div>'
-      + '<div class="sortrow" role="group" aria-label="Ordina per"><span>Ordina per</span>' + [["ora", "Orario"], ["camp", "Campionato"], ["quota", "Quota della favorita"]].map(function (o) {
-        return '<button class="chip" type="button" data-dsort="' + o[0] + '" aria-pressed="' + (dsort === o[0]) + '">' + o[1] + '</button>';
-      }).join("") + '</div>';
-    // ordine personale (anagrafica.js): coppe e nazionali del giorno in primo piano, poi i campionati del tuo
-    // paese, poi i grandi campionati; gli sport che non segui in fondo. Sopra tutto "Per te": tue squadre,
-    // tuoi tennisti, la tua nazionale.
-    var P0 = A.PAESI[me.country || A.guessCountry()] || A.PAESI.XX, mySports = me.sports || P0.sports;
-    function compRank(e) {
-      var c = A.compOf(e.comp), r = 100;
-      if (c) {
-        var i = A.SPOT.indexOf(c.id), j = P0.leagues.indexOf(c.id), b = A.BIG.indexOf(c.id);
-        r = i >= 0 ? 900 - i : j >= 0 ? 800 - j : b >= 0 ? 500 - b : 100;
+    // Calendario come le app di risultati (richiesta 07/10 sera, esempio Diretta): in cima "Per te" e i campionati
+    // preferiti aperti, poi tutti gli altri dalla A alla Z per paese, chiusi col numero di partite (nel Live aperti).
+    // Dentro un campionato: stella, orario o minuto, logo nostro e nomi, risultato in rosso, quote da toccare.
+    // Con poche partite (6 o meno) sono tutti aperti.
+    var byComp = {};
+    evs.forEach(function (e) { var k = compKey(e); (byComp[k] = byComp[k] || []).push(e); });
+    Object.keys(byComp).forEach(function (k) { byComp[k].sort(byStart); });
+    if (dcomp !== "all" && !byComp[dcomp]) dcomp = "all";
+    html += '<div class="calmeta"><span>' + ic("clock") + ' Quote di ' + ageTxt(dz.at) + '</span><button class="linkbtn" type="button" data-campi="1">' + ic("search") + ' Cerca un campionato</button></div>';
+    if (dcomp !== "all") {
+      html += '<div class="chips compchips"><button class="chip" type="button" data-dcomp="all" aria-pressed="false">‹ Tutti i campionati</button></div>' + leagueCard(dcomp, byComp[dcomp], true);
+    } else {
+      var fk = favKeys(), forYou = evs.filter(function (e) { return isPrefEv(e) || isFavEvent(e, fk); }).sort(byStart);
+      if (forYou.length) html += '<h2 class="calsec">' + ic("star") + ' Per te</h2><div class="lgcard mixed open">' + forYou.map(function (e) { return evRow(e, true); }).join("") + '</div>';
+      var keys = Object.keys(byComp), az = function (x, y) { return compSortKey(x).localeCompare(compSortKey(y), "it"); };
+      function compSortKey(k) { var e0 = byComp[k][0]; return countryOf(e0) + " " + campLabel(e0); }
+      var pinned = keys.filter(function (k) { return prefs.comp[k]; }).sort(az), top = pinned;
+      if (!top.length) {   // nessuna stella: in primo piano i campionati che contano per te (coppe del giorno, il tuo paese, i grandi)
+        top = keys.filter(function (k) { return campRank({ e: byComp[k][0] }) >= 0; })
+          .sort(function (x, y) { return campRank({ e: byComp[y][0] }) - campRank({ e: byComp[x][0] }); }).slice(0, 3);
       }
-      return r - (mySports.indexOf(e.sport) >= 0 ? 0 : 1000);
+      if (top.length) html += '<h2 class="calsec">' + (pinned.length ? "Campionati preferiti" : "In primo piano") + '</h2>'
+        + top.map(function (k) { return leagueCard(k, byComp[k], cexp[k] !== false); }).join("")
+        + (pinned.length ? "" : '<div class="k calhint">Tocca la stella di un campionato per tenerlo qui in cima.</div>');
+      var rest = keys.filter(function (k) { return top.indexOf(k) < 0; }).sort(az);
+      if (rest.length) html += '<h2 class="calsec">' + (top.length ? "Altri campionati A-Z" : "Campionati A-Z") + '</h2>'
+        + rest.map(function (k) { return leagueCard(k, byComp[k], cexp[k] != null ? cexp[k] : isLive || evs.length <= 6); }).join("");
     }
-    // "Per te": tue squadre e tennisti, la tua nazionale e le partite con la stella
-    var fk = favKeys(), favSet = new Set(evs.filter(function (e) { return isPrefEv(e) || isFavEvent(e, fk); }).map(function (e) { return e.id; }));
-    // ordine scelto: orario, campionato (quello di sempre) o quota della favorita; "Per te" resta in cima
-    function bySort(a, b) {
-      return dsort === "ora" ? (a.start || 0) - (b.start || 0) || compRank(b) - compRank(a)
-        : favOdds(a) - favOdds(b) || (a.start || 0) - (b.start || 0);
-    }
-    if (dview === "live") {
-      // campionato scelto (da Campionati o dalla striscia del pre-partita): vale anche qui, con "Tutti" per toglierlo
-      if (dcomp !== "all" && dcomp !== "pref" && evs.some(function (e) { return compKey(e) === dcomp; })) {
-        var e1 = evs.filter(function (e) { return compKey(e) === dcomp; })[0];
-        html += '<div class="chips compchips"><button class="chip" type="button" data-dcomp="all" aria-pressed="false">Tutti</button>'
-          + '<button class="chip" type="button" aria-pressed="true">' + EMOJI[e1.sport] + ' ' + esc(shortComp(e1.comp)) + '</button></div>';
-        evs = evs.filter(function (e) { return compKey(e) === dcomp; });
-        favSet = new Set();
-      }
-      evs.sort(function (a, b) {
-        return (favSet.has(b.id) - favSet.has(a.id)) || (dsort !== "camp" ? bySort(a, b) : 0)
-          || (compRank(b) - compRank(a)) || (a.comp > b.comp ? 1 : a.comp < b.comp ? -1 : 0);
-      });
-    }
-    else {
-      // pre-partita a gruppi per campionato (prima i campionati con piu' partite), dentro in ordine d'orario;
-      // in alto i campionati come filtri, con la bandiera
-      var cnt = {}, first = {};
-      evs.forEach(function (e) { var k = e.sport + "|" + e.comp; cnt[k] = (cnt[k] || 0) + 1; first[k] = Math.min(first[k] || Infinity, e.start || 0); });
-      var rankOf = {};
-      evs.forEach(function (e) { rankOf[e.sport + "|" + e.comp] = compRank(e); });
-      var keys = Object.keys(cnt).sort(function (a, b) { return rankOf[b] - rankOf[a] || cnt[b] - cnt[a] || first[a] - first[b]; });
-      var nPref = evs.filter(function (e) { return isPrefEv(e) || isPrefComp(e); }).length;
-      if (dcomp !== "all" && dcomp !== "pref" && !cnt[dcomp]) dcomp = "all";
-      if (keys.length > 1 || nPref) {
-        html += '<div class="chips compchips">' + ['<button class="chip" type="button" data-dcomp="all" aria-pressed="' + (dcomp === "all") + '">🔥 Tutti <span class="k">' + evs.length + '</span></button>',
-                                                    '<button class="chip" type="button" data-dcomp="pref" aria-pressed="' + (dcomp === "pref") + '">⭐ Preferiti <span class="k">' + nPref + '</span></button>',
-                                                    '<button class="chip" type="button" data-campi="1">🌍 Tutti i campionati <span class="k">' + keys.length + '</span></button>']
-          .concat(keys.slice(0, 12).concat(keys.indexOf(dcomp) >= 12 ? [dcomp] : []).map(function (k) {
-            var e0 = evs.find(function (e) { return e.sport + "|" + e.comp === k; });
-            return '<button class="chip" type="button" data-dcomp="' + esc(k) + '" aria-pressed="' + (dcomp === k) + '">' + flagOf(e0) + ' ' + esc(shortComp(e0.comp)) + ' <span class="k">' + cnt[k] + '</span></button>';
-          })).join("") + '</div>';
-      }
-      if (dcomp === "pref") evs = evs.filter(function (e) { return isPrefEv(e) || isPrefComp(e); });
-      else if (dcomp !== "all") evs = evs.filter(function (e) { return e.sport + "|" + e.comp === dcomp; });
-      evs.sort(function (a, b) {
-        var fa = dcomp === "all" && favSet.has(a.id), fb = dcomp === "all" && favSet.has(b.id);
-        if (fa !== fb) return fb - fa;
-        if (dsort !== "camp") return bySort(a, b);
-        var ka = a.sport + "|" + a.comp, kb = b.sport + "|" + b.comp;
-        return ka === kb || (fa && fb) ? (a.start || 0) - (b.start || 0) : keys.indexOf(ka) - keys.indexOf(kb);
-      });
-    }
-    if (dview === "pre" && dcomp !== "all") favSet = new Set();
-    if (!evs.length) html += '<div class="note">' + (G ? 'Nessuna partita in questa vista per il gruppo "' + esc(G.name) + '".' : dcomp === "pref" ? "Nessuna partita preferita: tocca la stella accanto a una partita o a un campionato."
-      : dview === "live" ? "Nessuna partita in corso con quote in questo momento." : "Nessuna partita in programma con quote nelle prossime 24 ore.") + '</div>';
-    var lastComp = null;
-    evs.forEach(function (e) {
-      var fav = favSet.has(e.id), comp = fav ? "fav" : e.sport + "|" + e.comp;
-      if (comp !== lastComp && fav) {
-        html += '<div class="comphead favhead">' + (isPre ? "⭐" : ic("star")) + ' Per te</div>';
-        lastComp = comp;
-      } else if (comp !== lastComp) {
-        html += (isPre ? '<div class="comphead pre"><span class="flag">' + flagOf(e) + '</span> ' + esc(e.comp || NAME[e.sport])
-          : '<div class="comphead">' + EMOJI[e.sport] + ' ' + esc(e.comp || NAME[e.sport])) + starBtn("comp", compKey(e), isPrefComp(e)) + '</div>';
-        lastComp = comp;
-      }
-      var q = quickCodes(e), labels = e.sport === "calcio" ? ["1", "X", "2"] : ["1", "2"];
-      var nm = Object.keys(e.mk).length;
-      html += '<div class="evline"><button class="evmain" type="button" data-open="' + e.id + '">'
-        + '<span class="evtime">' + (e.live ? '<b class="livetag">' + esc(estMinute(e) || "LIVE") + '</b>' : esc(startLabel(e.start))) + '</span>'
-        + '<span class="evteams">' + (isPre ? '<span>' + teamLogo(e.home, e.sport) + pname(e, 1) + '</span><span>' + teamLogo(e.away, e.sport) + pname(e, 2) + '</span>'
-          : '<span>' + pname(e, 1) + '</span><span>' + pname(e, 2) + '</span>') + '</span>'
-        + '<span class="evscore">' + esc(scoreTxt(e)) + '</span></button>'
-        + starBtn("ev", e.id, isPrefEv(e))
-        + '<span class="evodds">' + q.map(function (c, i) { return tile(e, c, labels[i]); }).join("") + '</span>'
-        + '<button class="evmore" type="button" data-open="' + e.id + '">+' + Math.max(0, nm - q.length) + '</button></div>';
-    });
+    if (!evs.length) html += '<div class="note">' + (G ? 'Nessuna partita in questa vista per il gruppo "' + esc(G.name) + '".'
+      : isLive ? "Nessuna partita in corso con quote in questo momento." : "Nessuna partita in programma con quote nelle prossime 24 ore.") + '</div>';
     $("diarioevents").innerHTML = html;
+  }
+  var cexp = {};   // campionati aperti o chiusi a mano, solo per questa sessione
+  function byStart(a, b) { return (a.start || 0) - (b.start || 0) || (a.id > b.id ? 1 : -1); }
+  function hhmm(ts) { var d = new Date(ts * 1000); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+  function leagueCard(k, list, open) {
+    var e0 = list[0], nl = list.filter(function (e) { return e.live; }).length;
+    var cols = e0.sport === "calcio" ? ["1", "X", "2"] : ["1", "2"];
+    return '<div class="lgcard' + (open ? " open" : "") + '"><div class="lghead"><button class="lgtoggle" type="button" data-cexp="' + esc(k) + '" aria-expanded="' + open + '">'
+      + '<span class="flag">' + flagOf(e0) + '</span><span class="lgn"><b>' + esc(campLabel(e0)) + '</b><small>' + esc(countryOf(e0)) + (nl && dview !== "live" ? " · " + nl + " live" : "") + '</small></span>'
+      + '<span class="lgc">' + list.length + '</span><span class="lgchev">' + ic("chev") + '</span></button>' + starBtn("comp", k, isPrefComp(e0)) + '</div>'
+      + (open ? '<div class="lgcols">' + cols.map(function (c) { return '<span>' + c + '</span>'; }).join("") + '</div>' + list.map(function (e) { return evRow(e, false); }).join("") : "") + '</div>';
+  }
+  function evRow(e, showComp) {
+    var q = quickCodes(e), labels = e.sport === "calcio" ? ["1", "X", "2"] : ["1", "2"];
+    var sc = e.st ? scoreOf(e.sport === "calcio" ? e.st.score : e.st.sets) : null, today = dayOf(nowS());
+    var time = e.live ? '<b class="livemin">' + esc(estMinute(e) || "LIVE") + '</b>'
+      : e.start ? hhmm(e.start) + (dayOf(e.start) !== today ? '<small>' + WD[new Date(e.start * 1000).getDay()] + " " + new Date(e.start * 1000).getDate() + '</small>' : "") : "";
+    function side(n) { return '<span>' + teamLogo(n === 1 ? e.home : e.away, e.sport) + '<span class="tn">' + pname(e, n) + '</span>' + (sc ? '<b class="sc">' + sc[n - 1] + '</b>' : "") + '</span>'; }
+    return '<div class="evline' + (e.live ? " islive" : "") + '">' + starBtn("ev", e.id, isPrefEv(e))
+      + '<button class="evmain" type="button" data-open="' + e.id + '"><span class="evtime">' + time + '</span><span class="evteams">' + side(1) + side(2)
+      + (showComp ? '<small class="evcomp">' + flagOf(e) + ' ' + esc(campLabel(e)) + '</small>' : "") + '</span></button>'
+      + '<span class="evodds">' + q.map(function (c, i) { return tile(e, c, labels[i]); }).join("") + '</span></div>';
   }
 
   var PREMIUM_STATS = ["xG", "Attacchi pericolosi", "Possesso", "Punti vinti al servizio", "Punti vinti in risposta"];
@@ -4408,7 +4409,7 @@
   var matchBack = "diario";
   function openMatch(id) {
     var v = curView(); if (v && v !== "giocata") matchBack = v;
-    curTab = null; renderGiocata(id);
+    curTab = null; curSheet = "sum"; renderGiocata(id);
     var b = document.querySelector("#view-giocata .back"); if (b) { b.dataset.back = matchBack; b.textContent = "‹ Indietro"; }
     $("view-giocata").scrollTop = 0; window.scrollTo(0, 0);
   }
@@ -4416,36 +4417,68 @@
     var m = e.target.closest("[data-match]"); if (!m || !data || !evById(Number(m.dataset.match))) return;
     e.preventDefault(); e.stopPropagation(); openMatch(m.dataset.match);
   }, true);
+  // scheda della partita come le app di risultati (07/10 sera, esempio Diretta): campionato, i due loghi grandi con
+  // orario o risultato, poi tre schede: Riassunto (strategia calda, esito finale, statistiche principali), Quote
+  // (tutti i mercati) e Statistiche (barre, solo se ci sono)
+  var curSheet = "sum";
+  function statBars(list) {
+    return '<div class="msbars">' + list.map(function (s) {
+      var lock = lockedCell(s[0]), a = parseFloat(String(s[1]).replace(",", ".")) || 0, b = parseFloat(String(s[2]).replace(",", ".")) || 0, t = a + b;
+      var pa = lock ? 50 : t ? a / t * 100 : 0, pb = lock ? 50 : t ? b / t * 100 : 0;
+      return '<div class="mstat' + (lock ? " locked" : "") + '"><div class="sbt"><b>' + (lock ? "88" : esc(s[1])) + '</b><span>' + esc(s[0]) + (lock ? " " + ic("lock") : "") + '</span><b>' + (lock ? "88" : esc(s[2])) + '</b></div>'
+        + '<div class="sbl"><span class="sh"><i class="' + (a >= b ? "hi" : "") + '" style="width:' + pa.toFixed(0) + '%"></i></span><span class="sa"><i class="' + (b >= a ? "hi" : "") + '" style="width:' + pb.toFixed(0) + '%"></i></span></div></div>';
+    }).join("") + '</div>' + (!isFull() && list.some(function (s) { return lockedCell(s[0]); }) ? '<div class="upsell">' + ic("lock") + ' xG, attacchi pericolosi e possesso con <b>StatSight Full</b>.</div>' : "");
+  }
+  function groupHtml(e, g) {
+    var r = regole(), codes = r.order[e.sport].filter(function (c) { return r.markets[e.sport][c].group === g; });
+    var cols = codes.length >= 3 ? 3 : 2, est = codes.some(function (c) { return e.mk[c] && e.mk[c][2] === "s"; });
+    return '<div class="mgroup"><div class="mtitle">' + esc(r.groups[g] || g) + (est ? ' <span class="stima">quote stimate</span>' : "") + '</div>'
+      + '<div class="ogrid" style="grid-template-columns:repeat(' + cols + ',minmax(0,1fr));">'
+      + codes.map(function (c) {
+        var lab = r.markets[e.sport][c].label;
+        if (c === "W1" || c === "P1") lab = e.home; if (c === "W2" || c === "P2") lab = e.away;
+        return tile(e, c, lab);
+      }).join("") + '</div></div>';
+  }
   function renderGiocata(id) {
     var e = evById(Number(id));
     if (!e) return;
     curEvent = e;
-    var r = regole(), tabs = r.tabs[e.sport].filter(function (t) {
+    var r = regole();
+    if (!r) return;
+    var tabs = r.tabs[e.sport].filter(function (t) {
       return r.order[e.sport].some(function (c) { var m = r.markets[e.sport][c]; return m.tab === t && e.mk[c]; });
     });
     if (!curTab || tabs.indexOf(curTab) < 0) curTab = tabs[0];
-    var stats = ((e.st && e.st.stats) || []).map(function (s) {
-      var lock = lockedCell(s[0]);
-      return '<tr' + (lock ? ' class="locked"' : "") + '><td>' + (lock ? "88" : esc(s[1])) + '</td><td>' + esc(s[0]) + (lock ? " " + ic("lock") : "") + '</td><td>' + (lock ? "88" : esc(s[2])) + '</td></tr>';
-    }).join("");
-    var html = hotBlock(e) + '<div class="dsub">' + EMOJI[e.sport] + ' ' + esc(e.comp || NAME[e.sport]) + (e.live ? ' · <b class="livetag">LIVE</b>' : " · " + esc(startLabel(e.start))) + '</div>'
-      + '<div class="matchhead"><div class="mt">' + pname(e, 1) + '</div><div class="ms">' + (e.live ? esc(scoreTxt(e) || "–") : "vs") + '<div class="mm">' + esc(estMinute(e)) + '</div></div><div class="mt">' + pname(e, 2) + '</div></div>'
-      + (stats ? '<table class="stt">' + stats + '</table>' + (!isFull() && /class="locked"/.test(stats) ? '<div class="upsell">' + ic("lock") + ' xG, attacchi pericolosi e possesso con <b>StatSight Full</b>.</div>' : "") : "")
-      + '<div class="chips mtabs" role="tablist">' + tabs.map(function (t) { return '<button class="chip" type="button" data-mtab="' + esc(t) + '" aria-pressed="' + (t === curTab) + '">' + esc(t) + '</button>'; }).join("") + '</div>';
-    var groups = [];
-    r.order[e.sport].forEach(function (c) { var m = r.markets[e.sport][c]; if (m.tab === curTab && e.mk[c] && groups.indexOf(m.group) < 0) groups.push(m.group); });
-    html += groups.map(function (g) {
-      var codes = r.order[e.sport].filter(function (c) { return r.markets[e.sport][c].group === g; });
-      var cols = codes.length === 3 ? 3 : codes.length > 3 ? 3 : 2;
-      var est = codes.some(function (c) { return e.mk[c] && e.mk[c][2] === "s"; });
-      return '<div class="mgroup"><div class="mtitle">' + esc(r.groups[g] || g) + (est ? ' <span class="stima">quote stimate</span>' : "") + '</div>'
-        + '<div class="ogrid" style="grid-template-columns:repeat(' + cols + ',minmax(0,1fr));">'
-        + codes.map(function (c) {
-          var lab = r.markets[e.sport][c].label;
-          if (c === "W1" || c === "P1") lab = e.home; if (c === "W2" || c === "P2") lab = e.away;
-          return tile(e, c, lab);
-        }).join("") + '</div></div>';
-    }).join("");
+    var stats = (e.st && e.st.stats) || [], nm = Object.keys(e.mk).length;
+    if (curSheet === "stats" && !stats.length) curSheet = "sum";
+    var d = e.start ? new Date(e.start * 1000) : null;
+    var html = '<div class="mhcomp"><span class="flag">' + flagOf(e) + '</span><span class="mhc"><small>' + esc(countryOf(e)) + '</small><b>' + esc(campLabel(e)) + '</b></span>' + starBtn("ev", e.id, isPrefEv(e)) + '</div>'
+      + '<div class="matchhead mh2"><div class="mt">' + teamLogo(e.home, e.sport) + '<span>' + pname(e, 1) + '</span></div>'
+      + '<div class="ms">' + (e.live ? '<span class="msc">' + esc(scoreTxt(e) || "–") + '</span><div class="mm">' + esc(estMinute(e) || "LIVE") + '</div>'
+        : '<span class="mdt">' + (d ? String(d.getDate()).padStart(2, "0") + "." + String(d.getMonth() + 1).padStart(2, "0") + "." : "") + '</span><span class="mhr">' + (d ? hhmm(e.start) : "vs") + '</span>') + '</div>'
+      + '<div class="mt">' + teamLogo(e.away, e.sport) + '<span>' + pname(e, 2) + '</span></div></div>'
+      + '<div class="segbar msheets" role="tablist" style="grid-template-columns:repeat(' + (stats.length ? 3 : 2) + ',1fr);">'
+      + [["sum", "Riassunto"], ["odds", "Quote"]].concat(stats.length ? [["stats", "Statistiche"]] : []).map(function (x) {
+        return '<button type="button" data-msheet="' + x[0] + '" aria-pressed="' + (curSheet === x[0]) + '">' + x[1] + '</button>';
+      }).join("") + '</div>';
+    if (curSheet === "sum") {
+      var g0 = mktOf(e.sport, quickCodes(e)[0]);
+      html += hotBlock(e) + (g0 && e.mk[quickCodes(e)[0]] ? groupHtml(e, g0.group) : "")
+        + (stats.length ? '<div class="mtitle" style="margin-top:14px;">Statistiche</div>' + statBars(stats.slice(0, 4))
+          + (stats.length > 4 ? '<button class="linkbtn" type="button" data-msheet="stats">Tutte le statistiche ›</button>' : "") : "")
+        + '<div class="card minfo"><div><span>Campionato</span><b>' + esc(campLabel(e)) + '</b></div>'
+        + '<div><span>' + (e.live ? "Stato" : "Inizio") + '</span><b>' + (e.live ? "In corso" + (estMinute(e) ? " · " + esc(estMinute(e)) : "") : esc(startLabel(e.start))) + '</b></div>'
+        + '<div><span>Quote</span><b>' + nm + ' · di ' + ageTxt((data.diario && data.diario.at) || nowS()) + '</b></div></div>'
+        + (nm > quickCodes(e).length ? '<button class="morebtn" type="button" data-msheet="odds">Tutte le quote (' + nm + ')</button>' : "");
+    } else if (curSheet === "stats") {
+      html += statBars(stats);
+    } else {
+      html += '<div class="chips mtabs" role="tablist">' + tabs.map(function (t) { return '<button class="chip" type="button" data-mtab="' + esc(t) + '" aria-pressed="' + (t === curTab) + '">' + esc(t) + '</button>'; }).join("") + '</div>';
+      var groups = [];
+      r.order[e.sport].forEach(function (c) { var m = r.markets[e.sport][c]; if (m.tab === curTab && e.mk[c] && groups.indexOf(m.group) < 0) groups.push(m.group); });
+      html += groups.map(function (g) { return groupHtml(e, g); }).join("");
+    }
     html += '<div class="note" style="margin-top:12px;">Tocca una quota per metterla in schedina. Quote Betfair; quelle con "stima" le calcoliamo dalle quote Betfair perché Betfair non offre quel mercato. Regole: Impostazioni › Informativa.</div>';
     $("giocata").innerHTML = html;
     show("giocata");
@@ -4794,6 +4827,12 @@
     $("diariobets").innerHTML = html || '<div class="note">Nessun pronostico salvato.</div>';
   }
 
+  function toggleStar(st) {
+    var bag = st.dataset.star === "ev" ? prefs.ev : prefs.comp, k = st.dataset.key;
+    if (bag[k]) delete bag[k];
+    else { var e0 = st.dataset.star === "ev" ? evById(Number(k)) || evById(k) : null; bag[k] = st.dataset.star === "ev" ? (e0 && e0.start) || nowS() : 1; }
+    savePrefs();
+  }
   $("diarioevents").addEventListener("click", function (ev) {
     var dc = ev.target.closest("button[data-dcomp]");
     if (dc) { dcomp = dc.dataset.dcomp; renderDiario(); return; }
@@ -4802,15 +4841,10 @@
     if (ev.target.closest("button[data-campi]")) { openCampionati(); return; }
     var dd = ev.target.closest("button[data-dday]");
     if (dd) { dday = dd.dataset.dday === "all" ? "all" : Number(dd.dataset.dday); renderDiario(); return; }
-    var so = ev.target.closest("button[data-dsort]");
-    if (so) { dsort = so.dataset.dsort; try { localStorage.setItem(SORT_KEY, dsort); } catch (er) {} renderDiario(); return; }
     var st = ev.target.closest("button[data-star]");
-    if (st) {
-      var bag = st.dataset.star === "ev" ? prefs.ev : prefs.comp, k = st.dataset.key;
-      if (bag[k]) delete bag[k];
-      else { var e0 = st.dataset.star === "ev" ? evById(Number(k)) || evById(k) : null; bag[k] = st.dataset.star === "ev" ? (e0 && e0.start) || nowS() : 1; }
-      savePrefs(); renderDiario(); return;
-    }
+    if (st) { toggleStar(st); renderDiario(); return; }
+    var cx = ev.target.closest("button[data-cexp]");
+    if (cx) { cexp[cx.dataset.cexp] = cx.getAttribute("aria-expanded") !== "true"; renderDiario(); return; }
     var ie = ev.target.closest("button.otile[data-iev]");
     if (ie) { var ei = evById(ie.dataset.iev); if (ei) { toggleLeg(ei, ie.dataset.code); renderDiario(); } return; }
     var rc2 = ev.target.closest("button[data-race]"); if (rc2) { renderRace(rc2.dataset.race); return; }
@@ -4822,6 +4856,8 @@
     var t = ev.target.closest("button.otile[data-code]");
     if (t && curEvent) { toggleLeg(curEvent, t.dataset.code); renderGiocata(curEvent.id); return; }
     var m = ev.target.closest("[data-mtab]"); if (m && curEvent) { curTab = m.dataset.mtab; renderGiocata(curEvent.id); }
+    var sh = ev.target.closest("[data-msheet]"); if (sh && curEvent) { curSheet = sh.dataset.msheet; renderGiocata(curEvent.id); return; }
+    var st = ev.target.closest("button[data-star]"); if (st && curEvent) { toggleStar(st); renderGiocata(curEvent.id); }
   });
   $("diariochips").addEventListener("click", function (ev) {
     var b = ev.target.closest(".chip"); if (!b) return;
@@ -6107,7 +6143,7 @@
     else if (k === "fight") { settleFights(); fightOpen = null; renderFight(); show("fight"); }
     else if (k === "album") { renderAlbum(); show("album"); }
     else if (k === "leghe") { openLeghe(); }
-    else if (k === "team") { if (me.team) { calMode = true; dview = "pre"; renderDiario(); show("diario"); } }
+    else if (k === "team") { if (me.team) { dview = "pre"; renderDiario(); show("diario"); } }
     else if (k === "tutorial") startTutorial();
     else if (k === "appunti") openAppunti();
     else if (k === "stato") { renderStatus(); show("stato"); }
@@ -6143,7 +6179,7 @@
     // il Diario si apre sul tuo profilo; il Calendario sono le partite pre-partita (07/10)
     var v = b.dataset.view;
     if (v === "diario") { if (data) renderProfilo(); show("profilo"); }
-    else if (v === "calendario") { calMode = true; dview = "pre"; if (data) renderDiario(); show("diario"); window.scrollTo(0, 0); }
+    else if (v === "calendario") { dview = "pre"; if (data) renderDiario(); show("diario"); window.scrollTo(0, 0); }
     else if (v === "attivita") { if (data) renderAttivita(); show("attivita"); }
     else if (v === "live") { if (data) renderLive(); show("live"); }
     else show(v);
