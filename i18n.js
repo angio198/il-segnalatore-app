@@ -2,13 +2,17 @@
 // L'app e' scritta in italiano; qui un osservatore traduce i testi appena vengono disegnati, prima che si
 // vedano, con il dizionario di i18n_en.js: frase esatta, oppure frase con i numeri al posto di "#"
 // ("# vinti su #" -> "# won of #"). Una frase che non e' nel dizionario resta in italiano: per tradurla basta
-// aggiungerla li'. Le quote "1,81" in inglese diventano "1.81".
+// aggiungerla li'. Le quote "1,81" in inglese diventano "1.81". Spagnolo (05/10/2026): stesso meccanismo con
+// i18n_es.js, decimali con la virgola come in italiano.
 (function () {
   "use strict";
   var KEY = "statsight.lingua";
   var lang = null;
   try { lang = localStorage.getItem(KEY); } catch (e) {}
-  if (lang !== "it" && lang !== "en") lang = /^it\b/i.test(navigator.language || "it") ? "it" : "en";
+  if (lang !== "it" && lang !== "en" && lang !== "es") {
+    var nav = navigator.language || "it";
+    lang = /^it\b/i.test(nav) ? "it" : /^es\b/i.test(nav) ? "es" : "en";
+  }
   document.documentElement.lang = lang;
   window.getLingua = function () { return lang; };
   window.setLingua = function (v) {
@@ -17,15 +21,23 @@
   };
   if (lang === "it") return;
 
-  var EN = window.I18N_EN || {};
+  var ES = lang === "es";
+  // si scarica solo il dizionario della lingua scelta (gira prima del resto della pagina)
+  var DICT = ES ? "I18N_ES" : "I18N_EN";
+  if (!window[DICT]) document.write('<script src="i18n_' + lang + '.js"><\/script>');
+  var EN, PREFIX, FRAG;
   var NUM = /[+−-]?\d+(?:[.,]\d+)*%?/g;
   var NUMERIC = /^[\s\d.,+−%·/:–\-x×]+$/;
-  function dots(s) { return s.replace(/(\d),(\d)/g, "$1.$2"); }
+  function dots(s) { return ES ? s : s.replace(/(\d),(\d)/g, "$1.$2"); }
 
   // voci che finiscono con " *": prefissi ("Mostra i segnali di *" + resto tradotto a parte)
-  var PREFIX = Object.keys(EN).filter(function (k) { return / \*$/.test(k); })
-    .map(function (k) { return [k.slice(0, -1), EN[k].replace(/\*$/, "")]; })
-    .sort(function (a, b) { return b[0].length - a[0].length; });
+  function load() {
+    EN = window[DICT] || {};
+    PREFIX = Object.keys(EN).filter(function (k) { return / \*$/.test(k); })
+      .map(function (k) { return [k.slice(0, -1), EN[k].replace(/\*$/, "")]; })
+      .sort(function (a, b) { return b[0].length - a[0].length; });
+    FRAG = window[DICT + "_FRAG"] || [];
+  }
 
   function one(t) {
     var out = EN[t];
@@ -52,7 +64,6 @@
     return any ? parts.join(sep) : null;
   }
   // parole fisse dei messaggi dei bot (esiti dell'ippica...), dentro testi con nomi propri
-  var FRAG = window.I18N_EN_FRAG || [];
   function frag(t) {
     var out = t;
     for (var i = 0; i < FRAG.length; i++) out = out.replace(FRAG[i][0], FRAG[i][1]);
@@ -97,6 +108,7 @@
     for (var c = node.firstChild; c; c = c.nextSibling) walk(c);
   }
   function start() {
+    load();
     walk(document.body);
     new MutationObserver(function (list) {
       list.forEach(function (m) {
