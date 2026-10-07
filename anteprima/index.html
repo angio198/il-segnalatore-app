@@ -879,6 +879,53 @@
   @media (max-height:500px){ .tab.hub .hubic{width:40px;height:40px;margin:-12px 0 0;} .tab.hub .hubic img{width:34px;height:34px;} .tab.hub{flex-direction:row;align-items:center;justify-content:center;} }
   @media (prefers-reduced-motion: reduce){ .tab.hub .hubic{transition:none;} }
   /* Radar a schede (04/10) */
+  .ptag{display:inline-flex;align-items:center;gap:5px;margin:6px 0 2px;padding:3px 9px;border-radius:999px;font-size:0.68rem;font-weight:800;letter-spacing:.03em;}
+  .ptag .ico{width:13px;height:13px;}
+  .ptag.gioc{background:linear-gradient(90deg,rgba(255,180,0,.28),rgba(255,180,0,.12));color:#E0A100;border:1px solid rgba(224,161,0,.55);}
+  .ptag.pron{background:color-mix(in srgb, #4D7CFE 16%, transparent);color:#7FA2F0;border:1px solid color-mix(in srgb, #4D7CFE 45%, transparent);}
+  .pshare{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .beetatt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0;padding:6px 8px;border-radius:10px;background:var(--bg);font-size:0.8rem;} .beetatt > span:nth-child(2){flex:1;min-width:0;}
+  .beetdraft{margin:4px 0;padding:4px 10px;border-radius:10px;border:1px dashed color-mix(in srgb, #4D7CFE 45%, var(--line));}
+  /* StatsFight a quiz (08/10) */
+  .trvhero{border-radius:18px;padding:16px;background:radial-gradient(120% 120% at 100% 0%,#4B1D5E 0,#1B1440 45%,#0E1424 100%);color:#F2ECFF;border:1px solid rgba(177,92,255,.4);box-shadow:0 12px 30px -14px rgba(177,92,255,.6);}
+  .trvvs{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:12px;} .trvvs b{font-size:1.4rem;font-weight:900;color:#FFB400;text-shadow:0 0 14px rgba(255,180,0,.7);}
+  .trvq{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.08);border:2px dashed rgba(255,255,255,.35);font-size:1.6rem;font-weight:900;animation:fbump 1.6s ease-in-out infinite;}
+  .trvtx{display:flex;flex-direction:column;gap:4px;text-align:center;} .trvtx b{font-size:1.05rem;} .trvtx span{font-size:0.84rem;opacity:.85;}
+  .trvth{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:12px 0;} .trvth span{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:999px;font-size:0.74rem;font-weight:700;background:color-mix(in srgb, var(--c) 25%, transparent);border:1px solid var(--c);}
+  .trvth .ico,.trvspin .ico,.trvtheme .ico{width:14px;height:14px;}
+  .trvgo{margin-top:4px;} .trvrule{margin-top:8px;text-align:center;color:rgba(242,236,255,.7);font-size:0.74rem;}
+  .trvhist{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);} .trvhist:last-child{border-bottom:none;}
+  .trvhist > span:nth-child(2){flex:1;min-width:0;display:flex;flex-direction:column;} .trvhist .k{font-size:0.72rem;}
+  .trvsc{display:flex;flex-direction:column;align-items:flex-end;font-weight:900;font-size:1.05rem;} .trvsc small{font-size:0.66rem;font-weight:600;color:var(--ink-soft);}
+  .trvstage{min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;}
+  .trvsearch{position:relative;display:grid;place-items:center;} .trvping{position:absolute;inset:-14px;border-radius:50%;border:3px solid #B15CFF;animation:sp-ring 1.2s ease-out infinite;}
+  .trvvsbig{display:flex;align-items:center;justify-content:center;gap:18px;} .trvvsbig > span{display:flex;flex-direction:column;align-items:center;gap:6px;animation:sp-up .5s ease-out both;}
+  .trvvsbig > span:last-child{animation-delay:.25s;} .trvvsbig i{font-style:normal;font-size:2rem;font-weight:900;color:#FFB400;text-shadow:0 0 18px rgba(255,180,0,.8);animation:spin-in .7s .45s both;}
+  .trvvsbig.sm b{font-size:1.6rem;font-weight:900;}
+  .trvspin{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:330px;}
+  .trvspin span{display:inline-flex;align-items:center;gap:5px;padding:9px 12px;border-radius:12px;font-weight:800;font-size:0.86rem;background:var(--surface);border:2px solid var(--line);transition:transform .1s,background .1s;}
+  .trvspin span.on{background:var(--c);border-color:var(--c);color:#111;transform:scale(1.12);box-shadow:0 0 22px var(--c);}
+  .trvbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:8px 10px;border-radius:14px;background:var(--surface);border:1px solid var(--line);}
+  .trvp{display:flex;align-items:center;gap:8px;} .trvp b{font-size:1.4rem;font-weight:900;font-variant-numeric:tabular-nums;} .trvmid{font-size:0.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);}
+  .trvcard{border-radius:18px;padding:14px;background:linear-gradient(160deg,color-mix(in srgb, var(--c) 22%, var(--surface)),var(--surface) 60%);border:1px solid color-mix(in srgb, var(--c) 55%, var(--line));}
+  .trvtop{display:flex;justify-content:space-between;align-items:center;} .trvtheme{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;background:var(--c);color:#111;font-weight:800;font-size:0.78rem;}
+  .trvtime{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:12px 0;} .trvtime i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#FF2D55,#FFB400,#2ED47A);animation:trvt linear forwards;transform-origin:left;}
+  @keyframes trvt{from{width:100%;}to{width:0;}}
+  .trvqq{font-size:1.05rem;font-weight:800;line-height:1.35;margin-bottom:12px;}
+  .trvopts{display:flex;flex-direction:column;gap:8px;}
+  .trvopt{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:48px;padding:10px 14px;border-radius:12px;font:inherit;font-weight:700;text-align:left;cursor:pointer;color:var(--ink);background:var(--bg);border:2px solid var(--line);}
+  .trvopt:not(:disabled):active{transform:scale(.98);} .trvopt.mine{border-color:var(--c);}
+  .trvopt.right{background:color-mix(in srgb, #2ED47A 22%, var(--bg));border-color:#2ED47A;animation:sp-up .3s ease-out;} .trvopt.wrong{background:color-mix(in srgb, #FF5A5F 20%, var(--bg));border-color:#FF5A5F;}
+  .trvwho{display:inline-flex;gap:2px;} .trvopt .trvwho + .trvwho{margin-left:-6px;}
+  .trvturn{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0 4px;font-weight:700;font-size:0.9rem;} .trvturn.pos{color:#2ED47A;} .trvturn.neg{color:#FF6B6B;}
+  .trvturn + .primary{margin-top:8px;}
+  .trvdots{display:inline-flex;gap:3px;} .trvdots i{width:6px;height:6px;border-radius:50%;background:currentColor;animation:blip 1s infinite;} .trvdots i:nth-child(2){animation-delay:.2s;} .trvdots i:nth-child(3){animation-delay:.4s;}
+  .trvend{text-align:center;padding:18px 14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:14px;}
+  .trvend.win{background:radial-gradient(120% 100% at 50% 0%,rgba(255,180,0,.28),var(--surface) 70%);border-color:#FFB400;}
+  .trvres{font-size:1.6rem;font-weight:900;} .trvend.win .trvres{color:#FFB400;text-shadow:0 0 16px rgba(255,180,0,.6);}
+  .trvsum{display:flex;flex-direction:column;gap:6px;text-align:left;} .trvsum > div{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border-left:4px solid var(--c);background:var(--bg);}
+  .trvsum > div > span:first-child{flex:1;display:flex;align-items:center;gap:5px;font-weight:700;} .trvsum .ico{width:14px;height:14px;}
+  .trvcoins{font-weight:800;font-size:1.05rem;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;} .trvcoins .ico{width:20px;height:20px;}
   /* Radar delle strategie (08/10): pagina viva, colori e movimento */
   .rhero{display:flex;align-items:center;gap:16px;padding:14px;border-radius:18px;margin-bottom:6px;color:#E8FFF0;
     background:radial-gradient(120% 140% at 0% 0%,#123D2A 0,#0A1F16 55%,#071510 100%);border:1px solid rgba(69,212,131,.35);box-shadow:0 0 0 1px rgba(69,212,131,.1),0 10px 30px -12px rgba(69,212,131,.45);}
@@ -2645,6 +2692,7 @@
       out.push({ ts: f.ts, ic: "segnali", t: "Nuovo segnale: " + sname, s: f.event + " · " + f.pick + (o ? " · " + (o.hit ? "VINTO" : "PERSO") : ""), go: "s:" + i,
                  det: detRows([["Cosa", f.event + (f.cat ? " (" + f.cat + ")" : "")], ["Indicazione", f.pick + (f.odds ? " @ " + oddsTxt(f.odds) : "")], ["Strategia", sname + stratRoi(f.main || f.strategy)], ["Perché", f.why || f.text || ""], ["Risultato", o ? (o.hit ? "vinto" : "perso") + (o.result ? " · " + o.result : "") : "in attesa"]]) });
     });
+    trivia.games.forEach(function (g) { if (g.res) { var o = oppOf(g); out.push({ ts: g.res.at, ic: "vs", t: "StatsFight con " + o.name + ": " + (g.res.r === "win" ? "vinta" : g.res.r === "lose" ? "persa" : "pari"), s: g.res.me + " a " + g.res.op + " · +" + g.res.coins + " monete", go: "fight" }); } });
     fights.forEach(function (f) { if (f.res) { var p = personaOf(f.opp); out.push({ ts: f.res.at, ic: "vs", t: "Sfida con " + (p ? p.name : "?") + ": " + (f.res.r === "win" ? "vinta" : f.res.r === "lose" ? "persa" : "pari"), s: f.res.right + " a " + f.res.oppRight + " · +" + f.res.coins + " monete", go: "fight" }); } });
     return out.filter(function (x) { return x.ts; }).sort(function (a, b) { return b.ts - a.ts; }).slice(0, 50);
   }
@@ -3162,7 +3210,7 @@
   var FIGHT_KEY = "statsight.statsfight", FIGHT = { right: 10, win: 30, draw: 10 }, fightAnim = false;
   var fights = (function () { try { var f = JSON.parse(localStorage.getItem(FIGHT_KEY)); if (Array.isArray(f)) return f; } catch (e) {} return []; })();
   function saveFights() { try { localStorage.setItem(FIGHT_KEY, JSON.stringify(fights)); } catch (e) {} }
-  function fightCoins() { return fights.reduce(function (t, f) { return t + (f.res ? f.res.coins : 0); }, 0) + quizCoins(); }
+  function fightCoins() { return fights.reduce(function (t, f) { return t + (f.res ? f.res.coins : 0); }, 0) + quizCoins() + triviaCoins(); }
   // Due giochi in piu' (04/10), dati veri, uno al giorno ciascuno, 15 monete se indovini (niente monete in gioco):
   // "Quota giusta": una partita vera del Diario, scegli la quota vera fra quattro;
   // "Cosa e' successo dopo": una partita finita dell'archivio fotografata al 55-70' (signals/quiz_storia.py).
@@ -3190,6 +3238,168 @@
     }
     saveQuiz();
     return day[kind];
+  }
+  // ---------------------------------------------------------------- StatsFight a quiz (08/10, idea Trivia Quest)
+  // Sfida in diretta contro un'altra persona: 3 manche, ogni manche un tema scelto dalla ruota e 3 domande; rispondi
+  // tu, poi l'avversario; 15 secondi per risposta. Domande fatte coi dati veri dell'app (quote, favoriti, strategie,
+  // partite finite dell'archivio, statistiche live). Monete: 2 per risposta giusta, 25 se vinci, 10 col pari. Una
+  // sfida ogni ora, al massimo 3 al giorno. Senza server l'avversario e' un personaggio del Team (dichiarato).
+  // Sul telefono: statsight.trivia; col server sfide vere fra utenti.
+  var TRIVIA_KEY = "statsight.trivia", TRV = { right: 2, win: 25, draw: 10, perDay: 3, gap: 3600, secs: 15, rounds: 3, perRound: 3 };
+  var trivia = (function () { try { var t = JSON.parse(localStorage.getItem(TRIVIA_KEY)); if (t && Array.isArray(t.games)) return t; } catch (e) {} return { games: [] }; })();
+  function saveTrivia() { try { localStorage.setItem(TRIVIA_KEY, JSON.stringify(trivia)); } catch (e) {} }
+  function triviaCoins() { return trivia.games.reduce(function (t, g) { return t + (g.res ? g.res.coins : 0); }, 0); }
+  function triviaCur() { var g = trivia.games[trivia.games.length - 1]; return g && !g.res ? g : null; }
+  function triviaWait() {   // 0 = si puo' giocare, -1 = fatte le 3 di oggi, altrimenti secondi alla prossima
+    if (triviaCur()) return 0;
+    var today = trivia.games.filter(function (g) { return dayKey(g.ts) === dayKey(nowS()); });
+    if (today.length >= TRV.perDay) return -1;
+    var last = trivia.games[trivia.games.length - 1];
+    return last && nowS() - last.ts < TRV.gap ? TRV.gap - (nowS() - last.ts) : 0;
+  }
+  var QTH = { quote: { name: "Quote", ic: "coin", c: "#FFB400" }, favo: { name: "Favoriti", ic: "star", c: "#4D7CFE" }, strat: { name: "Strategie", ic: "strategie", c: "#00C2A8" },
+              dopo: { name: "Com'è finita", ic: "clock", c: "#FF5A5F" }, live: { name: "Live", ic: "radar", c: "#B15CFF" } };
+  function shuffle(a, rnd) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  // domande di un tema coi dati di adesso (nessuna inventata): [{ q, opts, ans }]
+  function triviaQs(th, rnd) {
+    var out = [];
+    if (th === "quote" || th === "favo") {
+      var evs = shuffle(evList().filter(function (e) { return !e.live && (e.mk["1"] && e.mk["2"] || e.mk.W1 && e.mk.W2); }), rnd);
+      evs.forEach(function (e) {
+        var c1 = e.mk["1"] ? "1" : "W1", c2 = e.mk["2"] ? "2" : "W2", o1 = e.mk[c1][0], o2 = e.mk[c2][0];
+        if (th === "quote") {
+          var opts = [o1];
+          [0.55, 1.6, 2.4, 0.75, 1.3].forEach(function (k) { var o = Math.max(1.05, Math.round(o1 * k * 100) / 100); if (opts.length < 4 && opts.indexOf(o) < 0) opts.push(o); });
+          opts = shuffle(opts, rnd);
+          out.push({ q: "Quanto paga la vittoria di " + e.home + " (" + e.home + " - " + e.away + ")?", opts: opts.map(oddsTxt), ans: opts.indexOf(o1) });
+        } else if (Math.abs(o1 - o2) > 0.15) {
+          out.push({ q: e.home + " - " + e.away + ": chi è favorito per le quote?", opts: [e.home, e.away], ans: o1 < o2 ? 0 : 1 });
+        }
+      });
+    } else if (th === "strat") {
+      var cat = (data.catalog || []).filter(function (x) { var st = x.detail && x.detail.stats; return st && st.n >= 30 && st.roi != null && !x.retired; });
+      for (var k = 0; k < 4 && cat.length >= 3; k++) {
+        var pick = shuffle(cat.slice(), rnd).slice(0, Math.min(4, cat.length)), best = 0;
+        pick.forEach(function (x, i) { if (x.detail.stats.roi > pick[best].detail.stats.roi) best = i; });
+        var hi = k % 2 === 0;
+        if (!hi) pick.forEach(function (x, i) { if (x.detail.stats.wins / x.detail.stats.n > pick[best].detail.stats.wins / pick[best].detail.stats.n) best = i; });
+        out.push({ q: hi ? "Quale strategia ha il rendimento storico più alto?" : "Quale strategia vince più spesso (strike)?", opts: pick.map(function (x) { return x.name; }), ans: best });
+      }
+    } else if (th === "dopo") {
+      shuffle(((data.quiz && data.quiz.dopo) || []).slice(), rnd).forEach(function (x) {
+        var t = x.event.split(" - ");
+        out.push({ q: x.event + ": minuto " + x.minute + ", " + x.score + ". Com'è finita?", opts: ["Vince " + t[0], "Pareggio", "Vince " + (t[1] || "")], ans: ["1", "X", "2"].indexOf(x.answer) });
+      });
+    } else if (th === "live") {
+      shuffle(evList().filter(function (e) { return e.live && e.sport === "calcio" && e.st && e.st.stats; }), rnd).forEach(function (e) {
+        ["Tiri", "Tiri in porta", "Angoli", "Attacchi pericolosi"].forEach(function (lab) {
+          var v = statPair(e.st, lab); if (!v || lockedCell(lab)) return;
+          var a = parseFloat(v[0]), b = parseFloat(v[1]); if (isNaN(a) || isNaN(b) || a === b) return;
+          out.push({ q: e.home + " - " + e.away + " (" + (estMinute(e) || "live") + "): chi ha più " + lab.toLowerCase() + "?", opts: [e.home, e.away], ans: a > b ? 0 : 1 });
+        });
+      });
+    }
+    return out.filter(function (x) { return x.ans >= 0; });
+  }
+  function newTrivia() {
+    var rnd = seeded("trv|" + nowS() + "|" + Math.random()), T = team().filter(function (p) { return p.n; });
+    var opp = T.length ? T[Math.floor(rnd() * T.length)] : null;
+    var pools = {};
+    Object.keys(QTH).forEach(function (th) { var q = triviaQs(th, rnd); if (q.length >= TRV.perRound) pools[th] = q; });
+    var ths = shuffle(Object.keys(pools), rnd);
+    if (!ths.length) return null;
+    var qs = [], rounds = [];
+    for (var r = 0; r < TRV.rounds; r++) {
+      var th = ths[r % ths.length]; rounds.push(th);
+      for (var i = 0; i < TRV.perRound; i++) { var x = pools[th].shift() || null; if (!x) { pools[th] = triviaQs(th, rnd); x = pools[th].shift(); } qs.push({ th: th, q: x.q, opts: x.opts, ans: x.ans, me: null, op: null, t0: null }); }
+    }
+    var skill = opp ? Math.max(0.35, Math.min(0.8, 0.55 + ((opp.w || 0) / Math.max(1, opp.n) - 0.5) * 0.6)) : 0.55;
+    qs.forEach(function (q) { q.op = rnd() < skill ? q.ans : (q.ans + 1 + Math.floor(rnd() * (q.opts.length - 1))) % q.opts.length; q.opt = 3 + Math.floor(rnd() * 9); });
+    var g = { id: "T" + nowS(), ts: nowS(), opp: opp ? opp.id : null, rounds: rounds, qs: qs, i: 0, phase: "vs", res: null };
+    trivia.games.push(g); saveTrivia();
+    return g;
+  }
+  function trvScore(g, who) { return g.qs.filter(function (q) { return (who === "me" ? q.me : q.op) === q.ans && (who !== "op" || q.me != null); }).length; }
+  function trvFinish(g) {
+    var a = trvScore(g, "me"), b = g.qs.filter(function (q) { return q.op === q.ans; }).length;
+    var r = a > b ? "win" : a < b ? "lose" : "draw";
+    g.res = { r: r, me: a, op: b, coins: a * TRV.right + (r === "win" ? TRV.win : r === "draw" ? TRV.draw : 0), at: nowS() };
+    g.phase = "end"; saveTrivia();
+  }
+  var trvTimer = null, trvTick = null, trvEnd = null, trvSearch = false;
+  function openTrivia() { trvEnd = null; renderTrivia(); show("fight"); window.scrollTo(0, 0); }
+  function trvClear() { clearTimeout(trvTimer); clearInterval(trvTick); trvTimer = trvTick = null; }
+  function oppOf(g) { var p = g.opp && personaOf(g.opp); return p || { id: "team", name: "Team StatSight", nick: "" }; }
+  function renderTrivia() {
+    trvClear();
+    var g = triviaCur(), box = $("fight");
+    if (!g && trvEnd) { box.innerHTML = trvEndHtml(trvEnd); return; }
+    if (!g && trvSearch) { box.innerHTML = '<div class="trvstage"><div class="trvsearch">' + myAvatar(72) + '<span class="trvping"></span></div><div class="k">Cerco un avversario…</div></div>'; return; }
+    if (!g) {   // lobby
+      var w = triviaWait(), last = trivia.games.slice(-5).reverse(), today = trivia.games.filter(function (x) { return dayKey(x.ts) === dayKey(nowS()); }).length;
+      box.innerHTML = '<div class="trvhero"><div class="trvvs">' + myAvatar(64) + '<b>VS</b><span class="trvq">?</span></div>'
+        + '<div class="trvtx"><b>Sfida a quiz in diretta</b><span>3 manche, un tema per manche e 3 domande. Rispondi tu, poi l\'avversario: 15 secondi per risposta.</span></div>'
+        + '<div class="trvth">' + Object.keys(QTH).map(function (k) { return '<span style="--c:' + QTH[k].c + '">' + ic(QTH[k].ic) + ' ' + QTH[k].name + '</span>'; }).join("") + '</div>'
+        + '<button class="primary block trvgo" type="button" data-tvgo="1"' + (w ? " disabled" : "") + '>' + ic("vs") + ' ' + (w === -1 ? "Hai fatto le 3 sfide di oggi" : w ? "Prossima sfida tra " + Math.ceil(w / 60) + " min" : "Cerca un avversario") + '</button>'
+        + '<div class="k trvrule">Sfide di oggi: ' + today + '/' + TRV.perDay + ' · una ogni ora · ' + TRV.right + ' monete per risposta giusta, ' + TRV.win + ' se vinci, ' + TRV.draw + ' col pari.</div></div>'
+        + (last.filter(function (x) { return x.res; }).length ? '<h2 class="sectiontitle">Ultime sfide</h2><div class="card">' + last.filter(function (x) { return x.res; }).map(function (x) {
+          var o = oppOf(x);
+          return '<div class="trvhist">' + avatar(o.id, 34) + '<span><b>' + esc(o.name) + '</b><span class="k">' + whenLabel(x.ts) + ' · ' + x.rounds.map(function (t) { return QTH[t] ? QTH[t].name : t; }).join(", ") + '</span></span>'
+            + '<span class="trvsc ' + (x.res.r === "win" ? "pos" : x.res.r === "lose" ? "neg" : "") + '">' + x.res.me + ' - ' + x.res.op + '<small>+' + x.res.coins + ' monete</small></span></div>';
+        }).join("") + '</div>' : "")
+        + '<div class="note" style="margin-top:10px;">Senza il server l\'avversario è un personaggio del Team StatSight, dichiarato: risponde da solo, con la sua bravura. Con l\'app pubblica sfidi persone vere.</div>';
+      return;
+    }
+    var o = oppOf(g), me0 = trvScore(g, "me"), op0 = g.qs.slice(0, g.i).filter(function (q) { return q.op === q.ans; }).length;
+    var bar = '<div class="trvbar"><span class="trvp">' + myAvatar(36) + '<b>' + me0 + '</b></span><span class="trvmid">Manche ' + (Math.floor(g.i / TRV.perRound) + 1) + '/' + TRV.rounds + '</span><span class="trvp op"><b>' + op0 + '</b>' + avatar(o.id, 36) + '</span></div>';
+    if (g.phase === "vs") {
+      box.innerHTML = '<div class="trvstage"><div class="trvvsbig"><span>' + myAvatar(84) + '<b>' + esc(me.name || "Tu") + '</b></span><i>VS</i><span>' + avatar(o.id, 84) + '<b>' + esc(o.name) + '</b>' + (o.nick ? '<small class="teambadge">Team StatSight</small>' : "") + '</span></div></div>';
+      trvTimer = setTimeout(function () { g.phase = "spin"; saveTrivia(); renderTrivia(); }, REDUCED ? 400 : 1800);
+      return;
+    }
+    var q = g.qs[g.i], th = QTH[q.th];
+    if (g.phase === "spin") {
+      var keys = Object.keys(QTH);
+      box.innerHTML = bar + '<div class="trvstage"><div class="k">Manche ' + (Math.floor(g.i / TRV.perRound) + 1) + ': la ruota sceglie il tema</div><div class="trvspin">' + keys.map(function (k) { return '<span data-k="' + k + '" style="--c:' + QTH[k].c + '">' + ic(QTH[k].ic) + ' ' + QTH[k].name + '</span>'; }).join("") + '</div></div>';
+      var n = 0, steps = REDUCED ? 1 : 14 + keys.indexOf(q.th);
+      trvTick = setInterval(function () {
+        n++; var k = n >= steps ? q.th : keys[n % keys.length];
+        box.querySelectorAll(".trvspin span").forEach(function (x) { x.classList.toggle("on", x.dataset.k === k); });
+        if (n >= steps) { clearInterval(trvTick); trvTimer = setTimeout(function () { g.phase = "q"; saveTrivia(); renderTrivia(); }, REDUCED ? 200 : 900); }
+      }, 110);
+      return;
+    }
+    var nq = (g.i % TRV.perRound) + 1;
+    if (g.phase === "q" && q.t0 == null) { q.t0 = Date.now(); saveTrivia(); }
+    var left = g.phase === "q" ? Math.max(0, TRV.secs - (Date.now() - q.t0) / 1000) : 0;
+    if (g.phase === "q" && left <= 0) { q.me = -1; g.phase = "opp"; saveTrivia(); }   // tempo scaduto (anche chiudendo l'app)
+    var answered = g.phase !== "q", showOp = g.phase === "rev";
+    box.innerHTML = bar + '<div class="trvcard" style="--c:' + th.c + '"><div class="trvtop"><span class="trvtheme">' + ic(th.ic) + ' ' + th.name + '</span><span class="k">Domanda ' + nq + '/' + TRV.perRound + '</span></div>'
+      + '<div class="trvtime"><i style="' + (g.phase === "q" ? "animation-duration:" + left.toFixed(1) + "s" : "width:0;animation:none") + '"></i></div>'
+      + '<div class="trvqq">' + esc(q.q) + '</div><div class="trvopts">' + q.opts.map(function (t, i) {
+        var cls = answered && showOp ? (i === q.ans ? " right" : i === q.me ? " wrong" : "") : i === q.me ? " mine" : "";
+        return '<button class="trvopt' + cls + '" type="button" data-topt="' + i + '"' + (answered ? " disabled" : "") + '><span>' + esc(t) + '</span>'
+          + (i === q.me ? '<span class="trvwho">' + myAvatar(22) + '</span>' : "") + (showOp && i === q.op ? '<span class="trvwho op">' + avatar(o.id, 22) + '</span>' : "") + '</button>';
+      }).join("") + '</div>'
+      + (g.phase === "q" ? '<div class="trvturn">' + ic("clock") + ' Tocca a te · <b id="trvsec">' + Math.ceil(left) + '</b> s</div>'
+        : g.phase === "opp" ? '<div class="trvturn op">' + avatar(o.id, 22) + ' Tocca a ' + esc(o.name) + '<span class="trvdots"><i></i><i></i><i></i></span></div>'
+        : '<div class="trvturn ' + (q.me === q.ans ? "pos" : "neg") + '">' + (q.me === -1 ? "Tempo scaduto" : q.me === q.ans ? "Giusto!" : "Sbagliato") + ' · ' + esc(o.name) + (q.op === q.ans ? " giusto" : " sbagliato") + '</div>'
+          + '<button class="primary block" type="button" data-tnext="1">' + (g.i + 1 >= g.qs.length ? "Vedi il risultato" : "Avanti") + '</button>') + '</div>';
+    if (g.phase === "q") {
+      trvTick = setInterval(function () { var el = $("trvsec"), l2 = Math.max(0, TRV.secs - (Date.now() - q.t0) / 1000); if (el) el.textContent = Math.ceil(l2); }, 250);
+      trvTimer = setTimeout(function () { if (q.me == null) { q.me = -1; g.phase = "opp"; saveTrivia(); renderTrivia(); } }, left * 1000);
+    } else if (g.phase === "opp") {
+      trvTimer = setTimeout(function () { g.phase = "rev"; saveTrivia(); renderTrivia(); }, REDUCED ? 300 : Math.min(2600, 700 + q.opt * 180));
+    }
+  }
+  function trvEndHtml(g) {
+    var o = oppOf(g), R = g.res, by = {};
+    g.qs.forEach(function (q) { var b = by[q.th] = by[q.th] || [0, 0, 0]; b[2]++; if (q.me === q.ans) b[0]++; if (q.op === q.ans) b[1]++; });
+    return '<div class="trvend ' + R.r + '"><div class="trvres">' + (R.r === "win" ? "Hai vinto!" : R.r === "lose" ? "Ha vinto " + esc(o.name) : "Pareggio") + '</div>'
+      + '<div class="trvvsbig sm"><span>' + myAvatar(64) + '<b>' + R.me + '</b></span><i>-</i><span>' + avatar(o.id, 64) + '<b>' + R.op + '</b></span></div>'
+      + '<div class="trvsum">' + Object.keys(by).map(function (k) { return '<div style="--c:' + QTH[k].c + '"><span>' + ic(QTH[k].ic) + ' ' + QTH[k].name + '</span><b>' + by[k][0] + '/' + by[k][2] + '</b><span class="k">' + esc(o.name) + ' ' + by[k][1] + '/' + by[k][2] + '</span></div>'; }).join("") + '</div>'
+      + '<div class="trvcoins">' + ic("coin") + ' +' + R.coins + ' monete <span class="k">(' + R.me + ' giuste × ' + TRV.right + (R.r === "win" ? " + " + TRV.win + " vittoria" : R.r === "draw" ? " + " + TRV.draw + " pari" : "") + ')</span></div>'
+      + '<button class="primary block" type="button" data-tvlobby="1">Fatto</button></div>';
   }
   function fightReady() {   // c'e' ancora qualcosa da giocare oggi: la sfida o uno dei due giochi dentro la sfida
     var f = fightToday(), d = quiz.days[dayKey(nowS())] || {};
@@ -3510,7 +3720,7 @@
   // collegato: toccandolo si vede com'e' adesso (live col punteggio, vinto, perso, in attesa). Si inoltra in Direct
   // come le schedine (codice o link, app/condividi.js). Senza server i tag riconosciuti sono il Team StatSight
   // (@ + il suo id) e tu; gli altri restano testo, finche' col server non ci sono gli utenti veri.
-  var BEET_KEY = "statsight.beet", BEET_MAX = 280, beetDraft = "", beetRef = null, beetMsg = "", beetOpen = {}, beetTop = null;
+  var BEET_KEY = "statsight.beet", BEET_MAX = 280, beetDraft = "", beetRef = null, beetDraftSlip = null, beetMsg = "", beetOpen = {}, beetTop = null;
   function pinTop(list) { var i = list.findIndex(function (x) { return x.beet && x.id === beetTop; }); if (i > 0) list.unshift(list.splice(i, 1)[0]); return list; }
   var beets = (function () { try { var b = JSON.parse(localStorage.getItem(BEET_KEY)); if (Array.isArray(b)) return b; } catch (e) {} return []; })();
   function saveBeets() { try { localStorage.setItem(BEET_KEY, JSON.stringify(beets)); } catch (e) {} }
@@ -3551,6 +3761,9 @@
     return '<div class="card post beet mine"><div class="phead">' + myAvatar(40) + '<span class="pwho"><b translate="no">' + esc(me.name || "Tu") + '</b>'
       + (me.user ? '<span class="k" translate="no">@' + esc(me.user) + '</span>' : "") + '</span><span class="time">' + whenLabel(b.ts) + '</span></div>'
       + '<div class="ptext" translate="no">' + beetText(b.text) + '</div>'
+      + (x ? playTag(x.stake) : "")
+      + (b.draft ? playTag(0, true) + '<div class="beetdraft">' + b.draft.legs.map(function (l) { return '<div class="pickrow"><span>' + (EMOJI[l.sport] || "") + ' ' + esc(l.ename) + ' · <b>' + esc(l.label) + '</b></span><b>' + oddsTxt(l.odds) + '</b></div>'; }).join("")
+        + (b.draft.legs.length > 1 && b.draft.odds ? '<div class="pickrow ptot"><span>Quota totale <b>' + oddsTxt(b.draft.odds) + '</b></span></div>' : "") + '</div>' : "")
       + (x ? '<button class="beetref" type="button" data-beetref="' + esc(b.id) + '">' + (EMOJI[x.sport] || ic("layers")) + ' <span>' + esc(x.event) + (x.label ? ' · <b>' + esc(x.label) + '</b>' : "") + ' @ ' + oddsTxt(x.odds) + '</span>' + ic("chev") + '</button>'
         + (st ? '<div class="beetst ' + st.cls + '">' + ic(st.cls === "pos" ? "check" : st.cls === "neg" ? "x" : st.cls === "live" ? "radar" : "clock") + ' ' + esc(st.txt) + '</div>' : "") : "")
       + '<div class="beetbtns"><button class="chip" type="button" data-beetfwd="' + esc(b.id) + '">' + ic("send") + ' Inoltra</button>'
@@ -3562,8 +3775,15 @@
     if (m) sug = team().filter(function (p) { return teamHandle(p).indexOf(m[1]) === 0; }).slice(0, 6);
     return '<div class="card beetbox"><textarea class="meinput" id="beetin" maxlength="' + BEET_MAX + '" rows="2" placeholder="Scrivi un beet: un pensiero sulla giornata, @ per taggare">' + esc(beetDraft) + '</textarea>'
       + (sug.length ? '<div class="chips beettag">' + sug.map(function (p) { return '<button class="chip" type="button" data-beettag="' + teamHandle(p) + '">@' + teamHandle(p) + ' <span class="k">' + esc(p.name) + '</span></button>'; }).join("") + '</div>' : "")
+      + beetAttach()
       + '<div class="beetrow"><span class="k" id="beetn">' + beetDraft.length + '/' + BEET_MAX + '</span><button class="primary" type="button" data-beetsend="1">' + ic("send") + ' Pubblica</button></div>'
       + (beetMsg ? '<div class="cmsg">' + esc(beetMsg) + '</div>' : "") + '</div>';
+  }
+  function beetAttach() {   // pronostico collegato al post che stai scrivendo
+    var x = beetRef ? histItems().filter(function (h) { return h.key === beetRef; })[0] : null, d = beetDraftSlip;
+    if (!x && !d) return "";
+    var txt = x ? x.event + (x.label ? " · " + x.label : "") + " @ " + oddsTxt(x.odds) : d.legs.map(function (l) { return l.ename + " · " + l.label; }).join(", ");
+    return '<div class="beetatt">' + (x ? playTag(x.stake) : playTag(0, true)) + '<span>' + esc(txt) + '</span><button class="iconbtn sm" type="button" data-beetunatt="1" aria-label="Togli">' + ic("x") + '</button></div>';
   }
   function refreshBeetBox() {
     var box = document.querySelector("#bacheca .beetbox"); if (!box) return;
@@ -3578,7 +3798,8 @@
     // col server un tag vale solo se l'utente esiste
     var why = t.length > BEET_MAX ? "lungo" : checkText(t.replace(/@[a-z0-9_]{3,20}\b/g, "")) || (now - last < 30 ? "fretta" : null);
     if (why) { beetMsg = MOD_MSG[why] || "Riprova."; renderBacheca(); return; }
-    beets.push({ id: "B" + Math.round(now * 1000), ts: now, text: t, ref: beetRef });
+    beets.push({ id: "B" + Math.round(now * 1000), ts: now, text: t, ref: beetRef, draft: beetDraftSlip });
+    beetDraftSlip = null;
     beetTop = beets[beets.length - 1].id;   // appena pubblicato: in cima al feed (video 07/10)
     saveBeets(); beetDraft = ""; beetRef = null; beetMsg = ""; renderBacheca();
   }
@@ -3826,7 +4047,16 @@
         + '<div class="pickrow"><span><b>' + esc(l.label) + '</b> @ ' + oddsTxt(l.odds) + '</span>' + resTag(l.result) + '</div></div>';
     }).join("") + '</div>';
   }
+  // 08/10: si vede la differenza fra una GIOCATA (con le monete) e un PRONOSTICO (senza monete o non giocato)
+  function playTag(stake, draft) {
+    return draft ? '<span class="ptag pron">' + ic("pen") + ' PRONOSTICO · non giocato</span>'
+      : stake ? '<span class="ptag gioc">' + ic("coin") + ' GIOCATA · ' + stake + ' monete</span>' : '<span class="ptag pron">' + ic("pen") + ' PRONOSTICO · senza monete</span>';
+  }
   function pickBody(x) {
+    if (x.key && x.key[0] === "s") return playTag(x.stake) + pickBody0(x);
+    return pickBody0(x);
+  }
+  function pickBody0(x) {
     if (!x.legs) return '<div class="pickrow"><span>' + (x.label ? '<b>' + esc(x.label) + '</b> ' : "") + '@ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div>';
     return legsHtml(x.legs) + '<div class="pickrow ptot"><span>Quota totale <b>' + oddsTxt(x.odds) + '</b>' + (x.points != null ? ' · ' + signed(x.points) + ' punti' : "") + '</span>' + resTag(x.result) + '</div>';
   }
@@ -3887,7 +4117,7 @@
       html += '<div class="' + (me.hist ? "" : "histoff") + '">' + (items.length ? items.map(function (x) {
         return '<div class="card post" data-pick="' + esc(x.key) + '" role="button" tabindex="0"><div class="pev" style="margin-top:0;">' + (EMOJI[x.sport] || ic("layers")) + ' ' + esc(x.event) + '<span class="k"> · ' + whenLabel(x.ts) + '</span>' + ic("chev", "pchev") + '</div>'
           + (x.text ? '<div class="ptext" translate="no">' + esc(x.text) + '</div>' : "")
-          + pickBody(x) + '</div>';
+          + pickBody(x) + (x.key[0] === "s" ? '<div class="pshare"><button class="chip" type="button" data-pshare="post:' + esc(x.key) + '">' + ic("chat") + ' Pubblica come post</button><button class="chip" type="button" data-pshare="dm:' + esc(x.key) + '">' + ic("send") + ' Manda in Direct</button></div>' : "") + '</div>';
       }).map(function (h, i) { return esitiHi[items[i].key] ? h.replace('class="card post" ', 'class="card post isnew" ').replace('<span class="k"> · ', '<span class="newtag">NUOVO</span><span class="k"> · ') : h; }).join("")
         : '<div class="note">Nessun pronostico ancora: premi le monete qui sopra e scegli una partita.</div>') + '</div>';
       $("bacheca").innerHTML = html; paintDots(); if (!inTick) setTimeout(newsTick, 0); return;
@@ -4164,14 +4394,14 @@
     var m = Math.max(1, Math.ceil((d.getTime() - Date.now()) / 60000)), h = Math.floor(m / 60);
     return h ? h + "h " + String(m % 60).padStart(2, "0") + "m" : m + "m";
   }
-  function dailyBtn(kind, icon, label, ready) {
+  function dailyBtn(kind, icon, label, ready, txt) {
     return '<button class="iconbtn wheelbtn daily' + (ready ? " ready" : "") + '" type="button" data-' + kind + '="1" aria-label="' + esc(label) + '">' + ic(icon)
-      + (ready ? '<span class="ndot"></span>' : "") + '<span class="cdn">' + (ready ? "pronto" : untilTomorrow()) + '</span></button>';
+      + (ready ? '<span class="ndot"></span>' : "") + '<span class="cdn">' + (ready ? "pronto" : txt || untilTomorrow()) + '</span></button>';
   }
   function renderMebar(R2, title) {
     $("mebar").innerHTML = '<div class="mebar"><button class="meav" type="button" data-mio="1" aria-label="Il tuo profilo">' + myAvatar(46)
       + '<span class="mew"><b translate="no">' + esc(me.name || "Il tuo profilo") + '</b><span class="k"><span>' + esc(title) + '</span> · <span>livello ' + R2.level + '</span></span></span></button>'
-      + '<span id="mebtns">' + dailyBtn("fight", "vs", "StatsFight", fightReady()) + dailyBtn("ruota", "wheel", "Ruota del giorno", !wheelToday()) + '</span>'
+      + '<span id="mebtns">' + dailyBtn("fight", "vs", "StatsFight", triviaWait() === 0, triviaWait() > 0 ? Math.ceil(triviaWait() / 60) + "m" : null) + dailyBtn("ruota", "wheel", "Ruota del giorno", !wheelToday()) + '</span>'
       + '<button class="coinbar coinpill" type="button" data-megioca="1" aria-label="Monete: scegli le partite">' + ic("coin") + '<b>' + R2.coins + '</b></button></div>'
       + chestHtml(R2);
   }
@@ -4679,6 +4909,8 @@
       + (slipMsg ? '<div class="cmsg">' + esc(slipMsg) + '</div>' : "")
       + '<button class="primary block" type="button" id="slipgo"' + (errs.length ? " disabled" : "") + ' style="margin-top:10px;">' + ic("send") + ' Pubblica il pronostico</button>'
       + '<div class="k" style="margin-top:8px;">Vale la quota che vedi (dati di ' + ageTxt((data.diario && data.diario.at) || nowS()) + '). Lo chiudiamo noi con il risultato della partita, con lo stesso regolamento dei bookmaker. Nessun soldo in gioco: valgono punti, livelli e lega.</div>'
+      + '<div class="pshare"><button class="chip" type="button" data-pshare="post:cur">' + ic("chat") + ' Pubblica come pronostico</button><button class="chip" type="button" data-pshare="dm:cur">' + ic("send") + ' Manda in Direct</button></div>'
+      + '<div class="k">Senza confermare non è una giocata: nella Home si vede come pronostico, senza monete.</div>'
       + '<button class="linkbtn" type="button" id="slipclear">' + ic("trash") + ' Svuota</button>';
     $("schedina").innerHTML = html;
   }
@@ -5022,6 +5254,7 @@
     renderSchedina(); show("schedina");
   });
   $("slipbar").addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && e.target.id === "slipbar") { e.preventDefault(); renderSchedina(); show("schedina"); } });
+  $("schedina").addEventListener("click", function (e) { var ps = e.target.closest("[data-pshare]"); if (ps && data) sharePick(ps.dataset.pshare); });
   $("schedina").addEventListener("change", function (ev) {
     if (ev.target.id !== "stakein") return;
     var v = Math.round(Number(ev.target.value)); if (v > 0) { slip.stake = v; saveSlip(); } renderSchedina();
@@ -5742,6 +5975,29 @@
     }
     $("pick").innerHTML = html; show("pick"); window.scrollTo(0, 0);
   }
+  // condividi un pronostico (08/10): come post nella Home (beet collegato) o in Direct (codice o link)
+  function sharePick(v) {
+    var kind = v.split(":")[0], key = v.slice(kind.length + 1);
+    if (kind === "post") {
+      beetRef = key === "cur" ? null : key; beetDraftSlip = key === "cur" ? draftOfSlip() : null;
+      bview = "home"; renderBacheca(); show("profilo");
+      setTimeout(function () { var t = $("beetin"); if (t) { t.scrollIntoView({ block: "center" }); t.focus(); } }, 50);
+      return;
+    }
+    var S0;
+    if (key === "cur") S0 = { mode: slip.mode, k: slip.k, stake: 0, by: me.name || "", legs: slip.legs.map(function (l) { return { event: l.event, sport: l.sport, code: l.code, odds: l.odds, ename: l.ename, label: l.label }; }) };
+    else {
+      var sid = /^s([^-]+)/.exec(key)[1], s0 = mySlips.filter(function (x) { return String(x.id) === sid; })[0]; if (!s0) return;
+      S0 = slipOfMine(s0);
+      if (s0.mode === "singole" && /-(\d+)$/.test(key)) S0.legs = [S0.legs[Number(/-(\d+)$/.exec(key)[1])]].filter(Boolean);
+    }
+    shareOut = SH.encode(S0); curConv = null; directMsg = ""; renderDirect(); show("direct"); window.scrollTo(0, 0);
+  }
+  function draftOfSlip() {
+    return { mode: slip.mode, k: slip.k, odds: Regole.totalOdds(slip.mode, slip.k, slip.legs.map(function (l) { return l.odds; })),
+             legs: slip.legs.map(function (l) { return { event: l.event, sport: l.sport, ename: l.ename, label: l.label, odds: l.odds }; }) };
+  }
+  $("bacheca").addEventListener("click", function (e) { var ps = e.target.closest("[data-pshare]"); if (ps && data) { sharePick(ps.dataset.pshare); return; } });
   $("bacheca").addEventListener("click", function (e) { var c = e.target.closest("[data-pick]"); if (c && data && !e.target.closest("button")) renderPick(c.dataset.pick); });
   $("bacheca").addEventListener("keydown", function (e) { var c = e.target.closest("[data-pick]"); if (c && data && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); renderPick(c.dataset.pick); } });
 
@@ -6111,6 +6367,26 @@
   });
   $("fight").addEventListener("click", function (e) {
     if (!data) return;
+    var tb = e.target.closest("[data-tvgo],[data-topt],[data-tnext],[data-tvlobby]"); if (!tb) return;
+    var g = triviaCur();
+    if (tb.dataset.tvgo) {
+      if (triviaWait() !== 0 || trvSearch) return;
+      trvSearch = true; renderTrivia();
+      setTimeout(function () { trvSearch = false; if (!newTrivia()) fxToast("info", "Servono più dati per le domande: riprova più tardi"); renderTrivia(); renderProfilo(); }, REDUCED ? 0 : 1300);
+    } else if (tb.dataset.topt && g && g.phase === "q") {
+      g.qs[g.i].me = Number(tb.dataset.topt); g.phase = "opp"; saveTrivia(); renderTrivia();
+    } else if (tb.dataset.tnext && g && g.phase === "rev") {
+      g.i++;
+      if (g.i >= g.qs.length) {
+        var before = coinShown(); trvFinish(g); trvEnd = g; renderTrivia(); renderProfilo(); renderOcchio();
+        if (g.res.coins) fxCoins($("fight"), Math.min(14, 4 + Math.round(g.res.coins / 5)), before, before == null ? null : before + g.res.coins);
+        if (g.res.r === "win") sndWin();
+      } else { g.phase = g.i % TRV.perRound === 0 ? "spin" : "q"; saveTrivia(); renderTrivia(); }
+      $("view-fight").scrollTop = 0; window.scrollTo(0, 0);
+    } else if (tb.dataset.tvlobby) { trvEnd = null; renderTrivia(); }
+  });
+  $("fight").addEventListener("click", function (e) {
+    if (!data) return;
     var b = e.target.closest("button"); if (!b) return;
     if (b.dataset.flobby) { fightOpen = null; renderFight(); window.scrollTo(0, 0); return; }
     if (b.dataset.fopen) { fightOpen = b.dataset.fopen; renderFight(); $("view-fight").scrollTop = 0; return; }
@@ -6147,7 +6423,7 @@
     if (b.dataset.mio) { renderProfilo(); show("mio"); window.scrollTo(0, 0); return; }
     if (b.dataset.megioca) { show("diario"); window.scrollTo(0, 0); return; }
     if (b.dataset.ruota) { renderRuota(); show("ruota"); window.scrollTo(0, 0); return; }
-    if (b.dataset.fight) { settleFights(); fightOpen = null; renderFight(); show("fight"); window.scrollTo(0, 0); }
+    if (b.dataset.fight) { settleFights(); openTrivia(); }
   });
   $("occhiolevel").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-buyjolly]"); if (!b || !data) return;
@@ -6254,6 +6530,7 @@
       if (!data) return;
       var bb = e.target.closest("button");
       if (bb && bb.dataset.beettag) { beetDraft = beetDraft.replace(/@[a-z0-9_]*$/, "@" + bb.dataset.beettag + " "); refreshBeetBox(); return; }
+      if (bb && bb.dataset.beetunatt) { beetRef = null; beetDraftSlip = null; refreshBeetBox(); return; }
       if (bb && bb.dataset.beetpick) { beetRef = beetRef === bb.dataset.beetpick ? null : bb.dataset.beetpick; refreshBeetBox(); return; }
       if (bb && bb.dataset.beetsend) { beetSend(); return; }
       if (bb && bb.dataset.beetref) { beetOpen[bb.dataset.beetref] = !beetOpen[bb.dataset.beetref]; renderBacheca(); return; }
@@ -6351,7 +6628,7 @@
     else if (k === "miei") { bview = "miei"; mieiF = "tutti"; renderBacheca(); show("profilo"); }
     else if (k === "occhio") { renderOcchio(); show("occhio"); }
     else if (k === "ruota") { renderRuota(); show("ruota"); }
-    else if (k === "fight") { settleFights(); fightOpen = null; renderFight(); show("fight"); }
+    else if (k === "fight") { settleFights(); openTrivia(); }
     else if (k === "album") { renderAlbum(); show("album"); }
     else if (k === "leghe") { openLeghe(); }
     else if (k === "team") { if (me.team) { dview = "pre"; renderDiario(); show("diario"); } }
@@ -6414,7 +6691,7 @@
     var k = g.dataset.attgo;
     if (k === "miei") { bview = "miei"; mieiF = "tutti"; renderBacheca(); show("profilo"); }
     else if (k === "segnali") { segv = "nuovi"; renderFeed(); show("segnali"); }
-    else if (k === "fight") { settleFights(); fightOpen = null; renderFight(); show("fight"); }
+    else if (k === "fight") { settleFights(); openTrivia(); }
     else if (k.slice(0, 2) === "m:") { openMatch(k.slice(2)); return; }
     else if (k.slice(0, 2) === "s:") { renderSignal(Number(k.slice(2))); var bk = document.querySelector("#view-segnale .back"); if (bk) { bk.dataset.back = "attivita"; bk.textContent = "‹ Notifiche"; } }
     else if (k.slice(0, 2) === "p:") { renderPersona(k.slice(2)); return; }
