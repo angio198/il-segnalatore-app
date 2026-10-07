@@ -892,6 +892,7 @@
   .bldrow:last-child{border-bottom:none;} .bldic{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--bg);flex:none;overflow:hidden;} .bldic img{border-radius:50%;}
   .bldw{flex:1;min-width:0;display:flex;flex-direction:column;} .bldw .k{font-size:0.74rem;}
   .bldf{min-width:22px;height:22px;padding:0 6px;border-radius:999px;display:grid;place-items:center;background:#FFB400;color:#111;font-weight:900;font-size:0.76rem;}
+  .creator{display:flex;gap:10px;align-items:flex-start;background:linear-gradient(135deg,rgba(255,180,0,.18),var(--surface));} .creator > span{display:flex;flex-direction:column;gap:4px;} .creator .ico{width:28px;height:28px;flex:none;}
   .tplhead{display:flex;align-items:center;gap:6px;font-weight:800;font-size:0.84rem;margin:12px 2px 6px;}
   .tplbar{display:flex;flex-direction:column;gap:8px;align-items:flex-start;font-size:0.86rem;}
   .bldsp{display:flex;flex-direction:column;gap:8px;border:2px solid var(--accent);}
@@ -7153,7 +7154,7 @@
           var L = TPL().filter(function (t) { return t.sport === sp; });
           return '<div class="tplhead">' + EMOJI[sp] + ' ' + NAME[sp] + ' <span class="k">' + L.length + '</span></div><div class="card">' + L.map(function (b) { return bldRow(b, "btpl"); }).join("") + '</div>';
         }).join("")
-        + '<h2 class="sectiontitle">Della community</h2><div class="note">Le strategie pubbliche degli altri utenti arrivano con l\'app pubblica: le potrai aprire e copiare.</div>';
+        + '<h2 class="sectiontitle">Dei creator</h2><div class="card creator">' + ic("trophy") + '<span><b>Diventa creator</b><span class="k">Rendi pubblica la tua strategia: con l\'app pubblica gli altri la provano, la seguono e la possono comprare. A ogni vendita una parte va a te.</span></span></div>';
       return;
     }
     var R = bldRun(bld), probs = bldRO ? [] : bldProblems(bld), sel = bldSel ? bNode(bldSel) : null;
@@ -7398,6 +7399,9 @@
         { id: "g1", t: "gioca", x: 560, y: 10, p: { pick: "FAV", min: 2 } }, { id: "g2", t: "gioca", x: 560, y: 90, p: { pick: "DCFAV", min: 1.5 } }, { id: "g3", t: "gioca", x: 560, y: 170, p: { pick: "FAVSC", min: 1.5 } }],
       wires: [{ f: "s", o: 0, t: "f" }, { f: "f", o: 0, t: "d" }, { f: "d", o: 0, t: "g1" }, { f: "d", o: 1, t: "g2" }, { f: "d", o: 2, t: "g3" }] });
     out.forEach(function (b) { if (b.nodes.length === 3 && b.nodes[2].x === 0) b.nodes[2].x = b.nodes[1].x + nW(b.nodes[1], b) + 50; });
+    // 08/10 sera, decisione utente: poche nostre per sport (4-5) e spazio ai creator
+    var KEEP = ["T_btf", "T_ltd", "T_under25_00", "T_fav_sotto_fasi", "T_next_pressing", "T_t_dog_serve", "T_t_fav_lost_set", "T_t_fav_pre"];
+    out = out.filter(function (b) { return KEEP.indexOf(b.id) >= 0; });
     TPL_CACHE = out;
     return out;
   }

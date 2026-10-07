@@ -21,6 +21,9 @@ window.I18N_EN = {
   "Trading sul servizio (punta prima": "Trading on serve (back before",
   "banca dopo)": "lay after)",
   // <<< generate da i18n_aggiungi.py
+  "Dei creator": "From creators",
+  "Diventa creator": "Become a creator",
+  "Rendi pubblica la tua strategia: con l'app pubblica gli altri la provano, la seguono e la possono comprare. A ogni vendita una parte va a te.": "Make your strategy public: with the public app others try it, follow it and can buy it. Part of every sale goes to you.",
   "Tempo (1 o 2)": "Half (1 or 2)",
   "Gol della favorita": "Favourite's goals",
   "Gol della sfavorita": "Underdog's goals",

@@ -3,6 +3,9 @@
 // in tutti e due i file (prova: node app/prova_spagnolo.js controlla che le chiavi siano le stesse).
 // In spagnolo i decimali restano con la virgola ("1,81").
 window.I18N_ES = {
+  "Dei creator": "De los creadores",
+  "Diventa creator": "Hazte creador",
+  "Rendi pubblica la tua strategia: con l'app pubblica gli altri la provano, la seguono e la possono comprare. A ogni vendita una parte va a te.": "Haz pública tu estrategia: con la app pública los demás la prueban, la siguen y la pueden comprar. Parte de cada venta es para ti.",
   "Tempo (1 o 2)": "Tiempo (1 o 2)",
   "Gol della favorita": "Goles del favorito",
   "Gol della sfavorita": "Goles del no favorito",
