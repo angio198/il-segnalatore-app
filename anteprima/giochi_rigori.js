@@ -1,6 +1,9 @@
 // StatsFight giochi (prototipo 09/10): sfida ai rigori. Tiri tu, para l'altro, poi il contrario: 5 a testa, poi a
 // oltranza. Tiro: trascina il dito dal pallone verso la porta (direzione = dove, lunghezza = altezza, troppo veloce
-// = alto) oppure tocca un punto della porta. In porta: tocca (o trascina) dove tuffarti, prima che parta il tiro.
+// = alto) oppure tocca un punto della porta. Tiro a effetto (09/10): tieni premuto sul pallone e disegna la
+// traiettoria (al massimo 1,5 secondi): la palla la rifa' identica; se non finisce dentro la porta e' fuori. Il
+// portiere sceglie dove buttarsi e arriva li' esattamente quando arriva la palla.
+// In porta: tocca (o trascina) dove tuffarti, prima che parta il tiro.
 (function () {
   "use strict";
   var G = window.G, $ = G.$;
@@ -15,7 +18,7 @@
     var dots = function (a) { var out = a.map(function (x) { return '<i class="' + (x ? "g" : "m") + '"></i>'; }); while (out.length < 5) out.push("<i></i>"); return out.join(""); };
     $("rdme").innerHTML = dots(st.me); $("rdcpu").innerHTML = dots(st.cpu);
     $("rsc").textContent = sum(st.me) + " - " + sum(st.cpu);
-    $("rhelp").textContent = st.turn === "me" ? "Tiri tu: trascina il dito dal pallone verso la porta (più lungo = più alto, troppo veloce = vola alto). Oppure tocca un punto della porta."
+    $("rhelp").textContent = st.turn === "me" ? "Tiri tu: trascina il dito dal pallone verso la porta (più lungo = più alto, troppo veloce = vola alto) o tocca un punto della porta. Tiro a effetto: tieni premuto sul pallone e disegna la traiettoria (1,5 secondi al massimo): deve finire dentro la porta."
       : "Sei in porta: tocca dove tuffarti (o trascina il dito verso quel lato) prima che l'avversario calci. Se non tocchi resti al centro.";
   }
   function sum(a) { return a.reduce(function (s, x) { return s + (x ? 1 : 0); }, 0); }
@@ -30,9 +33,10 @@
     hud();
     if (st.turn === "cpu") { st.phase = "run"; st.runT = st.t + 0.9; }   // l'avversario prende la rincorsa: hai un attimo per scegliere
   }
-  function shoot(target, speed) {   // target in coordinate porta; speed 0.5 lento .. 1 normale .. 1.6 forte
+  function shoot(target, speed, path) {   // target in coordinate porta; speed 0.5 lento .. 1 normale .. 1.6 forte
     var now = performance.now() / 1000;
-    st.kick = { x: target.x, y: target.y, speed: speed, t0: now, dur: speed < 0.75 ? 0.75 : speed > 1.3 ? 0.42 : 0.55 };
+    st.kick = { x: target.x, y: target.y, speed: speed, t0: now, dur: speed < 0.75 ? 0.75 : speed > 1.3 ? 0.42 : 0.55, path: path || null };
+    if (path) st.kick.dur = path.dur;
     st.phase = "fly";
     // il portiere si tuffa al calcio
     if (st.turn === "me") {
@@ -40,7 +44,7 @@
       if (r < 0.15) dir = { x: 0, y: G.rnd(0.1, 0.6) };
       else if (r < 0.15 + (speed < 0.75 ? 0.55 : 0.3)) dir = { x: G.clamp(target.x + G.rnd(-0.25, 0.25), -0.9, 0.9), y: G.clamp(target.y + G.rnd(-0.3, 0.3), 0.05, 0.95) };   // la legge
       else dir = { x: G.pick([-1, 1]) * G.rnd(0.45, 0.9), y: G.rnd(0.05, 0.9) };
-      st.keeper.tx = dir.x; st.keeper.ty = dir.y; st.keeper.t0 = now + 0.05;
+      st.keeper.tx = dir.x; st.keeper.ty = dir.y; st.keeper.t0 = now + Math.max(0.05, st.kick.dur - 0.42);   // arriva insieme alla palla
     } else {
       var k = st.keepTarget || { x: 0, y: 0.2 };
       st.keeper.tx = G.clamp(k.x, -0.92, 0.92); st.keeper.ty = G.clamp(k.y, 0.05, 0.95); st.keeper.t0 = now + 0.08;
@@ -85,16 +89,40 @@
     st.phase = "end"; st.celebrate = { win: win, t0: performance.now() / 1000 };
     var nuovi = win ? UI.onWin("rigori") : (G.pg.giocate++, G.savePg(), []);
     $("rover").innerHTML = '<div style="margin-top:auto"></div><b>' + (win ? "Hai vinto " : "Hai perso ") + sum(st.me) + "-" + sum(st.cpu) + '</b>'
-      + (nuovi.length ? '<div class="k">Sbloccato: ' + nuovi.join(", ") + '</div>' : "") + '<button class="primary" type="button" id="ragain">Rivincita</button>';
+      + (nuovi.length ? '<div class="k">' + nuovi.join(" · ") + '</div>' : "") + '<button class="primary" type="button" id="ragain">Rivincita</button>';
     $("rover").style.justifyContent = "flex-end"; $("rover").style.background = "linear-gradient(transparent 55%, rgba(8,14,18,.85))"; $("rover").hidden = false;
     $("ragain").onclick = newGame;
   }
 
   // ------------------------------------------------------------------ comandi
-  cv.addEventListener("pointerdown", function (e) { if (!st) return; var p = G.pt(cv, e); drag = { x: p.x, y: p.y, t: performance.now(), cx: p.x, cy: p.y }; try { cv.setPointerCapture(e.pointerId); } catch (er) {} });
-  cv.addEventListener("pointermove", function (e) { if (drag) { var p = G.pt(cv, e); drag.cx = p.x; drag.cy = p.y; } });
+  var DRAW_HOLD = 280, DRAW_MAX = 1500;
+  cv.addEventListener("pointerdown", function (e) {
+    if (!st) return; var p = G.pt(cv, e); drag = { x: p.x, y: p.y, t: performance.now(), cx: p.x, cy: p.y, moved: false, pts: null };
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+    var g = geo(), near = Math.hypot(p.x - g.spotX, p.y - g.spotY) < S.W * 0.16;
+    if (st.turn === "me" && st.phase === "aim" && near) drag.hold = setTimeout(function () {   // tenuto premuto: si disegna
+      if (drag && !drag.moved) { drag.pts = [{ x: g.spotX, y: g.spotY - 9, t: 0 }]; drag.t = performance.now(); drag.end = setTimeout(function () { finishDraw(); }, DRAW_MAX); }
+    }, DRAW_HOLD);
+  });
+  cv.addEventListener("pointermove", function (e) {
+    if (!drag) return; var p = G.pt(cv, e); drag.cx = p.x; drag.cy = p.y;
+    if (Math.hypot(p.x - drag.x, p.y - drag.y) > 10 && !drag.pts) { drag.moved = true; clearTimeout(drag.hold); }
+    if (drag.pts) drag.pts.push({ x: p.x, y: p.y, t: (performance.now() - drag.t) / 1000 });
+  });
+  function finishDraw() {
+    if (!drag || !drag.pts) return; var d = drag; drag = null; clearTimeout(d.hold); clearTimeout(d.end);
+    var pts = d.pts; if (pts.length < 3) return;
+    var g = geo(), last = pts[pts.length - 1], end = toGoal(g, last.x, last.y), dur = G.clamp(last.t, 0.45, 1.5);
+    // dentro la porta solo se l'ultimo punto e' fra i pali e sotto la traversa; altrimenti fuori (largo, alto o corto)
+    var inGoal = Math.abs(end.x) < 1 && end.y > 0 && end.y < 1;
+    var tgt = inGoal ? end : { x: Math.abs(end.x) >= 1 ? end.x : (end.x < 0 ? -1.2 : 1.2), y: end.y >= 1 ? end.y : end.y <= 0 ? 1.2 : end.y };
+    if (!inGoal && end.y <= 0) tgt = { x: 1.25, y: 0.3 };   // non arriva in porta: fuori
+    kickMe(tgt, 1, { pts: pts, dur: dur });
+  }
   cv.addEventListener("pointerup", function (e) {
-    if (!drag || !st) return; var d = drag; drag = null;
+    if (!drag || !st) return; clearTimeout(drag.hold);
+    if (drag.pts) { finishDraw(); return; }
+    var d = drag; drag = null;
     var g = geo(), p = G.pt(cv, e), dx = p.x - d.x, dy = p.y - d.y, len = Math.hypot(dx, dy), dt = Math.max(30, performance.now() - d.t);
     if (st.turn === "me" && st.phase === "aim") {
       if (len < 12) {   // tocco sulla porta: tiro preciso a velocita' normale
@@ -114,14 +142,14 @@
       if (st.phase === "fly") { st.keeper.tx = st.keepTarget.x; st.keeper.ty = st.keepTarget.y; }
     }
   });
-  function kickMe(t, speed) { st.phase = "run"; st.runT = performance.now() / 1000 + 0.45; st.pending = { t: t, speed: speed }; }
+  function kickMe(t, speed, path) { st.phase = "run"; st.runT = performance.now() / 1000 + 0.45; st.pending = { t: t, speed: speed, path: path || null }; }
 
   // ------------------------------------------------------------------ disegno
   function frame() {
     if (!S || !st) return;
     var c = S.c, W = S.W, H = S.H, g = geo(), now = performance.now() / 1000;
     // passaggi di stato a tempo
-    if (st.phase === "run" && now >= st.runT) { if (st.turn === "me") { var pd = st.pending; st.pending = null; shoot(pd.t, pd.speed); } else cpuKick(); }
+    if (st.phase === "run" && now >= st.runT) { if (st.turn === "me") { var pd = st.pending; st.pending = null; shoot(pd.t, pd.speed, pd.path); } else cpuKick(); }
     if (st.phase === "fly" && now - st.kick.t0 >= st.kick.dur) finishKick();
     // campo
     var sky = c.createLinearGradient(0, 0, 0, g.base); sky.addColorStop(0, "#0E2034"); sky.addColorStop(1, "#21405C"); c.fillStyle = sky; c.fillRect(0, 0, W, g.base);
@@ -163,6 +191,11 @@
       var ft = G.clamp((now - st.kick.t0) / st.kick.dur, 0, 1), o = st.phase === "result" ? st.res : null;
       var tx = GX(g, st.kick.x), ty = GY(g, st.kick.y) - 8;
       bx = G.lerp(g.spotX, tx, ft); by = G.lerp(g.spotY - 9, ty, ft) - Math.sin(ft * Math.PI) * 25; br = G.lerp(br, br * 0.5, ft);
+      if (st.kick.path && !o) {   // tiro disegnato: la palla rifa' la traiettoria coi tempi del dito
+        var P = st.kick.path.pts, tt = ft * st.kick.path.dur, j = 1; while (j < P.length - 1 && P[j].t < tt) j++;
+        var a0 = P[j - 1], a1 = P[j], kf = a1.t > a0.t ? G.clamp((tt - a0.t) / (a1.t - a0.t), 0, 1) : 1;
+        bx = G.lerp(a0.x, a1.x, kf); by = G.lerp(a0.y, a1.y, kf); br = G.lerp(11 * shS * 1.4, 11 * shS * 0.7, G.clamp((g.spotY - by) / (g.spotY - g.base), 0, 1));
+      }
       if (o === "parata" || o === "palo" || o === "traversa") { var rt = G.clamp((now - st.msgT) * 1.5, 0, 1); bx = tx + (st.kick.x < 0 ? -1 : 1) * rt * W * 0.25 * (o === "traversa" ? 0.3 : 1); by = ty + rt * (o === "traversa" ? -H * 0.15 : H * 0.12); }
       if (o === "gol") { var gt = G.clamp((now - st.msgT) * 2, 0, 1); by = ty + gt * 6; br *= 1 - gt * 0.15; }
     }
@@ -170,11 +203,14 @@
     G.drawGuy(c, shAv, sx, sy, shS, shPose, { back: true });
     G.drawBall(c, bx, by, br, (st.turn === "me" ? G.av : cpuAv).pallone, st.kick ? (now - st.kick.t0) * 12 : 0);
     // mira mentre trascini
-    if (drag && st.turn === "me" && st.phase === "aim") { c.strokeStyle = "rgba(255,255,255,.7)"; c.setLineDash([6, 6]); c.lineWidth = 3; c.beginPath(); c.moveTo(drag.x, drag.y); c.lineTo(drag.cx, drag.cy); c.stroke(); c.setLineDash([]); }
+    if (drag && drag.pts) { c.strokeStyle = "#E8A252"; c.lineWidth = 4; c.lineJoin = "round"; c.beginPath(); drag.pts.forEach(function (q, i) { c[i ? "lineTo" : "moveTo"](q.x, q.y); }); c.stroke();
+      var left = Math.max(0, 1.5 - (performance.now() - drag.t) / 1000); c.font = "800 14px Archivo"; c.fillStyle = "#E8A252"; c.textAlign = "center"; c.fillText("Disegna il tiro: " + left.toFixed(1) + " s", W / 2, H * 0.72); }
+    else if (st.kick && st.kick.path && st.phase === "fly") { c.strokeStyle = "rgba(232,162,82,.35)"; c.lineWidth = 3; c.beginPath(); st.kick.path.pts.forEach(function (q, i) { c[i ? "lineTo" : "moveTo"](q.x, q.y); }); c.stroke(); }
+    else if (drag && st.turn === "me" && st.phase === "aim") { c.strokeStyle = "rgba(255,255,255,.7)"; c.setLineDash([6, 6]); c.lineWidth = 3; c.beginPath(); c.moveTo(drag.x, drag.y); c.lineTo(drag.cx, drag.cy); c.stroke(); c.setLineDash([]); }
     if (st.keepTarget && st.turn === "cpu" && st.phase !== "result") { c.strokeStyle = "#E8A252"; c.lineWidth = 3; c.beginPath(); c.arc(GX(g, st.keepTarget.x), GY(g, st.keepTarget.y), 14, 0, G.TAU); c.stroke(); }
     // scritta
     if (st.phase === "result" && st.msg) { var a = Math.min(1, (now - st.msgT) * 4); c.save(); c.globalAlpha = a; c.font = "800 " + Math.round(W * 0.1) + "px Archivo"; c.textAlign = "center"; c.lineWidth = 6; c.strokeStyle = "rgba(0,0,0,.6)"; c.strokeText(st.msg, W / 2, H * 0.55); c.fillStyle = st.msgGood ? "#6FBE92" : "#E08268"; c.fillText(st.msg, W / 2, H * 0.55); c.restore(); }
-    if (st.phase === "aim" && st.turn === "me") { c.font = "700 14px Archivo"; c.fillStyle = "rgba(255,255,255,.85)"; c.textAlign = "center"; c.fillText("Trascina verso la porta", W / 2, H * 0.72); }
+    if (st.phase === "aim" && st.turn === "me") { c.font = "700 14px Archivo"; c.fillStyle = "rgba(255,255,255,.85)"; c.textAlign = "center"; if (!drag) c.fillText("Trascina verso la porta · tieni premuto per l'effetto", W / 2, H * 0.72); }
     if (st.turn === "cpu" && st.phase === "run" && !st.keepTarget) { c.font = "700 14px Archivo"; c.fillStyle = "#E8A252"; c.textAlign = "center"; c.fillText("Tocca dove tuffarti!", W / 2, H * 0.55); }
     // fine: esultanza (o delusione) del tuo omino
     if (st.phase === "end") {
@@ -185,7 +221,7 @@
   }
   window.Rigori = {
     show: function () { if (!st) newGame(); else hud(); },
-    resize: function () { S = G.setup(cv, 1.25); },
+    resize: function () { S = G.setup(cv, 1.25, 190); },
     frame: frame
   };
 })();

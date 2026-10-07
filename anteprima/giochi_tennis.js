@@ -31,7 +31,7 @@
     st.ball = null; st.phase = "serve"; st.serve.tossT = null; st.lastHit = null; st.bounces = 0;
     // chi batte sta dietro la linea, dal lato giusto; chi risponde in diagonale
     if (sv === 0) { st.me.u = st.me.tu = ds ? 0.35 : -0.35; st.cpu.u = ds ? -0.55 : 0.55; }
-    else { st.cpu.u = ds ? -0.35 : 0.35; st.me.u = st.me.tu = ds ? 0.55 : -0.55; st.cpuServeAt = performance.now() / 1000 + 1.0; }
+    else { st.cpu.u = ds ? -0.35 : 0.35; st.me.u = st.me.tu = ds ? 0.55 : -0.55; st.cpuServeAt = performance.now() / 1000 + 1.4; }
     hud();
   }
   // geometria: u -1..1 (corridoi esclusi), v 0 = tua linea di fondo, 1 = quella della CPU, rete a 0,5
@@ -61,7 +61,7 @@
     st.phase = "end"; st.celebrate = { win: win, t0: performance.now() / 1000 };
     var nuovi = win ? UI.onWin("tennis") : (G.pg.giocate++, G.savePg(), []);
     $("tover").innerHTML = '<div style="margin-top:auto"></div><b>' + (win ? "Hai vinto " : "Hai perso ") + st.games[0] + "-" + st.games[1] + '</b>'
-      + (nuovi.length ? '<div class="k">Sbloccato: ' + nuovi.join(", ") + '</div>' : "") + '<button class="primary" type="button" id="tagain">Rivincita</button>';
+      + (nuovi.length ? '<div class="k">' + nuovi.join(" · ") + '</div>' : "") + '<button class="primary" type="button" id="tagain">Rivincita</button>';
     $("tover").style.justifyContent = "flex-end"; $("tover").style.background = "linear-gradient(transparent 55%, rgba(8,14,18,.85))"; $("tover").hidden = false;
     $("tagain").onclick = newGame;
   }
@@ -69,20 +69,20 @@
   function myServeTap(dirX) {
     var now = performance.now() / 1000;
     if (st.serve.tossT == null) { st.serve.tossT = now; return; }
-    var k = (now - st.serve.tossT) / 1.0, good = Math.abs(k - 0.5);   // meglio con la palla al punto piu' alto
+    var k = (now - st.serve.tossT) / TOSS, good = Math.abs(k - 0.5);   // meglio con la palla al punto piu' alto
     var ds = deuceSide(), side = ds ? -1 : 1;
     var tu = side * (dirX ? (dirX * side > 0 ? 0.85 : 0.12) : 0.5), tv = 0.72;
     var err = good > 0.3 ? 0.6 : good > 0.18 ? 0.25 : 0.06;
     if (Math.random() < err) { tv = Math.random() < 0.5 ? 0.82 : 0.6; tu += G.rnd(-0.3, 0.3) * (Math.random() < 0.5 ? 1 : 2); }
-    st.phase = "serving"; st.me.swing = now;
-    shot({ u: st.me.u, v: ME_V, z: 0.55 }, tu + G.rnd(-0.05, 0.05), tv + G.rnd(-0.04, 0.04), 0.8, 0);
+    st.phase = "serving"; st.me.serveT = now;
+    shot({ u: st.me.u - 0.1, v: ME_V, z: tossZ(st.serve.tossT, now) }, tu + G.rnd(-0.05, 0.05), tv + G.rnd(-0.04, 0.04), 0.8, 0);
   }
   function cpuServe() {
     var ds = deuceSide(), side = ds ? 1 : -1;
     var tu = side * G.rnd(0.15, 0.85), tv = G.rnd(0.27, 0.42);
     if (Math.random() < (st.serve.fault ? 0.04 : 0.1)) tv = Math.random() < 0.5 ? 0.18 : 0.47;   // fallo
-    st.phase = "serving"; st.cpu.swing = performance.now() / 1000;
-    shot({ u: st.cpu.u, v: CPU_V, z: 0.55 }, tu, tv, 0.85, 1);
+    st.phase = "serving"; st.cpu.serveT = performance.now() / 1000;
+    shot({ u: st.cpu.u - 0.1, v: CPU_V, z: 2.4 }, tu, tv, 0.85, 1);
   }
   function serveFault(by) {
     if (st.serve.fault) { st.serve.fault = 0; point(1 - by, "Doppio fallo"); return; }
@@ -196,13 +196,14 @@
     c.fillStyle = "#ccc"; c.fillRect(nl.x - 3, nl.y + nh - 4, 4, -nh + 4); c.fillRect(nr.x - 1, nr.y + nh - 4, 4, -nh + 4);
     if (b && b.v <= 0.5) drawBallT(c, g, b);
     // battuta: palla lanciata
-    if (st.phase === "serve" && server() === 0) {
-      var tz = 0.45; if (st.serve.tossT != null) { var k = (now - st.serve.tossT) / 1.0; tz = 0.45 + Math.sin(Math.min(1, k) * Math.PI) * 0.85; if (k > 1.15) { st.serve.tossT = null; } }
-      var sp = sxy(g, st.me.u - 0.08, ME_V, tz); G.drawTennisBall(c, sp.x, sp.y, 5);
+    if (st.phase === "serve" && server() === 1) { var cp = sxy(g, st.cpu.u - 0.1, CPU_V, tossZ(st.cpuServeAt - TOSS * 0.5, now)); G.drawTennisBall(c, cp.x, cp.y, 3.5); }
+    drawPlayer(c, g, G.av, st.me, ME_V, true, now);
+    if (st.phase === "serve" && server() === 0) {   // palla lanciata ben sopra la testa, davanti all'omino
+      var tz = st.serve.tossT != null ? tossZ(st.serve.tossT, now) : 0.42;
+      if (st.serve.tossT != null && now - st.serve.tossT > TOSS * 1.12) st.serve.tossT = null;   // ricade: si rilancia
+      var sp = sxy(g, st.me.u - 0.1, ME_V, tz); G.drawTennisBall(c, sp.x, sp.y, 5.5);
       c.font = "700 14px Archivo"; c.fillStyle = "#E8A252"; c.textAlign = "center"; c.fillText(st.serve.tossT == null ? "Tocca per lanciare la palla" : "Tocca ora per battere!", W / 2, H * 0.62);
     }
-    if (st.phase === "serve" && server() === 1) { var cp = sxy(g, st.cpu.u - 0.08, CPU_V, 0.5); G.drawTennisBall(c, cp.x, cp.y, 3.5); }
-    drawPlayer(c, g, G.av, st.me, ME_V, true, now);
     // indicatore "colpisci"
     if (b && b.by === 1 && st.bounces >= 1 && b.v < 0.3 && Math.abs(b.u - st.me.u) < REACH + 0.1) { c.font = "800 16px Archivo"; c.fillStyle = "#6FBE92"; c.textAlign = "center"; c.fillText("Tocca!", W / 2, H * 0.97); }
     // punteggio del game e messaggio
@@ -210,6 +211,8 @@
     if (st.phase === "point" && st.msg) { var a = Math.min(1, (now - st.msgT) * 4); c.save(); c.globalAlpha = a; c.font = "800 " + Math.round(W * 0.075) + "px Archivo"; c.textAlign = "center"; c.lineWidth = 6; c.strokeStyle = "rgba(0,0,0,.6)"; c.strokeText(st.msg, W / 2, H * 0.47); c.fillStyle = st.msgGood ? "#6FBE92" : "#E08268"; c.fillText(st.msg, W / 2, H * 0.47); c.restore(); }
     if (st.phase === "end") { c.fillStyle = "rgba(8,14,18,.55)"; c.fillRect(0, 0, W, H); var ct = now - st.celebrate.t0, ps = st.celebrate.win ? G.poseOf(G.av.esulta, ct) : G.SAD(ct); G.drawGuy(c, G.av, W / 2, H * 0.7, H / 380, ps, {}); }
   }
+  var TOSS = 1.1;   // secondi del lancio: la palla sale fino a circa una volta e mezza l'altezza dell'omino
+  function tossZ(t0, now) { var k = G.clamp((now - t0) / TOSS, 0, 1.15); return 0.42 + Math.sin(Math.min(1, k) * Math.PI) * 2.1 - (k > 1 ? (k - 1) * 3 : 0); }
   function poly(c, pts) { c.beginPath(); pts.forEach(function (p, i) { c[i ? "lineTo" : "moveTo"](p.x, p.y); }); c.closePath(); c.fill(); }
   function line(c, a, b) { c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke(); }
   function drawBallT(c, g, b) {
@@ -223,12 +226,18 @@
     var step = pl.moving ? Math.sin(now * 16) * 0.45 : 0;
     var arm = swinging ? G.lerp(1.9, -1.6, G.ease(sw)) : 1.0;
     var pose = G.P({ ar: [arm, swinging ? -0.3 : -0.6], al: [-0.5, 0.4], ll: [-0.2 + step, 0.15], lr: [0.2 - step, -0.15], hold: "racket", racketAng: (swinging ? G.lerp(2.2, -0.6, G.ease(sw)) : 2.4) + Math.PI * 0, tilt: swinging ? G.lerp(0.1, -0.15, sw) : 0 });
-    if (isMe && st.phase === "serve" && server() === 0 && st.serve.tossT != null) pose = G.P({ al: [-2.7, 0], ar: [2.2, 1.2], hold: "racket", racketAng: 3.6 });
+    var tossing = st.phase === "serve" && ((isMe && server() === 0 && st.serve.tossT != null) || (!isMe && server() === 1 && now > st.cpuServeAt - TOSS * 0.5));
+    if (tossing) pose = G.P({ al: [-2.95, 0.05], ar: [2.0, 1.3], hold: "racket", racketAng: 0.2, tilt: 0.1, ll: [-0.15, 0.2], lr: [0.25, -0.1] });
+    var sv = (now - (pl.serveT || -9)) / 0.42;
+    if (sv >= 0 && sv < 1) {   // battuta: il braccio passa sopra la testa e scende davanti
+      var a = G.lerp(2.3, 4.5, G.ease(sv));
+      pose = G.P({ ar: [a, 0.05], al: [G.lerp(-2.6, -0.6, sv), 0.4], hold: "racket", racketAng: Math.PI - a, tilt: G.lerp(0.12, -0.25, sv), lift: Math.sin(sv * Math.PI) * 14, ll: [-0.1, 0.1], lr: [0.3 * sv, -0.2] });
+    }
     G.drawGuy(c, A, p.x, p.y, s, pose, { back: isMe, racket: true });
   }
   window.Tennis = {
     show: function () { if (!st) newGame(); else hud(); },
-    resize: function () { S = G.setup(cv, 1.45); },
+    resize: function () { S = G.setup(cv, 1.45, 190); },
     frame: frame
   };
 })();

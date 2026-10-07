@@ -16,25 +16,37 @@
   var PELLE = ["#F6D7B8", "#EDC09A", "#D9A273", "#B97F51", "#8D5A35", "#5E3B22"];
   var CAPELLI_COL = ["#1E1712", "#4A2E1B", "#7A4B26", "#B7782F", "#E2C27A", "#B8B8B8", "#C0392B", "#2F6FB5"];
   var COLORI = ["#E8E8E8", "#1C1F24", "#C62828", "#1565C0", "#2E7D32", "#F9A825", "#6A1B9A", "#00838F", "#EF6C00", "#AD1457", "#5D4037", "#90CAF9"];
+  // req: numero = livello che lo sblocca (nel prototipo: vittorie); "c:N" = si compra con N monete (le cose strane)
   var CAT = {
-    capelli: [["corti", "Corti", 0], ["rasati", "Rasati", 0], ["frangia", "Frangia", 0], ["ricci", "Ricci", 0], ["lunghi", "Lunghi", 0], ["coda", "Coda", 1], ["cresta", "Cresta", 3], ["afro", "Afro", 2], ["calvo", "Calvo", 0]],
-    barba: [["no", "Niente", 0], ["corta", "Corta", 0], ["baffi", "Baffi", 1], ["piena", "Piena", 2]],
-    maglia: [["maglia", "Maglia", 0], ["strisce", "Strisce", 0], ["righe", "Righe", 1], ["meta", "Metà e metà", 2], ["banda", "Banda", 3], ["polo", "Polo tennis", 0], ["canotta", "Canotta", 1], ["felpa", "Felpa", 2], ["cappuccio", "Felpa col cappuccio", 4], ["tuta", "Giacca tuta", 5], ["portiere", "Maglia portiere", 6]],
-    cappello: [["no", "Niente", 0], ["cappellino", "Cappellino", 0], ["rovescio", "Cappellino al contrario", 2], ["berretto", "Berretto di lana", 1], ["fascia", "Fascia", 0], ["bandana", "Bandana", 3], ["visiera", "Visiera", 2], ["corona", "Corona", 15]],
-    accessorio: [["no", "Niente", 0], ["occhiali", "Occhiali da sole", 2], ["polsini", "Polsini", 1], ["capitano", "Fascia da capitano", 5], ["collana", "Catenina", 8]],
-    scarpe: [["scarpini", "Scarpini", 0], ["tennis", "Scarpe da tennis", 0], ["oro", "Scarpini d'oro", 12]],
-    pallone: [["classico", "Classico", 0], ["retro", "Cuoio anni '70", 1], ["notte", "Notturno", 3], ["arcobaleno", "Arcobaleno", 5], ["stelle", "Stelle", 7], ["fiamme", "Fiamme", 10], ["oro", "Pallone d'oro", 20]],
-    racchetta: [["classica", "Classica", 0], ["rossa", "Rossa", 1], ["blu", "Blu", 2], ["legno", "Legno vintage", 4], ["neon", "Neon", 6], ["carbonio", "Carbonio", 9], ["oro", "Racchetta d'oro", 20]],
-    guanti: [["verdi", "Verdi", 0], ["arancio", "Arancio", 2], ["rosa", "Rosa", 4], ["neri", "Neri e oro", 8]],
-    posa: [["piedi", "In piedi", 0], ["saluto", "Saluto", 0], ["conserte", "Braccia conserte", 0], ["sottobraccio", "Pallone sotto il braccio", 0], ["spalla", "Racchetta in spalla", 0], ["palleggio", "Palleggio", 2], ["cielo", "Dito al cielo", 3], ["fianchi", "Mani sui fianchi", 1], ["pollice", "Pollice su", 4]],
-    esulta: [["salto", "Salto di gioia", 0], ["braccia", "Braccia al cielo", 0], ["aereo", "Aeroplano", 2], ["ballo", "Ballo", 4], ["pugno", "Pugno", 1], ["inchino", "Inchino", 6], ["giro", "Giravolta", 9], ["trofeo", "Coppa alzata", 14]]
+    sesso: [["uomo", "Uomo", 0], ["donna", "Donna", 0]],
+    statura: [["bassa", "Bassa", 0], ["media", "Media", 0], ["alta", "Alta", 0]],
+    fisico: [["magro", "Magro", 0], ["normale", "Normale", 0], ["robusto", "Robusto", 0]],
+    testa: [["ovale", "Ovale", 0], ["tonda", "Tonda", 0], ["squadrata", "Squadrata", 0], ["appuntita", "Appuntita", 3], ["larga", "Larga", 6]],
+    occhi: [["normali", "Normali", 0], ["grandi", "Grandi", 0], ["sorridenti", "Sorridenti", 0], ["allungati", "Allungati", 2], ["assonnati", "Assonnati", 5], ["stelle", "A stella", "c:400"]],
+    naso: [["piccolo", "Piccolo", 0], ["dritto", "Dritto", 0], ["largo", "Largo", 0], ["patata", "A patata", 4], ["aquilino", "Aquilino", 8]],
+    bocca: [["sorriso", "Sorriso", 0], ["sorrisone", "Sorrisone", 0], ["seria", "Seria", 0], ["smorfia", "Smorfia", 3], ["linguaccia", "Linguaccia", "c:250"], ["dente", "Dente d'oro", "c:600"]],
+    capelli: [["corti", "Corti", 0], ["rasati", "Rasati", 0], ["frangia", "Frangia", 0], ["ricci", "Ricci", 0], ["lunghi", "Lunghi", 0], ["calvo", "Calvo", 0], ["coda", "Coda", 2], ["afro", "Afro", 4], ["cresta", "Cresta", 7]],
+    barba: [["no", "Niente", 0], ["corta", "Corta", 0], ["baffi", "Baffi", 2], ["piena", "Piena", 5]],
+    maglia: [["maglia", "Maglia", 0], ["strisce", "Strisce", 0], ["polo", "Polo tennis", 0], ["righe", "Righe", 2], ["canotta", "Canotta", 3], ["meta", "Metà e metà", 4], ["banda", "Banda", 6], ["felpa", "Felpa", 8], ["portiere", "Maglia portiere", 10], ["cappuccio", "Felpa col cappuccio", 12], ["tuta", "Giacca tuta", 15]],
+    cappello: [["no", "Niente", 0], ["fascia", "Fascia", 0], ["cappellino", "Cappellino", 2], ["berretto", "Berretto di lana", 5], ["rovescio", "Cappellino al contrario", 9], ["visiera", "Visiera", 11], ["bandana", "Bandana", "c:300"], ["corona", "Corona", "c:1500"]],
+    accessorio: [["no", "Niente", 0], ["polsini", "Polsini", 3], ["occhiali", "Occhiali da sole", 7], ["capitano", "Fascia da capitano", 14], ["collana", "Catenina d'oro", "c:500"]],
+    scarpe: [["scarpini", "Scarpini", 0], ["tennis", "Scarpe da tennis", 0], ["oro", "Scarpini d'oro", "c:1200"]],
+    pallone: [["classico", "Classico", 0], ["retro", "Cuoio anni '70", 6], ["notte", "Notturno", 10], ["arcobaleno", "Arcobaleno", "c:400"], ["stelle", "Stelle", "c:600"], ["fiamme", "Fiamme", "c:800"], ["oro", "Pallone d'oro", "c:2000"]],
+    racchetta: [["classica", "Classica", 0], ["rossa", "Rossa", 3], ["blu", "Blu", 5], ["legno", "Legno vintage", 9], ["neon", "Neon", "c:500"], ["carbonio", "Carbonio", "c:800"], ["oro", "Racchetta d'oro", "c:2000"]],
+    guanti: [["verdi", "Verdi", 0], ["arancio", "Arancio", 4], ["rosa", "Rosa", 8], ["neri", "Neri e oro", "c:500"]],
+    posa: [["piedi", "In piedi", 0], ["saluto", "Saluto", 0], ["conserte", "Braccia conserte", 0], ["sottobraccio", "Pallone sotto il braccio", 2], ["spalla", "Racchetta in spalla", 2], ["fianchi", "Mani sui fianchi", 4], ["palleggio", "Palleggio", 6], ["cielo", "Dito al cielo", 10], ["pollice", "Pollice su", 13]],
+    esulta: [["salto", "Salto di gioia", 0], ["braccia", "Braccia al cielo", 0], ["pugno", "Pugno", 3], ["aereo", "Aeroplano", 7], ["ballo", "Ballo", "c:300"], ["inchino", "Inchino", 16], ["giro", "Giravolta", "c:700"], ["trofeo", "Coppa alzata", "c:1500"]]
   };
-  var AV_DEF = { pelle: 1, capelli: "corti", capCol: 1, barba: "no", maglia: "maglia", c1: 2, c2: 0, pant: 1, calze: 0, scarpe: "scarpini", scCol: 1, cappello: "no", hatCol: 3, accessorio: "no",
+  function reqOf(cat, id) { var it = (CAT[cat] || []).filter(function (x) { return x[0] === id; })[0]; return it ? it[2] : 0; }
+  function price(req) { return typeof req === "string" && req.slice(0, 2) === "c:" ? Number(req.slice(2)) : 0; }
+  var AV_DEF = { sesso: "uomo", statura: "media", fisico: "normale", testa: "ovale", occhi: "normali", naso: "piccolo", bocca: "sorriso", pelle: 1, capelli: "corti", capCol: 1, barba: "no", maglia: "maglia", c1: 2, c2: 0, pant: 1, calze: 0, scarpe: "scarpini", scCol: 1, cappello: "no", hatCol: 3, accessorio: "no",
                  pallone: "classico", racchetta: "classica", guanti: "verdi", posa: "piedi", esulta: "salto", nome: "", num: 10 };
   var av = Object.assign({}, AV_DEF, load("statsight.avatar2", {}));
   var pg = Object.assign({ rigori: 0, tennis: 0, giocate: 0, tutto: false }, load("statsight.giochi", {}));
   function wins() { return pg.rigori + pg.tennis; }
-  function unlocked(cat, id) { if (pg.tutto) return true; var it = CAT[cat].filter(function (x) { return x[0] === id; })[0]; return !it || wins() >= it[2]; }
+  // chi decide gli sblocchi: nel prototipo le vittorie; nell'app il livello e gli acquisti (omino.js lo cambia)
+  var unlockFn = function (cat, id) { if (pg.tutto) return true; var r = reqOf(cat, id); return typeof r === "number" ? wins() >= r : false; };
+  function unlocked(cat, id) { return unlockFn(cat, id); }
   function saveAv() { save("statsight.avatar2", av); }
   function savePg() { save("statsight.giochi", pg); }
 
@@ -112,10 +124,11 @@
     c.save(); c.translate(x, y - (pose.lift || 0) * s); c.scale(s * (pose.flip ? -1 : 1), s);
     if (pose.rot) { c.translate(0, -100); c.rotate(pose.rot); c.translate(0, 100); }
     if (!opt.noShadow) { c.save(); c.scale(1, 0.25); c.beginPath(); c.arc(0, (pose.lift || 0) * 4, 30, 0, TAU); c.fillStyle = "rgba(0,0,0,.25)"; c.fill(); c.restore(); }
-    var hipY = -86, shY = -150;
+    var hf = { bassa: 0.86, alta: 1.13 }[A.statura] || 1, wf = { magro: 0.86, robusto: 1.17 }[A.fisico] || 1;
+    var hipY = -(6 + 80 * hf), shY = hipY - 64 * hf, LL = 40 * hf;
     // gambe (calze sopra lo stinco, scarpe)
-    [["ll", -9], ["lr", 9]].forEach(function (L) {
-      var a = pose[L[0]], g = limb(c, L[1], hipY, a[0], a[1], 40, 40, 14, 12, skin, skin, null);
+    [["ll", -9 * wf], ["lr", 9 * wf]].forEach(function (L) {
+      var a = pose[L[0]], g = limb(c, L[1], hipY, a[0], a[1], LL, LL, 14 * wf, 12 * wf, skin, skin, null);
       c.lineCap = "round"; c.strokeStyle = socks; c.lineWidth = 13;
       var mid = [lerp(g.knee[0], g.end[0], 0.35), lerp(g.knee[1], g.end[1], 0.35)];
       c.beginPath(); c.moveTo(mid[0], mid[1]); c.lineTo(g.end[0], g.end[1]); c.stroke();
@@ -128,13 +141,13 @@
     });
     c.save(); c.translate(0, hipY); c.rotate(pose.tilt || 0); c.translate(0, -hipY);
     // pantaloncini (vita)
-    c.fillStyle = pant; rr(c, -21, hipY - 6, 42, 16, 6); c.fill();
+    c.fillStyle = pant; rr(c, -21 * wf, hipY - 6, 42 * wf, 16, 6); c.fill();
     // cappuccio dietro la testa
     if (top === "cappuccio" && !back) { c.fillStyle = shade(c1, -0.25); c.beginPath(); c.ellipse(0, shY - 4, 24, 12, 0, 0, TAU); c.fill(); }
     // braccio dietro (a sinistra dello schermo se di schiena il destro... semplice: entrambi dopo il busto, tranne se all'indietro)
     var sleeveCol = noSleeve ? skin : c1;
     function arm(side) {
-      var a = pose[side === -1 ? "al" : "ar"], sx = side * 20, g;
+      var a = pose[side === -1 ? "al" : "ar"], sx = side * 20 * wf, g;
       g = limb(c, sx, shY + 4, a[0], a[1], 30, 28, 11, 10, sleeveCol, longSleeve ? sleeveCol : skin, longSleeve ? 1 : noSleeve ? 0 : 0.45);
       if (A.accessorio === "polsini" && !longSleeve) { var w = [lerp(g.knee[0], g.end[0], 0.75), lerp(g.knee[1], g.end[1], 0.75)]; c.strokeStyle = c2 === c1 ? "#fff" : c2; c.lineWidth = 12; c.beginPath(); c.moveTo(w[0], w[1]); c.lineTo(lerp(w[0], g.end[0], 0.5), lerp(w[1], g.end[1], 0.5)); c.stroke(); }
       if (A.accessorio === "capitano" && side === -1) { var cpt = [lerp(sx, g.knee[0], 0.55), lerp(shY + 4, g.knee[1], 0.55)]; c.strokeStyle = "#FDD835"; c.lineWidth = 13; c.beginPath(); c.moveTo(cpt[0], cpt[1] - 2); c.lineTo(cpt[0], cpt[1] + 2); c.stroke(); }
@@ -143,7 +156,7 @@
     }
     var armL = arm(-1);
     // busto
-    torso(c, top, c1, c2, -22, shY, 44, hipY - shY + 4, back, A, keeper);
+    torso(c, top, c1, c2, -22 * wf, shY, 44 * wf, hipY - shY + 4, back, A, keeper);
     var armR = arm(1);
     // in mano
     if (pose.hold === "ball") drawBall(c, armL.end[0] + 2, armL.end[1] - 8, 13, A.pallone, 0.3);
@@ -189,25 +202,43 @@
     if (st === "coda") { c.beginPath(); c.ellipse(x + (back ? 0 : R * 0.9), y + 6, 7, 18, back ? 0 : -0.3, 0, TAU); c.fill(); }
     // orecchie e testa
     c.fillStyle = skin; c.beginPath(); c.arc(x - R + 1, y + 3, 5, 0, TAU); c.arc(x + R - 1, y + 3, 5, 0, TAU); c.fill();
-    c.beginPath(); c.arc(x, y, R, 0, TAU); c.fill();
+    headShape(c, A.testa, x, y, R); c.fill();
     if (back) {   // di schiena: capelli su tutta la nuca
       c.fillStyle = hair;
       if (st !== "calvo") { c.beginPath(); if (st === "rasati") c.globalAlpha = 0.45; c.arc(x, y - 1, R + 1, Math.PI * 0.95, Math.PI * 2.05); c.lineTo(x + R, y + (st === "rasati" ? 8 : 14)); c.quadraticCurveTo(x, y + R + 2, x - R, y + (st === "rasati" ? 8 : 14)); c.closePath(); c.fill(); c.globalAlpha = 1; }
       if (st === "cresta") { for (var q = -2; q <= 2; q++) { c.beginPath(); c.moveTo(x - 5, y - R + 2 + q * 6); c.lineTo(x, y - R - 9 + Math.abs(q) * 3); c.lineTo(x + 5, y - R + 2 + q * 6); c.fill(); } }
       if (st === "ricci") for (var k2 = 0; k2 < 9; k2++) { c.beginPath(); c.arc(x + Math.cos(Math.PI + k2 / 8 * Math.PI) * R, y + Math.sin(Math.PI + k2 / 8 * Math.PI) * R, 8, 0, TAU); c.fill(); }
     } else {
-      // occhi, sopracciglia, bocca
-      var happy = face === "happy" || face === "shout", sad = face === "sad";
-      c.fillStyle = "#1d2326";
-      if (happy) { c.strokeStyle = "#1d2326"; c.lineWidth = 2.4; c.lineCap = "round"; c.beginPath(); c.arc(x - 9, y + 2, 4, Math.PI * 1.15, Math.PI * 1.85); c.stroke(); c.beginPath(); c.arc(x + 9, y + 2, 4, Math.PI * 1.15, Math.PI * 1.85); c.stroke(); }
-      else { c.beginPath(); c.ellipse(x - 9, y, 3, 3.8, 0, 0, TAU); c.ellipse(x + 9, y, 3, 3.8, 0, 0, TAU); c.fill(); c.fillStyle = "#fff"; c.beginPath(); c.arc(x - 8, y - 1.3, 1.1, 0, TAU); c.arc(x + 10, y - 1.3, 1.1, 0, TAU); c.fill(); }
-      c.strokeStyle = shade(hair, -0.1); c.lineWidth = 2.2; c.lineCap = "round";
+      // occhi, sopracciglia, naso, bocca (09/10: come nel configuratore dell'app)
+      var happy = face === "happy" || face === "shout", sad = face === "sad", eo = A.occhi, fem = A.sesso === "donna";
+      c.fillStyle = "#1d2326"; c.strokeStyle = "#1d2326"; c.lineCap = "round";
+      if (happy || eo === "sorridenti") { c.lineWidth = 2.4; c.beginPath(); c.arc(x - 9, y + 2, 4, Math.PI * 1.15, Math.PI * 1.85); c.stroke(); c.beginPath(); c.arc(x + 9, y + 2, 4, Math.PI * 1.15, Math.PI * 1.85); c.stroke(); }
+      else if (eo === "stelle") { c.fillStyle = "#F2C230"; star(c, x - 9, y, 5); star(c, x + 9, y, 5); }
+      else if (eo === "assonnati") { c.lineWidth = 2.4; c.beginPath(); c.moveTo(x - 13, y + 1); c.lineTo(x - 5, y + 1); c.moveTo(x + 5, y + 1); c.lineTo(x + 13, y + 1); c.stroke(); c.beginPath(); c.arc(x - 9, y + 1.5, 3, 0, Math.PI); c.arc(x + 9, y + 1.5, 3, 0, Math.PI); c.fill(); }
+      else {
+        var ex = eo === "grandi" || eo === "allungati" ? 3.8 : 3, ey = eo === "grandi" ? 4.8 : eo === "allungati" ? 2.3 : 3.8;
+        c.beginPath(); c.ellipse(x - 9, y, ex, ey, 0, 0, TAU); c.ellipse(x + 9, y, ex, ey, 0, 0, TAU); c.fill();
+        c.fillStyle = "#fff"; c.beginPath(); c.arc(x - 8, y - 1.3, eo === "grandi" ? 1.6 : 1.1, 0, TAU); c.arc(x + 10, y - 1.3, eo === "grandi" ? 1.6 : 1.1, 0, TAU); c.fill();
+      }
+      if (fem && eo !== "stelle") { c.strokeStyle = "#1d2326"; c.lineWidth = 1.4; c.beginPath(); c.moveTo(x - 12.5, y - 3); c.lineTo(x - 15, y - 5.5); c.moveTo(x + 12.5, y - 3); c.lineTo(x + 15, y - 5.5); c.stroke(); }
+      c.strokeStyle = shade(hair, -0.1); c.lineWidth = fem ? 1.6 : 2.2;
       c.beginPath(); c.moveTo(x - 13, y - 8 + (sad ? 2 : 0)); c.lineTo(x - 5, y - 9 - (sad ? 1 : 0)); c.moveTo(x + 5, y - 9 - (sad ? 1 : 0)); c.lineTo(x + 13, y - 8 + (sad ? 2 : 0)); c.stroke();
       c.fillStyle = "rgba(230,110,90,.25)"; c.beginPath(); c.arc(x - 15, y + 8, 4, 0, TAU); c.arc(x + 15, y + 8, 4, 0, TAU); c.fill();
-      c.strokeStyle = "#5a2a1e"; c.lineWidth = 2.2;
-      if (face === "shout") { c.fillStyle = "#5a2a1e"; c.beginPath(); c.ellipse(x, y + 12, 5, 6, 0, 0, TAU); c.fill(); }
-      else if (sad) { c.beginPath(); c.arc(x, y + 17, 6, Math.PI * 1.2, Math.PI * 1.8); c.stroke(); }
-      else { c.beginPath(); c.arc(x, y + 7, happy ? 8 : 6, 0.2 * Math.PI, 0.8 * Math.PI); c.stroke(); }
+      var nc = shade(skin, -0.3), no = A.naso; c.strokeStyle = nc; c.fillStyle = nc; c.lineWidth = 1.8;
+      if (no === "dritto") { c.beginPath(); c.moveTo(x, y - 1); c.lineTo(x, y + 6); c.lineTo(x + 2.5, y + 6.5); c.stroke(); }
+      else if (no === "largo") { c.beginPath(); c.arc(x - 3, y + 5.5, 1.8, 0, TAU); c.arc(x + 3, y + 5.5, 1.8, 0, TAU); c.fill(); }
+      else if (no === "patata") { c.fillStyle = shade(skin, -0.12); c.beginPath(); c.arc(x, y + 4.5, 4.6, 0, TAU); c.fill(); }
+      else if (no === "aquilino") { c.beginPath(); c.moveTo(x - 1, y - 2); c.quadraticCurveTo(x + 5, y + 2, x + 1, y + 7); c.stroke(); }
+      else { c.beginPath(); c.arc(x, y + 5, 1.6, 0, TAU); c.fill(); }
+      var mo = A.bocca, lip = fem ? "#C2525A" : "#5a2a1e"; c.strokeStyle = lip; c.lineWidth = 2.2;
+      if (face === "shout") { c.fillStyle = "#5a2a1e"; c.beginPath(); c.ellipse(x, y + 13, 5, 6, 0, 0, TAU); c.fill(); }
+      else if (sad) { c.beginPath(); c.arc(x, y + 18, 6, Math.PI * 1.2, Math.PI * 1.8); c.stroke(); }
+      else if (mo === "seria") { c.beginPath(); c.moveTo(x - 5, y + 12); c.lineTo(x + 5, y + 12); c.stroke(); }
+      else if (mo === "smorfia") { c.beginPath(); c.moveTo(x - 6, y + 13); c.quadraticCurveTo(x, y + 10, x + 6, y + 11); c.stroke(); }
+      else if (mo === "sorrisone" || happy) { c.fillStyle = "#5a2a1e"; c.beginPath(); c.arc(x, y + 9, 7, 0.1 * Math.PI, 0.9 * Math.PI); c.closePath(); c.fill(); c.fillStyle = "#fff"; c.fillRect(x - 4.5, y + 9.5, 9, 2.2); }
+      else if (mo === "linguaccia") { c.beginPath(); c.arc(x, y + 8, 6, 0.2 * Math.PI, 0.8 * Math.PI); c.stroke(); c.fillStyle = "#E57373"; c.beginPath(); c.ellipse(x + 1, y + 15, 3.4, 4.2, 0, 0, TAU); c.fill(); }
+      else if (mo === "dente") { c.beginPath(); c.arc(x, y + 8, 6.5, 0.15 * Math.PI, 0.85 * Math.PI); c.stroke(); c.fillStyle = "#F2C230"; c.fillRect(x + 1, y + 12.5, 3, 3); }
+      else { c.beginPath(); c.arc(x, y + 7, 6, 0.2 * Math.PI, 0.8 * Math.PI); c.stroke(); }
       // barba
       if (A.barba !== "no") {
         c.fillStyle = hair;
@@ -226,6 +257,14 @@
       if (A.accessorio === "occhiali") { c.fillStyle = "#111"; rr(c, x - 17, y - 5, 14, 9, 3); c.fill(); rr(c, x + 3, y - 5, 14, 9, 3); c.fill(); c.strokeStyle = "#111"; c.lineWidth = 2; c.beginPath(); c.moveTo(x - 3, y - 2); c.lineTo(x + 3, y - 2); c.stroke(); c.fillStyle = "rgba(255,255,255,.25)"; c.fillRect(x - 15, y - 4, 4, 2); c.fillRect(x + 5, y - 4, 4, 2); }
     }
     hat(c, A, x, y, R, back);
+  }
+  function headShape(c, t, x, y, R) {
+    c.beginPath();
+    if (t === "tonda") c.arc(x, y, R * 1.02, 0, TAU);
+    else if (t === "squadrata") rr(c, x - R, y - R, 2 * R, 2 * R + 2, R * 0.45);
+    else if (t === "appuntita") { c.moveTo(x - R, y - 2); c.arc(x, y - 2, R, Math.PI, TAU); c.quadraticCurveTo(x + R, y + R * 0.7, x, y + R + 3); c.quadraticCurveTo(x - R, y + R * 0.7, x - R, y - 2); }
+    else if (t === "larga") c.ellipse(x, y + 1, R * 1.14, R * 0.94, 0, 0, TAU);
+    else c.ellipse(x, y, R * 0.94, R * 1.06, 0, 0, TAU);
   }
   function hat(c, A, x, y, R, back) {
     var h = A.cappello, col = COLORI[A.hatCol] || "#1565C0";
@@ -280,13 +319,43 @@
   }
 
   // ------------------------------------------------------------------ tela con densita' giusta
-  function setup(cv, ratio) {
-    var w = cv.parentNode.clientWidth || 360, h = Math.round(w * ratio), d = Math.min(window.devicePixelRatio || 1, 2.5);
-    cv.width = Math.round(w * d); cv.height = Math.round(h * d); cv.style.height = h + "px";
+  function setup(cv, ratio, fit) {
+    // il campo deve stare nello schermo anche sui telefoni bassi: larghezza ridotta se serve (e centrata)
+    var cs = getComputedStyle(cv.parentNode), full = (cv.parentNode.clientWidth - parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0));
+    if (!(full > 40)) full = Math.min(window.innerWidth || 360, 560) - 56;   // tela ancora nascosta
+    var maxH = Math.max(260, (window.innerHeight || 700) - (fit || 0));
+    var w = Math.min(full, Math.floor(maxH / ratio)), h = Math.round(w * ratio), d = Math.min(window.devicePixelRatio || 1, 2.5);
+    cv.width = Math.round(w * d); cv.height = Math.round(h * d); cv.style.height = h + "px"; cv.style.width = w + "px"; cv.style.margin = "0 auto";
     var c = cv.getContext("2d"); c.setTransform(d, 0, 0, d, 0, 0); return { c: c, W: w, H: h };
   }
   function pt(cv, e) { var r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  // sfondi della foto profilo
+  function drawBg(c, W, H, bg, t) {
+    var g;
+    if (bg === "stadio") {
+      g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#0B1A33"); g.addColorStop(0.55, "#1D3B5C"); g.addColorStop(0.56, "#2E7D32"); g.addColorStop(1, "#1B5E20"); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      c.fillStyle = "#24364F"; c.fillRect(0, H * 0.36, W, H * 0.2);
+      for (var i = 0; i < 60; i++) { c.fillStyle = ["#C62828", "#FDD835", "#fff", "#1565C0"][i % 4]; c.globalAlpha = 0.55; c.fillRect((i * 37) % W, H * 0.38 + (i * 13) % (H * 0.16), 3, 3); } c.globalAlpha = 1;
+      [0.12, 0.88].forEach(function (x) { var lg = c.createRadialGradient(W * x, H * 0.12, 2, W * x, H * 0.12, H * 0.35); lg.addColorStop(0, "rgba(255,255,230,.9)"); lg.addColorStop(1, "rgba(255,255,230,0)"); c.fillStyle = lg; c.fillRect(0, 0, W, H * 0.6); });
+      c.strokeStyle = "rgba(255,255,255,.5)"; c.lineWidth = 2; c.beginPath(); c.ellipse(W / 2, H * 0.78, W * 0.3, H * 0.07, 0, 0, Math.PI * 2); c.stroke();
+    } else if (bg === "tennis" || bg === "terra") {
+      var out = bg === "tennis" ? "#2E6B4F" : "#B4532A", inn = bg === "tennis" ? "#2B5DA8" : "#C8663A";
+      c.fillStyle = out; c.fillRect(0, 0, W, H); c.fillStyle = bg === "tennis" ? "#1A2E3D" : "#8C3F1E"; c.fillRect(0, 0, W, H * 0.4);
+      c.fillStyle = inn; c.beginPath(); c.moveTo(W * 0.2, H * 0.45); c.lineTo(W * 0.8, H * 0.45); c.lineTo(W * 1.05, H); c.lineTo(-W * 0.05, H); c.fill();
+      c.strokeStyle = "#fff"; c.lineWidth = 2; c.beginPath(); c.moveTo(W * 0.2, H * 0.45); c.lineTo(W * 0.8, H * 0.45); c.moveTo(W * 0.5, H * 0.45); c.lineTo(W * 0.5, H); c.stroke();
+      c.fillStyle = "rgba(255,255,255,.85)"; c.fillRect(0, H * 0.58, W, 2); c.fillStyle = "rgba(20,20,20,.25)"; for (var n = 0; n < W; n += 6) c.fillRect(n, H * 0.5, 1, H * 0.08);
+    } else if (bg === "tramonto") {
+      g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#2B1B4A"); g.addColorStop(0.5, "#E0703A"); g.addColorStop(0.75, "#F7C25C"); g.addColorStop(0.76, "#3D6B3A"); g.addColorStop(1, "#24452A"); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      c.fillStyle = "rgba(255,230,160,.85)"; c.beginPath(); c.arc(W * 0.7, H * 0.62, W * 0.12, Math.PI, 0); c.fill();
+    } else if (bg === "tinta") {
+      g = c.createRadialGradient(W / 2, H * 0.4, 10, W / 2, H / 2, W * 0.75); g.addColorStop(0, "#F0B36B"); g.addColorStop(1, "#8A5115"); c.fillStyle = g; c.fillRect(0, 0, W, H);
+    } else {
+      c.fillStyle = "#132029"; c.fillRect(0, 0, W, H);
+      for (var k = 0; k < 70; k++) { var x = (k * 53 + t * 20 * ((k % 3) + 1)) % W, y = (k * 97 + t * 60 * ((k % 4) + 1)) % H; c.save(); c.translate(x, y); c.rotate(t * 2 + k); c.fillStyle = ["#E8A252", "#6FBE92", "#E08268", "#90CAF9", "#FDD835"][k % 5]; c.fillRect(-3, -5, 6, 10); c.restore(); }
+    }
+  }
   window.G = { $: $, TAU: TAU, clamp: clamp, lerp: lerp, ease: ease, rnd: rnd, pick: pick, load: load, save: save, toast: toast, CAT: CAT, PELLE: PELLE, CAPELLI_COL: CAPELLI_COL, COLORI: COLORI,
-               get av() { return av; }, set av(v) { av = v; }, pg: pg, wins: wins, unlocked: unlocked, saveAv: saveAv, savePg: savePg, drawBall: drawBall, drawTennisBall: drawTennisBall, drawRacket: drawRacket,
-               drawGuy: drawGuy, P: P, POSE0: POSE0, POSES: POSES, WINS: WINS, SAD: SAD, poseOf: poseOf, mixPose: mixPose, drawPoseExtras: drawPoseExtras, randomAv: randomAv, setup: setup, pt: pt, rr: rr, star: star };
+               get av() { return av; }, set av(v) { av = v; }, pg: pg, wins: wins, unlocked: unlocked, reqOf: reqOf, price: price, AV_DEF: AV_DEF,
+               setUnlock: function (fn) { unlockFn = fn; }, saveAv: saveAv, savePg: savePg, drawBall: drawBall, drawTennisBall: drawTennisBall, drawRacket: drawRacket,
+               drawGuy: drawGuy, drawBg: drawBg, P: P, POSE0: POSE0, POSES: POSES, WINS: WINS, SAD: SAD, poseOf: poseOf, mixPose: mixPose, drawPoseExtras: drawPoseExtras, randomAv: randomAv, setup: setup, pt: pt, rr: rr, star: star };
 })();

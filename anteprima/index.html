@@ -988,6 +988,23 @@
   .rsec{display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin:16px 2px 8px;}
   .rsec .ico{width:16px;height:16px;color:#FFB400;} .rsec .k{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600;}
   .rboard{display:flex;flex-direction:column;gap:6px;}
+  /* Omino e minigiochi (09/10): editor a figura intera, negozio a monete, rigori e tennis (omino.js, giochi*.js) */
+  .omtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;} .omcoins{display:flex;align-items:center;gap:6px;font-weight:700;} .omcoins .ico{width:20px;height:20px;}
+  .omstage canvas,#view-gioco canvas{display:block;border-radius:14px;touch-action:none;} .omrow{display:flex;gap:8px;margin-top:8px;} .omrow input[type=number]{width:80px;flex:none;}
+  .omcats{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px;} .omcats button{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:0.8rem;font-weight:600;padding:7px 12px;border-radius:999px;cursor:pointer;}
+  .omcats button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#1d1205;} .omcats button.lk{opacity:.45;}
+  .omlbl{font-weight:700;font-size:0.85rem;margin:10px 0 4px;} .omgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px;}
+  .omit{position:relative;border:2px solid transparent;background:var(--bg-alt);border-radius:12px;padding:4px 4px 6px;cursor:pointer;color:inherit;font:inherit;text-align:center;display:flex;flex-direction:column;align-items:center;}
+  .omit[aria-pressed="true"]{border-color:var(--accent);} .omit canvas{width:100%;height:auto;border-radius:8px;background:#0e1a20;} .omit.lock canvas{filter:grayscale(1) brightness(.5);}
+  .omit span{font-size:0.68rem;line-height:1.15;margin-top:3px;color:var(--ink-soft);} .omit em{font-style:normal;font-size:0.64rem;font-weight:700;color:var(--ink-soft);} .omit em.omprice{color:var(--accent);}
+  .omsw{display:flex;gap:6px;flex-wrap:wrap;} .omsw button{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);cursor:pointer;} .omsw button[aria-pressed="true"]{border-color:#fff;box-shadow:0 0 0 2px var(--accent);}
+  .omshot{position:relative;} .omflash{position:absolute;inset:0;background:#fff;border-radius:14px;opacity:0;pointer-events:none;}
+  #view-gioco .hud{display:flex;justify-content:space-between;align-items:center;margin:4px 2px 8px;gap:8px;} #view-gioco .who{font-weight:700;font-size:0.85rem;}
+  #view-gioco .dots{display:flex;gap:4px;margin-top:3px;} #view-gioco .dots i{width:11px;height:11px;border-radius:50%;background:var(--surface);border:1px solid var(--line);} #view-gioco .dots i.g{background:var(--good);} #view-gioco .dots i.m{background:var(--bad);}
+  #view-gioco .big{font-size:1.6rem;font-weight:800;font-stretch:115%;font-variant-numeric:tabular-nums;} #view-gioco .help{font-size:0.8rem;color:var(--ink-soft);margin:8px 2px 0;}
+  #view-gioco .stage{position:relative;display:flex;justify-content:center;} #view-gioco .over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:14px;text-align:center;padding:16px;color:#fff;}
+  #view-gioco .over b{font-size:1.5rem;font-stretch:115%;} #view-gioco .ruota{display:none;}
+  @media (orientation:landscape) and (max-height:500px){ #view-gioco .ruota{display:block;text-align:center;padding:30px 16px;font-weight:700;} #view-gioco .stage,#view-gioco .hud{display:none;} }
   /* Strategy builder a tutto schermo (09/10) */
   .bfull{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);}
   .bftop{flex:none;display:flex;align-items:center;gap:6px;padding:6px 8px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);background:var(--surface);}
@@ -1000,6 +1017,8 @@
   body.bldfull{overflow:hidden;} body.bldfull .tabbar{display:none;}
   /* Mie strategie (09/10): flusso in piccolo e imbuto delle partite di adesso */
   .card.mie{margin-bottom:10px;}
+  .card.mkt{margin-bottom:10px;} .mkth{display:flex;align-items:center;gap:10px;} .mktn{display:flex;flex-direction:column;min-width:0;} .mktb{margin:6px 0 2px;}
+  .mktpub{margin-top:10px;padding:10px;border:1px dashed var(--line);border-radius:12px;font-size:0.85rem;} .mktpub.on{border-style:solid;border-color:var(--good);}
   .bminib{display:block;width:100%;padding:8px;margin:4px 0 8px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:inherit;font:inherit;cursor:pointer;text-align:right;}
   .bmini{display:block;width:100%;height:auto;max-height:130px;margin-bottom:4px;}
   .bfun{display:flex;flex-direction:column;gap:5px;margin-top:4px;}
@@ -1416,6 +1435,29 @@
   <div id="strategie"></div>
 </main>
 
+<main class="view" id="view-omino" hidden>
+  <button class="back" type="button" data-back="profilo">‹ Profilo</button>
+  <h1 class="dtitle">Il tuo omino</h1>
+  <div id="omino"></div>
+</main>
+
+<main class="view" id="view-gioco" hidden>
+  <button class="back" type="button" data-back="fight">‹ StatsFight</button>
+  <h1 class="dtitle" id="giocotitle">Minigioco</h1>
+  <section id="t-rigori" hidden>
+    <div class="hud"><div><div class="who" id="rme"></div><div class="dots" id="rdme"></div></div><div class="big" id="rsc">0 - 0</div><div style="text-align:right"><div class="who" id="rcpu"></div><div class="dots" id="rdcpu" style="justify-content:flex-end"></div></div></div>
+    <div class="ruota">Gira il telefono in verticale per giocare.</div>
+    <div class="stage"><canvas id="rcv"></canvas><div class="over" id="rover" hidden></div></div>
+    <p class="help" id="rhelp"></p>
+  </section>
+  <section id="t-tennis" hidden>
+    <div class="hud"><div class="who" id="tme"></div><div class="big" id="tsc">0 - 0</div><div class="who" id="tcpu"></div></div>
+    <div class="ruota">Gira il telefono in verticale per giocare.</div>
+    <div class="stage"><canvas id="tcv"></canvas><div class="over" id="tover" hidden></div></div>
+    <p class="help" id="thelp"></p>
+  </section>
+</main>
+
 <main class="view" id="view-builder" hidden>
   <button class="back" type="button" data-back="strategie">‹ Strategie</button>
   <h1 class="dtitle">Strategy builder</h1>
@@ -1560,7 +1602,6 @@
 <main class="view" id="view-profilo" hidden>
   <div id="mebar"></div>
   <div id="bacheca"></div>
-  <input type="file" id="fotoinput" accept="image/*" hidden>
 </main>
 
 <main class="view" id="view-ruota" hidden>
@@ -1646,6 +1687,8 @@
 <script src="anagrafica.js"></script>
 <script src="feed_rank.js"></script>
 <script src="condividi.js"></script>
+<script src="giochi.js"></script>
+<script src="quiz_storia.js"></script>
 <script>
 (function () {
   "use strict";
@@ -2092,18 +2135,19 @@
   function renderStrategie() {
     var cat = data.catalog || [];
     if (!cat.length) {
-      $("strategie").innerHTML = '<div class="chips sporttabs" role="tablist"><button class="chip" type="button" role="tab" data-ssport="mie" aria-pressed="' + (stratSport === "mie") + '">' + ic("pen") + ' Mie strategie</button></div>'
-        + (stratSport === "mie" ? mieHtml() : builderCard() + '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'); return;
+      $("strategie").innerHTML = '<div class="chips sporttabs" role="tablist"><button class="chip" type="button" role="tab" data-ssport="mie" aria-pressed="' + (stratSport === "mie") + '">' + ic("pen") + ' Mie strategie</button><button class="chip" type="button" role="tab" data-ssport="market" aria-pressed="' + (stratSport === "market") + '">' + ic("trophy") + ' Marketplace</button></div>'
+        + (stratSport === "mie" ? mieHtml() : stratSport === "market" ? mktHtml() : builderCard() + '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'); return;
     }
     var cc = catOf(stratSport), nCat = cc && cc.strategies ? cc.strategies.length : 0;
     // classifica per rendimento storico: "Top 5" e "Dalla 6 alla 10" (prima la Top 10 ripeteva meta' della Top 5)
     var TOPS = { top5: [0, 5], top10: [5, 10] };
-    if (!HERO[stratSport] && !TOPS[stratSport] && stratSport !== "mie") stratSport = "calcio";
+    if (!HERO[stratSport] && !TOPS[stratSport] && stratSport !== "mie" && stratSport !== "market") stratSport = "calcio";
     var tabs = '<div class="chips sporttabs" role="tablist">'
       + ["top5", "top10"].map(function (t) {
         return '<button class="chip" type="button" role="tab" data-ssport="' + t + '" aria-pressed="' + (t === stratSport) + '">' + ic("star") + (t === "top5" ? " Top 5" : " Dalla 6 alla 10") + '</button>';
       }).join("")
       + '<button class="chip" type="button" role="tab" data-ssport="mie" aria-pressed="' + (stratSport === "mie") + '">' + ic("pen") + ' Mie strategie</button>'
+      + '<button class="chip" type="button" role="tab" data-ssport="market" aria-pressed="' + (stratSport === "market") + '">' + ic("trophy") + ' Marketplace</button>'
       + STRAT_SPORTS.map(function (sp) {
         return '<button class="chip" type="button" role="tab" data-ssport="' + sp + '" aria-pressed="' + (sp === stratSport) + '">' + EMOJI[sp] + ' ' + NAME[sp] + '</button>';
       }).join("") + '</div>';
@@ -2123,6 +2167,7 @@
         + (hidden.has(s.id) ? "" : " checked") + ' aria-label="Mostra i segnali di ' + esc(s.name) + '"><span class="slider"></span></span></div>';
     }
     if (stratSport === "mie") { $("strategie").innerHTML = tabs + mieHtml(); return; }
+    if (stratSport === "market") { $("strategie").innerHTML = tabs + mktHtml(); return; }
     var NOTE = '<div class="note" style="margin-bottom:10px;">L\'interruttore mostra o nasconde i segnali di quella strategia nella lista "Segnali". I dati non si cancellano e le notifiche Telegram non cambiano.</div>';
     if (TOPS[stratSport]) {
       var R = TOPS[stratSport], ids = topIds(), top = ids.slice(R[0], R[1]).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(Boolean);
@@ -2727,7 +2772,7 @@
       var ce = $("catedit"); if (ce) { ce.classList.remove("shake"); void ce.offsetWidth; ce.classList.add("shake"); ce.scrollIntoView({ block: "nearest" }); }
       return;
     }
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "mio", "ruota", "fight", "chat", "corsa", "benvenuto", "notifiche", "leghe", "campionati", "album", "pick", "direct", "esplora", "attivita", "live", "builder"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "mio", "ruota", "fight", "chat", "corsa", "benvenuto", "notifiche", "leghe", "campionati", "album", "pick", "direct", "esplora", "attivita", "live", "builder", "omino", "gioco"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     closeDrawer();
     var unlocked = view !== "lock";
     if (view === "segnali" && data) setTimeout(segDot, 0);   // visti: il pallino si spegne
@@ -2739,7 +2784,7 @@
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { diario: "calendario", dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "calendario", catalogo: "strategie", occhio: "diario", mio: "diario", builder: "strategie", campionati: "calendario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
+    var tabView = { diario: "calendario", dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "calendario", catalogo: "strategie", occhio: "diario", mio: "diario", builder: "strategie", omino: "diario", gioco: "fight", campionati: "calendario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
     document.querySelectorAll(".tab, .topdirect").forEach(function (t) {
       if ((t.dataset.view || (t.id === "directbtn" ? "direct" : "")) === ({ chat: "direct" }[tabView] || tabView)) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -3238,7 +3283,7 @@
   }
   function prizeLine(sp) {
     var p = WHEEL.filter(function (x) { return x.k === sp.k; })[0]; if (!p) return "";
-    return p.k === "part" && sp.part ? "Pezzo d'avatar: " + (CM_LABEL[sp.part.split(":")[0]] || "") + " sbloccato"
+    return p.k === "part" && sp.part ? (/^om:/.test(sp.part) ? "Pezzo dell'omino sbloccato: " + sp.part.slice(3) : "Pezzo d'avatar: " + (CM_LABEL[sp.part.split(":")[0]] || "") + " sbloccato")
       : p.k === "stk" && sp.stk ? "Adesivo: " + sp.stk + (sp.dup ? " (doppio: +5 monete)" : "") : sp.alt ? sp.alt : p.t;
   }
   function renderRuota() {
@@ -3261,11 +3306,9 @@
     var p = WHEEL[i], sp = { k: p.k, ts: nowS() }, R2 = rewardState(pronostici()), won = R2.closed.filter(function (b) { return b.result === 1; }).length;
     if (p.c) wheel.coins += p.c;
     else if (p.k === "assic" || p.k === "radd") { jolly.inv[p.k] = (jolly.inv[p.k] || 0) + 1; saveJolly(); }
-    else if (p.k === "part") {
-      var locked = [];
-      Object.keys(CM_LOCK).forEach(function (part) { CM[part].forEach(function (v, j) { if (CM_LOCK[part][v] && !cmOpen(part, j, R2.level, won)) locked.push(part + ":" + v); }); });
-      if (locked.length) { sp.part = locked[Math.floor(Math.random() * locked.length)]; avParts.push(sp.part); saveAvParts(); }
-      else { wheel.coins += 20; sp.alt = "Hai già tutti i pezzi: 20 monete"; }
+    else if (p.k === "part") {   // 09/10: un pezzo dell'omino ancora chiuso (omino.js)
+      var rg = window.OMINO ? window.OMINO.regalo() : null;
+      if (rg) sp.part = "om:" + rg; else { wheel.coins += 20; sp.alt = "Hai già tutti i pezzi: 20 monete"; }
     } else if (p.k === "stk") {
       var s = STICKERS[Math.floor(Math.random() * STICKERS.length)];
       sp.stk = s[1];
@@ -3370,46 +3413,25 @@
     var last = trivia.games[trivia.games.length - 1];
     return last && nowS() - last.ts < TRV.gap ? TRV.gap - (nowS() - last.ts) : 0;
   }
-  var QTH = { quote: { name: "Quote", ic: "coin", c: "#FFB400" }, favo: { name: "Favoriti", ic: "star", c: "#4D7CFE" }, strat: { name: "Strategie", ic: "strategie", c: "#00C2A8" },
-              dopo: { name: "Com'è finita", ic: "clock", c: "#FF5A5F" }, live: { name: "Live", ic: "radar", c: "#B15CFF" } };
+  // temi (09/10, richiesta utente: via le domande strane su quote e strategie): com'e' finita (archivio), attualita'
+  // di calcio e tennis (signals/quiz_attualita.py: classifiche e risultati veri), storia (quiz_storia.js)
+  var QTH = { dopo: { name: "Com'è finita", ic: "clock", c: "#FF5A5F" }, attc: { name: "Calcio di oggi", ic: "calcio", c: "#00C2A8" }, attt: { name: "Tennis di oggi", ic: "tennis", c: "#B15CFF" },
+              stc: { name: "Storia del calcio", ic: "trophy", c: "#FFB400" }, stt: { name: "Storia del tennis", ic: "book", c: "#4D7CFE" } };
+  function mixQ(x, rnd) { var o = shuffle(x.opts.map(function (t, i) { return [t, i]; }), rnd); return { q: x.q, opts: o.map(function (y) { return y[0]; }), ans: o.findIndex(function (y) { return y[1] === 0; }) }; }
   function shuffle(a, rnd) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   // domande di un tema coi dati di adesso (nessuna inventata): [{ q, opts, ans }]
   function triviaQs(th, rnd) {
     var out = [];
-    if (th === "quote" || th === "favo") {
-      var evs = shuffle(evList().filter(function (e) { return !e.live && (e.mk["1"] && e.mk["2"] || e.mk.W1 && e.mk.W2); }), rnd);
-      evs.forEach(function (e) {
-        var c1 = e.mk["1"] ? "1" : "W1", c2 = e.mk["2"] ? "2" : "W2", o1 = e.mk[c1][0], o2 = e.mk[c2][0];
-        if (th === "quote") {
-          var opts = [o1];
-          [0.55, 1.6, 2.4, 0.75, 1.3].forEach(function (k) { var o = Math.max(1.05, Math.round(o1 * k * 100) / 100); if (opts.length < 4 && opts.indexOf(o) < 0) opts.push(o); });
-          opts = shuffle(opts, rnd);
-          out.push({ q: "Quanto paga la vittoria di " + e.home + " (" + e.home + " - " + e.away + ")?", opts: opts.map(oddsTxt), ans: opts.indexOf(o1) });
-        } else if (Math.abs(o1 - o2) > 0.15) {
-          out.push({ q: e.home + " - " + e.away + ": chi è favorito per le quote?", opts: [e.home, e.away], ans: o1 < o2 ? 0 : 1 });
-        }
-      });
-    } else if (th === "strat") {
-      var cat = (data.catalog || []).filter(function (x) { var st = x.detail && x.detail.stats; return st && st.n >= 30 && st.roi != null && !x.retired; });
-      for (var k = 0; k < 4 && cat.length >= 3; k++) {
-        var pick = shuffle(cat.slice(), rnd).slice(0, Math.min(4, cat.length)), best = 0;
-        pick.forEach(function (x, i) { if (x.detail.stats.roi > pick[best].detail.stats.roi) best = i; });
-        var hi = k % 2 === 0;
-        if (!hi) pick.forEach(function (x, i) { if (x.detail.stats.wins / x.detail.stats.n > pick[best].detail.stats.wins / pick[best].detail.stats.n) best = i; });
-        out.push({ q: hi ? "Quale strategia ha il rendimento storico più alto?" : "Quale strategia vince più spesso (strike)?", opts: pick.map(function (x) { return x.name; }), ans: best });
-      }
+    if (th === "attc" || th === "attt") {
+      var att = (data.quiz && data.quiz.att && data.quiz.att[th === "attc" ? "calcio" : "tennis"]) || [];
+      shuffle(att.slice(), rnd).forEach(function (x) { if (x.opts && x.opts.length >= 2) out.push(mixQ(x, rnd)); });
+    } else if (th === "stc" || th === "stt") {
+      var st = (window.QUIZ_STORIA && window.QUIZ_STORIA[th === "stc" ? "calcio" : "tennis"]) || [];
+      shuffle(st.slice(), rnd).forEach(function (x) { out.push(mixQ(x, rnd)); });
     } else if (th === "dopo") {
       shuffle(((data.quiz && data.quiz.dopo) || []).slice(), rnd).forEach(function (x) {
         var t = x.event.split(" - ");
         out.push({ q: x.event + ": minuto " + x.minute + ", " + x.score + ". Com'è finita?", opts: ["Vince " + t[0], "Pareggio", "Vince " + (t[1] || "")], ans: ["1", "X", "2"].indexOf(x.answer) });
-      });
-    } else if (th === "live") {
-      shuffle(evList().filter(function (e) { return e.live && e.sport === "calcio" && e.st && e.st.stats; }), rnd).forEach(function (e) {
-        ["Tiri", "Tiri in porta", "Angoli", "Attacchi pericolosi"].forEach(function (lab) {
-          var v = statPair(e.st, lab); if (!v || lockedCell(lab)) return;
-          var a = parseFloat(v[0]), b = parseFloat(v[1]); if (isNaN(a) || isNaN(b) || a === b) return;
-          out.push({ q: e.home + " - " + e.away + " (" + (estMinute(e) || "live") + "): chi ha più " + lab.toLowerCase() + "?", opts: [e.home, e.away], ans: a > b ? 0 : 1 });
-        });
       });
     }
     return out.filter(function (x) { return x.ans >= 0; });
@@ -3455,6 +3477,8 @@
         + '<div class="trvth">' + Object.keys(QTH).map(function (k) { return '<span style="--c:' + QTH[k].c + '">' + ic(QTH[k].ic) + ' ' + QTH[k].name + '</span>'; }).join("") + '</div>'
         + '<button class="primary block trvgo" type="button" data-tvgo="1"' + (w ? " disabled" : "") + '>' + ic("vs") + ' ' + (w === -1 ? "Hai fatto le 3 sfide di oggi" : w ? "Prossima sfida tra " + Math.ceil(w / 60) + " min" : "Cerca un avversario") + '</button>'
         + '<div class="k trvrule">Sfide di oggi: ' + today + '/' + TRV.perDay + ' · una ogni ora · ' + TRV.right + ' monete per risposta giusta, ' + TRV.win + ' se vinci, ' + TRV.draw + ' col pari.</div></div>'
+        + '<h2 class="sectiontitle">Minigiochi col tuo omino</h2><div class="duo"><button class="primary" type="button" data-omgame="rigori">' + ic("calcio") + ' Rigori</button><button class="primary" type="button" data-omgame="tennis">' + ic("tennis") + ' Tennis</button></div>'
+        + '<div class="k" style="margin:6px 2px 0;">15 monete a vittoria, fino a 5 vittorie premiate al giorno. <button class="linkbtn" type="button" data-omino="corpo">Vesti il tuo omino</button></div>'
         + (last.filter(function (x) { return x.res; }).length ? '<h2 class="sectiontitle">Ultime sfide</h2><div class="card">' + last.filter(function (x) { return x.res; }).map(function (x) {
           var o = oppOf(x);
           return '<div class="trvhist">' + avatar(o.id, 34) + '<span><b>' + esc(o.name) + '</b><span class="k">' + whenLabel(x.ts) + ' · ' + x.rounds.map(function (t) { return QTH[t] ? QTH[t].name : t; }).join(", ") + '</span></span>'
@@ -4445,27 +4469,9 @@
     if (meEdit) {
       var d = meEdit, lvl = rewardState(pronostici()).level, curAv = /^(av|sp|cm):/.test(d.seed) ? d.seed : "av:" + avIndex(d.seed);
       html = '<div class="card meedit">'
-        + '<div class="mepicrow">' + avOf(d, 88) + '<div class="mepicbtns">'
-        + '<button class="chip" type="button" data-mefoto="1">' + ic("camera") + ' Scegli una foto</button>'
-        + (d.pic ? '<button class="chip" type="button" data-menofoto="1">' + ic("trash") + ' Togli la foto</button>' : "") + '</div></div>'
-        + '<div class="k" style="margin:10px 0 6px;">Oppure un avatar disegnato:</div>'
-        + '<div class="seedrow">' + AV.map(function (a, i) {
-          var sd = "av:" + i;
-          return '<button type="button" class="seedbtn' + (!d.pic && sd === curAv ? " on" : "") + '" data-meseed="' + sd + '" aria-label="Avatar ' + (i + 1) + '">' + avatar(sd, 48) + '</button>';
-        }).join("") + '</div>'
-        + '<div class="k" style="margin:12px 0 6px;">Avatar dei livelli: uno nuovo a ogni livello (sei al ' + lvl + '):</div>'
-        + '<div class="hscroll lvavs">' + levelAvs.map(function (x) {
-          var open = lvl >= x.level;
-          return '<button type="button" class="seedbtn sp' + (open ? "" : " locked") + (!d.pic && d.seed === x.seed ? " on" : "") + '"' + (open ? ' data-meseed="' + x.seed + '"' : " disabled") + ' aria-label="Avatar del livello ' + x.level + '">'
-            + avatar(x.seed, 52) + '<span class="spname">' + (open ? "" : ic("lock") + " ") + 'Liv. ' + x.level + '</span></button>';
-        }).join("") + '</div>'
-        + '<div class="k" style="margin:12px 0 6px;">Oppure crea il tuo, pezzo per pezzo:</div>' + cmEditorHtml(d, lvl, won)
-        + '<div class="k" style="margin:12px 0 6px;">Avatar speciali, si sbloccano salendo di livello:</div>'
-        + '<div class="seedrow">' + AV_SPECIAL.map(function (x) {
-          var sd = "sp:" + x.id, open = lvl >= x.level;
-          return '<button type="button" class="seedbtn sp' + (open ? "" : " locked") + (!d.pic && sd === curAv ? " on" : "") + '"' + (open ? ' data-meseed="' + sd + '"' : " disabled") + ' aria-label="' + esc(x.name) + '">'
-            + avatar(sd, 56) + (open ? "" : '<span class="splock">' + ic("lock") + ' Liv. ' + x.level + '</span>') + '<span class="spname">' + esc(x.name) + '</span></button>';
-        }).join("") + '</div>'
+        + '<div class="mepicrow">' + avOf(d, 88) + '<div class="mepicbtns"><button class="chip" type="button" data-omino="corpo">' + ic("pen") + ' Crea e vesti il tuo omino</button>'
+        + '<button class="chip" type="button" data-omino="foto">' + ic("camera") + ' Scatta una foto al tuo omino</button></div></div>'
+        + '<div class="k" style="margin:8px 0 10px;">La foto del profilo è sempre il tuo omino: niente foto dal telefono.</div>'
         + '<label class="melabel" for="mename">Nome</label><input id="mename" class="meinput" maxlength="24" value="' + esc(d.name) + '" placeholder="Come ti vedono gli altri" translate="no"><div class="note namemsg" id="menamemsg" role="alert" hidden></div>'
         + '<label class="melabel" for="meuser">@username</label><div class="userrow"><span>@</span><input id="meuser" class="meinput" maxlength="20" autocapitalize="none" autocomplete="off" spellcheck="false" value="' + esc(d.user || "") + '" placeholder="come ti taggano gli altri" translate="no"></div><div class="note namemsg" id="meusermsg" role="alert" hidden></div>'
         + '<label class="melabel" for="mebio">Bio</label><textarea id="mebio" class="meinput" maxlength="160" rows="3" placeholder="Due righe su di te: sport preferiti, come giochi">' + esc(d.bio) + '</textarea>'
@@ -4519,18 +4525,17 @@
       + chestHtml(R2);
   }
   // foto dal telefono: ritagliata quadrata e rimpicciolita a 160 px, cosi' sta comoda nella memoria del telefono
-  function loadPhoto(file) {
-    var img = new Image(), url = URL.createObjectURL(file);
-    img.onload = function () {
-      var s = Math.min(img.width, img.height), c = document.createElement("canvas");
-      c.width = c.height = 160;
-      c.getContext("2d").drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, 160, 160);
-      URL.revokeObjectURL(url);
-      if (meEdit) { meEdit.pic = c.toDataURL("image/jpeg", 0.85); renderProfilo(); }
-    };
-    img.onerror = function () { URL.revokeObjectURL(url); };
-    img.src = url;
-  }
+  // ponte con l'omino (omino.js): livello, monete, foto profilo. Niente foto caricate dal telefono (09/10): la foto del
+  // profilo e' sempre l'omino (scattata nella sua modalita' foto, o fatta da sola quando lo cambi).
+  if (me.pic && !me.picOm) { me.pic = null; saveMe(); }
+  window.SS = {
+    level: function () { return data ? rewardState(pronostici()).level : 1; },
+    coins: function () { return data ? rewardState(pronostici()).coins : 0; },
+    setPic: function (u, auto) { if (auto && me.picShot) return; me.pic = u; me.picOm = true; if (!auto) me.picShot = true; if (meEdit) meEdit.pic = u; saveMe(); if (data && !auto) renderAll(); },
+    toast: function (t, s2) { fxToast("coin", t, s2); },
+    refresh: function () { if (data) renderProfilo(); },
+    show: function (v) { show(v); }
+  };
 
   // classifica della settimana: tu in mezzo al Team StatSight, stessi punti lega (vinto = quota − 1, perso = −1)
   function leaderboardHtml(R2) {
@@ -5820,6 +5825,8 @@
     coins -= jolly.spent - wheelCoins() - fightCoins();   // monete fuori dai pronostici: jolly comprati (-), ruota e StatsFight (+)
     var chest = chestOf(prizes, thisWeek);   // i premi delle settimane chiuse arrivano in una cassa da aprire
     coins -= chest.coins;
+    if (window.OMINO) coins -= window.OMINO.spent() - window.OMINO.gameCoins();
+    if (typeof mkt !== "undefined") coins -= mktSpent();   // strategie seguite a pagamento nel Marketplace   // negozio dell'omino (-) e minigiochi (+)
     var cur = weeks[thisWeek] || { pts: 0, n: 0 };
     var zone = cur.n >= 10 && cur.pts >= 3 ? "up" : (cur.n < 5 || cur.pts <= -3) ? (tier > 0 ? "down" : "stay") : "stay";
     var played = Math.max(1, Math.min(SEASON.rounds, Math.ceil((Math.min(nowS(), SEASON.end) - SEASON.start) / (7 * 86400))));
@@ -6582,12 +6589,11 @@
     if (ds.appunti) { openAppunti(); return; }
     if (ds.miei) { bview = "miei"; renderBacheca(); show("profilo"); window.scrollTo(0, 0); return; }
     if (ds.meedit) { startEdit(); return; }
+    if (ds.omino && window.OMINO) { OMINO.open(ds.omino); return; }
     if (ds.occhio) { renderOcchio(); show("occhio"); window.scrollTo(0, 0); return; }
     if (ds.gosettings) { $("settingsbtn").click(); return; }
     if (!meEdit) return;
     if (pickerClick(meEdit, b)) { keepScroll($("profilo"), renderProfilo); return; }
-    if (ds.mefoto) { $("fotoinput").click(); return; }
-    if (ds.menofoto) { meEdit.pic = null; renderProfilo(); return; }
     if (ds.cmtab) { cmTab = Number(ds.cmtab); keepScroll($("profilo"), renderProfilo); return; }
     if (ds.cm || ds.cmuse) {
       var P = /^cm:/.test(meEdit.seed) ? cmDecode(meEdit.seed) : cmDefault();
@@ -6626,10 +6632,6 @@
       if (u) me.user = u;
       commitPick(pick); me.onboarded = true; saveMe(); if (data) renderAll(); show("radar"); window.scrollTo(0, 0); tutorialFirst(); return; }
     if (b.dataset.pkskip) { me.onboarded = true; saveMe(); show("radar"); tutorialFirst(); }
-  });
-  $("fotoinput").addEventListener("change", function () {
-    var f = this.files && this.files[0]; this.value = "";
-    if (f && /^image\//.test(f.type)) loadPhoto(f);
   });
   // Team StatSight: profilo, segui, filtro della bacheca
   ["bacheca", "persona", "occhioclassifica", "occhiolevel", "esplora", "attivita"].forEach(function (id) {
@@ -7897,7 +7899,7 @@
     if (!data || !data.diario) return;
     var at = data.diario.at || nowS(), have = {}, ch = false, now = nowS();
     blog.forEach(function (x) { have[x.b + "|" + x.e + "|" + x.n] = 1; });
-    builds.forEach(function (b) {
+    builds.concat(TPL()).forEach(function (b) {   // anche le strategie StatSight: i loro numeri vanno nel Marketplace
       bldFires(b).forEach(function (x) {
         var k = b.id + "|" + x.e.id + "|" + x.node; if (have[k] || !x.code || !x.odds) return; have[k] = 1;
         blog.push({ b: b.id, e: x.e.id, n: x.node, c: x.code, o: x.odds, sc: (x.e.st || {}).score || null, sp: x.e.sport, lv: !!x.e.live, t: at, ev: x.e.home + " - " + x.e.away });
@@ -7916,8 +7918,10 @@
   function bldStats(id) {
     var L = blog.filter(function (x) { return x.b === id; }), S = L.filter(function (x) { return x.r === 1 || x.r === 0; }).sort(function (a, b) { return a.t - b.t; });
     var w = 0, pts = 0, cum = 0, curve = [], os = 0;
-    S.forEach(function (x) { if (x.r === 1) { w++; pts += x.o - 1; } else pts -= 1; os += x.o; cum = Math.round(pts * 100) / 100; curve.push([x.t, cum]); });
-    return { n: L.length, open: L.filter(function (x) { return x.r == null; }).length, s: S.length, w: w, pts: pts, roi: S.length ? pts / S.length : null, avg: S.length ? os / S.length : null, curve: curve, last: S.slice(-10) };
+    var peak = 0, dd = 0, rets = [];
+    S.forEach(function (x) { var r = x.r === 1 ? x.o - 1 : -1; rets.push(r); if (x.r === 1) { w++; pts += x.o - 1; } else pts -= 1; os += x.o; cum = Math.round(pts * 100) / 100; curve.push([x.t, cum]); peak = Math.max(peak, pts); dd = Math.max(dd, peak - pts); });
+    var mean = rets.length ? pts / rets.length : 0, sd = rets.length > 1 ? Math.sqrt(rets.reduce(function (a, r) { return a + (r - mean) * (r - mean); }, 0) / (rets.length - 1)) : 0;
+    return { dd: Math.round(dd * 100) / 100, sharpe: sd ? Math.round(mean / sd * 100) / 100 : null, n: L.length, open: L.filter(function (x) { return x.r == null; }).length, s: S.length, w: w, pts: pts, roi: S.length ? pts / S.length : null, avg: S.length ? os / S.length : null, curve: curve, last: S.slice(-10) };
   }
   // ---- descrizione e grafici
   function bldBlocks(b) {
@@ -7971,12 +7975,96 @@
         + (S.curve.length > 1 ? '<div class="chart"><h3>Andamento cumulato (1 unità a giocata)</h3>' + lineChart(S.curve) + '</div>'
           : '<div class="k" style="margin:6px 2px;">' + (S.n ? S.s + (S.s === 1 ? " chiusa" : " chiuse") + ", " + S.open + " in attesa dell'esito: il grafico compare dalla seconda chiusa." : "Non è ancora scattata: il grafico compare quando ci sono esiti.") + '</div>')
         + (S.last.length ? '<div class="lastres"><span class="k">Ultimi ' + S.last.length + '</span>' + S.last.map(function (x) { return '<i class="' + (x.r === 1 ? "w" : "l") + '" title="' + esc(x.ev) + '"></i>'; }).join("") + '</div>' : "")
-        + '</div>';
+        + mktPublishHtml(b, S) + '</div>';
     }).join("") + builderCard();
+  }
+  // ---------------------------------------------------------------- Marketplace (09/10, richiesta utente)
+  // In Strategie, accanto a Mie strategie. Modello ibrido: le strategie restano private (la sandbox di ognuno); chi
+  // ha uno storico verificato puo' metterle in vetrina, gratis o a pagamento, copiabili o solo da seguire. Ordine per
+  // rendimento, costanza (rendimento medio diviso la sua variabilita', come lo Sharpe ratio), perdita massima e
+  // seguaci: mai per data, cosi' le strategie fatte a caso (o in serie da un'IA) restano in fondo.
+  // Regole: in vetrina solo con almeno MKT_MIN esiti chiusi; rendimento negativo o perdita massima oltre MKT_DD
+  // unita' = "Ad alto rischio". Senza server: lo storico e' quello raccolto sul telefono, in vetrina ci sono le tue e
+  // quelle StatSight (dichiarate), i prezzi sono in monete. Col server: backtest obbligatorio sullo storico, creator
+  // veri, pagamenti e quota della piattaforma (docs/analisi_strategy_builder.md, punto C).
+  var MKT_KEY = "statsight.market", MKT_MIN = 30, MKT_DD = 10, MKT_PRICES = [0, 50, 100, 200, 500];
+  var mkt = (function () { try { var m = JSON.parse(localStorage.getItem(MKT_KEY)); if (m && m.pub) return m; } catch (e) {} return { pub: {}, follow: {}, spent: 0 }; })();
+  var mktSort = "roi", mktSp = "tutti", mktPubOpen = null;
+  function saveMkt() { try { localStorage.setItem(MKT_KEY, JSON.stringify(mkt)); } catch (e) {} }
+  function mktSpent() { return mkt.spent || 0; }
+  function mktFollowed() { return TPL().filter(function (t) { return mkt.follow[t.id]; }).map(function (t) { var c = JSON.parse(JSON.stringify(t)); c.sig = mkt.follow[t.id].sig !== false; return c; }); }
+  function mktEntries() {
+    var own = builds.filter(function (b) { return mkt.pub[b.id]; }).map(function (b) { return { b: b, own: true, price: mkt.pub[b.id].price, copy: mkt.pub[b.id].copy }; });
+    var team = TPL().map(function (b) { return { b: b, team: true, price: 0, copy: true }; });
+    return own.concat(team).map(function (x) { x.st = bldStats(x.b.id); x.fol = (x.own ? 0 : 0) + (mkt.follow[x.b.id] ? 1 : 0); return x; });
+  }
+  function mktRisk(st) { return st.s >= MKT_MIN && ((st.roi != null && st.roi < 0) || st.dd > MKT_DD); }
+  function mktHtml() {
+    var L = mktEntries().filter(function (x) { return mktSp === "tutti" || x.b.sport === mktSp; });
+    var key = { roi: function (x) { return x.st.roi == null ? -9 : x.st.roi; }, sharpe: function (x) { return x.st.sharpe == null ? -9 : x.st.sharpe; }, dd: function (x) { return -x.st.dd; }, fol: function (x) { return x.fol; } }[mktSort];
+    L.sort(function (a, b) { var va = a.st.s >= MKT_MIN, vb = b.st.s >= MKT_MIN; if (va !== vb) return va ? -1 : 1; return key(b) - key(a) || b.st.s - a.st.s; });
+    var chips = function (attr, list, cur) { return '<div class="chips" style="margin:6px 0;">' + list.map(function (x) { return '<button class="chip" type="button" data-' + attr + '="' + x[0] + '" aria-pressed="' + (x[0] === cur) + '">' + x[1] + '</button>'; }).join("") + '</div>'; };
+    var h = '<h2 class="sectiontitle">Marketplace</h2><div class="note" style="margin-bottom:8px;">Strategie in vetrina, ordinate per i numeri e mai per data. Ci entrano solo con almeno ' + MKT_MIN + ' esiti chiusi; con rendimento negativo o una perdita massima oltre ' + MKT_DD + ' unità hanno il bollino "Ad alto rischio". Le metti in vetrina da Mie strategie.</div>'
+      + '<div class="k">Ordina per</div>' + chips("mksort", [["roi", "Rendimento"], ["sharpe", "Costanza"], ["dd", "Perdita massima"], ["fol", "Seguaci"]], mktSort)
+      + chips("mksp", [["tutti", "Tutte"], ["calcio", EMOJI.calcio + " " + NAME.calcio], ["tennis", EMOJI.tennis + " " + NAME.tennis]], mktSp);
+    if (!L.length) return h + '<div class="note">Nessuna strategia in vetrina per questo sport.</div>';
+    return h + L.map(function (x, i) {
+      var st = x.st, ok = st.s >= MKT_MIN, fol = mkt.follow[x.b.id];
+      var kp = function (v, l, cls) { return '<div class="kpi"><div class="v' + (cls ? " " + cls : "") + '">' + v + '</div><div class="l">' + l + '</div></div>'; };
+      return '<div class="card mkt"><div class="mkth"><span class="rankn">' + (i + 1) + '</span><span class="mktn"><b>' + EMOJI[x.b.sport] + ' ' + esc(x.b.name) + '</b><span class="k">'
+        + (x.team ? teamBadge() : "di te") + ' · ' + (x.b.mode === "live" ? "live" : "pre-partita") + ' · ' + (x.price ? x.price + " monete al mese" : "gratis") + (x.copy ? " · copiabile" : "") + '</span></span></div>'
+        + '<div class="mktb">' + (ok ? (mktRisk(st) ? '<span class="tm spenta">AD ALTO RISCHIO</span>' : '<span class="tm top">VERIFICATA</span>') : '<span class="tm">IN PROVA · ' + st.s + '/' + MKT_MIN + ' ESITI</span>') + '</div>'
+        + (x.b.desc ? '<div class="ds">' + esc(x.b.desc) + '</div>' : "")
+        + '<div class="kpis">' + kp(st.s, "esiti") + kp(st.s ? Math.round(st.w / st.s * 100) + "%" : "—", "strike") + kp(st.roi != null ? pct(st.roi) : "—", "rendimento", st.roi == null ? "" : st.roi >= 0 ? "pos" : "neg")
+        + kp(st.s ? "−" + it(st.dd, 1) : "—", "perdita max") + kp(st.sharpe != null ? it(st.sharpe, 2) : "—", "costanza") + '</div>'
+        + (st.curve.length > 1 ? '<div class="chart">' + lineChart(st.curve) + '</div>' : "")
+        + '<div class="duo" style="margin-top:8px;">' + (x.own ? '<button class="chip" type="button" data-mkopen="' + esc(x.b.id) + '">' + ic("pen") + ' Apri</button>'
+          : '<button class="' + (fol ? "chip" : "primary") + '" type="button" data-mkfollow="' + esc(x.b.id) + '">' + (fol ? ic("check") + " La segui" : "Segui" + (x.price ? " · " + x.price + " monete" : "")) + '</button>')
+        + (x.copy && !x.own ? '<button class="chip" type="button" data-mkcopy="' + esc(x.b.id) + '">' + ic("copy") + ' Copia</button>' : "<span></span>") + '</div></div>';
+    }).join("") + '<div class="note" style="margin-top:8px;">Seguire una strategia manda i suoi segnali in Segnali. Copiarla te la mette in Mie strategie, da cambiare come vuoi. Con l\'app pubblica arrivano le strategie degli altri utenti, con lo storico calcolato dal server.</div>';
+  }
+  function mktPublishHtml(b, S) {   // dentro la scheda di Mie strategie
+    var p = mkt.pub[b.id];
+    if (p) return '<div class="mktpub on">' + ic("eye") + ' <b>In vetrina</b> · ' + (p.price ? p.price + " monete al mese" : "gratis") + (p.copy ? " · copiabile" : "") + ' <button class="linkbtn" type="button" data-mkunpub="' + esc(b.id) + '">Togli</button></div>';
+    if (mktPubOpen !== b.id) return '<button class="chip" type="button" data-mkpub="' + esc(b.id) + '" style="margin-top:8px;">' + ic("trophy") + ' Metti nel Marketplace</button>';
+    if (S.s < MKT_MIN) return '<div class="mktpub">Per la vetrina servono almeno ' + MKT_MIN + ' esiti chiusi: ne ha ' + S.s + '. Lasciala accesa e torna più avanti. <button class="linkbtn" type="button" data-mkpub="">Chiudi</button></div>';
+    return '<div class="mktpub"><b>Metti in vetrina</b>' + (mktRisk(S) ? '<div class="k neg">Uscirà col bollino "Ad alto rischio".</div>' : "")
+      + '<label class="melabel">Prezzo</label><div class="chips">' + MKT_PRICES.map(function (v) { return '<button class="chip" type="button" data-mkprice="' + v + '" aria-pressed="' + ((mkt.draft || 0) === v) + '">' + (v ? v + " monete al mese" : "Gratis") + '</button>'; }).join("") + '</div>'
+      + '<label class="bchk"><input type="checkbox" data-mkcopyok="1"' + (mkt.draftCopy ? " checked" : "") + '> Si può copiare (altrimenti solo seguire)</label>'
+      + '<div class="duo"><button class="chip" type="button" data-mkpub="">Annulla</button><button class="primary" type="button" data-mkpubok="' + esc(b.id) + '">Pubblica</button></div></div>';
+  }
+  function mktClick(d) {   // true se il click era suo
+    if (d.mksort) { mktSort = d.mksort; renderStrategie(); return true; }
+    if (d.mksp) { mktSp = d.mksp; renderStrategie(); return true; }
+    if (d.mkpub != null) { mktPubOpen = d.mkpub || null; mkt.draft = 0; mkt.draftCopy = false; renderStrategie(); return true; }
+    if (d.mkprice != null) { mkt.draft = Number(d.mkprice); renderStrategie(); return true; }
+    if (d.mkpubok) {
+      var b = builds.filter(function (x) { return x.id === d.mkpubok; })[0]; if (!b || bldStats(b.id).s < MKT_MIN) return true;
+      mkt.pub[b.id] = { price: mkt.draft || 0, copy: !!mkt.draftCopy, ts: nowS() }; b.vis = "pub"; saveBuilds(); saveMkt(); mktPubOpen = null;
+      fxToast("trophy", "In vetrina nel Marketplace", "Col server la vedranno tutti"); renderStrategie(); return true;
+    }
+    if (d.mkunpub) { delete mkt.pub[d.mkunpub]; saveMkt(); renderStrategie(); return true; }
+    if (d.mkfollow) {
+      var e = mktEntries().filter(function (x) { return x.b.id === d.mkfollow; })[0]; if (!e) return true;
+      if (mkt.follow[d.mkfollow]) { delete mkt.follow[d.mkfollow]; saveMkt(); renderStrategie(); renderFeed(); return true; }
+      if (e.price) {
+        if (rewardState(pronostici()).coins < e.price) { fxToast("coin", "Servono " + e.price + " monete", "Le guadagni coi pronostici"); return true; }
+        if (!window.confirm("Seguire " + e.b.name + " per " + e.price + " monete al mese?")) return true;
+        mkt.spent = (mkt.spent || 0) + e.price;
+      }
+      mkt.follow[d.mkfollow] = { ts: nowS(), price: e.price, sig: true }; saveMkt(); fxToast("check", "La segui", "I suoi segnali vanno in Segnali"); renderStrategie(); renderFeed(); return true;
+    }
+    if (d.mkcopy) {
+      var t = TPL().concat(builds).filter(function (x) { return x.id === d.mkcopy; })[0]; if (!t) return true;
+      var c = JSON.parse(JSON.stringify(t)); c.id = "U" + Date.now(); c.team = false; c.vis = "priv"; c.name = t.name + " (mia)"; c.ts = nowS(); builds.push(c); saveBuilds();
+      fxToast("copy", "Copiata in Mie strategie", "Ora è tua: cambiala come vuoi"); renderStrategie(); return true;
+    }
+    if (d.mkopen) { var o = builds.filter(function (x) { return x.id === d.mkopen; })[0]; if (o) { show("builder"); openFlow(o, false); } return true; }
+    return false;
   }
   function bldSignalCards(G) {   // in Segnali, con gli altri: le partite live su cui scattano le tue strategie accese
     var out = [], at = (data.diario && data.diario.at) || nowS();
-    builds.forEach(function (b) {
+    builds.concat(mktFollowed()).forEach(function (b) {
       if (!bldSigOn(b) || (filter !== "all" && filter !== b.sport)) return;
       bldFires(b).forEach(function (x) {
         if (!x.code && !x.txt) return;
@@ -8354,6 +8442,7 @@
   $("strategie").addEventListener("change", function (e) {
     var tsw = e.target.closest("input[data-topsw]");
     if (tsw && data) { var lvl = Number(tsw.dataset.topsw); setTopMode(tsw.checked ? lvl : (lvl === 10 ? 5 : 0)); return; }
+    if (e.target.dataset && e.target.dataset.mkcopyok) { mkt.draftCopy = e.target.checked; return; }
     var bs = e.target.closest("input[data-bsig]");
     if (bs) { var bb = builds.filter(function (x) { return x.id === bs.dataset.bsig; })[0]; if (bb) { bb.sig = bs.checked; saveBuilds(); if (data) { renderFeed(); renderRadar(); } } return; }
     var co = e.target.closest("input[data-caton]");
@@ -8369,6 +8458,7 @@
     var c = e.target.closest("button[data-cat]"); if (c && data) renderCat(c.dataset.cat);
     var si = e.target.closest("[data-sportinfo]"); if (si && data) { renderSportInfo(si.dataset.sportinfo); return; }
     var rc = e.target.closest("[data-race]"); if (rc && data) { renderRace(rc.dataset.race); return; }
+    var mb = e.target.closest("button"); if (mb && data && mktClick(mb.dataset)) return;
     var ms = e.target.closest("button[data-miesp]");
     if (ms && data) { try { localStorage.setItem(MIE_KEY, ms.dataset.miesp); } catch (er) {} renderStrategie(); return; }
     var bo = e.target.closest("button[data-bmie]");
@@ -8379,6 +8469,10 @@
     if (sp && data) { stratSport = sp.dataset.ssport; try { localStorage.setItem(SPORT_KEY, stratSport); } catch (er) {} renderStrategie(); window.scrollTo(0, 0); }
   });
   $("back").addEventListener("click", function () { show("strategie"); });
+  document.addEventListener("click", function (e) {   // minigiochi e omino da StatsFight
+    var g = e.target.closest("[data-omgame]"); if (g && window.OMINO) { OMINO.openGame(g.dataset.omgame); return; }
+    var o = e.target.closest("#fight [data-omino]"); if (o && window.OMINO) OMINO.open(o.dataset.omino);
+  });
   $("feed").addEventListener("click", function (e) {
     var pb = e.target.closest("[data-play]"); if (pb && data) { openPlay(pb.dataset.play); return; }
     var sd = e.target.closest("[data-sdet]"); if (sd && data) { renderDetail(sd.dataset.sdet); return; }
@@ -8407,5 +8501,8 @@
   if (saved) load(saved, false); else show("lock");
 })();
 </script>
+<script src="omino.js"></script>
+<script src="giochi_rigori.js"></script>
+<script src="giochi_tennis.js"></script>
 </body>
 </html>

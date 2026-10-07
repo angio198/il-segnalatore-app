@@ -24,7 +24,7 @@
     return '<div class="grid">' + G.CAT[cat].map(function (it) {
       var lock = !G.unlocked(cat, it[0]);
       return '<button class="it' + (lock ? " lock" : "") + '" type="button" data-cat="' + cat + '" data-key="' + key + '" data-val="' + it[0] + '" aria-pressed="' + (G.av[key] === it[0]) + '">'
-        + '<canvas width="140" height="140" data-thumb="' + cat + ':' + it[0] + '"></canvas><span>' + it[1] + (lock ? '<br>' + it[2] + (it[2] === 1 ? " vittoria" : " vittorie") : "") + '</span>'
+        + '<canvas width="140" height="140" data-thumb="' + cat + ':' + it[0] + '"></canvas><span>' + it[1] + (lock ? '<br>' + (G.price(it[2]) ? G.price(it[2]) + " monete" : it[2] + (it[2] === 1 ? " vittoria" : " vittorie")) : "") + '</span>'
         + (lock ? '<svg class="lk"><use href="#i-lock"/></svg>' : "") + '</button>';
     }).join("") + '</div>';
   }
@@ -34,7 +34,7 @@
   function renderPanel() {
     $("avcats").innerHTML = EDCATS.map(function (x) { return '<button type="button" data-ecat="' + x[0] + '" aria-pressed="' + (x[0] === edCat) + '">' + x[1] + '</button>'; }).join("");
     var h = "";
-    if (edCat === "corpo") h = swatches("pelle", G.PELLE, "Pelle") + '<div class="lbl">Capelli</div>' + itemsHtml("capelli", "capelli") + swatches("capCol", G.CAPELLI_COL, "Colore dei capelli") + '<div class="lbl">Barba</div>' + itemsHtml("barba", "barba");
+    if (edCat === "corpo") h = ["sesso", "statura", "fisico", "testa", "occhi", "naso", "bocca"].map(function (k) { return '<div class="lbl">' + { sesso: "Corpo", statura: "Statura", fisico: "Fisico", testa: "Forma della testa", occhi: "Occhi", naso: "Naso", bocca: "Bocca" }[k] + '</div>' + itemsHtml(k, k); }).join("") + swatches("pelle", G.PELLE, "Pelle") + '<div class="lbl">Capelli</div>' + itemsHtml("capelli", "capelli") + swatches("capCol", G.CAPELLI_COL, "Colore dei capelli") + '<div class="lbl">Barba</div>' + itemsHtml("barba", "barba");
     if (edCat === "maglia") h = itemsHtml("maglia", "maglia") + swatches("c1", G.COLORI, "Colore principale") + swatches("c2", G.COLORI, "Secondo colore");
     if (edCat === "sotto") h = swatches("pant", G.COLORI, "Pantaloncini") + swatches("calze", G.COLORI, "Calzettoni");
     if (edCat === "scarpe") h = itemsHtml("scarpe", "scarpe") + swatches("scCol", G.COLORI, "Colore degli scarpini");
@@ -57,9 +57,10 @@
       c.clearRect(0, 0, 140, 140);
       if (cat === "pallone") { G.drawBall(c, 70, 70, 46, v, 0.4); return; }
       if (cat === "racchetta") { c.save(); c.translate(80, 128); c.rotate(-0.5); G.drawRacket(c, 120, v); c.restore(); return; }
-      var A = Object.assign({}, G.av); var key = { capelli: "capelli", barba: "barba", maglia: "maglia", cappello: "cappello", accessorio: "accessorio", scarpe: "scarpe", guanti: "guanti" }[cat];
+      var A = Object.assign({}, G.av); var key = cat === "posa" || cat === "esulta" ? null : cat;
       if (key) A[key] = v;
-      if (cat === "capelli" || cat === "barba" || cat === "cappello" || cat === "accessorio") { G.drawGuy(c, A, 70, 300, 1.15, G.P({}), { noShadow: true }); return; }
+      if (cat === "statura" || cat === "fisico" || cat === "sesso") { G.drawGuy(c, A, 70, 134, 0.52, G.P({}), {}); return; }
+      if (["capelli", "barba", "cappello", "accessorio", "testa", "occhi", "naso", "bocca"].indexOf(cat) >= 0) { G.drawGuy(c, A, 70, 300, 1.15, G.P({}), { noShadow: true }); return; }
       if (cat === "scarpe") { G.drawGuy(c, A, 70, 128, 0.55, G.P({}), {}); return; }
       if (cat === "guanti") { G.drawGuy(c, A, 70, 132, 0.56, G.P({ al: [-2.4, 0.3], ar: [2.4, -0.3] }), { keeper: true }); return; }
       if (cat === "posa" || cat === "esulta") { var ps = G.poseOf(v, 0.4); G.drawGuy(c, A, 70, 132, 0.55, ps, {}); G.drawPoseExtras(c, A, 70, 132, 0.55, v, ps); return; }
@@ -71,7 +72,7 @@
     var s = e.target.closest("[data-sw]"); if (s) { G.av[s.dataset.sw] = Number(s.dataset.i); G.saveAv(); renderPanel(); return; }
     var b = e.target.closest("[data-val]"); if (!b) return;
     var cat = b.dataset.cat, it = G.CAT[cat].filter(function (x) { return x[0] === b.dataset.val; })[0];
-    if (!G.unlocked(cat, it[0])) { G.toast("Vinci " + it[2] + (it[2] === 1 ? " partita" : " partite") + " per sbloccarlo"); return; }
+    if (!G.unlocked(cat, it[0])) { G.toast(G.price(it[2]) ? "Si compra con " + G.price(it[2]) + " monete (nell'app)" : "Vinci " + it[2] + (it[2] === 1 ? " partita" : " partite") + " per sbloccarlo"); return; }
     G.av[b.dataset.key] = it[0]; G.saveAv(); renderPanel();
     if (cat === "posa" || cat === "esulta") { preview.pose = it[0]; preview.t = UI.time(); }
   });
@@ -94,30 +95,7 @@
   // ------------------------------------------------------------------ foto profilo
   var BGS = [["stadio", "Stadio"], ["tennis", "Campo da tennis"], ["terra", "Terra rossa"], ["tramonto", "Tramonto"], ["tinta", "Tinta unita"], ["coriandoli", "Coriandoli"]];
   var foto = { bg: "stadio", pose: G.av.posa || "piedi", cv: null, zoom: "busto" };
-  function drawBg(c, W, H, bg, t) {
-    var g;
-    if (bg === "stadio") {
-      g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#0B1A33"); g.addColorStop(0.55, "#1D3B5C"); g.addColorStop(0.56, "#2E7D32"); g.addColorStop(1, "#1B5E20"); c.fillStyle = g; c.fillRect(0, 0, W, H);
-      c.fillStyle = "#24364F"; c.fillRect(0, H * 0.36, W, H * 0.2);
-      for (var i = 0; i < 60; i++) { c.fillStyle = ["#C62828", "#FDD835", "#fff", "#1565C0"][i % 4]; c.globalAlpha = 0.55; c.fillRect((i * 37) % W, H * 0.38 + (i * 13) % (H * 0.16), 3, 3); } c.globalAlpha = 1;
-      [0.12, 0.88].forEach(function (x) { var lg = c.createRadialGradient(W * x, H * 0.12, 2, W * x, H * 0.12, H * 0.35); lg.addColorStop(0, "rgba(255,255,230,.9)"); lg.addColorStop(1, "rgba(255,255,230,0)"); c.fillStyle = lg; c.fillRect(0, 0, W, H * 0.6); });
-      c.strokeStyle = "rgba(255,255,255,.5)"; c.lineWidth = 2; c.beginPath(); c.ellipse(W / 2, H * 0.78, W * 0.3, H * 0.07, 0, 0, Math.PI * 2); c.stroke();
-    } else if (bg === "tennis" || bg === "terra") {
-      var out = bg === "tennis" ? "#2E6B4F" : "#B4532A", inn = bg === "tennis" ? "#2B5DA8" : "#C8663A";
-      c.fillStyle = out; c.fillRect(0, 0, W, H); c.fillStyle = bg === "tennis" ? "#1A2E3D" : "#8C3F1E"; c.fillRect(0, 0, W, H * 0.4);
-      c.fillStyle = inn; c.beginPath(); c.moveTo(W * 0.2, H * 0.45); c.lineTo(W * 0.8, H * 0.45); c.lineTo(W * 1.05, H); c.lineTo(-W * 0.05, H); c.fill();
-      c.strokeStyle = "#fff"; c.lineWidth = 2; c.beginPath(); c.moveTo(W * 0.2, H * 0.45); c.lineTo(W * 0.8, H * 0.45); c.moveTo(W * 0.5, H * 0.45); c.lineTo(W * 0.5, H); c.stroke();
-      c.fillStyle = "rgba(255,255,255,.85)"; c.fillRect(0, H * 0.58, W, 2); c.fillStyle = "rgba(20,20,20,.25)"; for (var n = 0; n < W; n += 6) c.fillRect(n, H * 0.5, 1, H * 0.08);
-    } else if (bg === "tramonto") {
-      g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#2B1B4A"); g.addColorStop(0.5, "#E0703A"); g.addColorStop(0.75, "#F7C25C"); g.addColorStop(0.76, "#3D6B3A"); g.addColorStop(1, "#24452A"); c.fillStyle = g; c.fillRect(0, 0, W, H);
-      c.fillStyle = "rgba(255,230,160,.85)"; c.beginPath(); c.arc(W * 0.7, H * 0.62, W * 0.12, Math.PI, 0); c.fill();
-    } else if (bg === "tinta") {
-      g = c.createRadialGradient(W / 2, H * 0.4, 10, W / 2, H / 2, W * 0.75); g.addColorStop(0, "#F0B36B"); g.addColorStop(1, "#8A5115"); c.fillStyle = g; c.fillRect(0, 0, W, H);
-    } else {
-      c.fillStyle = "#132029"; c.fillRect(0, 0, W, H);
-      for (var k = 0; k < 70; k++) { var x = (k * 53 + t * 20 * ((k % 3) + 1)) % W, y = (k * 97 + t * 60 * ((k % 4) + 1)) % H; c.save(); c.translate(x, y); c.rotate(t * 2 + k); c.fillStyle = ["#E8A252", "#6FBE92", "#E08268", "#90CAF9", "#FDD835"][k % 5]; c.fillRect(-3, -5, 6, 10); c.restore(); }
-    }
-  }
+  var drawBg = G.drawBg;
   function renderFotoChips() {
     $("fzoom").innerHTML = [["busto", "Mezzo busto"], ["intero", "Figura intera"]].map(function (z) { return '<button type="button" data-zoom="' + z[0] + '" aria-pressed="' + (z[0] === foto.zoom) + '">' + z[1] + '</button>'; }).join("");
     $("fbg").innerHTML = BGS.map(function (b) { return '<button type="button" data-bg="' + b[0] + '" aria-pressed="' + (b[0] === foto.bg) + '">' + b[1] + '</button>'; }).join("");
@@ -126,7 +104,7 @@
   }
   $("fzoom").addEventListener("click", function (e) { var b = e.target.closest("[data-zoom]"); if (b) { foto.zoom = b.dataset.zoom; renderFotoChips(); } });
   $("fbg").addEventListener("click", function (e) { var b = e.target.closest("[data-bg]"); if (b) { foto.bg = b.dataset.bg; renderFotoChips(); } });
-  function fotoPose(e) { var b = e.target.closest("[data-fp]"); if (!b) return; if (!G.unlocked(b.dataset.fcat, b.dataset.fp)) { var it = G.CAT[b.dataset.fcat].filter(function (x) { return x[0] === b.dataset.fp; })[0]; G.toast("Vinci " + it[2] + " partite per sbloccarla"); return; } foto.pose = b.dataset.fp; foto.t = UI.time(); renderFotoChips(); }
+  function fotoPose(e) { var b = e.target.closest("[data-fp]"); if (!b) return; if (!G.unlocked(b.dataset.fcat, b.dataset.fp)) { var it = G.CAT[b.dataset.fcat].filter(function (x) { return x[0] === b.dataset.fp; })[0]; G.toast(G.price(it[2]) ? "Si compra con " + G.price(it[2]) + " monete (nell'app)" : "Vinci " + it[2] + " partite per sbloccarla"); return; } foto.pose = b.dataset.fp; foto.t = UI.time(); renderFotoChips(); }
   $("fpose").addEventListener("click", fotoPose); $("fwin").addEventListener("click", fotoPose);
   function drawFoto(t) {
     if (!foto.cv) return;
@@ -150,8 +128,8 @@
     var before = G.wins();
     G.pg[game]++; G.pg.giocate++; G.savePg();
     var nuovi = [];
-    Object.keys(G.CAT).forEach(function (cat) { G.CAT[cat].forEach(function (it) { if (it[2] > before && it[2] <= G.wins()) nuovi.push(it[1]); }); });
-    return nuovi;
+    Object.keys(G.CAT).forEach(function (cat) { G.CAT[cat].forEach(function (it) { if (typeof it[2] === "number" && it[2] > before && it[2] <= G.wins()) nuovi.push(it[1]); }); });
+    return nuovi.length ? ["Sbloccato: " + nuovi.join(", ")] : [];
   }
 
   // ------------------------------------------------------------------ ciclo
