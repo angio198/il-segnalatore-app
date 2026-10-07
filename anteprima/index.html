@@ -125,6 +125,11 @@
   .segbar button{font:inherit;font-weight:700;font-size:0.88rem;border:none;border-radius:9px;padding:9px 6px;background:none;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
   .segbar button[aria-pressed="true"]{background:var(--ink);color:var(--bg);}
   :root[data-dark="1"] .segbar button[aria-pressed="true"]{background:var(--accent);color:#12181A;}
+  .segbar.seg3{grid-template-columns:1fr 1fr 1fr;} .segbar.seg3 button{font-size:0.82rem;padding:9px 4px;}
+  .tm.gioc{background:color-mix(in srgb, var(--accent) 22%, transparent);color:var(--accent-strong);}
+  .lscrow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb, var(--bad) 10%, var(--bg));cursor:pointer;}
+  .lscrow .ico{width:16px;height:16px;opacity:.6;} .lsc{display:flex;align-items:center;gap:6px;font-size:0.86rem;flex-wrap:wrap;} .lsc b{font-variant-numeric:tabular-nums;}
+  .bkth{display:flex;align-items:center;gap:8px;width:100%;background:none;border:none;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer;} .bkth .k{margin-left:auto;color:var(--accent-strong);font-weight:700;}
   .segbar .cnt{font-size:0.75rem;opacity:.75;font-variant-numeric:tabular-nums;}
   .dot.live{width:8px;height:8px;border-radius:50%;background:var(--bad);display:inline-block;box-shadow:0 0 0 3px color-mix(in srgb, var(--bad) 25%, transparent);}
   .comphead{font-size:0.74rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-soft);margin:14px 2px 6px;display:flex;align-items:center;gap:6px;}
@@ -649,6 +654,8 @@
   .daystrip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 8px;padding:0 16px 2px;}
   .daybtn{flex:none;min-width:52px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 8px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font:inherit;cursor:pointer;}
   .daybtn b{font-size:0.68rem;font-weight:800;letter-spacing:.05em;} .daybtn span{font-size:1.05rem;font-weight:800;color:var(--ink);line-height:1.1;}
+  .daystrip.week .daybtn{min-width:0;flex:1 0 46px;padding:6px 4px;} .daystrip.week .daybtn span{font-size:0.92rem;}
+  .daybtn small{font-size:0.62rem;font-weight:700;opacity:.7;} .daybtn.empty{opacity:.45;}
   .daybtn[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);} .daybtn[aria-pressed="true"] span{color:var(--bg);}
   :root[data-dark="1"] .daybtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#12181A;} :root[data-dark="1"] .daybtn[aria-pressed="true"] span{color:#12181A;}
   .sortrow{display:flex;align-items:center;gap:6px;margin:0 2px 8px;font-size:0.76rem;color:var(--ink-soft);flex-wrap:wrap;}
@@ -686,6 +693,12 @@
   .lgcard .evtime{display:flex;flex-direction:column;align-items:center;font-size:0.78rem;font-variant-numeric:tabular-nums;color:var(--ink);}
   .lgcard .evtime small{font-size:0.62rem;color:var(--ink-soft);font-weight:700;}
   .livemin{color:var(--bad);font-weight:800;}
+  .lgcard .evteams .evsig{display:flex;align-items:center;gap:4px;font-size:0.68rem;color:var(--accent-strong);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .evsig .ico{width:12px;height:12px;flex:none;}
+  .sigpre{border-left:3px solid var(--accent);} .sigpre .pickrow{margin-top:6px;}
+  .betinfo{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:10px 12px;margin:-4px 0 10px;border-radius:0 0 12px 12px;background:color-mix(in srgb, var(--accent) 14%, var(--surface));border:1px solid color-mix(in srgb, var(--accent) 40%, transparent);border-top:none;font-size:0.84rem;}
+  .betinfo.card{border-radius:12px;border-top:1px solid color-mix(in srgb, var(--accent) 40%, transparent);margin:0 0 10px;}
+  .betinfo .bi1{flex:1;min-width:0;} .betinfo .bi1 .ico{width:16px;height:16px;color:#E0A100;vertical-align:-3px;margin-right:4px;} .betinfo .bi2{width:100%;font-size:0.74rem;}
+  .igleg .rcard{margin-bottom:0;border-bottom-left-radius:0;border-bottom-right-radius:0;}
   .lgcard .evteams{gap:3px;}
   .lgcard .evteams > span{display:flex;align-items:center;min-width:0;}
   .lgcard .evteams .tn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -1212,14 +1225,10 @@
 </main>
 
 <main class="view" id="view-segnali" hidden>
-  <div class="segbar" id="segview" role="tablist">
+  <div class="segbar seg3" id="segview" role="tablist">
     <button type="button" data-segv="nuovi" aria-pressed="true"><svg class="ico"><use href="#i-bolt"/></svg> Nuovi <span class="cnt" id="nnuovi"></span></button>
-    <button type="button" data-segv="storico" aria-pressed="false"><svg class="ico"><use href="#i-trend"/></svg> Storico</button>
-  </div>
-  <div class="chips" id="timechips" role="group" aria-label="Filtra per momento" style="margin-bottom:8px;">
-    <button class="chip" type="button" data-when="all" aria-pressed="true">Tutti</button>
-    <button class="chip" type="button" data-when="subito" aria-pressed="false"><svg class="ico"><use href="#i-bolt"/></svg> Da giocare subito</button>
-    <button class="chip" type="button" data-when="pre" aria-pressed="false"><svg class="ico"><use href="#i-calendar"/></svg> Pre-partita</button>
+    <button type="button" data-segv="storico" aria-pressed="false"><svg class="ico"><use href="#i-clock"/></svg> Storico</button>
+    <button type="button" data-segv="stat" aria-pressed="false"><svg class="ico"><use href="#i-trend"/></svg> Statistiche</button>
   </div>
   <div class="chips" id="chips" role="group" aria-label="Filtra per sport">
     <button class="chip" type="button" data-filter="all" aria-pressed="true">Tutti</button>
@@ -1302,7 +1311,7 @@
 </main>
 
 <main class="view" id="view-live" hidden>
-  <h1 class="dtitle">Live</h1>
+  <h1 class="dtitle">In gioco</h1>
   <div id="livebets"></div>
 </main>
 
@@ -1455,11 +1464,11 @@
 <nav class="tabbar" id="tabbar" hidden>
   <button class="tab" type="button" data-view="segnali"><span class="ic"><svg class="ico"><use href="#tb-segnali"/></svg></span>Segnali</button>
   <button class="tab" type="button" data-view="strategie"><span class="ic"><svg class="ico"><use href="#tb-strategie"/></svg></span>Strategie</button>
-  <button class="tab" type="button" data-view="calendario"><span class="ic"><svg class="ico"><use href="#i-calendar"/></svg></span>Calendario</button>
+  <button class="tab" type="button" data-view="calendario"><span class="ic"><svg class="ico"><use href="#i-calendar"/></svg></span>Match</button>
   <button class="tab hub" type="button" data-view="radar" aria-current="page" aria-label="Radar"><span class="hubic"><img src="icon-192.png" alt="" width="56" height="56"></span>Radar</button>
   <button class="tab" type="button" data-view="attivita"><span class="ic"><svg class="ico"><use href="#i-bell"/></svg></span>Notifiche</button>
   <button class="tab" type="button" data-view="diario"><span class="ic"><svg class="ico"><use href="#tb-diario"/></svg></span>Diario</button>
-  <button class="tab" type="button" data-view="live"><span class="ic"><svg class="ico"><use href="#tb-live"/></svg></span>Live</button>
+  <button class="tab" type="button" data-view="live"><span class="ic"><svg class="ico"><use href="#tb-live"/></svg></span>In gioco</button>
 </nav>
 
 <script src="regole.js"></script>
@@ -1484,7 +1493,8 @@
     corsa: "Corsa: il via è pochi minuti dopo il segnale.",
     prepartita: "Pre-partita: vale fino all'inizio della partita, se la quota è ancora quella."
   };
-  function whenOk(t) { return when === "all" || (when === "pre" ? t === "prepartita" : t !== "prepartita"); }
+  // 08/10: in Segnali solo live e corse; i pre-partita sono pronostici e stanno nel Calendario (Match), sulla partita
+  function whenOk(t) { return t !== "prepartita"; }
   function tmTag(t) { return TIMING_LABEL[t] ? '<span class="tm ' + t + '">' + TIMING_LABEL[t] + '</span>' : ""; }
   var hidden = loadHidden();  // strategie spente nel filtro (solo su questo telefono)
   // Pulsante "Solo le top 5": le 5 strategie col rendimento storico piu' alto, scelte dai dati a ogni
@@ -1687,6 +1697,57 @@
   // chiave; live da al massimo 30 minuti, corsa 20 minuti, pre-partita fino a 18 ore. Storico = esiti (vinti e
   // persi), quota piu' alta presa oggi e grafici di backtest delle strategie dei segnali.
   var segv = "nuovi", NEW_LIVE_S = 30 * 60, NEW_RACE_S = 20 * 60, NEW_PRE_S = 18 * 3600, TG_BOT = "https://t.me/Ilsegna_latorebot";
+  // segnali gia' giocati (08/10): escono da Nuovi e passano nello Storico col risultato della partita.
+  // Sul telefono: statsight.segnali_giocati; col server sull'account.
+  var PLAYED_KEY = "statsight.segnali_giocati";
+  var played = (function () { try { return JSON.parse(localStorage.getItem(PLAYED_KEY)) || {}; } catch (e) { return {}; } })();
+  function savePlayed() {
+    var old = nowS() - 3 * 86400;
+    Object.keys(played).forEach(function (k) { if ((played[k].ts || 0) < old) delete played[k]; });
+    try { localStorage.setItem(PLAYED_KEY, JSON.stringify(played)); } catch (e) {}
+  }
+  function feedKey(f) { return "f:" + (f.key || f.sport + "|" + f.event + "|" + f.ts); }
+  function playedKeyOf(k) { if (k[0] === "i") { var f = data.feed[Number(k.slice(1))]; return f ? feedKey(f) : null; } return k; }
+  // risultato della partita adesso: calcio punteggio e minuto, tennis set, game e punti del game in corso
+  function liveScoreHtml(e) {
+    if (!e) return "";
+    if (!e.live) return '<span class="lsc k">' + ic("clock") + ' ' + esc(startLabel(e.start)) + '</span>';
+    var st = e.st || {};
+    if (e.sport === "tennis") {
+      var g = (st.games || []).slice(-1)[0], gg = g ? String(g).split(/\s*-\s*/).map(function (x) { return x.replace(/\..*/, ""); }).join("-") : "";
+      return '<span class="lsc"><span class="dot live"></span> Set <b>' + esc(st.sets || "0-0") + '</b>' + (gg ? ' · game <b>' + esc(gg) + '</b>' : "") + (st.point ? ' · punti <b>' + esc(st.point) + '</b>' : "") + '</span>';
+    }
+    var sc = scoreOf(st.score);
+    return '<span class="lsc"><span class="dot live"></span> <b>' + (sc ? sc[0] + " - " + sc[1] : "–") + '</b> · ' + esc(estMinute(e) || "LIVE") + '</span>';
+  }
+  function evOfSignal(sport, text) { return evList().filter(function (x) { return x.sport === sport && sameMatch(x, text); })[0] || null; }
+  // Storico, "In corso": segnali giocati o non piu' giocabili, senza esito, con la partita ancora in corso
+  function inCorsoHtml() {
+    var closed = closedSignalKeys(), out = [];
+    data.feed.forEach(function (f, i) {
+      if (f.kind !== "signal" || !whenOk(f.timing) || (f.key && closed[f.key]) || (filter !== "all" && f.sport !== filter)) return;
+      var pk = played[feedKey(f)];
+      if (!pk && isNewSignal(f, closed)) return;
+      var e = evOfSignal(f.sport, f.event);
+      if (!e || (!e.live && !pk)) return;
+      out.push({ ts: f.ts, html: '<div class="card feedcard incorso" data-idx="' + i + '"><div class="top"><span aria-hidden="true">' + EMOJI[f.sport] + '</span><span class="cat">' + esc(f.cat || "") + '</span>'
+        + (pk ? '<span class="tm gioc">' + ic("coin") + ' GIOCATO</span>' : "") + '<span class="time">' + whenLabel(f.ts) + '</span></div>'
+        + '<div class="event">' + esc(f.event) + '</div>'
+        + '<div class="pickrow"><span>Indicazione: <b>' + esc(f.pick || "") + '</b>' + (f.odds ? ' @ ' + oddsTxt(f.odds) : "") + '</span></div>'
+        + '<div class="lscrow" data-match="' + e.id + '" role="button" tabindex="0">' + liveScoreHtml(e) + ic("chev") + '</div></div>' });
+    });
+    catLiveItems().forEach(function (x) {
+      var k = "c" + x.s.id + "|" + x.m.r.join("|") + "|" + x.side;
+      if (!played[k] || x.m.w === 1 || x.m.w === 2 || (filter !== "all" && filter !== x.sport)) return;
+      var e = evOfSignal(x.sport, x.m.r.join(" v "));
+      out.push({ ts: x.ts, html: '<div class="card feedcard incorso" data-catlive="' + esc(x.s.id) + '"><div class="top"><span aria-hidden="true">' + EMOJI[x.sport] + '</span><span class="cat">' + esc(x.m.lv || NAME[x.sport]) + '</span>'
+        + '<span class="tm gioc">' + ic("coin") + ' GIOCATO</span><span class="time">' + whenLabel(x.ts) + '</span></div>'
+        + '<div class="event">' + esc(x.m.r.join(" v ")) + '</div><div class="pickrow"><span>Indicazione: <b>' + esc(x.m.r[x.side - 1]) + '</b> @ ' + oddsTxt(x.odds) + '</span></div>'
+        + (e ? '<div class="lscrow" data-match="' + e.id + '" role="button" tabindex="0">' + liveScoreHtml(e) + ic("chev") + '</div>' : "") + '</div>' });
+    });
+    out.sort(function (a, b) { return b.ts - a.ts; });
+    return out.length ? '<h2 class="sectiontitle">In corso</h2>' + out.map(function (x) { return x.html; }).join("") : "";
+  }
   function closedSignalKeys() { var k = {}; (data.feed || []).forEach(function (f) { if (f.kind === "outcome" && f.key) k[f.key] = 1; }); return k; }
   function isNewSignal(f, closed) {
     if (f.kind !== "signal" || (f.key && closed[f.key])) return false;
@@ -1703,9 +1764,10 @@
     var cat = data.catalog || [];
     var rows = Object.keys(ids).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(function (s) { return s && s.detail && (s.detail.curve || []).length > 1; });
     if (!rows.length) return '<div class="note">I grafici di backtest compaiono quando le strategie dei segnali hanno una serie storica.</div>';
-    return '<h2 class="sectiontitle">Le strategie dei segnali</h2>' + rows.map(function (s) {
+    rows.sort(function (a, b) { return ((b.detail.stats || {}).roi || -9) - ((a.detail.stats || {}).roi || -9); });
+    return '<h2 class="sectiontitle">Quali segnali vanno meglio</h2>' + rows.map(function (s, rk) {
       var st = s.detail.stats || {}, o = oddsBy[s.id] || [], avg = o.length ? o.reduce(function (a, b) { return a + b; }, 0) / o.length : null;
-      return '<div class="card bkt"><div class="bkth">' + EMOJI[s.sport] + ' <b>' + esc(s.name) + '</b></div>'
+      return '<div class="card bkt"><button class="bkth" type="button" data-sdet="' + esc(s.id) + '"><span class="rankn">' + (rk + 1) + '</span>' + EMOJI[s.sport] + ' <b>' + esc(s.name) + '</b><span class="k">Strategia ›</span></button>'
         + '<div class="kpis"><div class="kpi"><div class="v">' + (st.n || 0) + '</div><div class="l">casi</div></div>'
         + '<div class="kpi"><div class="v">' + (st.n ? Math.round(st.wins / st.n * 100) + "%" : "—") + '</div><div class="l">strike</div></div>'
         + '<div class="kpi"><div class="v">' + (avg ? oddsTxt(avg) : "—") + '</div><div class="l">quota media</div></div>'
@@ -1721,7 +1783,7 @@
     var G = activeGroup(), skippedG = 0, closedKeys = closedSignalKeys();
     var html = data.feed.map(function (f, i) {
       if (filter !== "all" && f.sport !== filter) return "";
-      if (segv === "nuovi" ? !isNewSignal(f, closedKeys) : f.kind !== "outcome") return "";   // Nuovi: solo giocabili; Storico: esiti
+      if (segv === "nuovi" ? !isNewSignal(f, closedKeys) || played[feedKey(f)] : f.kind !== "outcome") return "";   // Nuovi: giocabili e non giocati; Storico: esiti
       if (G && !sigInGroup(f, G)) { skippedG++; return ""; }
       if (!whenOk(f.timing)) return "";
       var extra = (f.extra || []).filter(function (e) { return on(e.strategy); });
@@ -1755,6 +1817,7 @@
     if (whenOk("live") && segv === "nuovi") {
       catLiveItems().forEach(function (x) {
         if (x.m.w === 1 || x.m.w === 2 || nowS() - x.ts > NEW_LIVE_S) return;   // chiuso o non piu' giocabile
+        if (played["c" + x.s.id + "|" + x.m.r.join("|") + "|" + x.side]) return;   // gia' giocato: e' nello Storico
         if (G && !sigInGroup({ sport: x.sport, event: (x.m.r || []).join(" v "), cat: x.m.lv || "" }, G)) return;
         if (filter === "all" || filter === x.sport) list.push({ ts: x.ts, html: catLiveCard(x) });
       });
@@ -1763,9 +1826,10 @@
     var cards = list.map(function (x) { return x.html; });
     document.querySelectorAll("#segview [data-segv]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.segv === segv)); });
     $("nnuovi").textContent = segv === "nuovi" ? cards.length : "";
-    $("today").innerHTML = segv === "storico" ? todayCard() : "";
-    $("storico").hidden = segv !== "storico";
-    if (segv === "storico") { $("storico").innerHTML = storicoHtml(); $("feed").innerHTML = '<h2 class="sectiontitle">Vinti e persi</h2>' + (cards.length ? cards.join("") : '<div class="note">Nessun esito per questo filtro, per ora.</div>'); return; }
+    $("today").innerHTML = segv !== "nuovi" ? todayCard() : "";
+    $("storico").hidden = true;
+    if (segv === "stat") { $("feed").innerHTML = storicoHtml(); return; }
+    if (segv === "storico") { $("feed").innerHTML = inCorsoHtml() + '<h2 class="sectiontitle">Vinti e persi</h2>' + (cards.length ? cards.join("") : '<div class="note">Nessun esito per questo filtro, per ora.</div>'); return; }
     $("feed").innerHTML = (cards.length ? cards.join("")
       : '<div class="note">' + (segv === "nuovi" ? "Nessun segnale nuovo da giocare adesso. I chiusi sono nello Storico." : "Nessun segnale per questo filtro, per ora.") + ' ' + (G ? ' È attivo il gruppo "' + esc(G.name) + '".' : '') + (top5On ? ' È attivo "Solo le top 5".' : '')
         + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>');
@@ -2562,6 +2626,18 @@
       + '<div class="k lvwhen">' + esc(when) + '</div>'
       + (other.length ? '<div class="lvother">' + ic("strategie") + ' Scattata anche: ' + esc(other.join(", ")) + '</div>' : "") + '</div>';
   }
+  // la tua giocata su una partita: esito, quota, quando, come sta andando (In gioco e scheda della partita)
+  function betInfoHtml(l, e) {
+    var now = legNow(l, e);
+    var when = l.live ? (l.minute != null ? "giocata al " + l.minute + "'" : "giocata live") + (l.score ? " sul " + l.score : "") : "giocata prima del via";
+    return '<div class="betinfo"><span class="bi1">' + ic("coin") + ' La tua giocata: <b>' + esc(l.label) + '</b> @ ' + oddsTxt(l.odds) + '</span>'
+      + (now ? '<span class="lvnow ' + now + '">' + NOW_TXT[now] + '</span>' : "") + '<span class="k bi2">' + esc(when) + '</span></div>';
+  }
+  function myOpenLegs(id) {
+    var out = [];
+    allSlips().forEach(function (s) { if (!s.resolved_at) s.legs.forEach(function (l) { if (l.result == null && String(l.event_id) === String(id)) out.push({ l: l, s: s }); }); });
+    return out;
+  }
   function renderLive() {
     if (!data) return;
     var now = nowS(), all = allSlips(), open = all.filter(function (s) { return !s.resolved_at; }), done = mySlips.filter(function (s) { return s.resolved_at && now - s.resolved_at < 6 * 3600; });
@@ -2570,7 +2646,11 @@
       var stake = s.stake ? s.stake * (s.mode === "singole" ? s.legs.length : 1) : 0;
       return '<div class="card lvcard"><div class="lvhead"><b>' + esc(head) + '</b>' + (s.mode !== "singole" && s.odds ? '<span>@ ' + oddsTxt(s.odds) + '</span>' : "")
         + (stake ? '<span class="lvcoins">' + ic("coin") + ' ' + stake + ' monete</span>' : "") + '<span class="k">' + whenLabel(s.created_at) + '</span></div>'
-        + s.legs.map(function (l) { return l.result != null ? '<div class="lvleg done"><span>' + esc(l.event) + ' · ' + esc(l.label) + '</span><span class="' + (l.result === 1 ? "pos" : l.result === 0 ? "neg" : "k") + '">' + (l.result === 1 ? "vinto" : l.result === 0 ? "perso" : "nullo") + '</span></div>' : liveLegHtml(l, s.legs.length === 1); }).join("") + '</div>';
+        + s.legs.map(function (l) {
+          // 08/10: partita in corso = la scheda del Radar (punteggio, statistiche, quote), sotto la tua giocata
+          var e = l.result == null ? evById(Number(l.event_id)) : null;
+          if (e && e.live && (e.sport === "calcio" || e.sport === "tennis")) return '<div class="igleg">' + (e.sport === "calcio" ? calcioCard(e) : tennisCard(e)) + betInfoHtml(l, e) + '</div>';
+          return l.result != null ? '<div class="lvleg done"><span>' + esc(l.event) + ' · ' + esc(l.label) + '</span><span class="' + (l.result === 1 ? "pos" : l.result === 0 ? "neg" : "k") + '">' + (l.result === 1 ? "vinto" : l.result === 0 ? "perso" : "nullo") + '</span></div>' : liveLegHtml(l, s.legs.length === 1); }).join("") + '</div>';
     }
     $("livebets").innerHTML = (open.length ? open.map(card).join("") : '<div class="note">Nessuna giocata in corso. Gioca un segnale o una partita: la segui qui fino al risultato, poi va nello storico.</div>')
       + (done.length ? '<h2 class="sectiontitle">Appena chiuse</h2>' + done.map(function (s) {
@@ -4329,17 +4409,17 @@
     var isLive = dview === "live", evs = isLive ? live : pre, html = "", G = activeGroup();
     if (G) evs = evs.filter(function (e) { return evInGroup(e, G); });
     html += legaChipsHtml();
-    if (!isLive) {   // striscia dei giorni: solo quelli che ci sono nei dati
-      var days = {}, today = dayOf(nowS());
+    if (!isLive) {   // settimana (08/10): Oggi, 9/10, 10/10... sette giorni; quelli senza partite spenti
+      var days = {}, today = dayOf(nowS()), week = [];
       pre.forEach(function (e) { if (e.start) { var d = dayOf(e.start); days[d] = (days[d] || 0) + 1; } });
-      var dl = Object.keys(days).map(Number).sort(function (a, b) { return a - b; });
-      if (dday !== "all" && !days[dday]) dday = "all";
-      if (dl.length > 1) html += '<div class="daystrip" role="group" aria-label="Giorno"><button class="daybtn" type="button" data-dday="all" aria-pressed="' + (dday === "all") + '"><b>TUTTI</b><span>' + ic("calendar") + '</span></button>'
-        + dl.map(function (d) {
-          var dt = new Date(d);
-          return '<button class="daybtn" type="button" data-dday="' + d + '" aria-pressed="' + (dday === d) + '"><b>' + (d === today ? "OGGI" : WD[dt.getDay()]) + '</b><span>' + dt.getDate() + '</span></button>';
-        }).join("") + '</div>';
-      if (dday !== "all") evs = evs.filter(function (e) { return e.start && dayOf(e.start) === dday; });
+      for (var wd = 0; wd < 7; wd++) { var dt0 = new Date(today); dt0.setDate(dt0.getDate() + wd); week.push(dt0.getTime()); }
+      if (dday === "all" || week.indexOf(dday) < 0) dday = week.filter(function (d) { return days[d]; })[0] || today;
+      html += '<div class="daystrip week" role="group" aria-label="Giorno">' + week.map(function (d, i) {
+        var dt = new Date(d);
+        return '<button class="daybtn' + (days[d] ? "" : " empty") + '" type="button" data-dday="' + d + '" aria-pressed="' + (dday === d) + '"><b>' + (i ? WD[dt.getDay()] : "OGGI") + '</b><span>' + (i ? dt.getDate() + "/" + (dt.getMonth() + 1) : dt.getDate()) + '</span>'
+          + '<small>' + (days[d] || 0) + '</small></button>';
+      }).join("") + '</div>';
+      evs = evs.filter(function (e) { return e.start && dayOf(e.start) === dday; });
     }
     // Calendario come le app di risultati (richiesta 07/10 sera, esempio Diretta): in cima "Per te" e i campionati
     // preferiti aperti, poi tutti gli altri dalla A alla Z per paese, chiusi col numero di partite (nel Live aperti).
@@ -4373,6 +4453,11 @@
       : isLive ? "Nessuna partita in corso con quote in questo momento." : "Nessuna partita in programma con quote nelle prossime 24 ore.") + '</div>';
     $("diarioevents").innerHTML = html;
   }
+  // segnali pre-partita (08/10): non stanno piu' in Segnali, si vedono sulla partita nel Calendario
+  function preSignals(e) {
+    if (e.live) return [];
+    return (data.feed || []).filter(function (f) { return f.kind === "signal" && f.timing === "prepartita" && f.sport === e.sport && f.pick && sameMatch(e, f.event); });
+  }
   var cexp = {};   // campionati aperti o chiusi a mano, solo per questa sessione
   function byStart(a, b) { return (a.start || 0) - (b.start || 0) || (a.id > b.id ? 1 : -1); }
   function hhmm(ts) { var d = new Date(ts * 1000); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
@@ -4392,7 +4477,8 @@
     function side(n) { return '<span>' + teamLogo(n === 1 ? e.home : e.away, e.sport) + '<span class="tn">' + pname(e, n) + '</span>' + (sc ? '<b class="sc">' + sc[n - 1] + '</b>' : "") + '</span>'; }
     return '<div class="evline' + (e.live ? " islive" : "") + '">' + starBtn("ev", e.id, isPrefEv(e))
       + '<button class="evmain" type="button" data-open="' + e.id + '"><span class="evtime">' + time + '</span><span class="evteams">' + side(1) + side(2)
-      + (showComp ? '<small class="evcomp">' + flagOf(e) + ' ' + esc(campLabel(e)) + '</small>' : "") + '</span></button>'
+      + (showComp ? '<small class="evcomp">' + flagOf(e) + ' ' + esc(campLabel(e)) + '</small>' : "")
+      + (preSignals(e).length ? '<small class="evsig">' + ic("strategie") + ' Pronostico di ' + esc(nameOf(preSignals(e)[0].main || preSignals(e)[0].strategy) || "una strategia") + '</small>' : "") + '</span></button>'
       + '<span class="evodds">' + q.map(function (c, i) { return tile(e, c, labels[i]); }).join("") + '</span></div>';
   }
 
@@ -4461,7 +4547,10 @@
       }).join("") + '</div>';
     if (curSheet === "sum") {
       var g0 = mktOf(e.sport, quickCodes(e)[0]);
-      html += hotBlock(e) + (g0 && e.mk[quickCodes(e)[0]] ? groupHtml(e, g0.group) : "")
+      var mine = myOpenLegs(e.id), sigs = preSignals(e);
+      html += mine.map(function (x) { return betInfoHtml(x.l, e).replace('class="betinfo"', 'class="betinfo card" data-mine="1"') + (x.s.stake ? '<div class="k" style="margin:-4px 2px 8px;">' + ic("coin") + ' ' + x.s.stake + ' monete puntate</div>' : ""); }).join("")
+        + sigs.map(function (f) { return '<div class="card sigpre"><div class="k">' + ic("strategie") + ' Pronostico della strategia <b>' + esc(nameOf(f.main || f.strategy) || f.strategy || "") + '</b>' + esc(stratRoi(f.main || f.strategy)) + '</div><div class="pickrow"><span>Indicazione: <b>' + esc(f.pick || "") + '</b></span>' + (f.odds ? '<b>@ ' + oddsTxt(f.odds) + '</b>' : "") + '</div></div>'; }).join("")
+        + hotBlock(e) + (g0 && e.mk[quickCodes(e)[0]] ? groupHtml(e, g0.group) : "")
         + (stats.length ? '<div class="mtitle" style="margin-top:14px;">Statistiche</div>' + statBars(stats.slice(0, 4))
           + (stats.length > 4 ? '<button class="linkbtn" type="button" data-msheet="stats">Tutte le statistiche ›</button>' : "") : "")
         + '<div class="card minfo"><div><span>Campionato</span><b>' + esc(campLabel(e)) + '</b></div>'
@@ -4767,6 +4856,7 @@
     var errs = slipErrs();
     if (errs.length) { slip = saved; playMsg = errs[0]; paintPlay(); return; }
     var stk = commitSlip(null), slipId = mySlips[mySlips.length - 1].id;
+    var pk = playedKeyOf(key); if (pk) { played[pk] = { slip: slipId, ts: nowS() }; savePlayed(); }
     slip = saved;
     if (playJolly) { useJolly(playJolly, "s" + slipId + "-0"); playJolly = null; }
     playMsg = ""; playDone++;
@@ -6191,6 +6281,7 @@
     if (e.target.closest("[data-follow]")) setTimeout(function () { if (!$("view-esplora").hidden) renderEsplora(); }, 0);
   });
   $("livebets").addEventListener("click", function (e) {
+    var rc = e.target.closest(".rcard[data-ev]"); if (rc && data) { openMatch(rc.dataset.ev); return; }
     if (e.target.closest("[data-livehist]") && data) { bview = "miei"; mieiF = "chiusi"; renderBacheca(); show("profilo"); window.scrollTo(0, 0); }
   });
   $("attivita").addEventListener("click", function (e) {
@@ -6203,12 +6294,6 @@
   });
   $("searchbtn").addEventListener("click", function () { if (!data) return; renderEsplora(); show("esplora"); window.scrollTo(0, 0); });
   $("segview").addEventListener("click", function (e) { var b = e.target.closest("[data-segv]"); if (b && data) { segv = b.dataset.segv; renderFeed(); } });
-  $("timechips").addEventListener("click", function (e) {
-    var b = e.target.closest(".chip"); if (!b) return;
-    when = b.dataset.when;
-    document.querySelectorAll("#timechips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
-    if (data) renderFeed();
-  });
   function paintTema() {
     document.querySelectorAll("#temachips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.tema === window.getTema())); });
   }
@@ -6702,6 +6787,7 @@
   $("back").addEventListener("click", function () { show("strategie"); });
   $("feed").addEventListener("click", function (e) {
     var pb = e.target.closest("[data-play]"); if (pb && data) { openPlay(pb.dataset.play); return; }
+    var sd = e.target.closest("[data-sdet]"); if (sd && data) { renderDetail(sd.dataset.sdet); return; }
     var c = e.target.closest(".feedcard[data-idx]"); if (c && data) renderSignal(Number(c.dataset.idx));
     var cl = e.target.closest(".feedcard[data-catlive]"); if (cl && data) renderCat(cl.dataset.catlive);
   });

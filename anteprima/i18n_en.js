@@ -21,6 +21,16 @@ window.I18N_EN = {
   "Trading sul servizio (punta prima": "Trading on serve (back before",
   "banca dopo)": "lay after)",
   // <<< generate da i18n_aggiungi.py
+  "Match": "Matches",
+  "In gioco": "In play",
+  "GIOCATO": "PLAYED",
+  "· game": "· game",
+  "· punti": "· points",
+  "La tua giocata:": "Your pick:",
+  "Strategia ›": "Strategy ›",
+  "Pronostico della strategia": "Pick by the strategy",
+  "Quali segnali vanno meglio": "Which signals are doing best",
+  "una strategia": "a strategy",
   "Come vai contro le quote, sfide, jolly, badge, classifica e le tue giocate": "How you do against the odds, challenges, jokers, badges, leaderboard and your picks",
   "Cerca un campionato": "Find a league",
   "In primo piano": "Featured",
@@ -1075,6 +1085,7 @@ window.I18N_EN = {
 
 // parole fisse dentro i messaggi dei bot (con nomi propri attorno): sostituzioni puntuali
 window.I18N_EN_FRAG = [
+  [/^Pronostico di (.+)$/, "Pick by $1"],
   [/^giocata al (\d+)' sul (\S+)$/, "played at $1' at $2"],
   [/^giocata live sul (\S+)$/, "played live at $1"],
   [/, ultime due settimane: ([\d,]+) gol a partita, Over 2,5 nel (\d+%) delle partite, segnano entrambe nel (\d+%)\./, ", last two weeks: $1 goals per match, Over 2.5 in $2 of matches, both teams scored in $3."],

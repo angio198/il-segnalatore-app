@@ -3,6 +3,16 @@
 // in tutti e due i file (prova: node app/prova_spagnolo.js controlla che le chiavi siano le stesse).
 // In spagnolo i decimali restano con la virgola ("1,81").
 window.I18N_ES = {
+  "Match": "Partidos",
+  "In gioco": "En juego",
+  "GIOCATO": "JUGADO",
+  "· game": "· juego",
+  "· punti": "· puntos",
+  "La tua giocata:": "Tu jugada:",
+  "Strategia ›": "Estrategia ›",
+  "Pronostico della strategia": "Pronóstico de la estrategia",
+  "Quali segnali vanno meglio": "Qué señales van mejor",
+  "una strategia": "una estrategia",
   "Come vai contro le quote, sfide, jolly, badge, classifica e le tue giocate": "Cómo te va contra las cuotas, retos, comodines, insignias, clasificación y tus jugadas",
   "Cerca un campionato": "Buscar una liga",
   "In primo piano": "Destacados",
@@ -1807,6 +1817,7 @@ window.I18N_ES = {
 
 // parole fisse dei messaggi dei bot dentro testi con nomi propri (stesse regole di I18N_EN_FRAG)
 window.I18N_ES_FRAG = [
+  [/^Pronostico di (.+)$/, "Pronóstico de $1"],
   [/^giocata al (\d+)' sul (\S+)$/, "jugada en el $1' con $2"],
   [/^giocata live sul (\S+)$/, "jugada en directo con $1"],
   [/, ultime due settimane: ([\d,]+) gol a partita, Over 2,5 nel (\d+%) delle partite, segnano entrambe nel (\d+%)\./, ", últimas dos semanas: $1 goles por partido, Over 2,5 en el $2 de los partidos, marcan ambos en el $3."],
