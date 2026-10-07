@@ -559,6 +559,10 @@
   .dwitem{display:flex;align-items:center;gap:12px;padding:13px 4px;border:none;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;font-weight:600;text-align:left;cursor:pointer;}
   .dwitem .ico{width:22px;height:22px;}
   .attlist{padding:4px 0;} .attrow{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;border-bottom:1px solid var(--line);}
+  .attdet{padding:4px 14px 12px 62px;display:flex;flex-direction:column;gap:6px;font-size:0.82rem;border-bottom:1px solid var(--line);}
+  .attdet > div{display:flex;flex-direction:column;} .attdet span{color:var(--ink-soft);font-size:0.72rem;} .attdet .linkbtn{align-self:flex-start;padding:2px 0;}
+  .atime .ico{width:14px;height:14px;vertical-align:-3px;opacity:.6;margin-left:2px;}
+  .attrow[aria-expanded="true"] .atime .ico{transform:rotate(90deg);}
   .attrow:last-child{border-bottom:none;} .attrow.new{background:color-mix(in srgb, var(--accent) 12%, transparent);}
   .attw{flex:1;min-width:0;display:flex;flex-direction:column;} .attw .k{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .atti{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--bg);flex:none;} .atime{flex:none;font-size:0.72rem;}
@@ -875,6 +879,46 @@
   @media (max-height:500px){ .tab.hub .hubic{width:40px;height:40px;margin:-12px 0 0;} .tab.hub .hubic img{width:34px;height:34px;} .tab.hub{flex-direction:row;align-items:center;justify-content:center;} }
   @media (prefers-reduced-motion: reduce){ .tab.hub .hubic{transition:none;} }
   /* Radar a schede (04/10) */
+  /* Radar delle strategie (08/10): pagina viva, colori e movimento */
+  .rhero{display:flex;align-items:center;gap:16px;padding:14px;border-radius:18px;margin-bottom:6px;color:#E8FFF0;
+    background:radial-gradient(120% 140% at 0% 0%,#123D2A 0,#0A1F16 55%,#071510 100%);border:1px solid rgba(69,212,131,.35);box-shadow:0 0 0 1px rgba(69,212,131,.1),0 10px 30px -12px rgba(69,212,131,.45);}
+  .rhradar{position:relative;flex:none;width:96px;height:96px;border-radius:50%;overflow:hidden;
+    background:radial-gradient(circle,transparent 0 30%,rgba(69,212,131,.35) 30.6%,transparent 31.2% 64%,rgba(69,212,131,.3) 64.6%,transparent 65.2% 97%,rgba(69,212,131,.75) 98%),
+      linear-gradient(transparent calc(50% - .5px),rgba(69,212,131,.3) 50%,transparent calc(50% + .5px)),linear-gradient(90deg,transparent calc(50% - .5px),rgba(69,212,131,.3) 50%,transparent calc(50% + .5px)),radial-gradient(circle,#0B2A1C,#06150E 70%);box-shadow:0 0 22px rgba(69,212,131,.35);}
+  .rhradar .srsweep{animation-duration:2.4s;}
+  .rhradar i{position:absolute;width:7px;height:7px;margin:-3.5px;border-radius:50%;background:#FFE27A;box-shadow:0 0 10px #FFB400;opacity:0;animation:blip 2.4s linear infinite;}
+  .rhstats{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;}
+  .rhstats div{display:flex;flex-direction:column;line-height:1.1;} .rhstats b{font-size:1.35rem;font-variant-numeric:tabular-nums;} .rhstats span{font-size:0.7rem;opacity:.75;}
+  .rhstats .pos{color:#45D483;} .rhstats .neg{color:#FF6B6B;} .rhopen{color:#FFB400;text-shadow:0 0 12px rgba(255,180,0,.6);}
+  .rsec{display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin:16px 2px 8px;}
+  .rsec .ico{width:16px;height:16px;color:#FFB400;} .rsec .k{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600;}
+  .rboard{display:flex;flex-direction:column;gap:6px;}
+  .rbrow{position:relative;display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:14px;font:inherit;color:inherit;text-align:left;cursor:pointer;overflow:hidden;
+    background:linear-gradient(90deg,color-mix(in srgb, var(--c) 22%, var(--surface)),var(--surface) 70%);border:1px solid color-mix(in srgb, var(--c) 45%, var(--line));}
+  .rbrow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c);box-shadow:0 0 12px var(--c);}
+  .rbrow.lead{box-shadow:0 0 0 1px var(--c),0 8px 26px -10px var(--c);}
+  .rbrow.lead::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%);transform:translateX(-100%);animation:rbshine 3.2s ease-in-out infinite;}
+  @keyframes rbshine{60%,100%{transform:translateX(100%);}}
+  .rbn{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--c);color:#111;font-weight:900;font-size:0.85rem;}
+  .rbw{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;} .rbw b{font-size:0.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .rbw .k{font-size:0.72rem;}
+  .rbbar{height:5px;border-radius:3px;background:var(--line);overflow:hidden;} .rbbar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--c),color-mix(in srgb, var(--c) 50%, #fff));}
+  .rbo{color:#FFB400;font-weight:700;}
+  .rbp{flex:none;display:flex;flex-direction:column;align-items:flex-end;font-weight:900;font-size:1.05rem;font-variant-numeric:tabular-nums;} .rbp small{font-size:0.6rem;font-weight:600;opacity:.7;}
+  .rbfire{position:absolute;top:2px;left:30px;} .rbfire .ico{width:14px;height:14px;color:#FF7A00;animation:fbump 1.2s ease-in-out infinite;}
+  @keyframes fbump{50%{transform:scale(1.3);filter:drop-shadow(0 0 6px #FF7A00);}}
+  .rhnote{margin:6px 2px 0;font-size:0.72rem;}
+  .rfresh,.rhot{display:flex;flex-direction:column;gap:6px;}
+  .rfr{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;background:var(--surface);border:1px solid color-mix(in srgb, var(--c) 55%, var(--line));animation:rfpulse 2s ease-in-out infinite;}
+  @keyframes rfpulse{50%{box-shadow:0 0 0 3px color-mix(in srgb, var(--c) 30%, transparent);}}
+  .rfmin{flex:none;min-width:34px;text-align:center;font-weight:800;color:var(--bad);font-size:0.8rem;}
+  .rfw{flex:1;min-width:0;display:flex;flex-direction:column;} .rfw b{font-size:0.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .rfw .k{font-size:0.72rem;color:var(--c);font-weight:700;}
+  .rfp{flex:none;font-size:0.8rem;text-align:right;}
+  .rht{padding:10px 12px;border-radius:12px;cursor:pointer;background:linear-gradient(90deg,rgba(255,90,40,.16),var(--surface) 80%);border:1px solid rgba(255,110,40,.45);}
+  .rhtt{display:flex;align-items:center;gap:8px;} .rhtt b{flex:1;min-width:0;font-size:0.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rhp{font-weight:900;color:#FF7A00;font-variant-numeric:tabular-nums;}
+  .rhm{height:7px;border-radius:4px;margin:7px 0 5px;background:var(--line);overflow:hidden;} .rhm i{display:block;height:100%;background:linear-gradient(90deg,#FFB400,#FF5A1F,#FF2D55);box-shadow:0 0 10px #FF5A1F;animation:rhgrow 1s ease-out both;}
+  @keyframes rhgrow{from{width:0 !important;}}
+  @media (prefers-reduced-motion: reduce){.rbrow.lead::after,.rfr,.rbfire .ico{animation:none;}}
   .rgroup{margin:0 -6px 12px;padding:8px 6px 2px;border-radius:16px;background:color-mix(in srgb, var(--tint) 11%, transparent);border:1px solid color-mix(in srgb, var(--tint) 28%, transparent);}
   .rghead{font-size:0.78rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase;margin:0 4px 8px;display:flex;align-items:center;gap:6px;}
   .rcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer;position:relative;}
@@ -1422,7 +1466,7 @@
 </main>
 
 <main class="view" id="view-radar" hidden>
-  <div class="radarhead"><div class="eyebrow" style="margin:0;">Radar live</div><span class="k" id="radarage"></span></div>
+  <div class="radarhead"><div class="eyebrow" style="margin:0;">Radar delle strategie</div><span class="k" id="radarage"></span></div>
   <div class="chips" id="radarchips" role="group" aria-label="Sport" style="margin:8px 0;">
     <button class="chip" type="button" data-rsport="calcio" aria-pressed="true"><svg class="ico"><use href="#i-calcio"/></svg> Calcio</button>
     <button class="chip" type="button" data-rsport="tennis" aria-pressed="false"><svg class="ico"><use href="#i-tennis"/></svg> Tennis</button>
@@ -2578,20 +2622,39 @@
   // Notifiche: X ha pubblicato, il tuo pronostico e' vinto, nuovo segnale, sfida chiusa (visti: statsight.attivita)
   var ATT_KEY = "statsight.attivita";
   function attSeen() { try { return Number(localStorage.getItem(ATT_KEY)) || 0; } catch (e) { return 0; } }
+  // Notifiche (08/10): ognuna porta dove serve (partita, segnale, pronostici, sfida, profilo); quelle che non
+  // possono piu' portare da nessuna parte (partita uscita dai dati) si aprono qui sotto con cosa, come, perche' e
+  // risultato.
+  function resTxt(r) { return r === 1 ? "vinto" : r === 0 ? "perso" : r === -1 ? "nullo" : "in attesa"; }
+  function detRows(rows) { return rows.filter(function (r) { return r[1]; }).map(function (r) { return '<div><span>' + esc(r[0]) + '</span><b>' + esc(r[1]) + '</b></div>'; }).join(""); }
   function attItems() {
-    var out = [], P = data.personaggi || {};
-    (P.feed || []).forEach(function (x) { if (follows.has(x.p)) { var p = personaOf(x.p); if (p) out.push({ ts: x.ts, ic: "user", who: p.id, t: p.name + " ha pubblicato un pronostico", s: x.event + " · " + x.label + " @ " + oddsTxt(x.odds) }); } });
-    (P.posts || []).forEach(function (x) { if (follows.has(x.p)) { var p = personaOf(x.p); if (p) out.push({ ts: x.ts, ic: "chat", who: p.id, t: p.name + " ha pubblicato un post", s: x.title || "" }); } });
-    mySlips.forEach(function (s) { if (s.resolved_at) out.push({ ts: s.resolved_at, ic: s.won === 1 ? "check" : s.won === 0 ? "x" : "minus", t: s.won === 1 ? "Pronostico vinto" : s.won === 0 ? "Pronostico perso" : "Pronostico nullo", s: s.legs.map(function (l) { return l.event; }).join(", "), go: "miei" }); });
-    (data.feed || []).forEach(function (f) { if (f.kind === "signal" && (!f.main || on(f.main))) out.push({ ts: f.ts, ic: "segnali", t: "Nuovo segnale: " + (nameOf(f.main || f.strategy) || f.strategy || ""), s: f.event + " · " + f.pick, go: "segnali" }); });
+    var out = [], P = data.personaggi || {}, outc = {};
+    (data.feed || []).forEach(function (f) { if (f.kind === "outcome" && f.key) outc[f.key] = f; });
+    (P.feed || []).forEach(function (x) {
+      if (!follows.has(x.p)) return; var p = personaOf(x.p); if (!p) return;
+      var e = evList().filter(function (y) { return y.sport === x.sport && sameMatch(y, x.event); })[0];
+      out.push({ ts: x.ts, ic: "user", who: p.id, t: p.name + " ha pubblicato un pronostico", s: x.event + " · " + x.label + " @ " + oddsTxt(x.odds) + " · " + resTxt(x.result),
+                 go: e ? "m:" + e.id : null,
+                 det: detRows([["Cosa", x.event + (x.comp ? " (" + shortComp(x.comp) + ")" : "")], ["Pronostico", x.label + " @ " + oddsTxt(x.odds)], ["Chi e come", p.name + " · " + (p.nick || "") + (p.desc ? ": " + p.desc : "")], ["Risultato", resTxt(x.result)]]) });
+    });
+    (P.posts || []).forEach(function (x) { if (follows.has(x.p)) { var p = personaOf(x.p); if (p) out.push({ ts: x.ts, ic: "chat", who: p.id, t: p.name + " ha pubblicato un post", s: x.title || "", go: "p:" + p.id }); } });
+    mySlips.forEach(function (s) { if (s.resolved_at) out.push({ ts: s.resolved_at, ic: s.won === 1 ? "check" : s.won === 0 ? "x" : "minus", t: s.won === 1 ? "Pronostico vinto" : s.won === 0 ? "Pronostico perso" : "Pronostico nullo", s: s.legs.map(function (l) { return l.event + " · " + l.label + " @ " + oddsTxt(l.odds); }).join(", "), go: "miei" }); });
+    (data.feed || []).forEach(function (f, i) {
+      if (f.kind !== "signal" || (f.main && !on(f.main))) return;
+      var o = f.key && outc[f.key], sname = nameOf(f.main || f.strategy) || f.strategy || "";
+      out.push({ ts: f.ts, ic: "segnali", t: "Nuovo segnale: " + sname, s: f.event + " · " + f.pick + (o ? " · " + (o.hit ? "VINTO" : "PERSO") : ""), go: "s:" + i,
+                 det: detRows([["Cosa", f.event + (f.cat ? " (" + f.cat + ")" : "")], ["Indicazione", f.pick + (f.odds ? " @ " + oddsTxt(f.odds) : "")], ["Strategia", sname + stratRoi(f.main || f.strategy)], ["Perché", f.why || f.text || ""], ["Risultato", o ? (o.hit ? "vinto" : "perso") + (o.result ? " · " + o.result : "") : "in attesa"]]) });
+    });
     fights.forEach(function (f) { if (f.res) { var p = personaOf(f.opp); out.push({ ts: f.res.at, ic: "vs", t: "Sfida con " + (p ? p.name : "?") + ": " + (f.res.r === "win" ? "vinta" : f.res.r === "lose" ? "persa" : "pari"), s: f.res.right + " a " + f.res.oppRight + " · +" + f.res.coins + " monete", go: "fight" }); } });
     return out.filter(function (x) { return x.ts; }).sort(function (a, b) { return b.ts - a.ts; }).slice(0, 50);
   }
   function renderAttivita() {
     var seen = attSeen(), items = attItems();
-    $("attivita").innerHTML = items.length ? '<div class="card attlist">' + items.map(function (x) {
-      return '<button class="attrow' + (x.ts > seen ? " new" : "") + '" type="button"' + (x.who ? ' data-persona="' + esc(x.who) + '"' : x.go ? ' data-attgo="' + x.go + '"' : "") + '>'
-        + (x.who ? avatar(x.who, 38) : '<span class="atti">' + ic(x.ic) + '</span>') + '<span class="attw"><b>' + esc(x.t) + '</b><span class="k">' + esc(x.s) + '</span></span><span class="k atime">' + whenLabel(x.ts) + '</span></button>';
+    $("attivita").innerHTML = items.length ? '<div class="card attlist">' + items.map(function (x, i) {
+      var link = !!x.go, det = !link && x.det;
+      return '<button class="attrow' + (x.ts > seen ? " new" : "") + '" type="button"' + (link ? ' data-attgo="' + esc(x.go) + '"' : det ? ' data-attdet="' + i + '" aria-expanded="false"' : "") + '>'
+        + (x.who ? avatar(x.who, 38) : '<span class="atti">' + ic(x.ic) + '</span>') + '<span class="attw"><b>' + esc(x.t) + '</b><span class="k">' + esc(x.s) + '</span></span><span class="k atime">' + whenLabel(x.ts) + (link || det ? ic("chev") : "") + '</span></button>'
+        + (det ? '<div class="attdet" id="attdet' + i + '" hidden>' + det + (x.who ? '<button class="linkbtn" type="button" data-attgo="p:' + esc(x.who) + '">Profilo ›</button>' : "") + '</div>' : "");
     }).join("") + '</div>' : '<div class="note">Nessuna notifica, per ora. Segui qualcuno del Team nella Home per vedere qui quello che pubblica.</div>';
     try { localStorage.setItem(ATT_KEY, String(nowS())); } catch (e) {}
     paintAttDot();
@@ -5206,18 +5269,78 @@
     var dz = data.diario;
     var evs = evList().filter(function (e) { return e.live && e.sport === rsport && (e.st || e.susp); });
     $("radarage").textContent = dz ? "dati di " + ageTxt(dz.at) : "";
-    if (!evs.length) { $("radar").innerHTML = '<div class="note">Nessuna partita live con statistiche in questo momento.</div>'; return; }
+    var head = radarHeadHtml(evs);
+    if (!evs.length) { $("radar").innerHTML = head + '<div class="note">Nessuna partita live con statistiche in questo momento.</div>'; return; }
     var groups = {}, order = [];
     evs.forEach(function (e) { var k = e.comp || NAME[e.sport]; if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(e); });
     var hotFirst = function (k) { return groups[k].some(function (e) { return !!hotOf(e) || radarStrats(e).length > 0; }) ? 1 : 0; };
     order.sort(function (a, b) { return hotFirst(b) - hotFirst(a) || groups[b].length - groups[a].length || (a > b ? 1 : -1); });
-    $("radar").innerHTML = order.map(function (k) {
+    $("radar").innerHTML = head + '<h2 class="rsec">' + ic("radar") + ' Tutte le partite live <span class="k">' + evs.length + '</span></h2>' + order.map(function (k) {
       var list = groups[k].sort(function (a, b) { return (hotOf(b) || radarStrats(b).length ? 1 : 0) - (hotOf(a) || radarStrats(a).length ? 1 : 0) || ((b.st && b.st.minute) || 0) - ((a.st && a.st.minute) || 0); });
       return '<section class="rgroup" style="--tint:' + compTint(k) + '"><div class="rghead">' + EMOJI[rsport] + ' ' + esc(shortComp(k)) + ' <span class="k">' + list.length + '</span></div>'
         + list.map(function (e) { return rsport === "calcio" ? calcioCard(e) : tennisCard(e); }).join("") + '</section>';
     }).join("") + (rsport === "tennis" ? '<div class="note rlegend">' + ic("info") + ' <b>Punti vinti al servizio</b>: su 100 punti che ognuno gioca quando serve, quanti ne vince (primo giocatore - secondo). <b>In risposta</b>: lo stesso, quando risponde. Sono percentuali separate: non si sommano.</div>' : "")
       + (!isFull() ? '<div class="upsell" style="margin-top:10px;">' + ic("lock") + ' Le statistiche col lucchetto e le strategie delle partite calde si vedono con <b>StatSight Full</b>.</div>' : "");
     if (radarWinFx) { radarWinFx = false; hubWin(); }
+  }
+  // ---------------------------------------------------------------- Radar delle strategie (08/10)
+  // La pagina viva di come lavorano gli algoritmi adesso: radar che gira, contatori, classifica in tempo reale delle
+  // strategie sulle partite live (scattate, vinte, perse, in corso, punti di oggi), partite calde (la strategia sta
+  // per accendersi) e le ultime scattate prima che passino in Segnali. Sotto, tutte le partite live come prima.
+  var RCOL = ["#FF5A5F", "#FFB400", "#00C2A8", "#4D7CFE", "#B15CFF", "#FF7A00", "#2ED47A", "#FF4FA3"];
+  function radarBoard(evs) {
+    var by = {}, order = [];
+    function row(open, name) { if (!by[open]) { by[open] = { open: open, name: name, n: 0, w: 0, l: 0, o: 0, pts: 0, evs: [] }; order.push(open); } return by[open]; }
+    evs.forEach(function (e) {
+      radarStrats(e).forEach(function (x) {
+        if (x.lock) return;
+        var b = row(x.open, x.name); b.n++;
+        if (x.done && x.hit) { b.w++; b.pts += (x.odds || 1) - 1; } else if (x.done) { b.l++; b.pts -= 1; } else { b.o++; b.evs.push({ e: e, pick: x.pick, odds: x.odds }); }
+      });
+    });
+    (data.today_results || []).forEach(function (r) {   // chiuse oggi (anche partite gia' finite)
+      if (r.sport !== rsport || r.timing === "prepartita" || !r.strategy || catLocked(r.strategy)) return;
+      var open = "d:" + r.strategy;
+      if (by[open] && by[open]._seen && by[open]._seen[r.key]) return;
+      var b = row(open, (nameOf(r.strategy) || r.strategy) + stratRoi(r.strategy));
+      if (evs.some(function (e) { return sameMatch(e, r.event); })) return;   // gia' contata sulla partita live
+      b.n++; if (r.hit) { b.w++; b.pts += (r.odds || 1) - 1; } else { b.l++; b.pts -= 1; }
+    });
+    return order.map(function (k) { return by[k]; }).sort(function (a, b) { return b.pts - a.pts || b.o - a.o || b.n - a.n; });
+  }
+  function radarHeadHtml(evs) {
+    var B = radarBoard(evs), open = B.reduce(function (s2, b) { return s2 + b.o; }, 0), w = B.reduce(function (s2, b) { return s2 + b.w; }, 0), l = B.reduce(function (s2, b) { return s2 + b.l; }, 0);
+    var hot = evs.filter(function (e) { return hotOf(e); }).map(function (e) { return { e: e, h: hotOf(e).slice().sort(function (a, b) { return b.p - a.p; })[0] }; }).sort(function (a, b) { return b.h.p - a.h.p; });
+    var maxN = Math.max.apply(null, B.map(function (b) { return b.n; }).concat([1]));
+    var html = '<div class="rhero"><div class="rhradar"><span class="srsweep"></span>' + evs.slice(0, 6).map(function (e, i) {
+        var a = (i * 61 + 23) % 360, r = 22 + (i * 13) % 20;
+        return '<i style="left:' + (50 + r * Math.cos(a * Math.PI / 180)).toFixed(0) + '%;top:' + (50 + r * Math.sin(a * Math.PI / 180)).toFixed(0) + '%;animation-delay:' + (a / 360 * 2.4).toFixed(2) + 's"></i>';
+      }).join("") + '</div>'
+      + '<div class="rhstats"><div><b>' + evs.length + '</b><span>partite live</span></div><div><b>' + B.length + '</b><span>strategie al lavoro</span></div>'
+      + '<div><b class="rhopen">' + open + '</b><span>scattate in corso</span></div><div><b><span class="pos">' + w + '</span>-<span class="neg">' + l + '</span></b><span>vinte-perse oggi</span></div></div></div>';
+    html += '<h2 class="rsec">' + ic("trophy") + ' Classifica in tempo reale</h2>';
+    html += B.length ? '<div class="rboard">' + B.slice(0, 8).map(function (b, i) {
+        var c = RCOL[i % RCOL.length];
+        return '<button class="rbrow' + (i === 0 && b.pts > 0 ? " lead" : "") + '" type="button" data-rstrat="' + esc(b.open) + '" style="--c:' + c + '">'
+          + '<span class="rbn">' + (i + 1) + '</span><span class="rbw"><b>' + esc(b.name) + '</b>'
+          + '<span class="rbbar"><i style="width:' + Math.round(b.n / maxN * 100) + '%"></i></span>'
+          + '<span class="k">' + b.n + (b.n === 1 ? " scattata" : " scattate") + (b.w ? ' · <span class="pos">' + b.w + (b.w === 1 ? ' vinta' : ' vinte') + '</span>' : "") + (b.l ? ' · <span class="neg">' + b.l + (b.l === 1 ? ' persa' : ' perse') + '</span>' : "") + (b.o ? ' · <span class="rbo">' + b.o + ' in corso</span>' : "") + '</span></span>'
+          + '<span class="rbp ' + (b.pts > 0 ? "pos" : b.pts < 0 ? "neg" : "") + '">' + (b.pts > 0 ? "+" : "") + it(b.pts, 1) + '<small>punti</small></span>'
+          + (i === 0 && b.pts > 0 ? '<span class="rbfire">' + ic("flame") + '</span>' : "") + '</button>';
+      }).join("") + '</div><div class="k rhnote">Punti di oggi: vinta = quota − 1, persa = −1. Tocca una strategia per aprirla.</div>'
+      : '<div class="note">Nessuna strategia è scattata sulle partite live di oggi. Il radar continua a cercare.</div>';
+    var fresh = [];
+    B.forEach(function (b, i) { b.evs.forEach(function (x) { fresh.push({ b: b, c: RCOL[i % RCOL.length], e: x.e, pick: x.pick, odds: x.odds }); }); });
+    if (fresh.length) html += '<h2 class="rsec">' + ic("bolt") + ' Appena scattate <span class="k">vanno in Segnali</span></h2><div class="rfresh">' + fresh.slice(0, 6).map(function (x) {
+        return '<div class="rfr" data-ev="' + x.e.id + '" role="button" tabindex="0" style="--c:' + x.c + '"><span class="rfmin">' + esc(estMinute(x.e) || "LIVE") + '</span><span class="rfw"><b>' + esc(x.e.home + " - " + x.e.away) + '</b><span class="k">' + esc(x.b.name) + '</span></span>'
+          + '<span class="rfp">' + esc(x.pick || "") + (x.odds ? ' <b>@ ' + oddsTxt(x.odds) + '</b>' : "") + '</span></div>';
+      }).join("") + '</div>';
+    if (hot.length) html += '<h2 class="rsec">' + ic("flame") + ' Partite calde <span class="k">la strategia sta per accendersi</span></h2><div class="rhot">' + hot.slice(0, 5).map(function (x) {
+        var p = Math.round(x.h.p * 100);
+        return '<div class="rht" data-ev="' + x.e.id + '" role="button" tabindex="0"><div class="rhtt"><span class="rfmin">' + esc(estMinute(x.e) || "LIVE") + '</span><b>' + esc(x.e.home + " - " + x.e.away) + '</b><span class="rhp">' + p + '%</span></div>'
+          + '<div class="rhm"><i style="width:' + p + '%"></i></div><div class="k">' + (isFull() ? esc(x.h.name) + ' · ' + esc(x.h.pick || "") : ic("lock") + ' strategia con StatSight Full') + '</div></div>';
+      }).join("") + '</div>';
+    return html;
   }
   $("radarchips").addEventListener("click", function (e) {
     var b = e.target.closest(".chip"); if (!b) return;
@@ -6285,11 +6408,16 @@
     if (e.target.closest("[data-livehist]") && data) { bview = "miei"; mieiF = "chiusi"; renderBacheca(); show("profilo"); window.scrollTo(0, 0); }
   });
   $("attivita").addEventListener("click", function (e) {
+    var d = e.target.closest("[data-attdet]");
+    if (d) { var box = $("attdet" + d.dataset.attdet), on2 = d.getAttribute("aria-expanded") !== "true"; d.setAttribute("aria-expanded", String(on2)); if (box) box.hidden = !on2; return; }
     var g = e.target.closest("[data-attgo]"); if (!g || !data) return;
     var k = g.dataset.attgo;
     if (k === "miei") { bview = "miei"; mieiF = "tutti"; renderBacheca(); show("profilo"); }
     else if (k === "segnali") { segv = "nuovi"; renderFeed(); show("segnali"); }
     else if (k === "fight") { settleFights(); fightOpen = null; renderFight(); show("fight"); }
+    else if (k.slice(0, 2) === "m:") { openMatch(k.slice(2)); return; }
+    else if (k.slice(0, 2) === "s:") { renderSignal(Number(k.slice(2))); var bk = document.querySelector("#view-segnale .back"); if (bk) { bk.dataset.back = "attivita"; bk.textContent = "‹ Notifiche"; } }
+    else if (k.slice(0, 2) === "p:") { renderPersona(k.slice(2)); return; }
     window.scrollTo(0, 0);
   });
   $("searchbtn").addEventListener("click", function () { if (!data) return; renderEsplora(); show("esplora"); window.scrollTo(0, 0); });
@@ -6788,7 +6916,7 @@
   $("feed").addEventListener("click", function (e) {
     var pb = e.target.closest("[data-play]"); if (pb && data) { openPlay(pb.dataset.play); return; }
     var sd = e.target.closest("[data-sdet]"); if (sd && data) { renderDetail(sd.dataset.sdet); return; }
-    var c = e.target.closest(".feedcard[data-idx]"); if (c && data) renderSignal(Number(c.dataset.idx));
+    var c = e.target.closest(".feedcard[data-idx]"); if (c && data) { renderSignal(Number(c.dataset.idx)); var bk = document.querySelector("#view-segnale .back"); if (bk) { bk.dataset.back = "segnali"; bk.textContent = "‹ Segnali"; } }
     var cl = e.target.closest(".feedcard[data-catlive]"); if (cl && data) renderCat(cl.dataset.catlive);
   });
   $("segnale").addEventListener("click", function (e) {
