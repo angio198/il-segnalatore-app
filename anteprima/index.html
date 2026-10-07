@@ -577,6 +577,12 @@
   .tab .ndot.lv{background:#E5322D;animation:ndotpop .35s cubic-bezier(.3,1.6,.5,1),lvpulse 1.6s ease-in-out infinite;} @keyframes lvpulse{50%{box-shadow:0 0 0 5px rgba(229,50,45,.25);}}
   .stakein{width:5.2em;font:inherit;font-weight:800;font-size:1.05rem;text-align:center;padding:4px 6px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);}
   .openmatch{margin:10px 0 4px;}
+  .card.post{position:relative;} .pmore{position:absolute;top:8px;right:8px;z-index:1;width:30px;height:30px;border-radius:50%;border:none;background:none;color:var(--ink-soft);display:grid;place-items:center;cursor:pointer;}
+  .card.post > .phead{padding-right:30px;} .crow .pmore{position:static;width:24px;height:24px;margin-left:auto;}
+  .pmore .ico{width:20px;height:20px;} .pmore:hover{background:var(--bg);}
+  .mlist{display:flex;flex-direction:column;margin-top:8px;} .mlist .dwitem:last-child{border-bottom:none;} .dwitem.warn{color:#C8362B;}
+  .dhead{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;margin:0 0 8px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:inherit;font:inherit;text-align:left;cursor:pointer;}
+  .dhw{flex:1;min-width:0;display:flex;flex-direction:column;} .chatinfo{margin-bottom:10px;} .cih{font-weight:800;margin:10px 0 6px;} .cih:first-child{margin-top:0;}
   .tab .ic .ico{transition:transform .2s;}
   .tab:not([aria-current="page"]) .ic .ico{opacity:.72;filter:saturate(.6);}
   .tab[aria-current="page"] .ic{background:color-mix(in srgb, var(--accent) 22%, transparent);}
@@ -746,13 +752,20 @@
   #splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;cursor:pointer;
     background:radial-gradient(circle at 50% 42%,#1B3540,#0C161C 62%);transition:opacity .3s ease;}
   #splash.out{opacity:0;pointer-events:none;}
-  .splogo{position:relative;width:104px;height:104px;animation:spin-in .9s cubic-bezier(.2,1.4,.4,1) both;}
+  .splogo{position:relative;width:104px;height:104px;margin:58px 0 46px;animation:spin-in .9s cubic-bezier(.2,1.4,.4,1) both;}
   /* tondo come l'icona (video 07/10): un arco che gira intorno al logo, tipo caricamento di Windows */
   .splogo img{position:relative;border-radius:50%;box-shadow:0 14px 40px -10px rgba(0,0,0,.8),0 0 0 2px rgba(232,162,82,.35);}
   .spring{position:absolute;inset:-6px;border-radius:50%;border:2px solid #E8A252;opacity:0;animation:sp-ring 1.5s .35s ease-out infinite;}
-  .sparc{position:absolute;inset:-13px;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 55%,rgba(232,162,82,.15) 62%,#E8A252 88%,#FFE27A 100%);
-    -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));
-    animation:lvspin .9s linear infinite;}
+  /* radar da sottomarino (07/10 sera): schermo verde con cerchi e croce, la barra che gira e i puntini che si
+     accendono quando la barra ci passa sopra (giro di 1,6 s; ritardo = angolo del puntino / 360 x 1,6 s) */
+  .sradar{position:absolute;inset:-58px;border-radius:50%;overflow:hidden;
+    background:radial-gradient(circle,transparent 0 30%,rgba(69,212,131,.35) 30.6%,transparent 31.2% 49%,rgba(69,212,131,.3) 49.6%,transparent 50.2% 68%,rgba(69,212,131,.3) 68.6%,transparent 69.2% 97%,rgba(69,212,131,.75) 98%),
+      linear-gradient(transparent calc(50% - .5px),rgba(69,212,131,.3) 50%,transparent calc(50% + .5px)),linear-gradient(90deg,transparent calc(50% - .5px),rgba(69,212,131,.3) 50%,transparent calc(50% + .5px)),
+      radial-gradient(circle,#0B2A1C,#06150E 70%);box-shadow:0 0 30px rgba(69,212,131,.25),inset 0 0 26px rgba(0,0,0,.7);animation:sp-up .5s ease-out both;}
+  .srsweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(69,212,131,0) 0 70%,rgba(69,212,131,.18) 85%,rgba(160,255,190,.75) 99.5%,#C9FFD9 100%);animation:lvspin 1.6s linear infinite;}
+  .sradar i{position:absolute;width:7px;height:7px;margin:-3.5px;border-radius:50%;background:#B8FFCE;box-shadow:0 0 8px #45D483;opacity:0;animation:blip 1.6s linear infinite;}
+  .sradar .b1{left:72%;top:22%;animation-delay:.18s;} .sradar .b2{left:84%;top:66%;animation-delay:.53s;} .sradar .b3{left:30%;top:80%;animation-delay:.94s;} .sradar .b4{left:18%;top:30%;animation-delay:1.36s;}
+  @keyframes blip{0%{opacity:0;}2%{opacity:1;transform:scale(1.4);}60%{opacity:.15;transform:scale(1);}100%{opacity:0;}}
   .spring.r2{animation-delay:.85s;}
   .spname{font-family:'Archivo',system-ui,sans-serif;font-stretch:87.5%;font-weight:800;font-size:1.7rem;letter-spacing:-0.01em;color:#E8ECE6;animation:sp-up .6s .45s ease-out both;}
   @keyframes spin-in{0%{transform:scale(.3) rotate(-25deg);opacity:0;}70%{opacity:1;}100%{transform:scale(1) rotate(0);opacity:1;}}
@@ -1010,7 +1023,7 @@
 <body>
 <!-- animazione del logo all'avvio (04/10): ~1,8 s, si salta toccando, niente con "riduci animazioni" -->
 <div id="splash" aria-hidden="true">
-  <div class="splogo"><span class="spring"></span><span class="spring r2"></span><span class="sparc"></span><img src="icon-192.png" alt="" width="104" height="104"></div>
+  <div class="splogo"><div class="sradar"><span class="srsweep"></span><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i></div><img src="icon-192.png" alt="" width="104" height="104"></div>
   <div class="spname">StatSight</div>
 </div>
 <script>
@@ -2439,6 +2452,7 @@
     $("dwbody").innerHTML = '<button class="dwme" type="button" data-dw="mio">' + myAvatar(44) + '<span><b translate="no">' + esc(me.name || "Il tuo profilo") + '</b><span class="k">livello ' + R2.level + ' · ' + R2.coins + ' monete</span></span>' + ic("chev") + '</button>'
       + '<div class="dwh">I tuoi collegamenti rapidi</div><div class="dwquick">' + quick + (me.team ? "" : '<button class="dwq" type="button" data-dw="pick"><span class="dwqi">' + ic("star") + '</span><span>Scegli la tua squadra</span></button>') + '</div>'
       + '<div class="dwlist">'
+      + '<button class="dwitem" type="button" data-dw="appunti">' + ic("pen") + ' Appunti</button>'
       + '<button class="dwitem" type="button" data-dw="occhio">' + ic("eye") + ' Il mio occhio</button>'
       + '<button class="dwitem" type="button" data-dw="fight">' + ic("vs") + ' StatsFight</button>'
       + '<button class="dwitem" type="button" data-dw="ruota">' + ic("wheel") + ' Ruota del giorno</button>'
@@ -3185,13 +3199,14 @@
   function convOf(id) {
     var c = direct.convs.filter(function (x) { return x.id === id; })[0];
     if (!c && /^t:/.test(id) && personaOf(id.slice(2))) { c = { id: id, kind: "team", pid: id.slice(2), msgs: [], read: 0 }; direct.convs.push(c); }
+    if (!c && /^u:/.test(id)) { c = { id: id, kind: "user", name: id.slice(2), msgs: [], read: 0 }; direct.convs.push(c); }
     return c;
   }
   // Prova del Direct coi personaggi del Team StatSight (video 07/10): solo quelli che segui (ti seguono anche loro),
   // dichiarati, rispondono in automatico con frasi fisse sulla loro regola e le loro giocate. Col server: chat vere.
   function convOf2(id) { return direct.convs.filter(function (x) { return x.id === id; })[0]; }
-  function convName(c) { var p = c.kind === "team" && personaOf(c.pid); return p ? p.name + " · " + p.nick : CONV_NAME[c.kind]; }
-  function convAv(c, size) { return c.kind === "team" && personaOf(c.pid) ? avatar(c.pid, size || 36) : '<span class="dav">' + ic(c.kind === "self" ? "pen" : "diario") + '</span>'; }
+  function convName(c) { var p = c.kind === "team" && personaOf(c.pid); return p ? p.name + " · " + p.nick : c.kind === "user" ? c.name : CONV_NAME[c.kind]; }
+  function convAv(c, size) { return c.kind === "team" && personaOf(c.pid) ? avatar(c.pid, size || 36) : c.kind === "user" ? avatar("u:" + c.name, size || 36) : '<span class="dav">' + ic(c.kind === "self" ? "pen" : "diario") + '</span>'; }
   function botReply(c) {
     var p = personaOf(c.pid); if (!p) return;
     var n = c.msgs.filter(function (m) { return !m.mine; }).length, last = (p.last || [])[0];
@@ -3203,7 +3218,9 @@
     saveDirect();
     if (curConv === c.id && !$("view-chat").hidden) renderChat(); else { paintDirectDot(); if (!$("view-direct").hidden) renderDirect(); }
   }
-  var CONV_NAME = { self: "Promemoria", recv: "Schedine ricevute" }, CONV_SUB = { self: "Solo tu: appunti e schedine", recv: "Arrivate con un codice o un link" };
+  // 07/10 sera: il Promemoria si chiama Appunti e sta nel Diario; le schedine ricevute vanno nella chat di chi le
+  // manda (si rivedono toccando la barra in alto della chat); "recv" resta solo per quelle senza nome
+  var CONV_NAME = { self: "Appunti", recv: "Schedine ricevute" }, CONV_SUB = { self: "Solo tu: appunti e schedine", recv: "Arrivate con un codice o un link", user: "Schedine arrivate con un codice o un link" };
   function convUnread(c) { return c.msgs.filter(function (m) { return !m.mine && m.ts > (c.read || 0) && !m.hidden; }).length; }
   function directUnread() { return direct.convs.reduce(function (t, c) { return t + convUnread(c); }, 0); }
   function slipOfMine(s) {
@@ -3227,15 +3244,18 @@
       + (m.slip && m.slip.legs.length ? slipCardHtml(m) : "") + (m.slip && m.slip.by && !m.slip.legs.length ? '<div class="k">di <span translate="no">' + esc(m.slip.by) + '</span></div>' : "")
       + '<div class="dmeta"><span class="k">' + whenLabel(m.ts) + '</span>'
       + (m.mine ? '<button class="cdel" type="button" data-ddel="' + esc(m.id) + '" aria-label="Elimina">' + ic("trash") + '</button>'
-                : '<button class="cdel" type="button" data-drep="' + esc(m.id) + '" aria-label="Segnala">' + ic("flag") + '</button>'
-                  + (m.slip && m.slip.by ? '<button class="linkbtn" type="button" data-dblock="' + esc(m.slip.by) + '">Blocca</button>' : "")) + '</div>'
-      + (reporting && reporting.id === m.id ? reasonsHtml(m.id, "messaggio") : "") + '</div>';
+                : "") + '</div></div>';
   }
   function renderChat() {
     var c = convOf(curConv); if (!c) return;
     c.read = nowS(); saveDirect();
     var msgs = c.msgs.filter(function (m) { return !(m.slip && m.slip.by && direct.blocked.indexOf(m.slip.by) >= 0); });
-    $("chat").innerHTML = '<div class="dhead">' + convAv(c, 40) + '<div><b>' + esc(convName(c)) + '</b>' + (c.kind === "team" ? teamBadge() : "") + '<div class="k">' + (c.kind === "team" ? "Personaggio della casa: risponde in automatico" : CONV_SUB[c.kind]) + '</div></div></div>'
+    var blocked = (c.kind === "user" && direct.blocked.indexOf(c.name) >= 0) || (c.kind === "team" && isBlocked(c.pid));
+    $("view-chat").querySelector(".back").dataset.back = c.kind === "self" ? "mio" : "direct";
+    $("view-chat").querySelector(".back").textContent = c.kind === "self" ? "‹ Profilo" : "‹ Direct";
+    $("chat").innerHTML = '<button class="dhead" type="button" data-chatinfo="1" aria-expanded="' + chatInfo + '">' + convAv(c, 40) + '<span class="dhw"><b>' + esc(convName(c)) + '</b>' + (c.kind === "team" ? teamBadge() : "") + '<span class="k">' + (c.kind === "team" ? "Personaggio della casa: risponde in automatico" : CONV_SUB[c.kind]) + '</span></span>' + ic(chatInfo ? "x" : "info") + '</button>'
+      + (chatInfo ? chatInfoHtml(c) : "")
+      + (blocked ? '<div class="note">' + ic("x") + ' Hai bloccato questa conversazione.</div>' : "")
       + '<div class="dlist">' + (msgs.length ? msgs.map(function (m) { return msgHtml(c, m); }).join("") : '<div class="note">' + (c.kind === "self" ? "Scrivi un appunto o condividi qui una schedina: la ritrovi quando vuoi." : c.kind === "team" ? "Scrivi un messaggio: è una prova del Direct, ti risponde il personaggio." : "Quando apri un link o incolli un codice di una schedina, arriva qui.") + '</div>') + '</div>'
       + (c.kind === "self" || c.kind === "team" ? '<div class="cform dform"><input class="meinput" type="text" maxlength="1000" id="dtext" placeholder="Scrivi un messaggio" value="' + esc(drafts.direct || "") + '">'
         + '<button class="primary" type="button" data-dsend="1" aria-label="Invia">' + ic("send") + '</button></div>' + (directMsg ? '<div class="cmsg">' + esc(directMsg) + '</div>' : "")
@@ -3243,10 +3263,20 @@
     var L = $("chat").querySelector(".dlist"); if (L) L.scrollTop = L.scrollHeight;
     paintDirectDot();
   }
+  var chatInfo = false;
+  function chatInfoHtml(c) {
+    var sl = c.msgs.filter(function (m) { return m.slip && m.slip.legs && m.slip.legs.length && !m.hidden; });
+    return '<div class="card chatinfo"><div class="cih">Schedine <span class="k">' + sl.length + '</span></div>'
+      + (sl.length ? sl.slice().reverse().map(function (m) { return slipCardHtml(m); }).join("") : '<div class="k">Nessuna schedina in questa chat.</div>')
+      + '<div class="cih">Foto e video</div><div class="k">Arrivano con l\'app pubblica.</div>'
+      + '<div class="mlist">' + '<button class="dwitem" type="button" data-chatclear="1">' + ic("trash") + ' ' + (c.kind === "self" ? "Cancella gli appunti" : "Cancella la chat") + '</button>'
+      + (c.kind === "user" || c.kind === "team" ? '<button class="dwitem" type="button" data-moreid="' + esc(c.id) + '" data-morekind="chat">' + ic("flag") + ' Segnala</button>'
+        + '<button class="dwitem warn" type="button" data-chatblock="1">' + ic("x") + ' Blocca ' + esc(c.kind === "team" ? (personaOf(c.pid) || {}).name || "" : c.name) + '</button>' : "") + '</div></div>';
+  }
   function renderDirect() {
     var open = mySlips.filter(function (s) { return !s.resolved_at; }).slice(-5).reverse();
     var h = '<div class="card dserver">' + ic("info") + '<span>Le chat con gli amici arrivano con l\'app pubblica: per consegnare i messaggi serve il nostro server. Si potrà scrivere solo fra maggiorenni che si seguono a vicenda. Intanto le schedine si mandano con un codice o un link, e funzionano già.</span></div>'
-      + '<h2 class="sectiontitle">Conversazioni</h2><div class="card dconvs">' + direct.convs.filter(function (c) { return c.kind !== "team" || (follows.has(c.pid) && personaOf(c.pid)); }).map(function (c) {
+      + '<h2 class="sectiontitle">Conversazioni</h2><div class="card dconvs">' + direct.convs.filter(function (c) { return c.kind !== "self" && (c.kind !== "recv" || c.msgs.length) && (c.kind !== "team" || (follows.has(c.pid) && personaOf(c.pid))); }).map(function (c) {
         var last = c.msgs.filter(function (m) { return !m.hidden; }).slice(-1)[0], un = convUnread(c);
         return '<button class="dconv" type="button" data-conv="' + c.id + '">' + convAv(c) + '<span class="dcw"><b>' + esc(convName(c)) + '</b><span class="k">'
           + esc(last ? (last.text || (last.slip && last.slip.text ? "Beet · " + last.slip.text : last.slip ? "Schedina · " + last.slip.legs.length + (last.slip.legs.length === 1 ? " partita" : " partite") : "")) : CONV_SUB[c.kind] || "") + '</span></span>'
@@ -3264,7 +3294,7 @@
           return '<button class="card dshare" type="button" data-dshare="' + esc(s.id) + '">' + ic("diario") + '<span><b>' + esc(s.mode === "singole" ? s.legs[0].event : (s.mode === "multipla" ? "Multipla" : "Sistema " + s.k + "/" + s.n) + " · " + s.legs.length + " partite") + '</b><span class="k">' + esc(whenLabel(s.created_at)) + (s.stake ? " · " + s.stake + " monete" : "") + '</span></span>' + ic("chev") + '</button>';
         }).join("") : (slip.legs.length ? "" : '<div class="note">Nessun pronostico aperto da condividere: scegline uno nelle Partite.</div>'))
       + (shareOut ? '<div class="card dout"><div class="k">Codice della schedina</div><div class="dcode" translate="no">' + esc(shareOut) + '</div>'
-        + '<div class="duo"><button class="chip" type="button" data-dcopylink="1">' + ic("copy") + ' Copia il link</button><button class="chip" type="button" data-dtome="1">' + ic("pen") + ' Manda a Promemoria</button></div>'
+        + '<div class="duo"><button class="chip" type="button" data-dcopylink="1">' + ic("copy") + ' Copia il link</button><button class="chip" type="button" data-dtome="1">' + ic("pen") + ' Manda agli Appunti</button></div>'
         + '<div class="k" id="dcopied" style="margin-top:6px;"></div></div>' : "")
       + '<h2 class="sectiontitle">Hai un codice?</h2><div class="cform"><input class="meinput" type="text" id="dcodein" placeholder="Incolla il codice o il link" translate="no">'
       + '<button class="primary" type="button" data-dopen="1">Apri</button></div>' + (directMsg && !curConv ? '<div class="cmsg">' + esc(directMsg) + '</div>' : "");
@@ -3281,9 +3311,9 @@
     var S0 = SH.decode(text);
     if (!S0) return "Codice non valido: controlla di averlo copiato tutto.";
     if (S0.by && direct.blocked.indexOf(S0.by) >= 0) return "Hai bloccato chi ha mandato questa schedina.";
-    var c = convOf("recv"), key = JSON.stringify([S0.legs, S0.text || ""]);
+    var c = convOf(S0.by ? "u:" + S0.by : "recv"), key = JSON.stringify([S0.legs, S0.text || ""]);
     if (!c.msgs.some(function (m) { return m.slip && JSON.stringify([m.slip.legs, m.slip.text || ""]) === key; })) c.msgs.push({ id: "r" + Math.round(nowS() * 1000), ts: nowS(), slip: S0, mine: false });
-    saveDirect(); curConv = "recv"; renderChat(); show("chat"); window.scrollTo(0, 0);
+    saveDirect(); curConv = c.id; chatInfo = false; renderChat(); show("chat"); window.scrollTo(0, 0);
     return null;
   }
   function openShareHash() {
@@ -3426,10 +3456,10 @@
     if (added) { renderSchedina(); show("schedina"); window.scrollTo(0, 0); }
   }
   function postCard(x) {
-    var p = personaOf(x.p); if (!p) return "";
+    var p = personaOf(x.p); if (!p || isBlocked(p.id)) return "";
     var pid = "t:" + x.p + ":" + Math.round(x.ts);
     if (social.hidden[pid]) return reportedCard(pid);
-    return '<div class="card post"><button class="phead" type="button" data-persona="' + p.id + '">' + avatar(p.id, 40)
+    return '<div class="card post">' + moreBtn(pid, "post", p.id) + '<button class="phead" type="button" data-persona="' + p.id + '">' + avatar(p.id, 40)
       + '<span class="pwho"><b>' + esc(p.name) + ' · ' + esc(p.nick) + '</b>' + teamBadge() + greedChip(p.greed) + '</span><span class="time">' + whenLabel(x.ts) + '</span></button>'
       + '<div class="pev"' + (x.eid && evById(Number(x.eid)) ? ' data-match="' + x.eid + '" role="button" tabindex="0"' : "") + '>' + EMOJI[x.sport] + ' ' + esc(x.event) + '<span class="k"> · ' + esc(shortComp(x.comp || "")) + '</span>' + (x.eid && evById(Number(x.eid)) ? ic("chev", "pchev") : "") + '</div>'
       + '<div class="pickrow"><span><b>' + esc(x.label) + '</b> @ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div>' + copyBtn(pid, x) + socialBar(pid) + '</div>';
@@ -3444,6 +3474,7 @@
     try { var s = JSON.parse(localStorage.getItem(SOCIAL_KEY)); if (s && s.c) return s; } catch (e) {}
     return { r: {}, c: {}, rep: [], hidden: {} };
   })();
+  social.blocked = social.blocked || {};
   function saveSocial() { try { localStorage.setItem(SOCIAL_KEY, JSON.stringify(social)); } catch (e) {} }
   var REACTIONS = [["fuoco", "flame", "Bella giocata"], ["occhio", "eye", "Occhio"], ["coraggio", "bolt", "Coraggiosa"], ["seguo", "handshake", "La seguo anch'io"]];
   var openComments = new Set(), drafts = {}, reporting = null, commentMsg = {};
@@ -3465,9 +3496,68 @@
     }).join("") + '<button class="chip" type="button" data-repcancel="1">Annulla</button></div></div>';
   }
   function reportedCard(id) {
+    if (social.hidden[id] === 2) return '<div class="card post reported">' + ic("eyeoff") + ' <span>Hai nascosto questo post.</span> <button class="linkbtn" type="button" data-unreport="' + esc(id) + '">Annulla</button></div>';
     return '<div class="card post reported">' + ic("flag") + ' <span>Hai segnalato questo contenuto: non lo vedi più e lo controlliamo.</span> '
       + '<button class="linkbtn" type="button" data-unreport="' + esc(id) + '">Annulla</button></div>';
   }
+  // tre puntini in alto a destra (07/10 sera): Nascondi, Segnala (motivo + note), Blocca utente. Prima c'era un
+  // pulsante Segnala su ogni post, commento e messaggio: troppo facile, arriverebbero migliaia di segnalazioni.
+  function moreBtn(id, kind, who) { return '<button class="pmore" type="button" data-moreid="' + esc(id) + '" data-morekind="' + kind + '"' + (who ? ' data-morewho="' + esc(who) + '"' : "") + ' aria-label="Altre opzioni">' + ic("dots") + '</button>'; }
+  var moreCtx = null;
+  function openMore(ctx) {
+    moreCtx = ctx; moreCtx.step = ctx.kind === "chat" ? "report" : "menu"; moreCtx.why = null; moreCtx.note = "";   // dalla chat si sceglie gia' "Segnala"
+    var old = $("moresheet"); if (old) old.remove();
+    var d = document.createElement("div"); d.id = "moresheet"; d.className = "playsheet"; d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true");
+    document.body.appendChild(d); paintMore();
+    requestAnimationFrame(function () { requestAnimationFrame(function () { d.classList.add("on"); }); });
+  }
+  function closeMore() { var d = $("moresheet"); if (!d) return; d.classList.remove("on"); setTimeout(function () { d.remove(); }, 200); moreCtx = null; }
+  function paintMore() {
+    var d = $("moresheet"); if (!d || !moreCtx) return;
+    var c = moreCtx, who = c.who && (personaOf(c.who) || { name: c.who });
+    if (c.step === "menu") {
+      d.innerHTML = '<div class="pscard"><div class="pshead"><b>Opzioni</b><button class="psx" type="button" data-mclose="1" aria-label="Chiudi">' + ic("x") + '</button></div><div class="mlist">'
+        + (c.kind !== "chat" ? '<button class="dwitem" type="button" data-mact="hide">' + ic("eyeoff") + ' Nascondi</button>' : "")
+        + '<button class="dwitem" type="button" data-mact="report">' + ic("flag") + ' Segnala</button>'
+        + (who ? '<button class="dwitem warn" type="button" data-mact="block">' + ic("x") + ' Blocca ' + esc(who.name) + '</button>' : "") + '</div></div>';
+      return;
+    }
+    var M = (MOD.rules() && MOD.rules().motivi_segnalazione) || { offensivo: "Offensivo o d'odio", spam: "Spam o vendita di pronostici", inadatto: "Contenuto inadatto", altro: "Altro" };
+    d.innerHTML = '<div class="pscard"><div class="pshead"><b>Segnala</b><button class="psx" type="button" data-mclose="1" aria-label="Chiudi">' + ic("x") + '</button></div>'
+      + '<div class="k" style="margin:6px 0 8px;">Perché lo segnali?</div><div class="chips">' + Object.keys(M).map(function (k) {
+        return '<button class="chip" type="button" data-mwhy="' + k + '" aria-pressed="' + (c.why === k) + '">' + esc(M[k]) + '</button>'; }).join("") + '</div>'
+      + '<label class="melabel" for="repnote">Note (facoltative)</label><textarea class="meinput" id="repnote" rows="3" maxlength="500" placeholder="Cosa non va? Aiuta chi controlla">' + esc(c.note || "") + '</textarea>'
+      + '<button class="primary psgo" type="button" data-msend="1"' + (c.why ? "" : " disabled") + '>' + ic("flag") + ' Invia la segnalazione</button>'
+      + '<div class="k" style="margin-top:8px;">La controlliamo noi; chi è segnalato non sa da chi.</div></div>';
+  }
+  function moreDone() {
+    var c = moreCtx; closeMore();
+    if (c && c.kind === "chat") { renderChat(); return; }
+    rerenderSocial(); if (!$("view-esplora").hidden) renderEsplora();
+  }
+  document.addEventListener("input", function (e) { if (e.target.id === "repnote" && moreCtx) moreCtx.note = e.target.value; });
+  document.addEventListener("click", function (e) {
+    var mb = e.target.closest("[data-moreid]");
+    if (mb && data) { e.stopPropagation(); openMore({ id: mb.dataset.moreid, kind: mb.dataset.morekind, who: mb.dataset.morewho || null }); return; }
+    var d = $("moresheet"); if (!d || !d.contains(e.target) || !moreCtx) return;
+    var c = moreCtx, b = e.target.closest("button");
+    if (e.target === d || (b && b.dataset.mclose)) { closeMore(); return; }
+    if (!b) return;
+    if (b.dataset.mact === "hide") { social.hidden[c.id] = 2; saveSocial(); fxToast("eyeoff", "Nascosto", "Non lo vedi più"); moreDone(); return; }
+    if (b.dataset.mact === "report") { c.step = "report"; paintMore(); return; }
+    if (b.dataset.mact === "block") {
+      if (c.kind === "chat") { var cv = convOf(c.id); if (cv && cv.kind === "user" && direct.blocked.indexOf(cv.name) < 0) direct.blocked.push(cv.name); if (cv && cv.kind === "team") social.blocked[cv.pid] = 1; saveDirect(); }
+      else social.blocked[c.who] = 1;
+      saveSocial(); fxToast("x", "Bloccato", "Non vedi più i suoi contenuti"); moreDone(); return;
+    }
+    if (b.dataset.mwhy) { c.why = b.dataset.mwhy; paintMore(); return; }
+    if (b.dataset.msend && c.why) {
+      var r = { id: c.id, kind: c.kind, reason: c.why, note: (c.note || "").trim().slice(0, 500), ts: nowS() };   // col server: va al bot delle segnalazioni
+      if (c.kind === "chat") direct.reports.push(r); else { social.rep.push(r); social.hidden[c.id] = 1; }
+      saveSocial(); saveDirect(); fxToast("flag", "Segnalazione inviata", "La controlliamo noi"); moreDone();
+    }
+  });
+  function isBlocked(pid) { return !!(social.blocked && social.blocked[pid]); }
   function socialBar(pid, own) {
     var mine = social.r[pid], cs = social.c[pid] || [], open = openComments.has(pid);
     var html = '<div class="sbar">' + REACTIONS.map(function (r) {
@@ -3475,20 +3565,19 @@
         + ic(r[1]) + (mine === r[0] ? '<span>1</span>' : "") + '</button>';
     }).join("")
       + '<button class="rbtn cm' + (open ? " on" : "") + '" type="button" data-comments="' + esc(pid) + '" aria-label="Commenti">' + ic("chat") + '<span>' + cs.length + '</span></button>'
-      + (own ? "" : '<button class="rbtn rp" type="button" data-report="' + esc(pid) + '" data-kind="post" aria-label="Segnala">' + ic("flag") + '</button>') + '</div>';
-    if (reporting && reporting.id === pid) html += reasonsHtml(pid, "post");
+      + '</div>';
     if (!open) return html;
     html += '<div class="clist">' + cs.map(function (c) {
       if (social.hidden[c.id]) return '<div class="crow k">' + ic("flag") + ' Commento segnalato. <button class="linkbtn" type="button" data-unreport="' + esc(c.id) + '">Annulla</button></div>';
       return '<div class="crow">' + (c.mine ? myAvatar(28) : avatar(c.who || "x", 28)) + '<div class="cbody"><div class="cwho"><b translate="no">' + esc(c.mine ? (me.name || "Tu") : c.who) + '</b> <span class="k">' + whenLabel(c.ts) + '</span>'
         + (c.mine ? '<button class="cdel" type="button" data-cdel="' + esc(c.id) + '" data-pid="' + esc(pid) + '" aria-label="Elimina">' + ic("trash") + '</button>'
-                  : '<button class="cdel" type="button" data-report="' + esc(c.id) + '" data-kind="comment" aria-label="Segnala">' + ic("flag") + '</button>') + '</div>'
-        + '<div class="ctext" translate="no">' + esc(c.text) + '</div>' + (reporting && reporting.id === c.id ? reasonsHtml(c.id, "comment") : "") + '</div></div>';
+                  : moreBtn(c.id, "comment", c.who && personaOf(c.who) ? c.who : null)) + '</div>'
+        + '<div class="ctext" translate="no">' + esc(c.text) + '</div></div></div>';
     }).join("") + '</div>'
       + '<div class="cform"><input class="meinput" type="text" maxlength="280" placeholder="Scrivi un commento" data-cin="' + esc(pid) + '" value="' + esc(drafts[pid] || "") + '">'
       + '<button class="primary" type="button" data-csend="' + esc(pid) + '" aria-label="Invia">' + ic("send") + '</button></div>'
       + (commentMsg[pid] ? '<div class="cmsg">' + esc(commentMsg[pid]) + '</div>' : "")
-      + '<div class="k" style="font-size:0.72rem;margin-top:4px;">Rispetto, niente link né vendita di pronostici. Ogni commento si può segnalare.</div>';
+      + '<div class="k" style="font-size:0.72rem;margin-top:4px;">Rispetto, niente link né vendita di pronostici. Con i tre puntini si segnala.</div>';
     return html;
   }
   function rerenderSocial() {
@@ -3535,7 +3624,7 @@
   }
   function suggested() {
     var prefs = me.sports || [];
-    return team().filter(function (p) { return !follows.has(p.id); }).map(function (p) {
+    return team().filter(function (p) { return !follows.has(p.id) && !isBlocked(p.id); }).map(function (p) {
       var s = sportsOf(p), hit = prefs.reduce(function (n, k) { return n + (s[k] || 0); }, 0);
       return { p: p, score: hit * 10 + (p.n ? p.w / p.n : 0) + p.wpts / 100 };
     }).sort(function (a, b) { return b.score - a.score; }).map(function (x) { return x.p; });
@@ -3590,10 +3679,10 @@
   }
   // post di analisi, statistica o notizia dei personaggi del Team (signals/personaggi_post.py)
   function infoPostCard(x) {
-    var p = personaOf(x.p); if (!p) return "";
+    var p = personaOf(x.p); if (!p || isBlocked(p.id)) return "";
     var pid = postPid(x);
     if (social.hidden[pid]) return reportedCard(pid);
-    return '<div class="card post info"><button class="phead" type="button" data-persona="' + p.id + '">' + avatar(p.id, 40)
+    return '<div class="card post info">' + moreBtn(pid, "post", p.id) + '<button class="phead" type="button" data-persona="' + p.id + '">' + avatar(p.id, 40)
       + '<span class="pwho"><b>' + esc(p.name) + ' · ' + esc(p.nick) + '</b>' + teamBadge() + '</span><span class="time">' + whenLabel(x.ts) + '</span></button>'
       + '<div class="pev">' + typeTag(x.kind) + (EMOJI[x.sport] || "") + ' ' + esc(x.title || "") + (x.comp ? '<span class="k"> · ' + esc(shortComp(x.comp)) + '</span>' : "") + '</div>'
       + '<div class="ptext">' + esc(x.text || "") + '</div>'
@@ -3870,6 +3959,7 @@
         + (me.bio ? '<div class="mebio" translate="no">' + esc(me.bio) + '</div>'
           : '<button class="linkbtn mebio empty" type="button" data-meedit="1">' + ic("pen") + ' Scrivi la tua bio</button>')
         + heroesHtml(R2) + greedHtml(greedOf(histItems().slice().reverse().filter(function (x) { return !x.legs; }).map(function (x) { return x.odds; })))
+        + '<button class="card sportpick" type="button" data-appunti="1">' + ic("pen") + ' <b>Appunti</b><span class="k">Solo tu: appunti e schedine salvate</span></button>'
         + '<button class="card sportpick" type="button" data-miei="1">' + ic("diario") + ' <b>I miei pronostici</b><span class="k">' + won + ' vinti su ' + closed.length + ' chiusi · tutto lo storico</span></button>'
         + albumCard(R2)
         + '<button class="coinbtn" type="button" data-megioca="1"><span class="cc">' + ic("coin") + '</span><span class="ct"><b>' + R2.coins + '</b> monete<span>Scegli le partite e fai il tuo pronostico</span></span>' + ic("chev") + '</button>'
@@ -5726,7 +5816,7 @@
     if (!data) return;
     var b = e.target.closest("button"); if (!b) return;
     var d = b.dataset;
-    if (d.conv) { curConv = d.conv; directMsg = ""; renderChat(); show("chat"); window.scrollTo(0, 0); return; }
+    if (d.conv) { curConv = d.conv; directMsg = ""; chatInfo = false; renderChat(); show("chat"); window.scrollTo(0, 0); return; }
     if (d.dshare) {
       var S0 = d.dshare === "cur" ? { mode: slip.mode, k: slip.k, stake: stakeInfo().stake, by: me.name || "", legs: slip.legs.map(function (l) { return { event: l.event, sport: l.sport, code: l.code, odds: l.odds, ename: l.ename, label: l.label }; }) }
         : slipOfMine(mySlips.filter(function (s) { return String(s.id) === d.dshare; })[0]);
@@ -5747,6 +5837,13 @@
     var b = e.target.closest("button"); if (!b) return;
     var d = b.dataset, c = convOf(curConv); if (!c) return;
     if (d.copy) { copyPick(d.copy); return; }
+    if (d.chatinfo) { chatInfo = !chatInfo; renderChat(); return; }
+    if (d.chatclear) { c.msgs = []; chatInfo = false; saveDirect(); renderChat(); fxToast("trash", c.kind === "self" ? "Appunti cancellati" : "Chat cancellata"); return; }
+    if (d.chatblock) {
+      if (c.kind === "user" && direct.blocked.indexOf(c.name) < 0) direct.blocked.push(c.name);
+      if (c.kind === "team") social.blocked[c.pid] = 1;
+      saveDirect(); saveSocial(); chatInfo = false; renderChat(); fxToast("x", "Bloccato", "Non ricevi più niente da qui"); return;
+    }
     if (d.dsend) {
       var text = (drafts.direct || "").trim(); if (!text) return;
       var why = checkText(text), mine = c.msgs.filter(function (m) { return m.mine && m.text; }), last = mine.length ? mine[mine.length - 1].ts : 0;
@@ -5841,6 +5938,7 @@
     var b = e.target.closest("button"); if (!b) return;
     var ds = b.dataset;
     if (ds.megioca) { show("diario"); window.scrollTo(0, 0); return; }
+    if (ds.appunti) { openAppunti(); return; }
     if (ds.miei) { bview = "miei"; renderBacheca(); show("profilo"); window.scrollTo(0, 0); return; }
     if (ds.meedit) { startEdit(); return; }
     if (ds.gosettings) { $("settingsbtn").click(); return; }
@@ -6011,6 +6109,7 @@
     else if (k === "leghe") { openLeghe(); }
     else if (k === "team") { if (me.team) { calMode = true; dview = "pre"; renderDiario(); show("diario"); } }
     else if (k === "tutorial") startTutorial();
+    else if (k === "appunti") openAppunti();
     else if (k === "stato") { renderStatus(); show("stato"); }
     else if (k === "pick") { renderProfilo(); show("mio"); startEdit(); }
     window.scrollTo(0, 0);
@@ -6049,6 +6148,7 @@
     else if (v === "live") { if (data) renderLive(); show("live"); }
     else show(v);
   });
+  function openAppunti() { if (!data) return; curConv = "me"; directMsg = ""; chatInfo = false; renderChat(); show("chat"); window.scrollTo(0, 0); }
   function openDirect() { if (!data) return; curConv = null; directMsg = ""; renderDirect(); show("direct"); window.scrollTo(0, 0); }
   $("directbtn").addEventListener("click", openDirect);
   $("esplq").addEventListener("input", function (e) { esplQ = e.target.value; if (data) renderEsplora(); });
