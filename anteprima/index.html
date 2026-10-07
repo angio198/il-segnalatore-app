@@ -6923,7 +6923,8 @@
         ["q1", "Quota 1 adesso", "Quote adesso"], ["qx", "Quota X adesso", "Quote adesso"], ["q2", "Quota 2 adesso", "Quote adesso"],
         ["qo05", "Quota Over 0,5 adesso", "Quote adesso"], ["qo15", "Quota Over 1,5 adesso", "Quote adesso"], ["qu15", "Quota Under 1,5 adesso", "Quote adesso"],
         ["qo25", "Quota Over 2,5 adesso", "Quote adesso"], ["qu25", "Quota Under 2,5 adesso", "Quote adesso"], ["qo35", "Quota Over 3,5 adesso", "Quote adesso"],
-        ["p1", "Quota 1 prima del via", "Quote prima del via"], ["px", "Quota X prima del via", "Quote prima del via"], ["p2", "Quota 2 prima del via", "Quote prima del via"]],
+        ["p1", "Quota 1 prima del via", "Quote prima del via"], ["px", "Quota X prima del via", "Quote prima del via"], ["p2", "Quota 2 prima del via", "Quote prima del via"],
+        ["po25", "Quota Over 2,5 prima del via", "Quote prima del via"], ["pu25", "Quota Under 2,5 prima del via", "Quote prima del via"]],
       pre: [["q1", "Quota 1", "Quote"], ["qx", "Quota X", "Quote"], ["q2", "Quota 2", "Quote"], ["pf", "Quota della favorita", "Quote"], ["favh", "La favorita gioca in casa (1 = sì)", "Quote"],
         ["qo25", "Quota Over 2,5", "Quote"], ["qu25", "Quota Under 2,5", "Quote"], ["qgg", "Quota Goal", "Quote"], ["hr", "Ore al via", "Partita"]]
     },
@@ -6937,16 +6938,67 @@
   };
   // uscite dinamiche (oltre ai mercati delle regole): risolte sulla partita
   var BDYN = { calcio: [["FAV", "Vince la favorita"], ["DOG", "Vince la sfavorita"], ["DCFAV", "Doppia chance con la favorita"], ["DCDOG", "Doppia chance con la sfavorita"],
-                        ["FAVSC", "Segna la favorita"], ["PFAV", "Prossimo gol: la favorita"], ["OVNEXT", "Over (gol attuali + 0,5)"]],
+                        ["FAVSC", "Segna la favorita"], ["PFAV", "Prossimo gol: la favorita"], ["OVNEXT", "Over (gol attuali + 0,5)"], ["UNNEXT", "Under (gol attuali + 0,5)"],
+                        ["LEAD", "Vince chi è in vantaggio"], ["DCLEAD", "Doppia chance con chi è in vantaggio"], ["TRAILSC", "Segna chi è in svantaggio"], ["PTRAIL", "Prossimo gol: chi è in svantaggio"]],
                tennis: [["FAV", "Vince il favorito"], ["DOG", "Vince lo sfavorito"]] };
   // tipi di nodo: [colore, icona, ingressi, uscite (0 = dipende), categoria]
   var NT = { src: ["#A6BBCF", "radar", 0, 1, "Ingresso"], se: ["#E2D96E", "filter", 1, 0, "Funzione"], dividi: ["#E2D96E", "layers", 1, 0, "Funzione"],
-             calc: ["#FDD0A2", "pen", 1, 1, "Funzione"], unisci: ["#E6E0F8", "users", 1, 1, "Funzione"], gioca: ["#87A980", "coin", 1, 0, "Uscita"], debug: ["#87A980", "bug", 1, 0, "Uscita"], nota: ["#FFFFFF", "info", 0, 0, "Altro"] };
-  var NT_NAME = { src: "Partite", se: "Se", dividi: "Dividi", calc: "Calcola", unisci: "Unisci", gioca: "Gioca", debug: "Debug", nota: "Commento" };
-  var OPS = [[">", ">"], [">=", "≥"], ["<", "<"], ["<=", "≤"], ["=", "="], ["!=", "≠"]], AOPS = [["+", "+"], ["-", "−"], ["*", "×"], ["/", "÷"], ["min", "min"], ["max", "max"], ["abs", "|a − b|"]];
+             calc: ["#FDD0A2", "pen", 1, 1, "Funzione"], storico: ["#C9E4F2", "clock", 1, 1, "Funzione"], unisci: ["#E6E0F8", "users", 1, 1, "Funzione"], gioca: ["#87A980", "coin", 1, 0, "Uscita"], debug: ["#87A980", "bug", 1, 0, "Uscita"], nota: ["#FFFFFF", "info", 0, 0, "Altro"] };
+  var NT_NAME = { src: "Partite", se: "Se", dividi: "Dividi", calc: "Calcola", storico: "Storico", unisci: "Unisci", gioca: "Gioca", debug: "Debug", nota: "Commento" };
+  var OPS = [[">", ">"], [">=", "≥"], ["<", "<"], ["<=", "≤"], ["=", "="], ["!=", "≠"]], AOPS = [["+", "+"], ["-", "−"], ["*", "×"], ["/", "÷"], ["min", "min"], ["max", "max"], ["abs", "|a − b|"], ["pois", "Poisson: probabilità di almeno b gol con media a"]];
+  // nodo Storico (09/10): la partita minuto per minuto (signals/diario_eventi.timeline), righe
+  // [minuto, gol casa, gol ospite, poi casa e ospite di tiri in porta, tiri, angoli, xG, attacchi pericolosi, possesso]
+  var ST_STATS = [["Gol", "Gol"], ["Tiri in porta", "Tiri in porta"], ["Tiri", "Tiri"], ["Tiri fuori", "Tiri fuori"], ["Angoli", "Angoli"], ["xG", "xG", 1], ["Attacchi pericolosi", "Attacchi pericolosi", 1], ["Possesso", "Possesso %", 1]];
+  var ST_SIDES = [["tot", "in tutto"], ["h", "casa"], ["a", "ospite"], ["diff", "differenza (casa − ospite)"], ["lead", "chi è in vantaggio"], ["trail", "chi è in svantaggio"], ["fav", "favorita"], ["dog", "sfavorita"]];
+  var ST_MODES = [["ult", "negli ultimi minuti"], ["al", "al minuto"], ["fra", "fra due minuti"]];
+  var TLI = { "Gol": 1, "Tiri in porta": 3, "Tiri": 5, "Angoli": 7, "xG": 9, "Attacchi pericolosi": 11, "Possesso": 13 }, TL_GAP = 6;
+  function tlPair(row, stat) {
+    if (row == null) return null;
+    if (row === 0) return stat === "Possesso" ? null : [0, 0];   // prima del via
+    if (stat === "Tiri fuori") { var t = tlPair(row, "Tiri"), q = tlPair(row, "Tiri in porta"); return t && q ? [t[0] - q[0], t[1] - q[1]] : null; }
+    var i = TLI[stat], h = row[i], a = row[i + 1];
+    return h == null || a == null ? null : [Number(h), Number(a)];
+  }
+  function tlRowAt(tl, m) {   // ultima riga fino al minuto m; 0 = prima del via; null = buco nei dati
+    if (m <= 0) return 0;
+    var r = null; tl.forEach(function (x) { if (x[0] <= m) r = x; });
+    if (!r) return m <= TL_GAP ? 0 : null;
+    return r !== tl[tl.length - 1] && m - r[0] > TL_GAP ? null : r;
+  }
+  function storicoVal(e, p) {
+    var tl = (e.st || {}).tl; if (!tl || !tl.length) return null;
+    if (p.stat === "xG" || p.stat === "Attacchi pericolosi" || p.stat === "Possesso") { if (lockedCell(p.stat)) return null; }
+    var last = tl[tl.length - 1], mode = p.mode || "ult", pr;
+    if (mode === "al") pr = tlPair(tlRowAt(tl, Number(p.m)), p.stat);
+    else {
+      var A = mode === "ult" ? last[0] - Number(p.n) : Number(p.a), B = mode === "ult" ? last[0] : Number(p.b);
+      var r0 = tlRowAt(tl, A), r1 = tlRowAt(tl, B); if (r0 == null || r1 == null) return null;
+      var m0 = r0 === 0 ? 0 : r0[0], m1 = r1 === 0 ? 0 : r1[0];
+      if (p.stat === "Possesso") {   // media: si ricava da quella pesata sui minuti
+        var q1 = tlPair(r1, "Possesso"); if (!q1) return null;
+        if (!m0) pr = q1;
+        else { var q0 = tlPair(r0, "Possesso"); if (!q0 || m1 <= m0) return null; var ph = Math.max(0, Math.min(100, (q1[0] * m1 - q0[0] * m0) / (m1 - m0))); pr = [ph, 100 - ph]; }
+      } else {
+        var a1 = tlPair(r1, p.stat), a0 = tlPair(r0, p.stat); if (!a1 || !a0) return null;
+        pr = [Math.max(0, a1[0] - a0[0]), Math.max(0, a1[1] - a0[1])];
+      }
+    }
+    if (!pr) return null;
+    var sc = scoreOf((e.st || {}).score) || [last[1], last[2]], F = favSide(e), v;
+    switch (p.side) {
+      case "h": v = pr[0]; break; case "a": v = pr[1]; break;
+      case "diff": v = pr[0] - pr[1]; break;
+      case "lead": case "trail": if (sc[0] === sc[1]) return null; v = (p.side === "lead") === (sc[0] > sc[1]) ? pr[0] : pr[1]; break;
+      case "fav": case "dog": if (!F) return null; v = (F.side === 1) === (p.side === "fav") ? pr[0] : pr[1]; break;
+      default: v = p.stat === "Possesso" ? pr[0] : pr[0] + pr[1];
+    }
+    return Math.round(v * 100) / 100;
+  }
+  function poisAtLeast(lam, k) { k = Math.max(0, Math.round(k)); if (!(lam >= 0)) return null; var s = 0, t = Math.exp(-lam); for (var i = 0; i < k; i++) { s += t; t *= lam / (i + 1); } return Math.round((1 - s) * 1000) / 1000; }
+  function bldPal() { return ["src", "se", "dividi", "calc", "storico", "unisci", "gioca", "debug", "nota"].filter(function (t) { return t !== "storico" || !bld || bld.sport === "calcio"; }); }
   function nOuts(n) { return n.t === "se" ? (n.p.no ? 2 : 1) : n.t === "dividi" ? (n.p.cases || []).length + 1 : n.t === "gioca" || n.t === "debug" || n.t === "nota" ? 0 : 1; }
   function nIns(n) { return NT[n.t][2]; }
-  function dataList(b) { var L = (BD[b.sport] || BD.calcio)[b.mode] || []; return L.concat(b.nodes.filter(function (n) { return n.t === "calc" && n.p.name; }).map(function (n) { return ["var:" + n.p.name, n.p.name + " (variabile)", "Variabili"]; })); }
+  function dataList(b) { var L = (BD[b.sport] || BD.calcio)[b.mode] || []; return L.concat(b.nodes.filter(function (n) { return (n.t === "calc" || n.t === "storico") && n.p.name; }).map(function (n) { return ["var:" + n.p.name, n.p.name + " (variabile)", "Variabili"]; })); }
   function dLabel(k, b) { var d = dataList(b || bld).filter(function (x) { return x[0] === k; })[0]; return d ? d[1].replace(/ \(variabile\)$/, "") : k ? String(k).replace(/^var:/, "") : "?"; }
   function opTxt(o, L) { var x = (L || OPS).filter(function (y) { return y[0] === o; })[0]; return x ? x[1] : o; }
   function valTxt(r, b) { return r.bt === "d" ? dLabel(r.b, b) : String(r.b != null ? r.b : "").replace(".", ","); }
@@ -6961,6 +7013,9 @@
     if (n.t === "src") return (b.mode === "live" ? "Partite live" : "Partite in programma") + (p.comp ? " · " + p.comp : "");
     if (n.t === "se") return (p.rules || []).map(function (r) { return dLabel(r.a, b) + " " + opTxt(r.op) + " " + valTxt(r, b); }).join(p.any ? " o " : " e ") || "Se…";
     if (n.t === "dividi") return "Dividi per " + dLabel(p.a, b);
+    if (n.t === "storico") return (p.name || "x") + " = " + ((ST_STATS.filter(function (x) { return x[0] === p.stat; })[0] || ["", "?"])[1] + " " + (ST_SIDES.filter(function (x) { return x[0] === p.side; })[0] || ["", ""])[1]).trim()
+      + " · " + (p.mode === "al" ? "al " + p.m + "'" : p.mode === "fra" ? "fra " + p.a + "' e " + p.b + "'" : "ultimi " + p.n + "'");
+    if (n.t === "calc" && p.op === "pois") return (p.name || "x") + " = P(≥ " + valTxt({ bt: p.bt, b: p.b }, b) + " gol | media " + valTxt({ bt: p.at, b: p.a }, b) + ")";
     if (n.t === "calc") return (p.name || "x") + " = " + (p.op === "abs" ? "|" + valTxt({ bt: p.at, b: p.a }, b) + " − " + valTxt({ bt: p.bt, b: p.b }, b) + "|" : (p.op === "min" || p.op === "max" ? p.op + "(" + valTxt({ bt: p.at, b: p.a }, b) + ", " + valTxt({ bt: p.bt, b: p.b }, b) + ")" : valTxt({ bt: p.at, b: p.a }, b) + " " + opTxt(p.op, AOPS) + " " + valTxt({ bt: p.bt, b: p.b }, b)));
     if (n.t === "unisci") return p.any ? "Unisci: ne basta uno" : "Unisci: tutti";
     if (n.t === "gioca") return pickName(p.pick, b.sport) + (p.min ? " · ≥ " + String(p.min).replace(".", ",") : "");
@@ -7008,6 +7063,7 @@
       case "x15h": return s15("xG", 0); case "x15a": return s15("xG", 1); case "p15h": return s15("Possesso", 0);
       case "qo05": return mk("O05"); case "qo15": return mk("O15"); case "qu15": return mk("U15"); case "qo35": return mk("O35");
       case "q1": return mk("1"); case "qx": return mk("X"); case "q2": return mk("2"); case "qo25": return mk("O25"); case "qu25": return mk("U25"); case "qgg": return mk("GG");
+      case "po25": return (e.p0 || {}).O25 || null; case "pu25": return (e.p0 || {}).U25 || null;
       case "p1": return (e.p0 || {})["1"] || null; case "px": return (e.p0 || {}).X || null; case "p2": return (e.p0 || {})["2"] || null;
       case "hr": return e.start ? Math.round((e.start - nowS()) / 360) / 10 : null;
       case "w1": return mk("W1"); case "w2": return mk("W2");
@@ -7031,7 +7087,12 @@
     else if (pick === "DCFAV" || pick === "DCDOG") { if (!F) return null; var s2 = pick === "DCFAV" ? F.side : 3 - F.side; c = s2 === 1 ? "1X" : "X2"; }
     else if (pick === "FAVSC") { if (!F) return null; c = "T" + F.side + "S"; }
     else if (pick === "PFAV") { if (!F) return null; c = "P" + F.side; }
-    else if (pick === "OVNEXT") { var t = sc ? sc[0] + sc[1] : 0; c = "O" + t + "5"; }
+    else if (pick === "OVNEXT" || pick === "UNNEXT") { var t = sc ? sc[0] + sc[1] : 0; c = (pick === "OVNEXT" ? "O" : "U") + t + "5"; }
+    else if (pick === "LEAD" || pick === "DCLEAD" || pick === "TRAILSC" || pick === "PTRAIL") {
+      if (!sc || sc[0] === sc[1]) return null;
+      var ld = sc[0] > sc[1] ? 1 : 2, tr = 3 - ld;
+      c = pick === "LEAD" ? String(ld) : pick === "DCLEAD" ? (ld === 1 ? "1X" : "X2") : pick === "TRAILSC" ? "T" + tr + "S" : "P" + tr;
+    }
     return e.mk[c] ? c : null;
   }
   // il flusso su una partita: nodi in ordine (Kahn), ogni messaggio porta la partita e le variabili
@@ -7075,9 +7136,12 @@
           send(n, hit >= 0 ? hit : cs.length, msg);
         } else if (n.t === "calc") {
           var A = rVal(e, p.at, p.a, msg.v), B = rVal(e, p.bt, p.b, msg.v), r = null;
-          if (typeof A === "number" && !isNaN(A) && typeof B === "number" && !isNaN(B)) r = p.op === "-" ? A - B : p.op === "*" ? A * B : p.op === "/" ? (B ? A / B : null) : p.op === "min" ? Math.min(A, B) : p.op === "max" ? Math.max(A, B) : p.op === "abs" ? Math.abs(A - B) : A + B;
+          if (typeof A === "number" && !isNaN(A) && typeof B === "number" && !isNaN(B)) r = p.op === "pois" ? poisAtLeast(A, B) : p.op === "-" ? A - B : p.op === "*" ? A * B : p.op === "/" ? (B ? A / B : null) : p.op === "min" ? Math.min(A, B) : p.op === "max" ? Math.max(A, B) : p.op === "abs" ? Math.abs(A - B) : A + B;
           if (r == null) return;
           msg.v[p.name || "x"] = Math.round(r * 1000) / 1000; send(n, 0, msg);
+        } else if (n.t === "storico") {
+          var sv = storicoVal(e, p); if (sv == null) return;
+          msg.v[p.name || "x"] = sv; send(n, 0, msg);
         } else if (n.t === "gioca") {
           var code = resolvePick(e, p.pick), odds = code ? e.mk[code][0] : null;
           if (p.min && (!odds || odds < p.min)) return;
@@ -7172,6 +7236,15 @@
     if (n.t === "calc") h += '<label class="melabel">Nome della variabile</label><input class="meinput" data-bf="vname" maxlength="20" value="' + esc(p.name || "") + '">'
       + '<div class="brule">' + valField("a", p.at, p.a) + '</div><div class="brule">' + opSelect("op", p.op, AOPS) + '</div><div class="brule">' + valField("b", p.bt, p.b) + '</div>'
       + '<div class="k">La variabile si usa nei nodi dopo (Se, Dividi, Calcola), nel gruppo "Variabili".</div>';
+    if (n.t === "storico") {
+      var sel3 = function (f, L, v) { return '<select class="meinput" data-bf="' + f + '">' + L.map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === v ? " selected" : "") + '>' + esc(x[1]) + (x[2] && !isFull() ? " (Full)" : "") + '</option>'; }).join("") + '</select>'; };
+      var num = function (f, v) { return '<input class="meinput bnum" data-bf="' + f + '" type="number" min="0" max="120" step="1" inputmode="numeric" value="' + esc(String(v)) + '">'; };
+      h += '<label class="melabel">Nome della variabile</label><input class="meinput" data-bf="vname" maxlength="20" value="' + esc(p.name || "") + '">'
+        + '<label class="melabel">Dato</label>' + sel3("sstat", ST_STATS, p.stat) + '<label class="melabel">Di chi</label>' + sel3("sside", ST_SIDES, p.side)
+        + '<label class="melabel">Quando</label>' + sel3("smode", ST_MODES, p.mode || "ult")
+        + '<div class="brule">' + (p.mode === "al" ? '<span class="k">al minuto</span>' + num("sm", p.m) : p.mode === "fra" ? '<span class="k">fra il</span>' + num("sa", p.a) + '<span class="k">e il</span>' + num("sb", p.b) : '<span class="k">ultimi</span>' + num("sn", p.n) + '<span class="k">minuti</span>') + '</div>'
+        + '<div class="k">La partita minuto per minuto (un punto ogni 3 minuti). Chi è in vantaggio o in svantaggio si guarda sul punteggio di adesso. La variabile si usa nei nodi dopo, nel gruppo "Variabili".</div>';
+    }
     if (n.t === "unisci") h += '<select class="meinput" data-bf="any"><option value="0"' + (!p.any ? " selected" : "") + '>Passa se arriva da tutti i fili (E)</option><option value="1"' + (p.any ? " selected" : "") + '>Passa se arriva da almeno un filo (O)</option></select>';
     if (n.t === "gioca") h += '<label class="melabel">Cosa giocare</label>' + pickSelect(p.pick) + '<label class="melabel">Quota minima</label><input class="meinput" data-bf="min" type="number" step="0.05" min="1" inputmode="decimal" value="' + esc(String(p.min || "")) + '">';
     if (n.t === "nota") h += '<textarea class="meinput" data-bf="text" maxlength="200" rows="2">' + esc(p.text || "") + '</textarea>';
@@ -7205,7 +7278,7 @@
       var wf = box.querySelector(".bwrap"), fx = wf ? wf.scrollLeft : 0, fy = wf ? wf.scrollTop : 0;
       box.innerHTML = '<div class="bfull"><div class="bftop"><button class="chip on" type="button" data-bfull="0">' + ic("x") + ' Esci</button>'
         + '<button class="iconbtn sm" type="button" data-bz="-" aria-label="Rimpicciolisci">' + ic("minus") + '</button><span class="k bfz">' + Math.round(bldZoom * 100) + '%</span><button class="iconbtn sm" type="button" data-bz="+" aria-label="Ingrandisci">+</button><button class="chip" type="button" data-bz="fit">Adatta</button>'
-        + (bldRO ? "" : ["src", "se", "dividi", "calc", "unisci", "gioca", "debug", "nota"].map(function (t) { return '<button class="bpb" type="button" data-badd="' + t + '" style="--nc:' + NT[t][0] + '"><span class="rnic sm">' + ic(NT[t][1]) + '</span>' + NT_NAME[t] + '</button>'; }).join(""))
+        + (bldRO ? "" : bldPal().map(function (t) { return '<button class="bpb" type="button" data-badd="' + t + '" style="--nc:' + NT[t][0] + '"><span class="rnic sm">' + ic(NT[t][1]) + '</span>' + NT_NAME[t] + '</button>'; }).join(""))
         + '</div><div class="bwrap">' + bldCanvasHtml(R.stat) + '</div>'
         + (bldWire ? '<div class="bfhint">' + ic("bolt") + ' Tocca l\'ingresso (a sinistra) del nodo da collegare</div>' : "")
         + (sel ? '<div class="bfpanel">' + editorHtml(sel) + '</div>' : "") + '</div>';
@@ -7216,7 +7289,7 @@
         : '<div class="bldhead"><input class="meinput" id="bldname" maxlength="40" placeholder="Nome della strategia" value="' + esc(bld.name) + '">'
           + '<div class="chips"><span class="chip on" aria-pressed="true">' + EMOJI[bld.sport] + ' ' + NAME[bld.sport] + ' · ' + (bld.mode === "live" ? "live" : "pre-partita") + '</span>'
           + '<button class="chip" type="button" data-bvis="1" aria-pressed="' + (bld.vis === "pub") + '">' + ic(bld.vis === "pub" ? "eye" : "lock") + ' ' + (bld.vis === "pub" ? "Pubblica" : "Privata") + '</button></div></div>'
-          + '<div class="bpal">' + ["src", "se", "dividi", "calc", "unisci", "gioca", "debug", "nota"].map(function (t) { return '<button class="bpb" type="button" data-badd="' + t + '" style="--nc:' + NT[t][0] + '"><span class="rnic sm">' + ic(NT[t][1]) + '</span>' + NT_NAME[t] + '</button>'; }).join("") + '</div>')
+          + '<div class="bpal">' + bldPal().map(function (t) { return '<button class="bpb" type="button" data-badd="' + t + '" style="--nc:' + NT[t][0] + '"><span class="rnic sm">' + ic(NT[t][1]) + '</span>' + NT_NAME[t] + '</button>'; }).join("") + '</div>')
       + '<div class="bzbar"><button class="iconbtn sm" type="button" data-bz="-" aria-label="Rimpicciolisci">' + ic("minus") + '</button><span class="k">' + Math.round(bldZoom * 100) + '%</span><button class="iconbtn sm" type="button" data-bz="+" aria-label="Ingrandisci">+</button><button class="chip" type="button" data-bz="fit">Adatta</button><button class="chip" type="button" data-bfull="1">' + ic("expand") + ' Schermo intero</button></div>'
       + '<div class="bwrap">' + bldCanvasHtml(R.stat) + '</div>'
       + (bldRO ? "" : '<div class="k bhint">' + (bldWire ? ic("bolt") + ' Ora tocca l\'ingresso (a sinistra) del nodo da collegare.' : "Trascina i nodi; tocca un nodo per le impostazioni. Per un filo tocca un'uscita (a destra) e poi un ingresso; tocca un filo per toglierlo.") + '</div>');
@@ -7251,7 +7324,7 @@
   function newNode(t, x, y) {
     var b = bld, d0 = (dataList(b)[0] || ["min"])[0];
     var p = t === "se" ? { rules: [{ a: d0, op: ">=", bt: "n", b: 0 }] } : t === "dividi" ? { a: d0, cases: [{ op: "<", v: 30 }, { op: "<", v: 60 }] }
-      : t === "calc" ? { name: "x", at: "d", a: d0, op: "-", bt: "n", b: 0 } : t === "gioca" ? { pick: b.sport === "tennis" ? "FAV" : "FAV", min: 1.5 } : t === "nota" ? { text: "" } : {};
+      : t === "calc" ? { name: "x", at: "d", a: d0, op: "-", bt: "n", b: 0 } : t === "storico" ? { name: "s" + (b.nodes.length + 1), stat: "Tiri in porta", side: "tot", mode: "ult", n: 15, m: 45, a: 46, b: 70 } : t === "gioca" ? { pick: b.sport === "tennis" ? "FAV" : "FAV", min: 1.5 } : t === "nota" ? { text: "" } : {};
     return { id: "n" + Date.now().toString(36) + Math.floor(Math.random() * 99), t: t, x: x, y: y, p: p };
   }
   (function () {
@@ -7318,6 +7391,8 @@
       else if (f === "a" || f === "b") { if (n.t === "dividi") p.a = v; else p[f] = (p[f + "t"] || (f === "a" ? p.at : p.bt)) === "d" ? v : Number(String(v).replace(",", ".")); }
       else if (f === "at" || f === "bt") { p[f] = v; p[f[0]] = v === "d" ? (dataList(bld)[0] || ["min"])[0] : 0; }
       else if (f === "op") p.op = v;
+      else if (f === "sstat" || f === "sside" || f === "smode") p[{ sstat: "stat", sside: "side", smode: "mode" }[f]] = v;
+      else if ((m = /^s([nmab])$/.exec(f))) p[m[1]] = Math.max(0, Math.min(120, Math.round(Number(v) || 0)));
       if (!live) renderBuilder();
     }
     box.addEventListener("change", function (e) {
@@ -7557,33 +7632,97 @@
         N("u", "unisci", 640, 120, {}), N("g", "gioca", 790, 120, { pick: "O15", min: 1.7 }), N("dbg", "debug", 360, 120),
         N("n1", "nota", 140, 290, { text: "Puntata 2%: niente soldi, 1 unità" }), N("n2", "nota", 640, 220, { text: "Quota Over 1,5 ≥ 1,70 = quota minima di Gioca" })],
       wires: [W("s", 0, "a"), W("a", 0, "b"), W("a", 0, "c"), W("a", 0, "dbg"), W("b", 0, "u"), W("c", 0, "u"), W("u", 0, "g")] });
+    // dal secondo testo dell'utente (09/10 sera): quello che si puo' coi nostri dati; quello che manca e' in un Commento.
+    // Niente puntate, coperture e cash out (niente soldi): l'azione diventa il mercato piu' vicino che abbiamo.
+    var ST = function (id, x, y, name, stat, side, mode, v1, v2) { var p = { name: name, stat: stat, side: side, mode: mode, n: 15, m: 45, a: 46, b: 70 };
+      if (mode === "ult") p.n = v1; else if (mode === "al") p.m = v1; else { p.a = v1; p.b = v2; } return N(id, "storico", x, y, p); };
+    var IMP = [
+      ["cleansheet", "Clean Sheet a Rischio", "Al 75' sull'1-0 o sullo 0-1 chi è avanti soffre: negli ultimi 10 minuti ha concesso almeno 3 angoli e chi è sotto ha fatto più di 0,50 xG negli ultimi 20. Si gioca Goal: segna anche chi è sotto.",
+        [N("s", "src", 0, 100), N("a", "se", 0, 100, { rules: [R("min", ">=", 75), R("min", "<=", 80), R("gt", "=", 1)] }, "75'-80', 1-0 o 0-1"),
+         ST("h1", 0, 20, "angoli_sotto", "Angoli", "trail", "ult", 10), N("b", "se", 0, 20, { rules: [R("var:angoli_sotto", ">=", 3)] }, "Almeno 3 angoli per chi è sotto"),
+         ST("h2", 0, 180, "xg_sotto", "xG", "trail", "ult", 20), N("c", "se", 0, 180, { rules: [R("var:xg_sotto", ">", 0.5)] }, "xG di chi è sotto oltre 0,50"),
+         N("u", "unisci", 0, 100, {}), N("g", "gioca", 0, 100, { pick: "GG", min: null }),
+         N("n", "nota", 0, 280, { text: "Difensore ammonito: dato che non abbiamo. Copertura = Goal" })],
+        [W("s", 0, "a"), W("a", 0, "h1"), W("h1", 0, "b"), W("a", 0, "h2"), W("h2", 0, "c"), W("b", 0, "u"), W("c", 0, "u"), W("u", 0, "g")]],
+      ["multigol1t", "Multigol Statistico di Fine Primo Tempo", "Fra il 30' e il 40', ancora 0-0 ma con almeno 5 tiri in porta in tutto: si gioca un gol nel primo tempo.",
+        [N("s", "src", 0, 60), N("a", "se", 0, 60, { rules: [R("tempo", "=", 1), R("min", ">=", 30), R("min", "<=", 40), R("gt", "=", 0)] }, "30'-40', 0-0"),
+         N("b", "se", 0, 60, { rules: [R("tt", ">=", 5)] }, "Almeno 5 tiri in porta"), N("g", "gioca", 0, 60, { pick: "1O05", min: null }),
+         N("n", "nota", 0, 160, { text: "Over 2,5 dei precedenti: dato che non abbiamo. Multigol 1-3 1° tempo: non c'è, Over 0,5 1° tempo" })],
+        [W("s", 0, "a"), W("a", 0, "b"), W("b", 0, "g")]],
+      ["scintilla", "Scintilla del Secondo Tempo", "Primo tempo finito 0-0 con almeno 6 angoli: a inizio secondo tempo si gioca un gol.",
+        [N("s", "src", 0, 60), N("a", "se", 0, 60, { rules: [R("tempo", "=", 2), R("min", "<=", 55), R("gt", "=", 0)] }, "Secondo tempo, ancora 0-0"),
+         ST("h", 0, 60, "angoli_1t", "Angoli", "tot", "al", 45), N("b", "se", 0, 60, { rules: [R("var:angoli_1t", ">=", 6)] }, "Almeno 6 angoli nel 1° tempo"),
+         N("g", "gioca", 0, 60, { pick: "O05", min: null }),
+         N("n", "nota", 0, 160, { text: "Falli e cambi all'intervallo: dati che non abbiamo. Gol 46'-60': non c'è, Over 0,5" })],
+        [W("s", 0, "a"), W("a", 0, "h"), W("h", 0, "b"), W("b", 0, "g")]],
+      ["ribaltone", "Ribaltone da Palla Inattiva", "Dal 60' l'ospite è sotto di un gol e batte tanti angoli (almeno 5, o 2 negli ultimi 15 minuti): si gioca il prossimo gol dell'ospite.",
+        [N("s", "src", 0, 100), N("a", "se", 0, 100, { rules: [R("min", ">=", 60), R("gd", "=", 1)] }, "Ospite sotto di 1 dal 60'"),
+         N("b", "se", 0, 20, { rules: [R("ca", ">=", 5)] }, "Ospite almeno 5 angoli"),
+         ST("h", 0, 180, "angoli_osp15", "Angoli", "a", "ult", 15), N("c", "se", 0, 180, { rules: [R("var:angoli_osp15", ">=", 2)] }, "2 angoli negli ultimi 15'"),
+         N("u", "unisci", 0, 100, { any: true }), N("g", "gioca", 0, 100, { pick: "P2", min: null }),
+         N("n", "nota", 0, 280, { text: "Altezza e marcatori: dati che non abbiamo. Over 1,5 ospite: non c'è, prossimo gol ospite" })],
+        [W("s", 0, "a"), W("a", 0, "b"), W("a", 0, "h"), W("h", 0, "c"), W("b", 0, "u"), W("c", 0, "u"), W("u", 0, "g")]],
+      ["controllo", "Controllo Totale del Match", "Fra il 70' e il 75' una squadra è avanti senza aver subito gol, lo era già al 45', e fra il 46' e il 70' ha tenuto palla più del 60%: con oltre il 65% Under, altrimenti doppia chance con lei.",
+        [N("s", "src", 0, 80), N("a", "se", 0, 80, { rules: [R("min", ">=", 70), R("min", "<=", 75), R("gt", ">=", 1), R("gt", "<=", 2), R("gd", "!=", 0)] }, "70'-75', 1-0 o 2-0"),
+         N("c", "calc", 0, 80, { name: "subiti", at: "d", a: "gh", op: "min", bt: "d", b: "ga" }), N("b", "se", 0, 80, { rules: [R("var:subiti", "=", 0)] }, "Chi è avanti non ha subito"),
+         ST("h1", 0, 80, "gd45", "Gol", "diff", "al", 45), N("c2", "calc", 0, 80, { name: "stesso", at: "d", a: "var:gd45", op: "*", bt: "d", b: "gd" }),
+         N("e", "se", 0, 80, { rules: [R("var:stesso", ">", 0)] }, "Avanti già al 45'"), ST("h2", 0, 80, "poss_avanti", "Possesso", "lead", "fra", 46, 70),
+         N("d", "dividi", 0, 70, { a: "var:poss_avanti", cases: [{ op: ">", v: 65 }, { op: ">", v: 60 }] }),
+         N("g1", "gioca", 0, 0, { pick: "UNNEXT", min: null }), N("g2", "gioca", 0, 90, { pick: "DCLEAD", min: null }),
+         N("n", "nota", 0, 220, { text: "Passaggi riusciti: dato che non abbiamo" })],
+        [W("s", 0, "a"), W("a", 0, "c"), W("c", 0, "b"), W("b", 0, "h1"), W("h1", 0, "c2"), W("c2", 0, "e"), W("e", 0, "h2"), W("h2", 0, "d"), W("d", 0, "g1"), W("d", 1, "g2")]],
+      ["poisson", "Poisson & Momentum", "Al 70' la casa domina gli xG (oltre 1,80 contro al massimo 0,40) ma è pari e la quota dell'1 è sopra 2,10. Col ritmo degli xG della casa, Poisson dà la probabilità che segni nei minuti che restano: se è almeno 50% si gioca l'1.",
+        [N("s", "src", 0, 60), N("a", "se", 0, 60, { rules: [R("min", ">=", 70), R("min", "<=", 75), R("gd", "=", 0), R("gt", "<=", 2)] }, "70'-75', pari"),
+         N("b", "se", 0, 60, { rules: [R("xh", ">", 1.8), R("xa", "<=", 0.4)] }, "Casa domina gli xG"), N("q", "se", 0, 60, { rules: [R("q1", ">", 2.1)] }, "Quota 1 sopra 2,10"),
+         N("c1", "calc", 0, 60, { name: "resto", at: "n", a: 90, op: "-", bt: "d", b: "min" }), N("c2", "calc", 0, 60, { name: "ritmo", at: "d", a: "xh", op: "/", bt: "d", b: "min" }),
+         N("c3", "calc", 0, 60, { name: "attesi", at: "d", a: "var:ritmo", op: "*", bt: "d", b: "var:resto" }), N("c4", "calc", 0, 60, { name: "p_gol", at: "d", a: "var:attesi", op: "pois", bt: "n", b: 1 }),
+         N("e", "se", 0, 60, { rules: [R("var:p_gol", ">=", 0.5)] }, "Almeno 50% di segnare"), N("g", "gioca", 0, 60, { pick: "1", min: 2.1 }),
+         N("n", "nota", 0, 160, { text: "Draw No Bet: mercato che non c'è, si gioca 1" })],
+        [W("s", 0, "a"), W("a", 0, "b"), W("b", 0, "q"), W("q", 0, "c1"), W("c1", 0, "c2"), W("c2", 0, "c3"), W("c3", 0, "c4"), W("c4", 0, "e"), W("e", 0, "g")]],
+      ["climax", "Climax dell'80° Minuto", "Fra l'80' e l'85', pari o un gol di scarto, e negli ultimi 5 minuti almeno 2 tiri fuori e un angolo: si gioca un altro gol.",
+        [N("s", "src", 0, 100), N("a", "se", 0, 100, { rules: [R("min", ">=", 80), R("min", "<=", 85), R("gd", ">=", -1), R("gd", "<=", 1)] }, "80'-85', partita in bilico"),
+         ST("h1", 0, 20, "fuori5", "Tiri fuori", "tot", "ult", 5), N("b", "se", 0, 20, { rules: [R("var:fuori5", ">=", 2)] }, "2 tiri fuori negli ultimi 5'"),
+         ST("h2", 0, 180, "angoli5", "Angoli", "tot", "ult", 5), N("c", "se", 0, 180, { rules: [R("var:angoli5", ">=", 1)] }, "Un angolo negli ultimi 5'"),
+         N("u", "unisci", 0, 100, {}), N("g", "gioca", 0, 100, { pick: "OVNEXT", min: null })],
+        [W("s", 0, "a"), W("a", 0, "h1"), W("h1", 0, "b"), W("a", 0, "h2"), W("h2", 0, "c"), W("b", 0, "u"), W("c", 0, "u"), W("u", 0, "g")]],
+      ["matrioska", "Strategia Matrioska", "Under 2,5 prima del via fra 1,75 e 1,90; al 25' 0-0 con al massimo un tiro in porta; dal 50' ancora 0-0. Fino al 70' Under 1,5, dopo il pareggio.",
+        [N("s", "src", 0, 60), N("a", "se", 0, 60, { rules: [R("pu25", ">=", 1.75), R("pu25", "<=", 1.9)] }, "Under 2,5 prima del via 1,75-1,90"),
+         N("b", "se", 0, 60, { rules: [R("min", ">=", 50), R("gt", "=", 0)] }, "Dal 50', ancora 0-0"),
+         ST("h1", 0, 60, "gol25", "Gol", "tot", "al", 25), ST("h2", 0, 60, "porta25", "Tiri in porta", "tot", "al", 25),
+         N("c", "se", 0, 60, { rules: [R("var:gol25", "=", 0), R("var:porta25", "<=", 1)] }, "Al 25': 0-0, al massimo 1 in porta"),
+         N("d", "dividi", 0, 50, { a: "min", cases: [{ op: "<", v: 70 }] }), N("g1", "gioca", 0, 0, { pick: "U15", min: null }), N("g2", "gioca", 0, 90, { pick: "X", min: null })],
+        [W("s", 0, "a"), W("a", 0, "b"), W("b", 0, "h1"), W("h1", 0, "h2"), W("h2", 0, "c"), W("c", 0, "d"), W("d", 0, "g1"), W("d", 1, "g2")]]
+    ];
+    IMP.forEach(function (x, i) { out.unshift({ v: 2, id: "P_" + x[0], name: x[1], sport: "calcio", mode: "live", vis: "priv", lay: 1, ts: nowS() + 10 - i, desc: x[2], nodes: x[3], wires: x[4] }); });
     return out;
   }
   (function () {   // gli esempi si mettono una volta sola (ognuno): se li cancelli non tornano
     var seen = [];
     try { seen = JSON.parse(localStorage.getItem(SEED_KEY)) || []; if (localStorage.getItem(PROVE_KEY)) for (var i = 1; i <= 10; i++) seen.push("P_prova" + i); } catch (e) {}
+    if (seen.indexOf("*") >= 0) return;   // "*": nessun esempio (le prove del builder)
     var have = {}, ch = false; builds.forEach(function (b) { have[b.id] = 1; });
     proveFlows().forEach(function (b) { if (seen.indexOf(b.id) < 0) { if (!have[b.id]) builds.push(b); seen.push(b.id); ch = true; } });
     if (ch) { saveBuilds(); try { localStorage.setItem(SEED_KEY, JSON.stringify(seen)); localStorage.setItem(PROVE_KEY, "1"); } catch (e) {} }
   })();
   // gli esempi si dispongono a colonne la prima volta che si vedono coi dati (le etichette danno la larghezza dei nodi)
-  function bldLayout(b) {
+  function bldLayout(b) {   // a colonne; dopo 5 colonne si va a capo (come in Node-RED), cosi' le catene lunghe si leggono
     if (!b.lay || !regole()) return;
-    var col = {}, ns = b.nodes.filter(function (n) { return n.t !== "nota"; });
+    var MAXC = 5, col = {}, ns = b.nodes.filter(function (n) { return n.t !== "nota"; });
     ns.forEach(function (n) { col[n.id] = 0; });
     for (var it = 0; it < ns.length; it++) b.wires.forEach(function (w) { if (col[w.f] != null && col[w.t] != null) col[w.t] = Math.max(col[w.t], col[w.f] + 1); });
-    var cw = [], cx = [], ox = {};
-    ns.forEach(function (n) { var c = col[n.id]; cw[c] = Math.max(cw[c] || 0, nW(n, b)); ox[c] = ox[c] == null ? n.x : Math.min(ox[c], n.x); });
-    for (var c = 0, x = 10; c < cw.length; c++) { cx[c] = x; x += (cw[c] || 0) + 60; }
-    for (c = 0; c < cw.length; c++) {
-      var y = 0;
-      ns.filter(function (n) { return col[n.id] === c; }).sort(function (a, z) { return a.y - z.y; }).forEach(function (n) { n.x = cx[c]; n.y = Math.max(n.y, y); y = n.y + nH(n) + 34; });
+    var nc = 0; ns.forEach(function (n) { nc = Math.max(nc, col[n.id] + 1); });
+    var cw = [], cx = [], ox = {}, c, k;
+    ns.forEach(function (n) { var q = col[n.id] % MAXC; cw[q] = Math.max(cw[q] || 0, nW(n, b)); ox[col[n.id]] = ox[col[n.id]] == null ? n.x : Math.min(ox[col[n.id]], n.x); });
+    for (c = 0, k = 10; c < Math.min(nc, MAXC); c++) { cx[c] = k; k += (cw[c] || 0) + 60; }
+    var top = 0, bottom = 0;
+    for (c = 0; c < nc; c++) {
+      if (c && c % MAXC === 0) top = bottom + 70;   // a capo: la riga dopo parte sotto la piu' bassa
+      var y = top;
+      ns.filter(function (n) { return col[n.id] === c; }).sort(function (a, z) { return a.y - z.y; }).forEach(function (n) {
+        n.x = cx[c % MAXC]; n.y = Math.max(top + n.y, y); y = n.y + nH(n) + 34; bottom = Math.max(bottom, n.y + nH(n));
+      });
     }
-    b.nodes.forEach(function (n) {
-      if (n.t !== "nota") return;
-      var best = 0; for (var k = 0; k < cw.length; k++) if (ox[k] != null && Math.abs(ox[k] - n.x) < Math.abs(ox[best] - n.x)) best = k;
-      n.x = cx[best];
-    });
+    b.nodes.forEach(function (n) { if (n.t === "nota") { n.x = cx[0]; n.y = bottom + 30; bottom = n.y + 34; } });   // i commenti sotto
     delete b.lay; saveBuilds();
   }
   function bldSigOn(b) { return b.mode === "live" && b.sig !== false; }
@@ -7619,7 +7758,7 @@
   // ---- descrizione e grafici
   function bldBlocks(b) {
     var c = {}; b.nodes.forEach(function (n) { c[n.t] = (c[n.t] || 0) + 1; });
-    return ["src", "se", "dividi", "calc", "unisci", "gioca", "debug", "nota"].filter(function (t) { return c[t]; }).map(function (t) { return c[t] + " " + NT_NAME[t]; }).join(" · ");
+    return ["src", "se", "dividi", "calc", "storico", "unisci", "gioca", "debug", "nota"].filter(function (t) { return c[t]; }).map(function (t) { return c[t] + " " + NT_NAME[t]; }).join(" · ");
   }
   function bldMini(b) {   // il flusso in piccolo: rettangoli dei nodi coi loro colori e i fili
     var W = 0, H = 0, by = {};
