@@ -979,6 +979,16 @@
   .rsec{display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin:16px 2px 8px;}
   .rsec .ico{width:16px;height:16px;color:#FFB400;} .rsec .k{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600;}
   .rboard{display:flex;flex-direction:column;gap:6px;}
+  /* Strategy builder a tutto schermo (09/10) */
+  .bfull{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);}
+  .bftop{flex:none;display:flex;align-items:center;gap:6px;padding:6px 8px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);background:var(--surface);}
+  .bftop > *{flex:none;} .bftop .bfz{min-width:40px;text-align:center;font-variant-numeric:tabular-nums;}
+  .bfull .bwrap{flex:1;max-height:none;margin:0;border:none;}
+  .bfhint{position:absolute;left:50%;top:60px;transform:translateX(-50%);padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:0.8rem;white-space:nowrap;}
+  .bfpanel{position:absolute;left:8px;right:8px;bottom:8px;max-height:52%;overflow:auto;z-index:2;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.45);}
+  .bfpanel .binsp{margin:0;}
+  @media (orientation:landscape){ .bfpanel{left:auto;width:340px;top:58px;bottom:8px;max-height:none;} }
+  body.bldfull{overflow:hidden;} body.bldfull .tabbar{display:none;}
   /* Mie strategie (09/10): flusso in piccolo e imbuto delle partite di adesso */
   .card.mie{margin-bottom:10px;}
   .bminib{display:block;width:100%;padding:8px;margin:4px 0 8px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:inherit;font:inherit;cursor:pointer;text-align:right;}
@@ -1298,6 +1308,7 @@
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></symbol>
     <symbol id="i-minus" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
     <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.8l9 15.7H3z"/><path d="M12 10v4.4M12 17.2v.1"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/></symbol>
     <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5z"/></symbol>
@@ -6890,7 +6901,7 @@
   var BLD_KEY = "statsight.builder";
   var builds = (function () { try { var b = JSON.parse(localStorage.getItem(BLD_KEY)); if (Array.isArray(b)) return b.filter(function (x) { return x && x.v === 2; }); } catch (e) {} return []; })();
   function saveBuilds() { try { localStorage.setItem(BLD_KEY, JSON.stringify(builds)); } catch (e) {} }
-  var bld = null, bldSel = null, bldWire = null, bldMsg = "", bldZoom = 1, bldRO = false;
+  var bld = null, bldSel = null, bldWire = null, bldMsg = "", bldZoom = 1, bldRO = false, bldFull = false;
   // dati: [chiave, etichetta, gruppo, statistica Full]
   var BD = {
     calcio: {
@@ -6904,7 +6915,14 @@
         ["xh", "xG casa", "Altre statistiche", 1], ["xa", "xG ospite", "Altre statistiche", 1], ["xt", "xG totali", "Altre statistiche", 1],
         ["xf", "xG della favorita", "Altre statistiche", 1], ["xs", "xG della sfavorita", "Altre statistiche", 1], ["ph", "Possesso casa %", "Altre statistiche", 1],
         ["rh", "Rossi casa", "Altre statistiche"], ["ra", "Rossi ospite", "Altre statistiche"],
-        ["q1", "Quota 1 adesso", "Quote adesso"], ["qx", "Quota X adesso", "Quote adesso"], ["q2", "Quota 2 adesso", "Quote adesso"], ["qo25", "Quota Over 2,5 adesso", "Quote adesso"], ["qu25", "Quota Under 2,5 adesso", "Quote adesso"],
+        ["t15h", "Tiri in porta casa (ultimi 15')", "Ultimi 15 minuti"], ["t15a", "Tiri in porta ospite (ultimi 15')", "Ultimi 15 minuti"],
+        ["s15h", "Tiri casa (ultimi 15')", "Ultimi 15 minuti"], ["s15a", "Tiri ospite (ultimi 15')", "Ultimi 15 minuti"],
+        ["c15h", "Angoli casa (ultimi 15')", "Ultimi 15 minuti"], ["c15a", "Angoli ospite (ultimi 15')", "Ultimi 15 minuti"],
+        ["d15h", "Attacchi pericolosi casa (ultimi 15')", "Ultimi 15 minuti", 1], ["d15a", "Attacchi pericolosi ospite (ultimi 15')", "Ultimi 15 minuti", 1],
+        ["x15h", "xG casa (ultimi 15')", "Ultimi 15 minuti", 1], ["x15a", "xG ospite (ultimi 15')", "Ultimi 15 minuti", 1], ["p15h", "Possesso casa % (ultimi 15')", "Ultimi 15 minuti", 1],
+        ["q1", "Quota 1 adesso", "Quote adesso"], ["qx", "Quota X adesso", "Quote adesso"], ["q2", "Quota 2 adesso", "Quote adesso"],
+        ["qo05", "Quota Over 0,5 adesso", "Quote adesso"], ["qo15", "Quota Over 1,5 adesso", "Quote adesso"], ["qu15", "Quota Under 1,5 adesso", "Quote adesso"],
+        ["qo25", "Quota Over 2,5 adesso", "Quote adesso"], ["qu25", "Quota Under 2,5 adesso", "Quote adesso"], ["qo35", "Quota Over 3,5 adesso", "Quote adesso"],
         ["p1", "Quota 1 prima del via", "Quote prima del via"], ["px", "Quota X prima del via", "Quote prima del via"], ["p2", "Quota 2 prima del via", "Quote prima del via"]],
       pre: [["q1", "Quota 1", "Quote"], ["qx", "Quota X", "Quote"], ["q2", "Quota 2", "Quote"], ["pf", "Quota della favorita", "Quote"], ["favh", "La favorita gioca in casa (1 = sì)", "Quote"],
         ["qo25", "Quota Over 2,5", "Quote"], ["qu25", "Quota Under 2,5", "Quote"], ["qgg", "Quota Goal", "Quote"], ["hr", "Ore al via", "Partita"]]
@@ -6965,6 +6983,10 @@
     var sp = function (lab, i) { var v = statPair(st, lab); if (!v || lockedCell(lab)) return null; var x = parseFloat(String(v[i]).replace(",", ".")); return isNaN(x) ? null : x; };
     var fs = function (lab, fav) { if (!F) return null; return sp(lab, (F.side === 1) === fav ? 0 : 1); };
     var sum = function (lab) { var a = sp(lab, 0), b = sp(lab, 1); return a == null || b == null ? null : a + b; };
+    var s15 = function (lab, i) {   // ultimi 15 minuti (signals/diario_eventi.last15)
+      var r = (st.l15 || []).filter(function (x) { return x[0] === lab; })[0]; if (!r || lockedCell(lab)) return null;
+      var x = parseFloat(String(r[1 + i]).replace(",", ".")); return isNaN(x) ? null : x;
+    };
     var sets = String(st.sets || "").split(/\s*-\s*/).map(Number), hasSets = sets.length === 2 && !isNaN(sets[0]);
     switch (k) {
       case "min": return st.minute != null ? Number(st.minute) : (parseInt(estMinute(e), 10) || null);
@@ -6981,6 +7003,10 @@
       case "dh": return sp("Attacchi pericolosi", 0); case "da": return sp("Attacchi pericolosi", 1);
       case "xh": return sp("xG", 0); case "xa": return sp("xG", 1); case "xt": return sum("xG"); case "xf": return fs("xG", true); case "xs": return fs("xG", false);
       case "ph": return sp("Possesso", 0); case "rh": return sp("Rossi", 0) || 0; case "ra": return sp("Rossi", 1) || 0;
+      case "t15h": return s15("Tiri in porta", 0); case "t15a": return s15("Tiri in porta", 1); case "s15h": return s15("Tiri", 0); case "s15a": return s15("Tiri", 1);
+      case "c15h": return s15("Angoli", 0); case "c15a": return s15("Angoli", 1); case "d15h": return s15("Attacchi pericolosi", 0); case "d15a": return s15("Attacchi pericolosi", 1);
+      case "x15h": return s15("xG", 0); case "x15a": return s15("xG", 1); case "p15h": return s15("Possesso", 0);
+      case "qo05": return mk("O05"); case "qo15": return mk("O15"); case "qu15": return mk("U15"); case "qo35": return mk("O35");
       case "q1": return mk("1"); case "qx": return mk("X"); case "q2": return mk("2"); case "qo25": return mk("O25"); case "qu25": return mk("U25"); case "qgg": return mk("GG");
       case "p1": return (e.p0 || {})["1"] || null; case "px": return (e.p0 || {}).X || null; case "p2": return (e.p0 || {})["2"] || null;
       case "hr": return e.start ? Math.round((e.start - nowS()) / 360) / 10 : null;
@@ -7153,13 +7179,15 @@
   }
   function fitZoom() {
     var wrap = $("builder") && $("builder").querySelector(".bwrap"), W = 0;
-    bld.nodes.forEach(function (n) { W = Math.max(W, n.x + nW(n) + 40); });
-    var vw = wrap ? wrap.clientWidth : Math.min(window.innerWidth, 600) - 32;
-    bldZoom = Math.max(0.55, Math.min(1.2, vw / Math.max(W, 1)));
+    var H = 0; bld.nodes.forEach(function (n) { W = Math.max(W, n.x + nW(n) + 40); H = Math.max(H, n.y + nH(n) + 40); });
+    var vw = wrap ? wrap.clientWidth : Math.min(window.innerWidth, 600) - 32, z = vw / Math.max(W, 1);
+    if (bldFull && wrap && wrap.clientHeight) z = Math.min(z, wrap.clientHeight / Math.max(H, 1));   // a tutto schermo entra tutta
+    bldZoom = Math.max(bldFull ? 0.4 : 0.55, Math.min(bldFull ? 1.6 : 1.2, z));
   }
   function renderBuilder() {
     var box = $("builder");
     if (!bld) {   // elenco: le tue e quelle StatSight col timbro
+      if (bldFull) { bldFull = false; document.body.classList.remove("bldfull"); }
       var mine = builds.slice().reverse();
       box.innerHTML = '<div class="card bldhero"><b>Costruisci la tua strategia</b><span>Come un flusso: le partite entrano a sinistra, passano per i nodi che le filtrano, le dividono e calcolano, e a destra esce cosa giocare. Sotto ogni nodo vedi quante partite di adesso ci passano.</span>'
         + '<div class="duo"><button class="primary" type="button" data-bnew="live">' + ic("radar") + ' Nuova live</button><button class="primary" type="button" data-bnew="pre">' + ic("calendar") + ' Nuova pre-partita</button></div></div>'
@@ -7173,12 +7201,23 @@
       return;
     }
     var R = bldRun(bld), probs = bldRO ? [] : bldProblems(bld), sel = bldSel ? bNode(bldSel) : null;
+    if (bldFull) {   // mappa a tutto schermo (09/10): barra in alto, mappa grande, impostazioni del nodo sopra la mappa
+      var wf = box.querySelector(".bwrap"), fx = wf ? wf.scrollLeft : 0, fy = wf ? wf.scrollTop : 0;
+      box.innerHTML = '<div class="bfull"><div class="bftop"><button class="chip on" type="button" data-bfull="0">' + ic("x") + ' Esci</button>'
+        + '<button class="iconbtn sm" type="button" data-bz="-" aria-label="Rimpicciolisci">' + ic("minus") + '</button><span class="k bfz">' + Math.round(bldZoom * 100) + '%</span><button class="iconbtn sm" type="button" data-bz="+" aria-label="Ingrandisci">+</button><button class="chip" type="button" data-bz="fit">Adatta</button>'
+        + (bldRO ? "" : ["src", "se", "dividi", "calc", "unisci", "gioca", "debug", "nota"].map(function (t) { return '<button class="bpb" type="button" data-badd="' + t + '" style="--nc:' + NT[t][0] + '"><span class="rnic sm">' + ic(NT[t][1]) + '</span>' + NT_NAME[t] + '</button>'; }).join(""))
+        + '</div><div class="bwrap">' + bldCanvasHtml(R.stat) + '</div>'
+        + (bldWire ? '<div class="bfhint">' + ic("bolt") + ' Tocca l\'ingresso (a sinistra) del nodo da collegare</div>' : "")
+        + (sel ? '<div class="bfpanel">' + editorHtml(sel) + '</div>' : "") + '</div>';
+      wf = box.querySelector(".bwrap"); if (wf) { wf.scrollLeft = fx; wf.scrollTop = fy; }
+      return;
+    }
     var h = (bldRO ? '<div class="card tplbar">' + teamBadge() + '<span>Strategia StatSight: si guarda e si copia. ' + esc(bld.desc || "") + '</span><button class="primary" type="button" data-bcopy="1">' + ic("copy") + ' Copia e modifica</button></div>'
         : '<div class="bldhead"><input class="meinput" id="bldname" maxlength="40" placeholder="Nome della strategia" value="' + esc(bld.name) + '">'
           + '<div class="chips"><span class="chip on" aria-pressed="true">' + EMOJI[bld.sport] + ' ' + NAME[bld.sport] + ' · ' + (bld.mode === "live" ? "live" : "pre-partita") + '</span>'
           + '<button class="chip" type="button" data-bvis="1" aria-pressed="' + (bld.vis === "pub") + '">' + ic(bld.vis === "pub" ? "eye" : "lock") + ' ' + (bld.vis === "pub" ? "Pubblica" : "Privata") + '</button></div></div>'
           + '<div class="bpal">' + ["src", "se", "dividi", "calc", "unisci", "gioca", "debug", "nota"].map(function (t) { return '<button class="bpb" type="button" data-badd="' + t + '" style="--nc:' + NT[t][0] + '"><span class="rnic sm">' + ic(NT[t][1]) + '</span>' + NT_NAME[t] + '</button>'; }).join("") + '</div>')
-      + '<div class="bzbar"><button class="iconbtn sm" type="button" data-bz="-" aria-label="Rimpicciolisci">' + ic("minus") + '</button><span class="k">' + Math.round(bldZoom * 100) + '%</span><button class="iconbtn sm" type="button" data-bz="+" aria-label="Ingrandisci">+</button><button class="chip" type="button" data-bz="fit">Adatta</button></div>'
+      + '<div class="bzbar"><button class="iconbtn sm" type="button" data-bz="-" aria-label="Rimpicciolisci">' + ic("minus") + '</button><span class="k">' + Math.round(bldZoom * 100) + '%</span><button class="iconbtn sm" type="button" data-bz="+" aria-label="Ingrandisci">+</button><button class="chip" type="button" data-bz="fit">Adatta</button><button class="chip" type="button" data-bfull="1">' + ic("expand") + ' Schermo intero</button></div>'
       + '<div class="bwrap">' + bldCanvasHtml(R.stat) + '</div>'
       + (bldRO ? "" : '<div class="k bhint">' + (bldWire ? ic("bolt") + ' Ora tocca l\'ingresso (a sinistra) del nodo da collegare.' : "Trascina i nodi; tocca un nodo per le impostazioni. Per un filo tocca un'uscita (a destra) e poi un ingresso; tocca un filo per toglierlo.") + '</div>');
     if (sel) h += editorHtml(sel);
@@ -7204,7 +7243,7 @@
       + (f ? '<span class="bldf">' + f + '</span>' : "") + ic("chev") + '</button>';
   }
   function openBuilder() { bld = null; bldSel = null; bldWire = null; bldMsg = ""; renderBuilder(); show("builder"); window.scrollTo(0, 0); }
-  function openFlow(b, ro) { bld = JSON.parse(JSON.stringify(b)); bldRO = !!ro; bldSel = null; bldWire = null; bldMsg = ""; renderBuilder(); fitZoom(); renderBuilder(); window.scrollTo(0, 0); }
+  function openFlow(b, ro) { bldLayout(b); bld = JSON.parse(JSON.stringify(b)); bldRO = !!ro; bldSel = null; bldWire = null; bldMsg = ""; renderBuilder(); fitZoom(); renderBuilder(); window.scrollTo(0, 0); }
   function builderCard() {
     return '<button class="card navcard" type="button" data-builder="1" style="margin-top:6px;">' + ic("strategie") + '<span><b>Strategy builder</b><span class="k">'
       + (builds.length ? builds.length + (builds.length === 1 ? " strategia tua" : " strategie tue") + " · " : "") + TPL().length + ' strategie StatSight da copiare</span></span>' + ic("chev") + '</button>';
@@ -7229,7 +7268,8 @@
       if (d.btpl) { var t0 = TPL().filter(function (x) { return x.id === d.btpl; })[0]; if (t0) openFlow(t0, true); return; }
       if (!bld) return;
       if (d.bz) { bldZoom = d.bz === "fit" ? (fitZoom(), bldZoom) : Math.max(0.35, Math.min(2, bldZoom * (d.bz === "+" ? 1.25 : 0.8))); renderBuilder(); return; }
-      if (d.bback) { bld = null; bldRO = false; renderBuilder(); return; }
+      if (d.bfull) { setBldFull(d.bfull === "1"); return; }
+      if (d.bback) { setBldFull(false); bld = null; bldRO = false; renderBuilder(); return; }
       if (d.bcopy) { var c = JSON.parse(JSON.stringify(bld)); c.id = "U" + Date.now(); c.team = false; c.vis = "priv"; c.name = bld.name + " (mia)"; delete c.desc; bld = c; bldRO = false; bldSel = null; renderBuilder(); fxToast("copy", "Copiata", "Ora è tua: cambiala e salvala"); return; }
       if (bldRO) return;
       if (d.bvis) { bld.vis = bld.vis === "pub" ? "priv" : "pub"; renderBuilder(); return; }
@@ -7328,6 +7368,18 @@
     }
     box.addEventListener("pointerup", up); box.addEventListener("pointercancel", up);
   })();
+  // schermo intero: la mappa occupa tutto; dove si puo' (Android) anche fullscreen del telefono e orizzontale
+  function setBldFull(on) {
+    bldFull = !!on; document.body.classList.toggle("bldfull", bldFull);
+    var de = document.documentElement;
+    try {
+      if (bldFull && de.requestFullscreen && !document.fullscreenElement) de.requestFullscreen().then(function () { try { return screen.orientation.lock("landscape"); } catch (e) {} }).catch(function () {});
+      if (!bldFull && document.fullscreenElement && document.exitFullscreen) { try { screen.orientation.unlock(); } catch (e) {} document.exitFullscreen().catch(function () {}); }
+    } catch (e) {}
+    renderBuilder(); fitZoom(); renderBuilder();
+  }
+  document.addEventListener("fullscreenchange", function () { if (!document.fullscreenElement && bldFull) setBldFull(false); });
+  window.addEventListener("resize", function () { if (bldFull && bld) { fitZoom(); renderBuilder(); } });
   function bldPickSport() {   // nuova strategia: prima lo sport (i dati dei nodi sono quelli di quello sport)
     renderBuilder();
     var d = document.createElement("div"); d.id = "bldsp"; d.className = "card bldsp";
@@ -7426,7 +7478,7 @@
   // l'imbuto delle partite di adesso nodo per nodo e lo storico raccolto sul telefono (ogni volta che scatta si
   // segna; si chiude con gli esiti del server, come le schedine). Le 10 "prova" sono esempi messi una volta sola:
   // si aprono, si cambiano e si cancellano come le altre.
-  var PROVE_KEY = "statsight.prove", BLOG_KEY = "statsight.builder_log", MIE_KEY = "statsight.mie_sport";
+  var PROVE_KEY = "statsight.prove", SEED_KEY = "statsight.seed", BLOG_KEY = "statsight.builder_log", MIE_KEY = "statsight.mie_sport";
   function proveFlows() {
     var R = function (a, op, b) { return typeof b === "string" && b[0] === "@" ? { a: a, op: op, bt: "d", b: b.slice(1) } : { a: a, op: op, bt: "n", b: b }; };
     var N = function (id, t, x, y, p, name) { var n = { id: id, t: t, x: x, y: y, p: p || {} }; if (name) n.name = name; return n; };
@@ -7494,15 +7546,46 @@
          N("g1", "gioca", 830, 80, { pick: "DOG", min: 2.2 }), N("g2", "gioca", 640, 170, { pick: "FAV", min: 1.3 })],
         [W("s", 0, "a"), W("a", 0, "c"), W("c", 0, "d"), W("d", 0, "dbg"), W("d", 1, "b"), W("b", 0, "g1"), W("d", 2, "g2")]]
     ];
-    return L.map(function (x, i) { return { v: 2, id: "P_" + x[0], name: x[0], sport: x[1], mode: "live", vis: "priv", desc: x[2], prova: true, ts: nowS() - 60 - i, nodes: x[3], wires: x[4] }; });
+    var out = L.map(function (x, i) { return { v: 2, id: "P_" + x[0], name: x[0], sport: x[1], mode: "live", vis: "priv", desc: x[2], prova: true, lay: 1, ts: nowS() - 60 - i, nodes: x[3], wires: x[4] }; });
+    // dal testo incollato dall'utente (09/10), STRATEGY_01. "Home_Goals_Pre < Away_Goals_Live" letto come: la casa e'
+    // sotto. Gli "_L15" sono gli ultimi 15 minuti (signals/diario_eventi.last15). La puntata del 2% non c'e': niente soldi.
+    out.unshift({ v: 2, id: "P_rimonta", name: "Rimonta Sospetta", sport: "calcio", mode: "live", vis: "priv", lay: 1, ts: nowS(),
+      desc: "Dal 65' la casa è sotto ma negli ultimi 15 minuti spinge: almeno 4 tiri in porta e più del 65% di possesso. Si gioca Over 1,5 a quota almeno 1,70. Dal testo STRATEGY_01: la puntata del 2% non c'è, ogni giocata vale 1 unità.",
+      nodes: [N("s", "src", 10, 120), N("a", "se", 140, 120, { rules: [R("min", ">=", 65), R("gh", "<", "@ga")] }, "Dal 65', casa sotto"),
+        N("b", "se", 360, 40, { rules: [R("t15h", ">=", 4)] }, "Casa: 4 tiri in porta negli ultimi 15'"),
+        N("c", "se", 360, 200, { rules: [R("p15h", ">", 65)] }, "Casa: possesso oltre 65% negli ultimi 15'"),
+        N("u", "unisci", 640, 120, {}), N("g", "gioca", 790, 120, { pick: "O15", min: 1.7 }), N("dbg", "debug", 360, 120),
+        N("n1", "nota", 140, 290, { text: "Puntata 2%: niente soldi, 1 unità" }), N("n2", "nota", 640, 220, { text: "Quota Over 1,5 ≥ 1,70 = quota minima di Gioca" })],
+      wires: [W("s", 0, "a"), W("a", 0, "b"), W("a", 0, "c"), W("a", 0, "dbg"), W("b", 0, "u"), W("c", 0, "u"), W("u", 0, "g")] });
+    return out;
   }
-  (function () {   // le prova si mettono una volta sola: se le cancelli non tornano
-    var done = null; try { done = localStorage.getItem(PROVE_KEY); } catch (e) {}
-    if (done) return;
-    var have = {}; builds.forEach(function (b) { have[b.id] = 1; });
-    proveFlows().forEach(function (b) { if (!have[b.id]) builds.push(b); });
-    saveBuilds(); try { localStorage.setItem(PROVE_KEY, "1"); } catch (e) {}
+  (function () {   // gli esempi si mettono una volta sola (ognuno): se li cancelli non tornano
+    var seen = [];
+    try { seen = JSON.parse(localStorage.getItem(SEED_KEY)) || []; if (localStorage.getItem(PROVE_KEY)) for (var i = 1; i <= 10; i++) seen.push("P_prova" + i); } catch (e) {}
+    var have = {}, ch = false; builds.forEach(function (b) { have[b.id] = 1; });
+    proveFlows().forEach(function (b) { if (seen.indexOf(b.id) < 0) { if (!have[b.id]) builds.push(b); seen.push(b.id); ch = true; } });
+    if (ch) { saveBuilds(); try { localStorage.setItem(SEED_KEY, JSON.stringify(seen)); localStorage.setItem(PROVE_KEY, "1"); } catch (e) {} }
   })();
+  // gli esempi si dispongono a colonne la prima volta che si vedono coi dati (le etichette danno la larghezza dei nodi)
+  function bldLayout(b) {
+    if (!b.lay || !regole()) return;
+    var col = {}, ns = b.nodes.filter(function (n) { return n.t !== "nota"; });
+    ns.forEach(function (n) { col[n.id] = 0; });
+    for (var it = 0; it < ns.length; it++) b.wires.forEach(function (w) { if (col[w.f] != null && col[w.t] != null) col[w.t] = Math.max(col[w.t], col[w.f] + 1); });
+    var cw = [], cx = [], ox = {};
+    ns.forEach(function (n) { var c = col[n.id]; cw[c] = Math.max(cw[c] || 0, nW(n, b)); ox[c] = ox[c] == null ? n.x : Math.min(ox[c], n.x); });
+    for (var c = 0, x = 10; c < cw.length; c++) { cx[c] = x; x += (cw[c] || 0) + 60; }
+    for (c = 0; c < cw.length; c++) {
+      var y = 0;
+      ns.filter(function (n) { return col[n.id] === c; }).sort(function (a, z) { return a.y - z.y; }).forEach(function (n) { n.x = cx[c]; n.y = Math.max(n.y, y); y = n.y + nH(n) + 34; });
+    }
+    b.nodes.forEach(function (n) {
+      if (n.t !== "nota") return;
+      var best = 0; for (var k = 0; k < cw.length; k++) if (ox[k] != null && Math.abs(ox[k] - n.x) < Math.abs(ox[best] - n.x)) best = k;
+      n.x = cx[best];
+    });
+    delete b.lay; saveBuilds();
+  }
   function bldSigOn(b) { return b.mode === "live" && b.sig !== false; }
   // ---- storico sul telefono: ogni volta che una strategia scatta su una partita (per nodo Gioca), la prima volta
   var blog = (function () { try { var x = JSON.parse(localStorage.getItem(BLOG_KEY)); return Array.isArray(x) ? x : []; } catch (e) { return []; } })();
@@ -7561,6 +7644,7 @@
   }
   function mieHtml() {
     var sp = "tutti"; try { sp = localStorage.getItem(MIE_KEY) || "tutti"; } catch (e) {}
+    builds.forEach(bldLayout);
     var L = builds.slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); }).filter(function (b) { return sp === "tutti" || b.sport === sp; });
     var chips = '<div class="chips" style="margin:10px 0 4px;">' + [["tutti", "Tutte"], ["calcio", EMOJI.calcio + " " + NAME.calcio], ["tennis", EMOJI.tennis + " " + NAME.tennis]].map(function (x) {
       var n = x[0] === "tutti" ? builds.length : builds.filter(function (b) { return b.sport === x[0]; }).length;
