@@ -594,6 +594,7 @@
   .ndot{position:absolute;width:10px;height:10px;border-radius:50%;background:#E5322D;box-shadow:0 0 0 2px var(--surface);pointer-events:none;animation:ndotpop .35s cubic-bezier(.3,1.6,.5,1);}
   .tab .ndot{top:4px;left:calc(50% + 7px);}
   .chips.subtabs .chip .ndot{top:-1px;right:-1px;}
+  #mebar .meav,.occhiocard{position:relative;} #mebar .meav > .ndot{top:0;left:34px;right:auto;} .occhiocard > .ndot{top:8px;right:8px;}
   .segbar button .ndot{top:5px;right:8px;}
   @keyframes ndotpop{from{transform:scale(0);}to{transform:scale(1);}}
   .card.post.isnew{border-color:color-mix(in srgb, #E5322D 55%, var(--line));box-shadow:0 0 0 1px color-mix(in srgb, #E5322D 30%, transparent);}
@@ -1361,13 +1362,10 @@
 </main>
 
 <main class="view" id="view-occhio" hidden>
-  <div class="chips subtabs" role="tablist">
-    <button class="chip" type="button" data-sub="profilo" aria-pressed="false"><svg class="ico"><use href="#i-handshake"/></svg> Home</button>
-    <button class="chip" type="button" data-sub="occhio" aria-pressed="true"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
-  </div>
-  <div id="occhiolevel"></div>
-  <div class="eyebrow" style="margin-top:18px;">Il mio occhio</div>
+  <button class="back" type="button" data-back="mio">‹ Profilo</button>
+  <h1 class="dtitle">Il mio occhio</h1>
   <div id="diariokpi"></div>
+  <div id="occhiolevel"></div>
   <h2 class="sectiontitle">Badge</h2>
   <div id="occhiobadges"></div>
   <h2 class="sectiontitle">Classifica</h2>
@@ -1381,10 +1379,6 @@
 </main>
 
 <main class="view" id="view-profilo" hidden>
-  <div class="chips subtabs" role="tablist">
-    <button class="chip" type="button" data-sub="profilo" aria-pressed="true"><svg class="ico"><use href="#i-handshake"/></svg> Home</button>
-    <button class="chip" type="button" data-sub="occhio" aria-pressed="false"><svg class="ico"><use href="#i-eye"/></svg> Il mio occhio</button>
-  </div>
   <div id="mebar"></div>
   <div id="bacheca"></div>
   <input type="file" id="fotoinput" accept="image/*" hidden>
@@ -2477,7 +2471,7 @@
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { diario: "calendario", dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "calendario", catalogo: "strategie", occhio: "diario", campionati: "calendario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
+    var tabView = { diario: "calendario", dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "calendario", catalogo: "strategie", occhio: "diario", mio: "diario", campionati: "calendario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
     document.querySelectorAll(".tab, .topdirect").forEach(function (t) {
       if ((t.dataset.view || (t.id === "directbtn" ? "direct" : "")) === ({ chat: "direct" }[tabView] || tabView)) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -4004,7 +3998,10 @@
         + '<button class="iconbtn" type="button" data-gosettings="1" aria-label="Impostazioni">' + ic("gear") + '</button></div>'
         + (me.bio ? '<div class="mebio" translate="no">' + esc(me.bio) + '</div>'
           : '<button class="linkbtn mebio empty" type="button" data-meedit="1">' + ic("pen") + ' Scrivi la tua bio</button>')
-        + heroesHtml(R2) + greedHtml(greedOf(histItems().slice().reverse().filter(function (x) { return !x.legs; }).map(function (x) { return x.odds; })))
+        + heroesHtml(R2)
+        // Il mio occhio (07/10 sera): non e' piu' una scheda del Diario, si apre da qui (foto del profilo)
+        + '<button class="card sportpick occhiocard" type="button" data-occhio="1">' + ic("eye") + ' <b>Il mio occhio</b><span class="k">Come vai contro le quote, sfide, jolly, badge, classifica e le tue giocate</span>' + ic("chev") + '</button>'
+        + greedHtml(greedOf(histItems().slice().reverse().filter(function (x) { return !x.legs; }).map(function (x) { return x.odds; })))
         + '<button class="card sportpick" type="button" data-appunti="1">' + ic("pen") + ' <b>Appunti</b><span class="k">Solo tu: appunti e schedine salvate</span></button>'
         + '<button class="card sportpick" type="button" data-miei="1">' + ic("diario") + ' <b>I miei pronostici</b><span class="k">' + won + ' vinti su ' + closed.length + ' chiusi · tutto lo storico</span></button>'
         + albumCard(R2)
@@ -5697,8 +5694,8 @@
   function paintDots() {
     function all(sel, on) { document.querySelectorAll(sel).forEach(function (el) { setDot(el, on); }); }
     all('.tab[data-view="diario"]', dots.feed || dots.esiti || dots.chest);
-    all('[data-sub="profilo"]', dots.feed || dots.esiti || dots.chest);
-    all('[data-sub="occhio"]', dots.esiti || dots.chest);
+    all("#mebar .meav", dots.esiti || dots.chest);
+    all("#profilo .occhiocard", dots.esiti || dots.chest);
     all('[data-bview="home"]', dots.feed);
     all('[data-bview="miei"]', dots.esiti);
   }
@@ -5977,6 +5974,7 @@
     if (ds.appunti) { openAppunti(); return; }
     if (ds.miei) { bview = "miei"; renderBacheca(); show("profilo"); window.scrollTo(0, 0); return; }
     if (ds.meedit) { startEdit(); return; }
+    if (ds.occhio) { renderOcchio(); show("occhio"); window.scrollTo(0, 0); return; }
     if (ds.gosettings) { $("settingsbtn").click(); return; }
     if (!meEdit) return;
     if (pickerClick(meEdit, b)) { keepScroll($("profilo"), renderProfilo); return; }
@@ -6210,9 +6208,6 @@
     when = b.dataset.when;
     document.querySelectorAll("#timechips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c === b)); });
     if (data) renderFeed();
-  });
-  document.querySelectorAll(".subtabs").forEach(function (box) {
-    box.addEventListener("click", function (e) { var b = e.target.closest("[data-sub]"); if (b) show(b.dataset.sub); });
   });
   function paintTema() {
     document.querySelectorAll("#temachips .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.tema === window.getTema())); });

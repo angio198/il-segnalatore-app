@@ -3,6 +3,7 @@
 // in tutti e due i file (prova: node app/prova_spagnolo.js controlla che le chiavi siano le stesse).
 // In spagnolo i decimali restano con la virgola ("1,81").
 window.I18N_ES = {
+  "Come vai contro le quote, sfide, jolly, badge, classifica e le tue giocate": "Cómo te va contra las cuotas, retos, comodines, insignias, clasificación y tus jugadas",
   "Cerca un campionato": "Buscar una liga",
   "In primo piano": "Destacados",
   "Campionati preferiti": "Ligas favoritas",

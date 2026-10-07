@@ -21,6 +21,7 @@ window.I18N_EN = {
   "Trading sul servizio (punta prima": "Trading on serve (back before",
   "banca dopo)": "lay after)",
   // <<< generate da i18n_aggiungi.py
+  "Come vai contro le quote, sfide, jolly, badge, classifica e le tue giocate": "How you do against the odds, challenges, jokers, badges, leaderboard and your picks",
   "Cerca un campionato": "Find a league",
   "In primo piano": "Featured",
   "Campionati preferiti": "Favourite leagues",
