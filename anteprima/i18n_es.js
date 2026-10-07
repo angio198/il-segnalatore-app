@@ -3,6 +3,17 @@
 // in tutti e due i file (prova: node app/prova_spagnolo.js controlla che le chiavi siano le stesse).
 // In spagnolo i decimali restano con la virgola ("1,81").
 window.I18N_ES = {
+  "sta vincendo": "va ganando",
+  "sta perdendo": "va perdiendo",
+  "in equilibrio": "igualado",
+  "giocata prima del via": "jugada antes del inicio",
+  "Scattata anche: *": "También saltó: *",
+  "Multipla · # partite": "Combinada · # partidos",
+  "Singole · #": "Simples · #",
+  "Nessuna giocata in corso. Gioca un segnale o una partita: la segui qui fino al risultato, poi va nello storico.": "Ninguna jugada en curso. Juega una señal o un partido: lo sigues aquí hasta el resultado, luego pasa al histórico.",
+  "Appena chiuse": "Recién cerradas",
+  "Tutto lo storico": "Todo el histórico",
+  "Apri la partita": "Abrir el partido",
   "Calendario": "Calendario",
   "Esplora": "Explorar",
   "Menu": "Menú",
@@ -1746,6 +1757,8 @@ window.I18N_ES = {
 
 // parole fisse dei messaggi dei bot dentro testi con nomi propri (stesse regole di I18N_EN_FRAG)
 window.I18N_ES_FRAG = [
+  [/^giocata al (\d+)' sul (\S+)$/, "jugada en el $1' con $2"],
+  [/^giocata live sul (\S+)$/, "jugada en directo con $1"],
   [/, ultime due settimane: ([\d,]+) gol a partita, Over 2,5 nel (\d+%) delle partite, segnano entrambe nel (\d+%)\./, ", últimas dos semanas: $1 goles por partido, Over 2,5 en el $2 de los partidos, marcan ambos en el $3."],
   [/, ultimi 30 giorni: il favorito della quota prima del via ha vinto (\d+) volte su (\d+) \((\d+%)\)\./, ", últimos 30 días: el favorito de la cuota antes del inicio ganó $1 veces de $2 ($3)."],
   [/^La quota media ([\d,]+) prometteva il (\d+%): /, "La cuota media $1 prometía el $2: "],

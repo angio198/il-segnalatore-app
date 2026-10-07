@@ -562,6 +562,21 @@
   #esplq{margin:4px 0 6px;}
   #view-diario.calmode .subtabs,#view-diario.calmode #dviewchips{display:none;} #view-diario:not(.calmode) .calttl{display:none;}
   .meavbtn{border:none;background:none;padding:0;cursor:pointer;border-radius:22px;}
+  /* Live: le tue giocate in corso */
+  .lvcard{padding:12px 14px;} .lvhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-bottom:6px;} .lvhead .k{margin-left:auto;font-size:0.76rem;}
+  .lvcoins{display:inline-flex;align-items:center;gap:4px;font-weight:700;} .lvcoins .ico{width:16px;height:16px;}
+  .lvleg{padding:10px 0;border-top:1px solid var(--line);cursor:pointer;} .lvleg:first-of-type{border-top:none;} .lvleg.done{display:flex;justify-content:space-between;gap:8px;cursor:default;font-size:0.86rem;}
+  .lvtop{display:flex;justify-content:space-between;align-items:center;gap:8px;} .lvev{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .lvmin{display:inline-flex;align-items:center;gap:6px;font-weight:800;color:#E5322D;font-variant-numeric:tabular-nums;flex:none;}
+  .lvscore{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:10px 0 6px;text-align:center;font-size:0.86rem;}
+  .lvscore b{font-size:1.9rem;font-variant-numeric:tabular-nums;letter-spacing:.02em;} .lvscore span{overflow:hidden;text-overflow:ellipsis;}
+  .lvpick{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;}
+  .lvnow{font-size:0.74rem;font-weight:800;border-radius:999px;padding:3px 9px;flex:none;} .lvnow.pos{background:#2BB673;color:#fff;} .lvnow.neg{background:#C8362B;color:#fff;} .lvnow.eq{background:var(--bg);border:1px solid var(--line);}
+  .lvwhen{margin-top:2px;} .lvother{margin-top:6px;font-size:0.78rem;font-weight:700;color:var(--accent-strong);display:flex;align-items:center;gap:6px;}
+  .lvcard.closed .lvhead{margin:0;} .lvcard.closed .lvhead b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;}
+  .tab .ndot.lv{background:#E5322D;animation:ndotpop .35s cubic-bezier(.3,1.6,.5,1),lvpulse 1.6s ease-in-out infinite;} @keyframes lvpulse{50%{box-shadow:0 0 0 5px rgba(229,50,45,.25);}}
+  .stakein{width:5.2em;font:inherit;font-weight:800;font-size:1.05rem;text-align:center;padding:4px 6px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);}
+  .openmatch{margin:10px 0 4px;}
   .tab .ic .ico{transition:transform .2s;}
   .tab:not([aria-current="page"]) .ic .ico{opacity:.72;filter:saturate(.6);}
   .tab[aria-current="page"] .ic{background:color-mix(in srgb, var(--accent) 22%, transparent);}
@@ -1565,6 +1580,8 @@
         + (TIMING_NOTE[sig.timing] ? '<div><span class="k">' + esc(TIMING_NOTE[sig.timing]) + '</span></div>' : "")
         + '</div>';
     }
+    var se = evList().filter(function (x) { return x.sport === base.sport && sameMatch(x, base.event); })[0];
+    if (se) html += '<button class="chip openmatch" type="button" data-match="' + se.id + '">' + ic("radar") + ' Apri la partita</button>';
     if (sig && sig.extra && sig.extra.length) {
       html += '<h2 class="sectiontitle">Strategie del bot</h2><div class="facts">'
         + sig.extra.map(function (e) { return '<div>' + esc(e.text) + '</div>'; }).join("") + '</div>';
@@ -1672,7 +1689,7 @@
       var sname = nameOf(f.main || f.strategy) || f.strategy, pl = sigPlay(f);
       return '<div class="card feedcard" data-idx="' + i + '">' + top
         + '<div class="pickrow"><span>Indicazione: <b>' + esc(f.pick) + '</b></span>' + ev + '</div>'
-        + (sname ? '<div class="sname">Strategia: <b>' + esc(sname) + '</b></div>' : "")
+        + (sname ? '<div class="sname">Strategia: <b>' + esc(sname) + '</b>' + esc(stratRoi(f.main || f.strategy)) + '</div>' : "")
         + '<div class="meta">' + (f.prob != null ? esc(f.prob_label) + ' ' + f.prob + '% · ' : "") + 'Quota ' + oddsTxt(f.odds) + '</div>'
         + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml
         + '<div class="sigbtns">' + (f.timing !== "prepartita" ? '<a class="tglink" href="' + TG_BOT + '" target="_blank" rel="noopener">' + ic("send") + ' Collega Telegram</a>' : "<span></span>")
@@ -1984,7 +2001,7 @@
       + '<div class="event">' + esc(x.m.r.join(" v ")) + '</div>'
       + '<div class="pickrow"><span>' + (done ? ic(hit ? "check" : "x", hit ? "pos" : "neg") + " " : "") + 'Indicazione: <b>' + esc(x.m.r[x.side - 1]) + '</b></span>'
       + (done ? '<span class="ev ' + (hit ? "pos" : "neg") + '">' + (hit ? "VINTO" : "PERSO") + '</span>' : "") + '</div>'
-      + '<div class="sname">Strategia: <b>' + esc(x.s.name) + '</b></div>'
+      + '<div class="sname">Strategia: <b>' + esc(x.s.name) + '</b>' + esc(stratRoi(x.s.id)) + '</div>'
       + '<div class="meta">Quota ' + oddsTxt(x.odds) + ' · set ' + esc(sc[0]) + ', game ' + esc(sc[1] || "") + '</div>'
       + '<span class="badge info">LE TUE BARRE</span>'
       + (!done && catPlay(x) ? '<div class="sigbtns"><span></span><button class="playbtn" type="button" data-play="c' + esc(x.s.id) + '|' + esc(x.m.r.join("|")) + '|' + x.side + '">' + ic("coin") + ' Gioca</button></div>' : "") + '</div>';
@@ -2461,9 +2478,52 @@
     try { localStorage.setItem(ATT_KEY, String(nowS())); } catch (e) {}
     paintAttDot();
   }
+  // Live (07/10 sera): le tue giocate in corso, in un formato diverso dal Radar: punteggio della partita adesso,
+  // quando l'hai giocata (minuto e punteggio), quante monete, come sta andando. Toccando la partita: la scheda classica.
+  function legNow(l, e) {   // come sta andando l'esito adesso (solo 1X2 e vincente del tennis), null se non si sa
+    if (!e || !e.live || !e.st) return null;
+    if (e.sport === "calcio" && /^(1|X|2)$/.test(l.code)) {
+      var sc = scoreOf(e.st.score); if (!sc) return null;
+      var w = sc[0] > sc[1] ? "1" : sc[0] < sc[1] ? "2" : "X";
+      return w === l.code ? "pos" : "neg";
+    }
+    if (e.sport === "tennis" && /^W[12]$/.test(l.code)) {
+      var st = String(e.st.sets || "").split(/\s*-\s*/).map(Number); if (st.length !== 2 || isNaN(st[0])) return null;
+      if (st[0] === st[1]) return "eq";
+      return (st[0] > st[1]) === (l.code === "W1") ? "pos" : "neg";
+    }
+    return null;
+  }
+  var NOW_TXT = { pos: "sta vincendo", neg: "sta perdendo", eq: "in equilibrio" };
+  function liveLegHtml(l, big) {
+    var e = evById(Number(l.event_id)), st = (e && e.st) || {}, now = legNow(l, e), sc = e && e.live ? scoreOf(st.score) : null;
+    var when = l.live ? (l.minute != null ? "giocata al " + l.minute + "'" : "giocata live") + (l.score ? " sul " + l.score : "") : "giocata prima del via";
+    var other = e ? radarStrats(e).filter(function (x) { return !x.done && !x.lock; }).map(function (x) { return x.name; }) : [];
+    return '<div class="lvleg' + (e ? '" data-match="' + e.id + '" role="button" tabindex="0"' : '"') + '>'
+      + '<div class="lvtop"><span class="lvev">' + (EMOJI[l.sport] || "") + ' <b>' + esc(l.event) + '</b></span>'
+      + (e && e.live ? '<span class="lvmin"><span class="dot live"></span>' + esc(estMinute(e) || "LIVE") + '</span>' : e ? '<span class="k">' + esc(startLabel(e.start)) + '</span>' : '<span class="k">' + ic("clock") + '</span>') + '</div>'
+      + (big && sc ? '<div class="lvscore"><span translate="no">' + esc(e.home) + '</span><b>' + sc[0] + ' - ' + sc[1] + '</b><span translate="no">' + esc(e.away) + '</span></div>' : "")
+      + (big && e && e.sport === "tennis" && e.live ? '<div class="lvscore"><span translate="no">' + esc(e.home) + '</span><b>' + esc(st.sets || "0-0") + '</b><span translate="no">' + esc(e.away) + '</span></div>' : "")
+      + '<div class="lvpick"><span>' + esc(l.label) + ' <b>@ ' + oddsTxt(l.odds) + '</b></span>' + (now ? '<span class="lvnow ' + now + '">' + NOW_TXT[now] + '</span>' : "") + '</div>'
+      + '<div class="k lvwhen">' + esc(when) + '</div>'
+      + (other.length ? '<div class="lvother">' + ic("strategie") + ' Scattata anche: ' + esc(other.join(", ")) + '</div>' : "") + '</div>';
+  }
   function renderLive() {
-    var open = histItems().filter(function (x) { return x.result == null; });
-    $("livebets").innerHTML = open.length ? open.map(function (x) { return '<div class="card post" data-pick="' + esc(x.key) + '">' + esc(x.event) + '</div>'; }).join("") : '<div class="note">Nessuna giocata in corso.</div>';
+    if (!data) return;
+    var now = nowS(), all = allSlips(), open = all.filter(function (s) { return !s.resolved_at; }), done = mySlips.filter(function (s) { return s.resolved_at && now - s.resolved_at < 6 * 3600; });
+    function card(s) {
+      var head = s.mode === "singole" ? (s.legs.length > 1 ? "Singole · " + s.legs.length : "Singola") : s.mode === "multipla" ? "Multipla · " + s.legs.length + " partite" : "Sistema " + s.k + "/" + s.n;
+      var stake = s.stake ? s.stake * (s.mode === "singole" ? s.legs.length : 1) : 0;
+      return '<div class="card lvcard"><div class="lvhead"><b>' + esc(head) + '</b>' + (s.mode !== "singole" && s.odds ? '<span>@ ' + oddsTxt(s.odds) + '</span>' : "")
+        + (stake ? '<span class="lvcoins">' + ic("coin") + ' ' + stake + ' monete</span>' : "") + '<span class="k">' + whenLabel(s.created_at) + '</span></div>'
+        + s.legs.map(function (l) { return l.result != null ? '<div class="lvleg done"><span>' + esc(l.event) + ' · ' + esc(l.label) + '</span><span class="' + (l.result === 1 ? "pos" : l.result === 0 ? "neg" : "k") + '">' + (l.result === 1 ? "vinto" : l.result === 0 ? "perso" : "nullo") + '</span></div>' : liveLegHtml(l, s.legs.length === 1); }).join("") + '</div>';
+    }
+    $("livebets").innerHTML = (open.length ? open.map(card).join("") : '<div class="note">Nessuna giocata in corso. Gioca un segnale o una partita: la segui qui fino al risultato, poi va nello storico.</div>')
+      + (done.length ? '<h2 class="sectiontitle">Appena chiuse</h2>' + done.map(function (s) {
+        return '<div class="card lvcard closed"><div class="lvhead"><b>' + esc(s.legs.map(function (l) { return l.event; }).join(", ")) + '</b><span class="' + (s.won === 1 ? "pos" : s.won === 0 ? "neg" : "k") + '">' + (s.won === 1 ? "vinto" : s.won === 0 ? "perso" : "nullo") + '</span></div></div>';
+      }).join("") + '<button class="chip" type="button" data-livehist="1">' + ic("diario") + ' Tutto lo storico</button>' : "");
+    var t = document.querySelector('.tab[data-view="live"]');
+    if (t) { var dd = t.querySelector(".ndot"), on2 = open.length > 0; if (on2 && !dd) t.insertAdjacentHTML("beforeend", '<span class="ndot lv"></span>'); else if (!on2 && dd) dd.remove(); }
   }
   function paintAttDot() {
     var t = document.querySelector('.tab[data-view="attivita"]'); if (!t || !data) return;
@@ -3156,7 +3216,7 @@
     var tot = Regole.totalOdds(S0.mode, S0.k, S0.legs.map(function (l) { return l.odds; }));
     return '<div class="dslip"><div class="dsh">' + ic("diario") + ' <b>' + (S0.mode === "multipla" ? "Multipla" : S0.mode === "sistema" ? "Sistema " + S0.k + "/" + S0.legs.length : "Schedina") + '</b>'
       + (S0.by ? '<span class="k"> · di <span translate="no">' + esc(S0.by) + '</span></span>' : "") + '</div>'
-      + S0.legs.map(function (l) { return '<div class="dleg"><span>' + (EMOJI[l.sport] || "") + ' ' + esc(l.ename) + '</span><span><b>' + esc(l.label || l.code) + '</b> @ ' + oddsTxt(l.odds) + '</span></div>'; }).join("")
+      + S0.legs.map(function (l) { return '<div class="dleg"' + (evById(Number(l.event)) ? ' data-match="' + l.event + '" role="button" tabindex="0"' : "") + '><span>' + (EMOJI[l.sport] || "") + ' ' + esc(l.ename) + '</span><span><b>' + esc(l.label || l.code) + '</b> @ ' + oddsTxt(l.odds) + '</span></div>'; }).join("")
       + '<div class="dleg tot"><span>' + (S0.stake ? S0.stake + " monete" : "") + '</span><span>' + (tot ? 'Quota totale <b>' + oddsTxt(tot) + '</b>' : "") + '</span></div>'
       + (open ? '<button class="chip copybtn" type="button" data-copy="' + esc(id) + '">' + ic("copy") + ' Copia</button>' : '<div class="k">Partite già iniziate o non più nei dati: non si copia.</div>') + '</div>';
   }
@@ -3371,7 +3431,7 @@
     if (social.hidden[pid]) return reportedCard(pid);
     return '<div class="card post"><button class="phead" type="button" data-persona="' + p.id + '">' + avatar(p.id, 40)
       + '<span class="pwho"><b>' + esc(p.name) + ' · ' + esc(p.nick) + '</b>' + teamBadge() + greedChip(p.greed) + '</span><span class="time">' + whenLabel(x.ts) + '</span></button>'
-      + '<div class="pev">' + EMOJI[x.sport] + ' ' + esc(x.event) + '<span class="k"> · ' + esc(shortComp(x.comp || "")) + '</span></div>'
+      + '<div class="pev"' + (x.eid && evById(Number(x.eid)) ? ' data-match="' + x.eid + '" role="button" tabindex="0"' : "") + '>' + EMOJI[x.sport] + ' ' + esc(x.event) + '<span class="k"> · ' + esc(shortComp(x.comp || "")) + '</span>' + (x.eid && evById(Number(x.eid)) ? ic("chev", "pchev") : "") + '</div>'
       + '<div class="pickrow"><span><b>' + esc(x.label) + '</b> @ ' + oddsTxt(x.odds) + '</span>' + resTag(x.result) + '</div>' + copyBtn(pid, x) + socialBar(pid) + '</div>';
   }
 
@@ -3502,7 +3562,7 @@
     var pid = "m:" + x.key;
     return '<div class="card post mine"><div class="phead">' + myAvatar(40) + '<span class="pwho"><b translate="no">' + esc(me.name || "Tu") + '</b></span><span class="time">' + whenLabel(x.ts) + '</span></div>'
       + (x.text ? '<div class="ptext" translate="no">' + esc(x.text) + '</div>' : "")
-      + '<div class="pev">' + (EMOJI[x.sport] || ic("layers")) + ' ' + esc(x.event) + '</div>'
+      + '<div class="pev"' + (x.refs && x.refs.length === 1 && evById(Number(x.refs[0].event)) ? ' data-match="' + x.refs[0].event + '" role="button" tabindex="0"' : "") + '>' + (EMOJI[x.sport] || ic("layers")) + ' ' + esc(x.event) + '</div>'
       + pickBody(x) + socialBar(pid, true) + '</div>';
   }
   // Ordine del feed (social_v1 5.2) con app/feed_rank.js, la stessa funzione del server. L'affinita' (con chi e con
@@ -4253,6 +4313,19 @@
   function isFull() { try { return (localStorage.getItem(PLAN_KEY) || "full") === "full"; } catch (e) { return true; } }
   function lockedCell(label) { return !isFull() && PREMIUM_STATS.indexOf(label) >= 0; }
 
+  // la scheda della partita e' una sola (07/10 sera): Radar, Calendario, Segnali, Live, post, Direct, Esplora aprono
+  // tutti renderGiocata con l'id dell'evento; "Indietro" riporta alla pagina da cui sei arrivato
+  var matchBack = "diario";
+  function openMatch(id) {
+    var v = curView(); if (v && v !== "giocata") matchBack = v;
+    curTab = null; renderGiocata(id);
+    var b = document.querySelector("#view-giocata .back"); if (b) { b.dataset.back = matchBack; b.textContent = "‹ Indietro"; }
+    $("view-giocata").scrollTop = 0; window.scrollTo(0, 0);
+  }
+  document.addEventListener("click", function (e) {
+    var m = e.target.closest("[data-match]"); if (!m || !data || !evById(Number(m.dataset.match))) return;
+    e.preventDefault(); e.stopPropagation(); openMatch(m.dataset.match);
+  }, true);
   function renderGiocata(id) {
     var e = evById(Number(id));
     if (!e) return;
@@ -4320,7 +4393,7 @@
     html += '<div class="stakebox"><div class="stakehead">' + ic("coin") + '<b>Monete da puntare</b><span class="k">hai ' + st.coins + ' monete</span></div>'
       + (st.max < STAKE_MIN ? '<div class="k">Servono almeno ' + STAKE_MIN * st.units + ' monete per puntare: il pronostico vale comunque punti lega e XP.</div>'
         : '<div class="stakerow"><button class="iconbtn" type="button" data-stake="-1" aria-label="Meno monete"' + (st.stake <= STAKE_MIN ? " disabled" : "") + '>' + ic("minus") + '</button>'
-          + '<span class="stakev"><b>' + st.stake + '</b> ' + (slip.mode === "singole" && st.units > 1 ? "monete per esito" : "monete") + '</span>'
+          + '<span class="stakev"><input class="stakein" id="stakein" type="number" inputmode="numeric" min="1" max="' + st.max + '" step="1" value="' + st.stake + '" aria-label="Monete da puntare"> ' + (slip.mode === "singole" && st.units > 1 ? "monete per esito" : "monete") + '</span>'
           + '<button class="iconbtn" type="button" data-stake="1" aria-label="Più monete"' + (st.stake >= st.max ? " disabled" : "") + '>+</button>'
           + '<button class="chip" type="button" data-stake="max">Tutte</button></div>'
           + '<div class="k">' + (st.units > 1 ? "Totale " + st.cost + " monete. " : "")
@@ -4371,10 +4444,10 @@
   // ---- monete puntate (richiesta 04/10): solo monete guadagnate, mai soldi. Minimo 5, a passi di 5, al massimo
   // quelle che hai. Singole: la puntata vale per ogni esito. Si scala alla conferma; alla chiusura torna la puntata
   // piu' puntata x punti (vinta: quota - 1; persa: -1; nulla: 0). Punti lega e XP non cambiano.
-  var STAKE_MIN = 5, STAKE_STEP = 5, STAKE_DEFAULT = 10;
+  var STAKE_MIN = 1, STAKE_STEP = 5, STAKE_DEFAULT = 10;   // 07/10 sera: i pulsanti vanno di 5, ma il numero si scrive
   function stakeInfo() {
     var coins = rewardState(pronostici()).coins, units = slip.mode === "singole" ? Math.max(1, slip.legs.length) : 1;
-    var max = Math.floor(coins / units / STAKE_STEP) * STAKE_STEP;
+    var max = Math.floor(coins / units);
     if (slip.stake == null) slip.stake = STAKE_DEFAULT;
     var stake = max < STAKE_MIN ? 0 : Math.max(STAKE_MIN, Math.min(slip.stake, max));
     return { coins: coins, units: units, max: max, stake: stake, cost: stake * units };
@@ -4447,9 +4520,8 @@
     slip.legs = []; slip.mode = "singole"; slip.jolly = null; saveSlip(); paintSlipBar();
     slipText = ""; slipMsg = ""; bview = "home";
     renderAll(); renderSchedina();
-    show("profilo");
-    if (stk.cost) { fxToast("coin", "Pronostico pubblicato", "−" + stk.cost + " monete puntate"); var cb = coinEl(); if (cb) countUp(Number(cb.textContent) + stk.cost, Number(cb.textContent)); }
-    var b = $("bacheca"); if (b) b.scrollIntoView();
+    show("live"); window.scrollTo(0, 0);
+    if (stk.cost) fxToast("coin", "Pronostico pubblicato", "−" + stk.cost + " monete puntate");
   }
   // salva fra i tuoi pronostici la schedina corrente (gia' controllata); restituisce la puntata
   function commitSlip(text) {
@@ -4544,14 +4616,14 @@
   function paintPlay() {
     var d = $("playsheet"); if (!d) return;
     var P = playOf(d.dataset.key); if (!P) { closePlay(); return; }
-    var leg = legOf(P.e, P.code), coins = rewardState(pronostici()).coins, max = Math.floor(coins / STAKE_STEP) * STAKE_STEP;
+    var leg = legOf(P.e, P.code), coins = rewardState(pronostici()).coins, max = coins;
     var stake = max < STAKE_MIN ? 0 : Math.max(STAKE_MIN, Math.min(playStake, max));
     d.innerHTML = '<div class="pscard">'
       + '<div class="pshead"><span class="k">' + (EMOJI[P.e.sport] || "") + ' ' + esc(P.sname ? "Strategia: " + P.sname : "Segnale") + '</span><button class="psx" type="button" data-psclose="1" aria-label="Chiudi">' + ic("x") + '</button></div>'
       + '<div class="psev">' + esc(leg.ename) + '</div>'
       + '<div class="pspick">' + esc(leg.label) + ' <b>@ ' + oddsTxt(leg.odds) + '</b></div>'
       + (stake ? '<div class="psstake"><button class="chip" type="button" data-psstep="-1" aria-label="Meno monete">' + ic("minus") + '</button>'
-        + '<span class="psn">' + ic("coin") + ' <b>' + stake + '</b> monete</span>'
+        + '<span class="psn">' + ic("coin") + ' <input class="stakein" id="psstakein" type="number" inputmode="numeric" min="1" max="' + max + '" step="1" value="' + stake + '" aria-label="Monete da puntare"> monete</span>'
         + '<button class="chip" type="button" data-psstep="1" aria-label="Più monete">+</button></div>'
         + '<div class="k pssub">hai ' + coins + ' monete · Se vince ricevi ' + stakePayout(stake, leg.odds - 1) + ' monete.</div>'
         : '<div class="k pssub">Servono almeno ' + STAKE_MIN + ' monete per puntare: il pronostico vale comunque punti lega e XP.</div>')
@@ -4583,9 +4655,12 @@
     var nx = nextPlayKey(key);
     if (nx) { d.dataset.key = nx; paintPlay(); return; }
     closePlay(); playDone = 0;
-    bview = "miei"; mieiF = "attesa"; renderBacheca(); show("profilo");
-    var b = $("bacheca"); if (b) b.scrollIntoView();
+    renderLive(); show("live"); window.scrollTo(0, 0);
   }
+  document.addEventListener("change", function (e) {
+    if (e.target.id !== "psstakein") return;
+    var v = Math.round(Number(e.target.value)); if (v > 0) playStake = v; paintPlay();
+  });
   document.addEventListener("click", function (e) {
     var d = $("playsheet"); if (!d || !d.contains(e.target)) return;
     if (e.target === d || e.target.closest("[data-psclose]")) { closePlay(); return; }
@@ -4651,7 +4726,7 @@
     var rc2 = ev.target.closest("button[data-race]"); if (rc2) { renderRace(rc2.dataset.race); return; }
     var t = ev.target.closest("button.otile[data-code]");
     if (t) { var e = evById(Number(t.dataset.ev)); if (e) { toggleLeg(e, t.dataset.code); renderDiario(); } return; }
-    var o = ev.target.closest("[data-open]"); if (o) { curTab = null; renderGiocata(o.dataset.open); }
+    var o = ev.target.closest("[data-open]"); if (o) { openMatch(o.dataset.open); }
   });
   $("giocata").addEventListener("click", function (ev) {
     var t = ev.target.closest("button.otile[data-code]");
@@ -4671,6 +4746,10 @@
     renderSchedina(); show("schedina");
   });
   $("slipbar").addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && e.target.id === "slipbar") { e.preventDefault(); renderSchedina(); show("schedina"); } });
+  $("schedina").addEventListener("change", function (ev) {
+    if (ev.target.id !== "stakein") return;
+    var v = Math.round(Number(ev.target.value)); if (v > 0) { slip.stake = v; saveSlip(); } renderSchedina();
+  });
   $("schedina").addEventListener("click", function (ev) {
     var sb = ev.target.closest("[data-jbuy]"); if (sb) { if (buyJolly(sb.dataset.jbuy)) { slip.jolly = sb.dataset.jbuy; saveSlip(); } renderSchedina(); return; }
     var sj = ev.target.closest("[data-sljolly]"); if (sj) { slip.jolly = slip.jolly === sj.dataset.sljolly ? null : sj.dataset.sljolly; saveSlip(); renderSchedina(); return; }
@@ -4752,7 +4831,7 @@
     (data.feed || []).forEach(function (f) {
       if (f.kind !== "signal" || f.sport !== e.sport || nowS() - f.ts > 4 * 3600 || !sameMatch(e, f.event)) return;
       var sid = f.main || f.strategy, o = f.key && outc[f.key];
-      out.push({ id: "f:" + (f.key || sid), open: "d:" + sid, name: nameOf(sid) || sid, lock: catLocked(sid), done: !!o, hit: !!(o && o.hit), pick: f.pick, odds: f.odds });
+      out.push({ id: "f:" + (f.key || sid), open: "d:" + sid, name: (nameOf(sid) || sid) + stratRoi(sid), lock: catLocked(sid), done: !!o, hit: !!(o && o.hit), pick: f.pick, odds: f.odds });
     });
     var L = liveOf(e.sport), c = catOf(e.sport);
     if (L && c && c.strategies) c.strategies.forEach(function (s) {
@@ -4761,12 +4840,23 @@
         var i = m.t[s.id] && m.t[s.id][key];
         if (i == null || !sameMatch(e, (m.r || []).join(" v "))) return;
         var k = m.k[i], done = m.w === 1 || m.w === 2;
-        out.push({ id: "c:" + s.id + ":" + (m.r || []).join("|"), open: "c:" + s.id, name: s.name, lock: catLocked(s.id), done: done, hit: done && m.w === k[1], pick: m.r[k[1] - 1], odds: k[2] });
+        out.push({ id: "c:" + s.id + ":" + (m.r || []).join("|"), open: "c:" + s.id, name: s.name + stratRoi(s.id), lock: catLocked(s.id), done: done, hit: done && m.w === k[1], pick: m.r[k[1] - 1], odds: k[2] });
       });
     });
     return out;
   }
   var RADARWIN_KEY = "statsight.radarvinte", radarWins = (function () { try { return JSON.parse(localStorage.getItem(RADARWIN_KEY)) || {}; } catch (e) { return {}; } })();
+  // rendimento della strategia fra parentesi (07/10 sera): storico del catalogo (almeno 30 casi) o della cella delle barre
+  function stratRoi(id) {
+    var s = (data.catalog || []).filter(function (c) { return c.id === id; })[0];
+    if (s) { var st = s.detail && s.detail.stats; return st && st.n >= 30 && st.roi != null ? " (" + pct(st.roi) + ")" : ""; }
+    var out = "";
+    ["calcio", "tennis", "hockey", "basket"].forEach(function (sp) {
+      var c = catOf(sp); if (out || !c || !c.strategies) return;
+      c.strategies.forEach(function (x) { if (x.id === id) { var cell = x.grid[catKey(x)]; if (cell && cell[0] >= 30 && cell[3] != null) out = " (" + pct(cell[3]) + ")"; } });
+    });
+    return out;
+  }
   function stratBadges(e) {
     var S0 = radarStrats(e); if (!S0.length) return { html: "", cls: "" };
     var html = S0.slice(0, 3).map(function (x) {
@@ -4923,8 +5013,8 @@
     if (data) renderRadar();
   });
   function openRadarStrat(v) { var id = v.slice(2); if (v[0] === "c") renderCat(id); else renderDetail(id); }
-  $("radar").addEventListener("click", function (e) { var rs = e.target.closest("[data-rstrat]"); if (rs && data) { openRadarStrat(rs.dataset.rstrat); return; } var rc = e.target.closest("[data-race]"); if (rc && data) { renderRace(rc.dataset.race); return; } var r = e.target.closest("[data-ev]"); if (r && data) { curTab = null; renderGiocata(r.dataset.ev); } });
-  $("radar").addEventListener("keydown", function (e) { var rs = e.target.closest("[data-rstrat]"); if (rs && data && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openRadarStrat(rs.dataset.rstrat); return; } var r = e.target.closest("[data-ev]"); if (r && data && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); curTab = null; renderGiocata(r.dataset.ev); } });
+  $("radar").addEventListener("click", function (e) { var rs = e.target.closest("[data-rstrat]"); if (rs && data) { openRadarStrat(rs.dataset.rstrat); return; } var rc = e.target.closest("[data-race]"); if (rc && data) { renderRace(rc.dataset.race); return; } var r = e.target.closest("[data-ev]"); if (r && data) { openMatch(r.dataset.ev); } });
+  $("radar").addEventListener("keydown", function (e) { var rs = e.target.closest("[data-rstrat]"); if (rs && data && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openRadarStrat(rs.dataset.rstrat); return; } var r = e.target.closest("[data-ev]"); if (r && data && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openMatch(r.dataset.ev); } });
 
   // ---------------------------------------------------------------- Il mio occhio: esperienza, leghe, badge
   // Regole in docs/sistema_rewarding.md. Oggi calcolate qui dai pronostici del diario; con l'app pubblica le stesse
@@ -5963,8 +6053,11 @@
   $("directbtn").addEventListener("click", openDirect);
   $("esplq").addEventListener("input", function (e) { esplQ = e.target.value; if (data) renderEsplora(); });
   $("esplora").addEventListener("click", function (e) {
-    var o = e.target.closest("[data-open]"); if (o && data) { curTab = null; renderGiocata(o.dataset.open); return; }
+    var o = e.target.closest("[data-open]"); if (o && data) { openMatch(o.dataset.open); return; }
     if (e.target.closest("[data-follow]")) setTimeout(function () { if (!$("view-esplora").hidden) renderEsplora(); }, 0);
+  });
+  $("livebets").addEventListener("click", function (e) {
+    if (e.target.closest("[data-livehist]") && data) { bview = "miei"; mieiF = "chiusi"; renderBacheca(); show("profilo"); window.scrollTo(0, 0); }
   });
   $("attivita").addEventListener("click", function (e) {
     var g = e.target.closest("[data-attgo]"); if (!g || !data) return;

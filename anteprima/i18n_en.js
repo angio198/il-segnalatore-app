@@ -21,6 +21,17 @@ window.I18N_EN = {
   "Trading sul servizio (punta prima": "Trading on serve (back before",
   "banca dopo)": "lay after)",
   // <<< generate da i18n_aggiungi.py
+  "sta vincendo": "winning",
+  "sta perdendo": "losing",
+  "in equilibrio": "level",
+  "giocata prima del via": "played before kick-off",
+  "Scattata anche: *": "Also fired: *",
+  "Multipla · # partite": "Accumulator · # matches",
+  "Singole · #": "Singles · #",
+  "Nessuna giocata in corso. Gioca un segnale o una partita: la segui qui fino al risultato, poi va nello storico.": "No picks in progress. Play a signal or a match: follow it here until the result, then it moves to your history.",
+  "Appena chiuse": "Just settled",
+  "Tutto lo storico": "Full history",
+  "Apri la partita": "Open the match",
   "Calendario": "Calendar",
   "Esplora": "Explore",
   "Menu": "Menu",
@@ -1014,6 +1025,8 @@ window.I18N_EN = {
 
 // parole fisse dentro i messaggi dei bot (con nomi propri attorno): sostituzioni puntuali
 window.I18N_EN_FRAG = [
+  [/^giocata al (\d+)' sul (\S+)$/, "played at $1' at $2"],
+  [/^giocata live sul (\S+)$/, "played live at $1"],
   [/, ultime due settimane: ([\d,]+) gol a partita, Over 2,5 nel (\d+%) delle partite, segnano entrambe nel (\d+%)\./, ", last two weeks: $1 goals per match, Over 2.5 in $2 of matches, both teams scored in $3."],
   [/, ultimi 30 giorni: il favorito della quota prima del via ha vinto (\d+) volte su (\d+) \((\d+%)\)\./, ", last 30 days: the pre-match odds favourite won $1 times out of $2 ($3)."],
   [/^La quota media ([\d,]+) prometteva il (\d+%): /, "The average odds of $1 implied $2: "], [/in linea con la quota\./, "in line with the odds."],
