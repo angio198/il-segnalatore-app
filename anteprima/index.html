@@ -886,6 +886,34 @@
   .pshare{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
   .beetatt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0;padding:6px 8px;border-radius:10px;background:var(--bg);font-size:0.8rem;} .beetatt > span:nth-child(2){flex:1;min-width:0;}
   .beetdraft{margin:4px 0;padding:4px 10px;border-radius:10px;border:1px dashed color-mix(in srgb, #4D7CFE 45%, var(--line));}
+  /* Strategy builder (08/10): blocchi coi colori di LabVIEW (numeri arancioni, si'/no verdi) */
+  .bldhero{display:flex;flex-direction:column;gap:8px;background:linear-gradient(135deg,color-mix(in srgb, #00C2A8 18%, var(--surface)),var(--surface));} .bldhero > span{font-size:0.86rem;color:var(--ink-soft);}
+  .bldrow{display:flex;align-items:center;gap:10px;width:100%;padding:10px 4px;border:none;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;}
+  .bldrow:last-child{border-bottom:none;} .bldic{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--bg);flex:none;} .bldw{flex:1;min-width:0;display:flex;flex-direction:column;} .bldw .k{font-size:0.74rem;}
+  .bldf{min-width:22px;height:22px;padding:0 6px;border-radius:999px;display:grid;place-items:center;background:#FFB400;color:#111;font-weight:900;font-size:0.76rem;}
+  .bldhead{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;} .bldhead .segbar{margin:0;}
+  .bpal{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 8px;padding:2px 16px;}
+  .bpb{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 8px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:0.68rem;font-weight:700;cursor:pointer;}
+  .bwrap{overflow:auto;margin:0 -16px;padding:0 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:radial-gradient(circle,color-mix(in srgb, var(--ink-soft) 30%, transparent) 1px,transparent 1.2px) 0 0/16px 16px,var(--bg);}
+  .bcanvas{position:relative;margin:10px 0;}
+  .bwires{position:absolute;inset:0;overflow:visible;}
+  .wire{fill:none;stroke-width:3;} .wire.n{stroke:#FF8A1F;} .wire.b{stroke:#2ED47A;stroke-dasharray:0;}
+  .whit{fill:none;stroke:transparent;stroke-width:16;cursor:pointer;pointer-events:stroke;}
+  .bnode{position:absolute;touch-action:none;cursor:grab;user-select:none;}
+  .bnode svg{position:absolute;inset:0;overflow:visible;}
+  .sh{stroke-width:2;} .sin{fill:color-mix(in srgb, #FF8A1F 22%, var(--surface));stroke:#FF8A1F;} .snum{fill:color-mix(in srgb, #FF8A1F 12%, var(--surface));stroke:#FF8A1F;}
+  .sop{fill:color-mix(in srgb, #FF8A1F 22%, var(--surface));stroke:#FF8A1F;} .scmp{fill:color-mix(in srgb, #FFD43B 30%, var(--surface));stroke:#E8B400;}
+  .slog{fill:color-mix(in srgb, #2ED47A 24%, var(--surface));stroke:#2ED47A;} .sout{fill:color-mix(in srgb, #4D7CFE 20%, var(--surface));stroke:#4D7CFE;} .sout2{fill:none;stroke:#4D7CFE;stroke-width:1.2;}
+  .bnode.sel .sh{stroke-width:3.5;filter:drop-shadow(0 0 6px var(--accent));}
+  .blab{position:absolute;inset:0;display:flex;align-items:center;padding:0 12px;font-size:0.72rem;font-weight:700;line-height:1.15;overflow:hidden;}
+  .blab.sym{justify-content:flex-start;padding-left:10px;font-size:1rem;font-weight:900;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-stretch:normal;}
+  .bt-out .blab{padding-left:16px;} .bt-num .blab{justify-content:center;font-size:0.9rem;font-variant-numeric:tabular-nums;}
+  .bport{position:absolute;width:18px;height:18px;border-radius:50%;border:2px solid var(--surface);padding:0;cursor:pointer;}
+  .bport.in{left:-9px;} .bport.out{right:-9px;} .bport.n{background:#FF8A1F;} .bport.b{background:#2ED47A;}
+  .bport.armed{box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 60%, transparent);animation:fbump 1s infinite;}
+  .bhint{margin:6px 2px 10px;font-size:0.76rem;}
+  .binsp{display:flex;flex-direction:column;gap:8px;} .bih{display:flex;align-items:center;justify-content:space-between;}
+  .btext{margin-top:8px;} .btext b{display:block;margin-top:4px;font-size:0.9rem;line-height:1.4;}
   /* StatsFight a quiz (08/10) */
   .trvhero{border-radius:18px;padding:16px;background:radial-gradient(120% 120% at 100% 0%,#4B1D5E 0,#1B1440 45%,#0E1424 100%);color:#F2ECFF;border:1px solid rgba(177,92,255,.4);box-shadow:0 12px 30px -14px rgba(177,92,255,.6);}
   .trvvs{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:12px;} .trvvs b{font-size:1.4rem;font-weight:900;color:#FFB400;text-shadow:0 0 14px rgba(255,180,0,.7);}
@@ -1341,6 +1369,12 @@
 
 <main class="view" id="view-strategie" hidden>
   <div id="strategie"></div>
+</main>
+
+<main class="view" id="view-builder" hidden>
+  <button class="back" type="button" data-back="strategie">‹ Strategie</button>
+  <h1 class="dtitle">Strategy builder</h1>
+  <div id="builder"></div>
 </main>
 
 <main class="view" id="view-dettaglio" hidden>
@@ -1983,7 +2017,7 @@
   }
   function renderStrategie() {
     var cat = data.catalog || [];
-    if (!cat.length) { $("strategie").innerHTML = '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'; return; }
+    if (!cat.length) { $("strategie").innerHTML = builderCard() + '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'; return; }
     var cc = catOf(stratSport), nCat = cc && cc.strategies ? cc.strategies.length : 0;
     // classifica per rendimento storico: "Top 5" e "Dalla 6 alla 10" (prima la Top 10 ripeteva meta' della Top 5)
     var TOPS = { top5: [0, 5], top10: [5, 10] };
@@ -2014,7 +2048,7 @@
     if (TOPS[stratSport]) {
       var R = TOPS[stratSport], ids = topIds(), top = ids.slice(R[0], R[1]).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(Boolean);
       var mc = (data.top5 && data.top5.min_cases) || 100;
-      $("strategie").innerHTML = tabs + legheCard()
+      $("strategie").innerHTML = tabs + builderCard() + legheCard()
         + '<div class="hero" style="background-image:linear-gradient(120deg,#3B2F0B,#8A6A14 60%,#C9A227);"><div class="ht">' + ic("star") + (R[0] ? ' Dalla 6 alla 10' : ' Top 5') + '</div><div class="hs">Le strategie col rendimento storico più alto, tutti gli sport (almeno ' + mc + ' casi)</div></div>'
         + topSwitchHtml(R)
         + (top.length ? '<h2 class="sectiontitle">' + (R[0] ? "Posizioni dalla 6 alla 10" : "Le prime 5") + '</h2>' + NOTE + '<div class="card">' + top.map(function (s) { return row(s, true); }).join("") + '</div>'
@@ -2026,7 +2060,7 @@
     var hero = '<div class="hero hinfob" role="button" tabindex="0" data-sportinfo="' + stratSport + '" aria-label="Come funziona: ' + esc(NAME[stratSport]) + '" style="background-image:linear-gradient(90deg,rgba(10,16,18,.72),rgba(10,16,18,.2)),' + HERO[stratSport] + ';">'
       + '<div class="ht">' + EMOJI[stratSport] + ' ' + NAME[stratSport] + '</div><div class="hs">' + count + ' strategie</div>'
       + '<span class="hinfo">Come funziona ›</span></div>';
-    $("strategie").innerHTML = tabs + legheCard() + hero + [stratSport].map(function (sport) {
+    $("strategie").innerHTML = tabs + builderCard() + legheCard() + hero + [stratSport].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) { return row(s, false); }).join("");
       return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2>' + NOTE + '<div class="carousel">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
     }).join("") + catalogoHtml(stratSport) + (stratSport === "ippica" ? schedeHtml() + esteroHtml() : "");
@@ -2614,7 +2648,7 @@
       var ce = $("catedit"); if (ce) { ce.classList.remove("shake"); void ce.offsetWidth; ce.classList.add("shake"); ce.scrollIntoView({ block: "nearest" }); }
       return;
     }
-    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "mio", "ruota", "fight", "chat", "corsa", "benvenuto", "notifiche", "leghe", "campionati", "album", "pick", "direct", "esplora", "attivita", "live"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
+    ["lock", "stato", "segnali", "strategie", "dettaglio", "segnale", "virtuali", "diario", "giocata", "catalogo", "occhio", "radar", "impostazioni", "schedina", "persona", "profilo", "mio", "ruota", "fight", "chat", "corsa", "benvenuto", "notifiche", "leghe", "campionati", "album", "pick", "direct", "esplora", "attivita", "live", "builder"].forEach(function (v) { $("view-" + v).hidden = v !== view; });
     closeDrawer();
     var unlocked = view !== "lock";
     if (view === "segnali" && data) setTimeout(segDot, 0);   // visti: il pallino si spegne
@@ -2626,7 +2660,7 @@
     $("topright").hidden = !unlocked;
     $("led").hidden = !unlocked;
     // le schede interne accendono la loro sezione; lo stato (dal led) non ne accende nessuna
-    var tabView = { diario: "calendario", dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "calendario", catalogo: "strategie", occhio: "diario", mio: "diario", campionati: "calendario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
+    var tabView = { diario: "calendario", dettaglio: "strategie", segnale: "segnali", virtuali: "strategie", giocata: "calendario", catalogo: "strategie", occhio: "diario", mio: "diario", builder: "strategie", campionati: "calendario", album: "diario", pick: "diario", schedina: "diario", bacheca: "diario", persona: "diario", profilo: "diario" }[view] || view;
     document.querySelectorAll(".tab, .topdirect").forEach(function (t) {
       if ((t.dataset.view || (t.id === "directbtn" ? "direct" : "")) === ({ chat: "direct" }[tabView] || tabView)) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
     });
@@ -5562,6 +5596,12 @@
           + (i === 0 && b.pts > 0 ? '<span class="rbfire">' + ic("flame") + '</span>' : "") + '</button>';
       }).join("") + '</div><div class="k rhnote">Punti di oggi: vinta = quota − 1, persa = −1. Tocca una strategia per aprirla.</div>'
       : '<div class="note">Nessuna strategia è scattata sulle partite live di oggi. Il radar continua a cercare.</div>';
+    var myB = builds.filter(function (b) { return b.mode === "live" && b.sports.indexOf(rsport) >= 0; }).map(function (b) { return { b: b, f: bldFires(b) }; });
+    if (myB.length) html += '<h2 class="rsec">' + ic("pen") + ' Le tue strategie <span class="k">Strategy builder</span></h2><div class="rboard">' + myB.map(function (x, i) {
+        return '<div class="rbrow mine" style="--c:' + RCOL[(i + 3) % RCOL.length] + '"><span class="rbn">' + ic("strategie") + '</span><span class="rbw"><b>' + esc(x.b.name) + '</b><span class="k">'
+          + (x.f.length ? "scatterebbe adesso su " + x.f.map(function (y) { return y.e.home + " - " + y.e.away; }).slice(0, 3).join(", ") : "adesso non scatta su nessuna partita") + '</span></span>'
+          + '<span class="rbp' + (x.f.length ? " pos" : "") + '">' + x.f.length + '<small>partite</small></span></div>';
+      }).join("") + '</div>';
     var fresh = [];
     B.forEach(function (b, i) { b.evs.forEach(function (x) { fresh.push({ b: b, c: RCOL[i % RCOL.length], e: x.e, pick: x.pick, odds: x.odds }); }); });
     if (fresh.length) html += '<h2 class="rsec">' + ic("bolt") + ' Appena scattate <span class="k">vanno in Segnali</span></h2><div class="rfresh">' + fresh.slice(0, 6).map(function (x) {
@@ -6810,6 +6850,324 @@
     if (id === "#edit") { openLeghe(curView() === "diario" ? "diario" : curView() === "segnali" ? "segnali" : "strategie"); return; }
     gl.active = id || null; saveGl(); renderFeed(); renderDiario();
   }
+  // ---------------------------------------------------------------- Strategy builder (08/10, ispirazione LabVIEW)
+  // La strategia si disegna a blocchi collegati da fili: a sinistra i DATI (rettangoli arrotondati), le COSTANTI
+  // (rettangoli piccoli), i CALCOLI (triangoli), i CONFRONTI (triangoli gialli), le porte logiche E / O / NON (con la
+  // forma degli schemi logici) e a destra l'USCITA (cosa giocare, doppio bordo). Fili arancioni = numeri, verdi =
+  // si'/no, come in LabVIEW. Si sceglie live o pre-partita, gli sport, il nome, privata o pubblica. "Prova adesso"
+  // la fa girare sulle partite di adesso; il rendimento sullo storico arriva col server (archivio minuto per minuto).
+  // Sul telefono: statsight.builder; col server sull'account (le pubbliche le vedono tutti).
+  var BLD_KEY = "statsight.builder";
+  var builds = (function () { try { var b = JSON.parse(localStorage.getItem(BLD_KEY)); if (Array.isArray(b)) return b; } catch (e) {} return []; })();
+  function saveBuilds() { try { localStorage.setItem(BLD_KEY, JSON.stringify(builds)); } catch (e) {} }
+  var bld = null, bldSel = null, bldWire = null, bldMsg = "";
+  // dati in entrata: [chiave, etichetta, sport, live/pre, statistica Full]
+  var BIN = [
+    ["min", "Minuto", "calcio", "live"], ["gh", "Gol casa", "calcio", "live"], ["ga", "Gol ospite", "calcio", "live"], ["gt", "Gol totali", "calcio", "live"],
+    ["gd", "Differenza gol (casa − ospite)", "calcio", "live"], ["sh", "Tiri casa", "calcio", "live"], ["sa", "Tiri ospite", "calcio", "live"],
+    ["th", "Tiri in porta casa", "calcio", "live"], ["ta", "Tiri in porta ospite", "calcio", "live"], ["ch", "Angoli casa", "calcio", "live"], ["ca", "Angoli ospite", "calcio", "live"],
+    ["dh", "Attacchi pericolosi casa", "calcio", "live", 1], ["da", "Attacchi pericolosi ospite", "calcio", "live", 1], ["xh", "xG casa", "calcio", "live", 1], ["xa", "xG ospite", "calcio", "live", 1],
+    ["ph", "Possesso casa %", "calcio", "live", 1], ["rh", "Rossi casa", "calcio", "live"], ["ra", "Rossi ospite", "calcio", "live"],
+    ["q1", "Quota 1", "calcio", "both"], ["qx", "Quota X", "calcio", "both"], ["q2", "Quota 2", "calcio", "both"], ["qf", "Quota della favorita", "calcio", "both"],
+    ["hr", "Ore al via", "calcio", "pre"],
+    ["s1", "Set giocatore 1", "tennis", "live"], ["s2", "Set giocatore 2", "tennis", "live"], ["g1", "Game giocatore 1 (set in corso)", "tennis", "live"], ["g2", "Game giocatore 2 (set in corso)", "tennis", "live"],
+    ["v1", "Punti vinti al servizio % 1", "tennis", "live", 1], ["v2", "Punti vinti al servizio % 2", "tennis", "live", 1],
+    ["w1", "Quota giocatore 1", "tennis", "both"], ["w2", "Quota giocatore 2", "tennis", "both"], ["wf", "Quota del favorito", "tennis", "both"], ["hr", "Ore al via", "tennis", "pre"]
+  ];
+  var BOUT = { calcio: [["1", "1 (vince la casa)"], ["X", "X (pareggio)"], ["2", "2 (vince l'ospite)"], ["FAV", "La favorita"], ["DOG", "La sfavorita"], ["O25", "Over 2,5"], ["U25", "Under 2,5"]],
+               tennis: [["W1", "Giocatore 1"], ["W2", "Giocatore 2"], ["FAV", "Il favorito"], ["DOG", "Lo sfavorito"]] };
+  // forme dei blocchi: [larghezza, altezza, ingressi (n = numero, b = si'/no), uscita]
+  var BT = { "in": [150, 44, [], "n"], num: [70, 36, [], "n"], op: [62, 60, ["n", "n"], "n"], cmp: [62, 60, ["n", "n"], "b"], range: [74, 66, ["n", "n", "n"], "b"],
+             and: [64, 50, ["b", "b"], "b"], or: [64, 50, ["b", "b"], "b"], not: [60, 40, ["b"], "b"], out: [160, 56, ["b"], null] };
+  var BT_NAME = { "in": "Dato", num: "Numero", op: "Calcolo", cmp: "Confronto", range: "Tra", and: "E", or: "O", not: "NON", out: "Uscita" };
+  function bldNew(example) {
+    var b = { id: "U" + Date.now(), name: "", mode: "live", sports: ["calcio"], vis: "priv", nodes: [], wires: [], ts: nowS() };
+    if (example) {   // Under nel finale: minuto >= 70 E gol totali <= 1 -> Under 2,5
+      b.name = "Under nel finale";
+      b.nodes = [{ id: "a", t: "in", x: 12, y: 20, p: { k: "min" } }, { id: "b", t: "num", x: 60, y: 84, p: { v: 70 } }, { id: "c", t: "cmp", x: 196, y: 30, p: { o: ">=" } },
+                 { id: "d", t: "in", x: 12, y: 150, p: { k: "gt" } }, { id: "e", t: "num", x: 60, y: 214, p: { v: 1 } }, { id: "f", t: "cmp", x: 196, y: 160, p: { o: "<=" } },
+                 { id: "g", t: "and", x: 300, y: 96, p: {} }, { id: "h", t: "out", x: 392, y: 92, p: { pick: "U25", min: 1.5 } }];
+      b.wires = [{ f: "a", t: "c", i: 0 }, { f: "b", t: "c", i: 1 }, { f: "d", t: "f", i: 0 }, { f: "e", t: "f", i: 1 }, { f: "c", t: "g", i: 0 }, { f: "f", t: "g", i: 1 }, { f: "g", t: "h", i: 0 }];
+    } else b.nodes = [{ id: "h", t: "out", x: 392, y: 100, p: { pick: "1", min: 1.5 } }];
+    return b;
+  }
+  function bNode(id) { return bld.nodes.filter(function (n) { return n.id === id; })[0]; }
+  function binOf(k, sport) { return BIN.filter(function (x) { return x[0] === k && (!sport || x[2] === sport); })[0] || BIN.filter(function (x) { return x[0] === k; })[0]; }
+  function portXY(n, side, i) {
+    var T = BT[n.t];
+    if (side === "out") return [n.x + T[0], n.y + T[1] / 2];
+    var k = T[2].length; return [n.x, n.y + T[1] * (i + 1) / (k + 1)];
+  }
+  // forma del blocco in SVG (coerente con gli schemi logici)
+  function bShape(n) {
+    var T = BT[n.t], w = T[0], h = T[1];
+    if (n.t === "in") return '<rect x="1" y="1" width="' + (w - 2) + '" height="' + (h - 2) + '" rx="12" class="sh sin"/>';
+    if (n.t === "num") return '<rect x="1" y="1" width="' + (w - 2) + '" height="' + (h - 2) + '" rx="3" class="sh snum"/>';
+    if (n.t === "op" || n.t === "cmp") return '<path d="M2 2 L' + (w - 2) + ' ' + h / 2 + ' L2 ' + (h - 2) + ' Z" class="sh ' + (n.t === "op" ? "sop" : "scmp") + '"/>';
+    if (n.t === "range") return '<path d="M2 2 H' + (w - 22) + ' L' + (w - 2) + ' ' + h / 2 + ' L' + (w - 22) + ' ' + (h - 2) + ' H2 Z" class="sh scmp"/>';
+    if (n.t === "and") return '<path d="M2 2 H' + (w / 2) + ' A' + (w / 2 - 2) + ' ' + (h / 2 - 2) + ' 0 0 1 ' + (w / 2) + ' ' + (h - 2) + ' H2 Z" class="sh slog"/>';
+    if (n.t === "or") return '<path d="M2 2 Q' + (w * 0.65) + ' 2 ' + (w - 2) + ' ' + h / 2 + ' Q' + (w * 0.65) + ' ' + (h - 2) + ' 2 ' + (h - 2) + ' Q' + (w * 0.3) + ' ' + h / 2 + ' 2 2 Z" class="sh slog"/>';
+    if (n.t === "not") return '<path d="M2 2 L' + (w - 14) + ' ' + h / 2 + ' L2 ' + (h - 2) + ' Z" class="sh slog"/><circle cx="' + (w - 8) + '" cy="' + h / 2 + '" r="5" class="sh slog"/>';
+    return '<rect x="1" y="1" width="' + (w - 2) + '" height="' + (h - 2) + '" rx="4" class="sh sout"/><rect x="5" y="5" width="' + (w - 10) + '" height="' + (h - 10) + '" rx="2" class="sh sout2"/>';
+  }
+  function bLabel(n) {
+    var p = n.p || {};
+    if (n.t === "in") { var d = binOf(p.k, bld.sports[0]); return d ? d[1] : "Scegli il dato"; }
+    if (n.t === "num") return String(p.v != null ? p.v : 0).replace(".", ",");
+    if (n.t === "op") return { "+": "+", "-": "−", "*": "×", "/": "÷" }[p.o || "+"];
+    if (n.t === "cmp") return { ">": ">", ">=": "≥", "<": "<", "<=": "≤", "=": "=", "!=": "≠" }[p.o || ">="];
+    if (n.t === "range") return "tra";
+    if (n.t === "and") return "E"; if (n.t === "or") return "O"; if (n.t === "not") return "NON";
+    var o = (BOUT[bld.sports[0]] || BOUT.calcio).filter(function (x) { return x[0] === p.pick; })[0];
+    return (o ? o[1] : "Scegli cosa giocare") + (p.min ? " · quota ≥ " + String(p.min).replace(".", ",") : "");
+  }
+  function bldCanvasHtml() {
+    var W = 580, H = 300;
+    bld.nodes.forEach(function (n) { W = Math.max(W, n.x + BT[n.t][0] + 20); H = Math.max(H, n.y + BT[n.t][1] + 20); });
+    var wires = bld.wires.map(function (w, wi) {
+      var a = bNode(w.f), b = bNode(w.t); if (!a || !b) return "";
+      var p1 = portXY(a, "out"), p2 = portXY(b, "in", w.i), dx = Math.max(30, (p2[0] - p1[0]) / 2), typ = BT[a.t][3];
+      var d = "M" + p1[0] + " " + p1[1] + " C" + (p1[0] + dx) + " " + p1[1] + " " + (p2[0] - dx) + " " + p2[1] + " " + p2[0] + " " + p2[1];
+      return '<path d="' + d + '" class="wire ' + typ + '"/><path d="' + d + '" class="whit" data-bwire="' + wi + '"/>';
+    }).join("");
+    return '<div class="bcanvas" id="bcanvas" style="width:' + W + 'px;height:' + H + 'px"><svg class="bwires" width="' + W + '" height="' + H + '">' + wires + '</svg>'
+      + bld.nodes.map(function (n) {
+        var T = BT[n.t];
+        return '<div class="bnode bt-' + n.t + (bldSel === n.id ? " sel" : "") + '" data-bnode="' + n.id + '" style="left:' + n.x + 'px;top:' + n.y + 'px;width:' + T[0] + 'px;height:' + T[1] + 'px">'
+          + '<svg width="' + T[0] + '" height="' + T[1] + '">' + bShape(n) + '</svg><span class="blab' + (n.t === "op" || n.t === "cmp" || n.t === "range" || n.t === "and" || n.t === "or" || n.t === "not" ? " sym" : "") + '">' + esc(bLabel(n)) + '</span>'
+          + T[2].map(function (ty, i) { var c = T[1] * (i + 1) / (T[2].length + 1); return '<button class="bport in ' + ty + '" type="button" data-bin="' + n.id + ':' + i + '" style="top:' + (c - 9) + 'px" aria-label="Ingresso ' + (i + 1) + '"></button>'; }).join("")
+          + (T[3] ? '<button class="bport out ' + T[3] + (bldWire === n.id ? " armed" : "") + '" type="button" data-bout="' + n.id + '" style="top:' + (T[1] / 2 - 9) + 'px" aria-label="Uscita"></button>' : "") + '</div>';
+      }).join("") + '</div>';
+  }
+  // valore di un blocco su una partita (null = non si sa: la regola non scatta)
+  function bVal(e, id, memo, depth) {
+    if (depth > 40) return null;
+    if (memo[id] !== undefined) return memo[id];
+    var n = bNode(id), p = (n && n.p) || {}, ins = [], v = null;
+    if (!n) return null;
+    BT[n.t][2].forEach(function (ty, i) { var w = bld.wires.filter(function (x) { return x.t === id && x.i === i; })[0]; ins.push(w ? bVal(e, w.f, memo, depth + 1) : null); });
+    var nn = function (x) { return typeof x === "number" && !isNaN(x); };
+    if (n.t === "in") v = bInput(e, p.k);
+    else if (n.t === "num") v = Number(p.v) || 0;
+    else if (n.t === "op") v = nn(ins[0]) && nn(ins[1]) ? (p.o === "-" ? ins[0] - ins[1] : p.o === "*" ? ins[0] * ins[1] : p.o === "/" ? (ins[1] ? ins[0] / ins[1] : null) : ins[0] + ins[1]) : null;
+    else if (n.t === "cmp") v = nn(ins[0]) && nn(ins[1]) ? { ">": ins[0] > ins[1], ">=": ins[0] >= ins[1], "<": ins[0] < ins[1], "<=": ins[0] <= ins[1], "=": ins[0] === ins[1], "!=": ins[0] !== ins[1] }[p.o || ">="] : null;
+    else if (n.t === "range") v = nn(ins[0]) && nn(ins[1]) && nn(ins[2]) ? ins[0] >= ins[1] && ins[0] <= ins[2] : null;
+    else if (n.t === "and") v = ins[0] === true && ins[1] === true;
+    else if (n.t === "or") v = ins[0] === true || ins[1] === true;
+    else if (n.t === "not") v = ins[0] === true ? false : ins[0] === false ? true : null;
+    else if (n.t === "out") v = ins[0] === true;
+    memo[id] = v; return v;
+  }
+  function bInput(e, k) {
+    var st = e.st || {}, sc = scoreOf(st.score), mk = function (c) { return e.mk[c] ? e.mk[c][0] : null; };
+    var sp = function (lab, i) { var v = statPair(st, lab); if (!v || lockedCell(lab)) return null; var x = parseFloat(String(v[i]).replace(",", ".")); return isNaN(x) ? null : x; };
+    switch (k) {
+      case "min": return st.minute != null ? Number(st.minute) : (parseInt(estMinute(e), 10) || null);
+      case "gh": return sc ? sc[0] : null; case "ga": return sc ? sc[1] : null; case "gt": return sc ? sc[0] + sc[1] : null; case "gd": return sc ? sc[0] - sc[1] : null;
+      case "sh": return sp("Tiri", 0); case "sa": return sp("Tiri", 1); case "th": return sp("Tiri in porta", 0); case "ta": return sp("Tiri in porta", 1);
+      case "ch": return sp("Angoli", 0); case "ca": return sp("Angoli", 1); case "dh": return sp("Attacchi pericolosi", 0); case "da": return sp("Attacchi pericolosi", 1);
+      case "xh": return sp("xG", 0); case "xa": return sp("xG", 1); case "ph": return sp("Possesso", 0); case "rh": return sp("Rossi", 0) || 0; case "ra": return sp("Rossi", 1) || 0;
+      case "q1": return mk("1"); case "qx": return mk("X"); case "q2": return mk("2");
+      case "qf": return mk("1") && mk("2") ? Math.min(mk("1"), mk("2")) : null;
+      case "hr": return e.start ? Math.round((e.start - nowS()) / 360) / 10 : null;
+      case "w1": return mk("W1"); case "w2": return mk("W2"); case "wf": return mk("W1") && mk("W2") ? Math.min(mk("W1"), mk("W2")) : null;
+      case "s1": case "s2": var s = String(st.sets || "").split(/\s*-\s*/).map(Number); return s.length === 2 && !isNaN(s[0]) ? s[k === "s1" ? 0 : 1] : null;
+      case "g1": case "g2": var g = (st.games || []).slice(-1)[0]; if (!g) return null; var gg = String(g).split(/\s*-\s*/).map(function (x) { return parseInt(x, 10); }); return isNaN(gg[0]) ? null : gg[k === "g1" ? 0 : 1];
+      case "v1": case "v2": var v = statPair(st, "Punti vinti al servizio"); if (!v || lockedCell("Punti vinti al servizio")) return null; var vv = v[k === "v1" ? 0 : 1]; return pctOf(vv) != null ? pctOf(vv) : (parseFloat(vv) || null);
+    }
+    return null;
+  }
+  function bOutCode(e, pick) {
+    if (pick === "FAV" || pick === "DOG") {
+      var a = e.sport === "tennis" ? "W1" : "1", b = e.sport === "tennis" ? "W2" : "2";
+      if (!e.mk[a] || !e.mk[b]) return null;
+      var fav = e.mk[a][0] <= e.mk[b][0] ? a : b; return pick === "FAV" ? fav : fav === a ? b : a;
+    }
+    var r = regole(), codes = r && r.order[e.sport] ? r.order[e.sport] : [];
+    if (e.mk[pick]) return pick;
+    var lab = { O25: /over 2[,.]5/i, U25: /under 2[,.]5/i }[pick];
+    if (lab && r) { var c = codes.filter(function (c) { var m = r.markets[e.sport][c]; return m && lab.test(m.label) && e.mk[c]; })[0]; if (c) return c; }
+    return null;
+  }
+  // partite di adesso su cui la strategia scatterebbe
+  function bldFires(b) {
+    var keep = bld; bld = b;
+    var out = bld.nodes.filter(function (n) { return n.t === "out"; })[0], res = [];
+    if (out) evList().forEach(function (e) {
+      if (bld.sports.indexOf(e.sport) < 0) return;
+      if (bld.mode === "live" ? !e.live : (e.live || !e.start || e.start <= nowS())) return;
+      if (bVal(e, out.id, {}, 0) !== true) return;
+      var code = bOutCode(e, out.p.pick), odds = code && e.mk[code] ? e.mk[code][0] : null;
+      if (out.p.min && (!odds || odds < out.p.min)) return;
+      res.push({ e: e, code: code, odds: odds });
+    });
+    bld = keep;
+    return res;
+  }
+  function bExpr(id, depth) {
+    var n = bNode(id); if (!n || depth > 20) return "?";
+    var ins = BT[n.t][2].map(function (ty, i) { var w = bld.wires.filter(function (x) { return x.t === id && x.i === i; })[0]; return w ? bExpr(w.f, depth + 1) : "?"; });
+    if (n.t === "in" || n.t === "num") return bLabel(n);
+    if (n.t === "op") return "(" + ins[0] + " " + bLabel(n) + " " + ins[1] + ")";
+    if (n.t === "cmp") return ins[0] + " " + bLabel(n) + " " + ins[1];
+    if (n.t === "range") return ins[0] + " tra " + ins[1] + " e " + ins[2];
+    if (n.t === "and") return ins[0] + " E " + ins[1];
+    if (n.t === "or") return "(" + ins[0] + " O " + ins[1] + ")";
+    if (n.t === "not") return "NON (" + ins[0] + ")";
+    return ins[0];
+  }
+  function bldText() {
+    var out = bld.nodes.filter(function (n) { return n.t === "out"; })[0]; if (!out) return "";
+    return "Quando " + bExpr(out.id, 0) + " → gioca " + bLabel(out);
+  }
+  function bldProblems() {
+    var out = [], o = bld.nodes.filter(function (n) { return n.t === "out"; });
+    if (!bld.name.trim()) out.push("Dai un nome alla strategia.");
+    if (o.length !== 1) out.push("Serve un solo blocco Uscita.");
+    if (!bld.sports.length) out.push("Scegli almeno uno sport.");
+    bld.nodes.forEach(function (n) {
+      BT[n.t][2].forEach(function (ty, i) { if (!bld.wires.some(function (w) { return w.t === n.id && w.i === i; })) out.push("Blocco " + BT_NAME[n.t] + " (" + bLabel(n) + "): ingresso " + (i + 1) + " senza filo."); });
+      if (n.t === "in" && !binOf(n.p.k)) out.push("Scegli il dato del blocco Dato.");
+      if (n.t === "in") { var d = binOf(n.p.k); if (d && (d[3] !== "both" && d[3] !== bld.mode)) out.push("\"" + d[1] + "\" c'è solo " + (d[3] === "live" ? "nel live" : "prima della partita") + "."); }
+    });
+    return out.filter(function (x, i, a) { return a.indexOf(x) === i; });
+  }
+  function renderBuilder() {
+    var box = $("builder");
+    if (!bld) {   // elenco
+      var mine = builds.slice().reverse();
+      box.innerHTML = '<div class="card bldhero"><b>Disegna la tua strategia</b><span>Blocchi e fili, come uno schema: i dati entrano a sinistra, passano per confronti e porte logiche, a destra esce cosa giocare. La provi subito sulle partite di adesso.</span>'
+        + '<div class="duo"><button class="primary" type="button" data-bnew="1">' + ic("pen") + ' Nuova strategia</button><button class="chip" type="button" data-bnew="ex">Parti da un esempio</button></div></div>'
+        + '<h2 class="sectiontitle">Le tue strategie</h2>' + (mine.length ? '<div class="card">' + mine.map(function (b) {
+          var f = bldFires(b).length;
+          return '<button class="bldrow" type="button" data-bopen="' + b.id + '"><span class="bldic">' + ic(b.mode === "live" ? "radar" : "calendar") + '</span><span class="bldw"><b>' + esc(b.name || "Senza nome") + '</b><span class="k">'
+            + (b.mode === "live" ? "Live" : "Pre-partita") + ' · ' + b.sports.map(function (s) { return NAME[s]; }).join(", ") + ' · ' + (b.vis === "pub" ? "pubblica" : "privata") + '</span></span>'
+            + (f ? '<span class="bldf">' + f + '</span>' : "") + ic("chev") + '</button>';
+        }).join("") + '</div>' : '<div class="note">Nessuna strategia ancora: creane una o parti dall\'esempio.</div>')
+        + '<h2 class="sectiontitle">Della community</h2><div class="note">Le strategie pubbliche degli altri utenti arrivano con l\'app pubblica: le potrai provare e copiare.</div>';
+      return;
+    }
+    var sp0 = bld.sports[0] || "calcio", probs = bldProblems(), fires = probs.length ? [] : bldFires(bld), sel = bldSel ? bNode(bldSel) : null;
+    var h = '<div class="bldhead"><input class="meinput" id="bldname" maxlength="40" placeholder="Nome della strategia" value="' + esc(bld.name) + '">'
+      + '<div class="segbar" role="tablist"><button type="button" data-bmode="live" aria-pressed="' + (bld.mode === "live") + '">' + ic("radar") + ' Live</button><button type="button" data-bmode="pre" aria-pressed="' + (bld.mode === "pre") + '">' + ic("calendar") + ' Pre-partita</button></div>'
+      + '<div class="chips">' + ["calcio", "tennis"].map(function (s) { return '<button class="chip" type="button" data-bsport="' + s + '" aria-pressed="' + (bld.sports.indexOf(s) >= 0) + '">' + EMOJI[s] + ' ' + NAME[s] + '</button>'; }).join("")
+      + '<button class="chip" type="button" data-bvis="1" aria-pressed="' + (bld.vis === "pub") + '">' + ic(bld.vis === "pub" ? "eye" : "lock") + ' ' + (bld.vis === "pub" ? "Pubblica" : "Privata") + '</button></div></div>'
+      + '<div class="bpal">' + ["in", "num", "op", "cmp", "range", "and", "or", "not"].map(function (t) { return '<button class="bpb bt-' + t + '" type="button" data-badd="' + t + '"><svg width="26" height="20" viewBox="0 0 ' + BT[t][0] + ' ' + BT[t][1] + '" preserveAspectRatio="xMidYMid meet">' + bShape({ t: t }) + '</svg><span>' + BT_NAME[t] + '</span></button>'; }).join("") + '</div>'
+      + '<div class="bwrap">' + bldCanvasHtml() + '</div>'
+      + '<div class="k bhint">' + (bldWire ? ic("bolt") + ' Ora tocca un ingresso (a sinistra di un blocco) per collegare il filo.' : "Trascina i blocchi. Tocca il pallino d'uscita (a destra) e poi un ingresso per fare un filo; tocca un filo per toglierlo.") + '</div>';
+    if (sel) {
+      var p = sel.p || (sel.p = {});
+      h += '<div class="card binsp"><div class="bih"><b>' + BT_NAME[sel.t] + '</b><button class="chip" type="button" data-bdel="' + sel.id + '">' + ic("trash") + ' Elimina</button></div>';
+      if (sel.t === "in") h += '<select class="meinput" id="bink">' + BIN.filter(function (x) { return bld.sports.indexOf(x[2]) >= 0 && (x[3] === "both" || x[3] === bld.mode); }).map(function (x) {
+          return '<option value="' + x[0] + '"' + (p.k === x[0] ? " selected" : "") + '>' + esc(x[1]) + (x[4] && !isFull() ? " (Full)" : "") + (bld.sports.length > 1 ? " · " + NAME[x[2]] : "") + '</option>'; }).join("") + '</select>';
+      if (sel.t === "num") h += '<input class="meinput" id="binv" type="number" step="any" inputmode="decimal" value="' + (p.v != null ? p.v : 0) + '">';
+      if (sel.t === "op") h += '<div class="chips">' + [["+", "+"], ["-", "−"], ["*", "×"], ["/", "÷"]].map(function (o) { return '<button class="chip" type="button" data-bop="' + o[0] + '" aria-pressed="' + ((p.o || "+") === o[0]) + '">' + o[1] + '</button>'; }).join("") + '</div>';
+      if (sel.t === "cmp") h += '<div class="chips">' + [[">", ">"], [">=", "≥"], ["<", "<"], ["<=", "≤"], ["=", "="], ["!=", "≠"]].map(function (o) { return '<button class="chip" type="button" data-bop="' + o[0] + '" aria-pressed="' + ((p.o || ">=") === o[0]) + '">' + o[1] + '</button>'; }).join("") + '</div>';
+      if (sel.t === "range") h += '<div class="k">Ingressi: valore, minimo, massimo. Esce sì quando il valore sta fra i due.</div>';
+      if (sel.t === "out") h += '<select class="meinput" id="binpick">' + (BOUT[sp0] || BOUT.calcio).map(function (o) { return '<option value="' + o[0] + '"' + (p.pick === o[0] ? " selected" : "") + '>' + esc(o[1]) + '</option>'; }).join("") + '</select>'
+        + '<label class="melabel" for="binmin">Quota minima</label><input class="meinput" id="binmin" type="number" step="0.05" min="1" inputmode="decimal" value="' + (p.min || "") + '">';
+      h += '</div>';
+    }
+    h += '<div class="card btext"><div class="k">La regola, a parole</div><b>' + esc(bldText() || "—") + '</b></div>';
+    h += probs.length ? '<div class="sliperr">' + probs.slice(0, 4).map(function (x) { return '<div>' + ic("alert") + ' ' + esc(x) + '</div>'; }).join("") + '</div>'
+      : '<h2 class="sectiontitle">Prova adesso <span class="k">' + (bld.mode === "live" ? "partite live" : "partite in programma") + '</span></h2>'
+        + (fires.length ? '<div class="card">' + fires.slice(0, 10).map(function (x) {
+          return '<button class="bldrow" type="button" data-match="' + x.e.id + '"><span class="bldic">' + EMOJI[x.e.sport] + '</span><span class="bldw"><b>' + esc(x.e.home + " - " + x.e.away) + '</b><span class="k">' + esc(x.e.live ? (estMinute(x.e) || "LIVE") + " · " + (scoreTxt(x.e) || "") : startLabel(x.e.start)) + '</span></span>'
+            + (x.odds ? '<b>' + oddsTxt(x.odds) + '</b>' : "") + ic("chev") + '</button>'; }).join("") + '</div>'
+          : '<div class="note">Adesso non scatterebbe su nessuna partita.</div>')
+        + '<div class="k" style="margin:6px 2px;">Il rendimento sullo storico (migliaia di partite minuto per minuto) arriva col server.</div>';
+    h += (bldMsg ? '<div class="cmsg">' + esc(bldMsg) + '</div>' : "")
+      + '<div class="duo" style="margin-top:10px;"><button class="chip" type="button" data-bback="1">' + ic("x") + ' Chiudi</button><button class="primary" type="button" data-bsave="1"' + (probs.length ? " disabled" : "") + '>' + ic("check") + ' Salva</button></div>'
+      + (builds.some(function (b) { return b.id === bld.id; }) ? '<button class="linkbtn" type="button" data-bremove="1">' + ic("trash") + ' Elimina la strategia</button>' : "");
+    var sx = $("bcanvas") ? $("bcanvas").parentNode.scrollLeft : 0;
+    box.innerHTML = h;
+    if ($("bcanvas")) $("bcanvas").parentNode.scrollLeft = sx;
+  }
+  function openBuilder() { bld = null; bldSel = null; bldWire = null; bldMsg = ""; renderBuilder(); show("builder"); window.scrollTo(0, 0); }
+  function builderCard() {
+    return '<button class="card navcard" type="button" data-builder="1" style="margin-top:6px;">' + ic("strategie") + '<span><b>Strategy builder</b><span class="k">'
+      + (builds.length ? builds.length + (builds.length === 1 ? " strategia tua" : " strategie tue") : "Disegna la tua strategia a blocchi e provala subito") + '</span></span>' + ic("chev") + '</button>';
+  }
+  (function () {
+    var box = $("builder"), drag = null;
+    box.addEventListener("click", function (e) {
+      if (!data) return;
+      var t = e.target.closest("button,[data-bwire]"); if (!t) return;
+      var d = t.dataset;
+      if (d.bnew) { bld = bldNew(d.bnew === "ex"); bldSel = null; bldWire = null; bldMsg = ""; renderBuilder(); return; }
+      if (d.bopen) { var b0 = builds.filter(function (x) { return x.id === d.bopen; })[0]; if (b0) { bld = JSON.parse(JSON.stringify(b0)); bldSel = null; bldWire = null; bldMsg = ""; renderBuilder(); } return; }
+      if (!bld) return;
+      if (d.bmode) { bld.mode = d.bmode; renderBuilder(); return; }
+      if (d.bsport) { var i = bld.sports.indexOf(d.bsport); if (i >= 0) bld.sports.splice(i, 1); else bld.sports.push(d.bsport); renderBuilder(); return; }
+      if (d.bvis) { bld.vis = bld.vis === "pub" ? "priv" : "pub"; renderBuilder(); return; }
+      if (d.badd) {
+        var wrap = box.querySelector(".bwrap"), x0 = (wrap ? wrap.scrollLeft : 0) + 20 + (bld.nodes.length % 4) * 14, y0 = 20 + (bld.nodes.length % 5) * 26;
+        var n = { id: "n" + Date.now().toString(36), t: d.badd, x: x0, y: y0, p: d.badd === "in" ? { k: (BIN.filter(function (x) { return bld.sports.indexOf(x[2]) >= 0 && (x[3] === "both" || x[3] === bld.mode); })[0] || BIN[0])[0] } : d.badd === "num" ? { v: 0 } : {} };
+        bld.nodes.push(n); bldSel = n.id; renderBuilder(); return;
+      }
+      if (d.bout) { bldWire = bldWire === d.bout ? null : d.bout; renderBuilder(); return; }
+      if (d.bin) {
+        var pr = d.bin.split(":"), tid = pr[0], ti = Number(pr[1]);
+        if (!bldWire) { bld.wires = bld.wires.filter(function (w) { return !(w.t === tid && w.i === ti); }); renderBuilder(); return; }   // senza filo in mano: lo stacca
+        var from = bNode(bldWire), to = bNode(tid);
+        if (from && to && from.id !== to.id) {
+          if (BT[from.t][3] !== BT[to.t][2][ti]) { fxToast("alert", "Fili di tipo diverso", BT[from.t][3] === "n" ? "Un numero va in un confronto o in un calcolo" : "Un sì/no va in E, O, NON o nell'Uscita"); }
+          else { bld.wires = bld.wires.filter(function (w) { return !(w.t === tid && w.i === ti); }); bld.wires.push({ f: from.id, t: tid, i: ti }); }
+        }
+        bldWire = null; renderBuilder(); return;
+      }
+      if (d.bwire != null) { bld.wires.splice(Number(d.bwire), 1); renderBuilder(); return; }
+      if (d.bdel) { bld.nodes = bld.nodes.filter(function (n) { return n.id !== d.bdel; }); bld.wires = bld.wires.filter(function (w) { return w.f !== d.bdel && w.t !== d.bdel; }); bldSel = null; renderBuilder(); return; }
+      if (d.bop) { var s0 = bNode(bldSel); if (s0) { s0.p.o = d.bop; renderBuilder(); } return; }
+      if (d.bback) { bld = null; renderBuilder(); return; }
+      if (d.bremove) { builds = builds.filter(function (b) { return b.id !== bld.id; }); saveBuilds(); bld = null; renderBuilder(); renderStrategie(); renderRadar(); return; }
+      if (d.bsave) {
+        if (bldProblems().length) return;
+        var why = checkText(bld.name); if (why) { bldMsg = MOD_MSG[why] || "Questo nome non va bene."; renderBuilder(); return; }
+        bld.ts = nowS(); var k = builds.findIndex(function (b) { return b.id === bld.id; });
+        if (k >= 0) builds[k] = bld; else builds.push(bld);
+        saveBuilds(); fxToast("check", "Strategia salvata", bld.vis === "pub" ? "Pubblica: con l'app pubblica la vedono tutti" : "Privata: la vedi solo tu");
+        bld = null; renderBuilder(); renderStrategie(); renderRadar(); return;
+      }
+    });
+    box.addEventListener("input", function (e) {
+      if (!bld) return;
+      if (e.target.id === "bldname") { bld.name = e.target.value; return; }
+      var s0 = bNode(bldSel); if (!s0) return;
+      if (e.target.id === "binv") { s0.p.v = Number(String(e.target.value).replace(",", ".")); }
+      if (e.target.id === "binmin") { s0.p.min = Number(String(e.target.value).replace(",", ".")) || null; }
+    });
+    box.addEventListener("change", function (e) {
+      if (!bld) return;
+      var s0 = bNode(bldSel);
+      if (e.target.id === "bldname") { renderBuilder(); return; }
+      if (s0 && e.target.id === "bink") s0.p.k = e.target.value;
+      if (s0 && e.target.id === "binpick") s0.p.pick = e.target.value;
+      renderBuilder();
+    });
+    // trascinare i blocchi (dito o mouse); un tocco senza spostamento seleziona il blocco
+    box.addEventListener("pointerdown", function (e) {
+      var el = e.target.closest("[data-bnode]"); if (!el || !bld || e.target.closest(".bport")) return;
+      var n = bNode(el.dataset.bnode); if (!n) return;
+      drag = { n: n, el: el, sx: e.clientX, sy: e.clientY, x: n.x, y: n.y, moved: false };
+      try { el.setPointerCapture(e.pointerId); } catch (er) {}
+    });
+    box.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+      if (!drag.moved && Math.abs(dx) + Math.abs(dy) < 6) return;
+      drag.moved = true; e.preventDefault();
+      drag.n.x = Math.max(0, Math.round(drag.x + dx)); drag.n.y = Math.max(0, Math.round(drag.y + dy));
+      drag.el.style.left = drag.n.x + "px"; drag.el.style.top = drag.n.y + "px";
+      var svg = box.querySelector(".bwires"); if (svg) { var tmp = document.createElement("div"); tmp.innerHTML = bldCanvasHtml(); svg.innerHTML = tmp.querySelector(".bwires").innerHTML; }
+    });
+    box.addEventListener("pointerup", function () {
+      if (!drag) return;
+      var d = drag; drag = null;
+      if (!d.moved) bldSel = bldSel === d.n.id ? null : d.n.id;
+      renderBuilder();
+    });
+  })();
   function legheCard() {
     return '<button class="card navcard" type="button" data-leghe="1" style="margin-top:6px;">' + ic("layers") + '<span><b>Le mie leghe</b><span class="k">'
       + (gl.groups.length ? gl.groups.map(function (g) { return esc(g.name); }).join(" · ") : "Raggruppa i campionati che segui e filtra segnali e partite") + '</span></span>' + ic("chev") + '</button>';
@@ -6888,7 +7246,7 @@
       saveGl(); glEdit = null; renderLeghe(); renderFeed(); renderDiario(); renderStrategie();
     }
   });
-  $("strategie").addEventListener("click", function (e) { if (e.target.closest("[data-leghe]") && data) openLeghe("strategie"); });
+  $("strategie").addEventListener("click", function (e) { if (e.target.closest("[data-leghe]") && data) openLeghe("strategie"); if (e.target.closest("[data-builder]") && data) openBuilder(); });
   $("legachips").addEventListener("click", function (e) { var b = e.target.closest("button[data-lega]"); if (b && data) setLega(b.dataset.lega); });
 
   // ---------------------------------------------------------------- Barre in orizzontale (04/10)
