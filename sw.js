@@ -2,8 +2,8 @@
 // quando c'e' connessione), poi la copia salvata (l'app si apre anche offline
 // con gli ultimi dati visti). Tutto quello che mette in cache e' gia'
 // pubblico sul sito: i dati restano cifrati anche qui.
-const CACHE = "statsight-v13";
-const SHELL = ["./", "./index.html", "./regole.js", "./i18n.js", "./i18n_en.js", "./moderazione.json", "./moderazione.js", "./anagrafica.js", "./feed_rank.js", "./condividi.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
+const CACHE = "statsight-v22";
+const SHELL = ["./", "./index.html", "./regole.js", "./i18n.js", "./i18n_en.js", "./i18n_es.js", "./moderazione.json", "./moderazione.js", "./anagrafica.js", "./feed_rank.js", "./condividi.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)));
