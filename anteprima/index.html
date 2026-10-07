@@ -6915,6 +6915,9 @@
         ["xh", "xG casa", "Altre statistiche", 1], ["xa", "xG ospite", "Altre statistiche", 1], ["xt", "xG totali", "Altre statistiche", 1],
         ["xf", "xG della favorita", "Altre statistiche", 1], ["xs", "xG della sfavorita", "Altre statistiche", 1], ["ph", "Possesso casa %", "Altre statistiche", 1],
         ["rh", "Rossi casa", "Altre statistiche"], ["ra", "Rossi ospite", "Altre statistiche"],
+        ["yh", "Gialli casa", "Altre statistiche"], ["ya", "Gialli ospite", "Altre statistiche"], ["yt", "Gialli totali", "Altre statistiche"],
+        ["fh", "Falli casa", "Altre statistiche"], ["fa", "Falli ospite", "Altre statistiche"], ["ftt", "Falli totali", "Altre statistiche"],
+        ["riv", "Indice di rivalità (cartellini nei precedenti ÷ media del campionato)", "Precedenti"], ["h2hc", "Cartellini medi nei precedenti", "Precedenti"], ["h2hn", "Precedenti contati", "Precedenti"],
         ["t15h", "Tiri in porta casa (ultimi 15')", "Ultimi 15 minuti"], ["t15a", "Tiri in porta ospite (ultimi 15')", "Ultimi 15 minuti"],
         ["s15h", "Tiri casa (ultimi 15')", "Ultimi 15 minuti"], ["s15a", "Tiri ospite (ultimi 15')", "Ultimi 15 minuti"],
         ["c15h", "Angoli casa (ultimi 15')", "Ultimi 15 minuti"], ["c15a", "Angoli ospite (ultimi 15')", "Ultimi 15 minuti"],
@@ -6926,7 +6929,8 @@
         ["p1", "Quota 1 prima del via", "Quote prima del via"], ["px", "Quota X prima del via", "Quote prima del via"], ["p2", "Quota 2 prima del via", "Quote prima del via"],
         ["po25", "Quota Over 2,5 prima del via", "Quote prima del via"], ["pu25", "Quota Under 2,5 prima del via", "Quote prima del via"]],
       pre: [["q1", "Quota 1", "Quote"], ["qx", "Quota X", "Quote"], ["q2", "Quota 2", "Quote"], ["pf", "Quota della favorita", "Quote"], ["favh", "La favorita gioca in casa (1 = sì)", "Quote"],
-        ["qo25", "Quota Over 2,5", "Quote"], ["qu25", "Quota Under 2,5", "Quote"], ["qgg", "Quota Goal", "Quote"], ["hr", "Ore al via", "Partita"]]
+        ["qo25", "Quota Over 2,5", "Quote"], ["qu25", "Quota Under 2,5", "Quote"], ["qgg", "Quota Goal", "Quote"], ["hr", "Ore al via", "Partita"],
+        ["riv", "Indice di rivalità (cartellini nei precedenti ÷ media del campionato)", "Precedenti"], ["h2hc", "Cartellini medi nei precedenti", "Precedenti"], ["h2hn", "Precedenti contati", "Precedenti"]]
     },
     tennis: {
       live: [["s1", "Set giocatore 1", "Punteggio"], ["s2", "Set giocatore 2", "Punteggio"], ["sn", "Set giocati", "Punteggio"], ["g1", "Game giocatore 1 (set in corso)", "Punteggio"], ["g2", "Game giocatore 2 (set in corso)", "Punteggio"],
@@ -6948,10 +6952,10 @@
   var OPS = [[">", ">"], [">=", "≥"], ["<", "<"], ["<=", "≤"], ["=", "="], ["!=", "≠"]], AOPS = [["+", "+"], ["-", "−"], ["*", "×"], ["/", "÷"], ["min", "min"], ["max", "max"], ["abs", "|a − b|"], ["pois", "Poisson: probabilità di almeno b gol con media a"]];
   // nodo Storico (09/10): la partita minuto per minuto (signals/diario_eventi.timeline), righe
   // [minuto, gol casa, gol ospite, poi casa e ospite di tiri in porta, tiri, angoli, xG, attacchi pericolosi, possesso]
-  var ST_STATS = [["Gol", "Gol"], ["Tiri in porta", "Tiri in porta"], ["Tiri", "Tiri"], ["Tiri fuori", "Tiri fuori"], ["Angoli", "Angoli"], ["xG", "xG", 1], ["Attacchi pericolosi", "Attacchi pericolosi", 1], ["Possesso", "Possesso %", 1]];
+  var ST_STATS = [["Gol", "Gol"], ["Tiri in porta", "Tiri in porta"], ["Tiri", "Tiri"], ["Tiri fuori", "Tiri fuori"], ["Angoli", "Angoli"], ["xG", "xG", 1], ["Attacchi pericolosi", "Attacchi pericolosi", 1], ["Possesso", "Possesso %", 1], ["Gialli", "Gialli"], ["Falli", "Falli"]];
   var ST_SIDES = [["tot", "in tutto"], ["h", "casa"], ["a", "ospite"], ["diff", "differenza (casa − ospite)"], ["lead", "chi è in vantaggio"], ["trail", "chi è in svantaggio"], ["fav", "favorita"], ["dog", "sfavorita"]];
   var ST_MODES = [["ult", "negli ultimi minuti"], ["al", "al minuto"], ["fra", "fra due minuti"]];
-  var TLI = { "Gol": 1, "Tiri in porta": 3, "Tiri": 5, "Angoli": 7, "xG": 9, "Attacchi pericolosi": 11, "Possesso": 13 }, TL_GAP = 6;
+  var TLI = { "Gol": 1, "Tiri in porta": 3, "Tiri": 5, "Angoli": 7, "xG": 9, "Attacchi pericolosi": 11, "Possesso": 13, "Gialli": 15, "Falli": 17 }, TL_GAP = 6;
   function tlPair(row, stat) {
     if (row == null) return null;
     if (row === 0) return stat === "Possesso" ? null : [0, 0];   // prima del via
@@ -7057,6 +7061,9 @@
       case "ch": return sp("Angoli", 0); case "ca": return sp("Angoli", 1); case "ct": return sum("Angoli");
       case "dh": return sp("Attacchi pericolosi", 0); case "da": return sp("Attacchi pericolosi", 1);
       case "xh": return sp("xG", 0); case "xa": return sp("xG", 1); case "xt": return sum("xG"); case "xf": return fs("xG", true); case "xs": return fs("xG", false);
+      case "yh": return sp("Gialli", 0); case "ya": return sp("Gialli", 1); case "yt": return sum("Gialli");
+      case "fh": return sp("Falli", 0); case "fa": return sp("Falli", 1); case "ftt": return sum("Falli");
+      case "riv": return e.dis && e.dis.riv != null ? e.dis.riv : null; case "h2hc": return e.dis ? e.dis.c : null; case "h2hn": return e.dis ? e.dis.n : null;
       case "ph": return sp("Possesso", 0); case "rh": return sp("Rossi", 0) || 0; case "ra": return sp("Rossi", 1) || 0;
       case "t15h": return s15("Tiri in porta", 0); case "t15a": return s15("Tiri in porta", 1); case "s15h": return s15("Tiri", 0); case "s15a": return s15("Tiri", 1);
       case "c15h": return s15("Angoli", 0); case "c15a": return s15("Angoli", 1); case "d15h": return s15("Attacchi pericolosi", 0); case "d15a": return s15("Attacchi pericolosi", 1);
@@ -7693,6 +7700,13 @@
          N("d", "dividi", 0, 50, { a: "min", cases: [{ op: "<", v: 70 }] }), N("g1", "gioca", 0, 0, { pick: "U15", min: null }), N("g2", "gioca", 0, 90, { pick: "X", min: null })],
         [W("s", 0, "a"), W("a", 0, "b"), W("b", 0, "h1"), W("h1", 0, "h2"), W("h2", 0, "c"), W("c", 0, "d"), W("d", 0, "g1"), W("d", 1, "g2")]]
     ];
+    IMP.unshift(["nervosismo", "Soglia di Nervosismo", "Partita con rivalità alta (nei precedenti almeno il 20% di cartellini in più della media del campionato), almeno 3 gialli nel primo tempo e dal 75' risultato in bilico: partita da Over cartellini.",
+        [N("s", "src", 0, 60), N("a", "se", 0, 60, { rules: [R("riv", ">=", 1.2), R("h2hn", ">=", 3)] }, "Rivalità alta nei precedenti"),
+         N("b", "se", 0, 60, { rules: [R("min", ">=", 75), R("gd", ">=", -1), R("gd", "<=", 1)] }, "Dal 75', in bilico"),
+         ST("h", 0, 60, "gialli_1t", "Gialli", "tot", "al", 45), N("c", "se", 0, 60, { rules: [R("var:gialli_1t", ">=", 3)] }, "Almeno 3 gialli nel 1° tempo"),
+         N("dbg", "debug", 0, 60, {}, "Over cartellini"),
+         N("n", "nota", 0, 160, { text: "Over cartellini: mercato che non registriamo ancora. Per ora la vedi in Debug" })],
+        [W("s", 0, "a"), W("a", 0, "b"), W("b", 0, "h"), W("h", 0, "c"), W("c", 0, "dbg")]]);
     IMP.forEach(function (x, i) { out.unshift({ v: 2, id: "P_" + x[0], name: x[1], sport: "calcio", mode: "live", vis: "priv", lay: 1, ts: nowS() + 10 - i, desc: x[2], nodes: x[3], wires: x[4] }); });
     return out;
   }
