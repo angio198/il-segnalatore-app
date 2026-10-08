@@ -74,6 +74,22 @@
   function pent(c, x, y, r) { c.beginPath(); for (var i = 0; i < 5; i++) { var a = i / 5 * TAU - Math.PI / 2; c[i ? "lineTo" : "moveTo"](x + Math.cos(a) * r, y + Math.sin(a) * r); } c.closePath(); c.fill(); }
   function star(c, x, y, r) { c.beginPath(); for (var i = 0; i < 10; i++) { var a = i / 10 * TAU - Math.PI / 2, rr = i % 2 ? r * 0.45 : r; c[i ? "lineTo" : "moveTo"](x + Math.cos(a) * rr, y + Math.sin(a) * rr); } c.closePath(); c.fill(); }
   function drawTennisBall(c, x, y, r) { c.beginPath(); c.arc(x, y, r, 0, TAU); c.fillStyle = "#D9F04A"; c.fill(); c.strokeStyle = "rgba(255,255,255,.85)"; c.lineWidth = Math.max(0.8, r * 0.18); c.beginPath(); c.arc(x - r * 0.9, y, r * 0.75, -0.9, 0.9); c.stroke(); c.beginPath(); c.arc(x + r * 0.9, y, r * 0.75, Math.PI - 0.9, Math.PI + 0.9); c.stroke(); }
+  // mazza da baseball con l'impugnatura in (0,0) e la punta verso -y (10/10)
+  function drawBat(c, L) {
+    c.save(); c.lineCap = "round";
+    c.fillStyle = "#C8924E"; c.beginPath(); c.moveTo(-2, 0); c.lineTo(-L * 0.06, -L); c.quadraticCurveTo(0, -L * 1.06, L * 0.06, -L); c.lineTo(2, 0); c.closePath(); c.fill();
+    c.fillStyle = "rgba(0,0,0,.18)"; c.fillRect(0, -L, L * 0.05, L);
+    c.strokeStyle = "#1C1F24"; c.lineWidth = 5; c.beginPath(); c.moveTo(0, 2); c.lineTo(0, -L * 0.22); c.stroke();
+    c.restore();
+  }
+  // pallone ovale da football americano centrato in (x,y), raggio lungo r
+  function drawFootball(c, x, y, r) {
+    c.save(); c.translate(x, y);
+    c.beginPath(); c.ellipse(0, 0, r, r * 0.6, 0, 0, TAU); c.fillStyle = "#8B4A22"; c.fill();
+    c.strokeStyle = "#fff"; c.lineWidth = Math.max(1, r * 0.1); c.beginPath(); c.moveTo(-r * 0.35, 0); c.lineTo(r * 0.35, 0); c.stroke();
+    for (var i = -2; i <= 2; i++) { c.beginPath(); c.moveTo(i * r * 0.14, -r * 0.12); c.lineTo(i * r * 0.14, r * 0.12); c.stroke(); }
+    c.restore();
+  }
   // racchetta con l'impugnatura in (0,0) e la testa verso l'alto (asse -y), lunghezza L
   function drawRacket(c, L, id) {
     var R = { classica: ["#2F3A40", "#E8E8E8", "#C62828"], rossa: ["#C62828", "#FFF", "#1C1F24"], blu: ["#1565C0", "#E3F2FD", "#0D47A1"], legno: ["#A0703A", "#F3E5C8", "#6D4C2A"],
@@ -161,6 +177,8 @@
     // in mano
     if (pose.hold === "ball") drawBall(c, armL.end[0] + 2, armL.end[1] - 8, 13, A.pallone, 0.3);
     if (pose.hold === "racket" || opt.racket) { c.save(); c.translate(armR.end[0], armR.end[1]); c.rotate(pose.racketAng != null ? pose.racketAng : armR.ang + Math.PI); drawRacket(c, 62, A.racchetta); c.restore(); }
+    if (pose.hold === "bat") { c.save(); c.translate((armL.end[0] + armR.end[0]) / 2, (armL.end[1] + armR.end[1]) / 2); c.rotate(pose.batAng || 0); drawBat(c, 78); c.restore(); }
+    if (pose.hold === "nfl") { c.save(); c.translate(armR.end[0], armR.end[1] - 6); c.rotate(-0.6); drawFootball(c, 0, 0, 11); c.restore(); }
     if (pose.hold === "trofeo") { c.save(); c.translate((armL.end[0] + armR.end[0]) / 2, Math.min(armL.end[1], armR.end[1]) - 6); trophy(c); c.restore(); }
     // collo e testa
     c.fillStyle = shade(skin, -0.12); c.fillRect(-6, shY - 12, 12, 14);
@@ -402,6 +420,6 @@
   }
   window.G = { $: $, TAU: TAU, clamp: clamp, lerp: lerp, ease: ease, rnd: rnd, pick: pick, load: load, save: save, toast: toast, CAT: CAT, PELLE: PELLE, CAPELLI_COL: CAPELLI_COL, COLORI: COLORI,
                get av() { return av; }, set av(v) { av = v; }, pg: pg, wins: wins, unlocked: unlocked, reqOf: reqOf, price: price, AV_DEF: AV_DEF,
-               setUnlock: function (fn) { unlockFn = fn; }, saveAv: saveAv, savePg: savePg, drawBall: drawBall, drawTennisBall: drawTennisBall, drawRacket: drawRacket,
+               setUnlock: function (fn) { unlockFn = fn; }, saveAv: saveAv, savePg: savePg, drawBall: drawBall, drawTennisBall: drawTennisBall, drawRacket: drawRacket, drawBat: drawBat, drawFootball: drawFootball, shade: shade,
                drawGuy: drawGuy, drawBg: drawBg, P: P, POSE0: POSE0, POSES: POSES, WINS: WINS, SAD: SAD, poseOf: poseOf, mixPose: mixPose, drawPoseExtras: drawPoseExtras, randomAv: randomAv, setup: setup, pt: pt, rr: rr, star: star };
 })();
