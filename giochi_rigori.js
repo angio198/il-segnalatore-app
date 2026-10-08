@@ -37,7 +37,7 @@
     var now = performance.now() / 1000;
     st.kick = { x: target.x, y: target.y, speed: speed, t0: now, dur: speed < 0.75 ? 0.75 : speed > 1.3 ? 0.42 : 0.55, path: path || null };
     if (path) st.kick.dur = path.dur;
-    st.phase = "fly";
+    st.phase = "fly"; if (window.SFX) SFX.play("calcio");
     // il portiere si tuffa al calcio
     if (st.turn === "me") {
       var r = Math.random(), dir;
@@ -72,6 +72,7 @@
     var o = outcome(); (st.turn === "me" ? st.me : st.cpu).push(o[1]);
     st.msg = { gol: st.turn === "me" ? "GOL!" : "Gol subito", parata: st.turn === "me" ? "Parata del portiere" : "PARATA!", fuori: "Fuori!", palo: "Palo!", traversa: "Traversa!" }[o[0]];
     st.msgGood = (st.turn === "me") === o[1]; st.msgT = performance.now() / 1000; st.res = o[0];
+    if (window.SFX) { if (o[0] === "palo" || o[0] === "traversa") SFX.play("ferro"); if (o[0] === "parata") SFX.play("presa"); SFX.play(st.msgGood ? "folla" : "delusione", 0.1); }
     st.phase = "result"; hud();
     setTimeout(next, 1500);
   }
@@ -87,7 +88,8 @@
   function end() {
     var win = sum(st.me) > sum(st.cpu);
     st.phase = "end"; st.celebrate = { win: win, t0: performance.now() / 1000 };
-    var nuovi = win ? UI.onWin("rigori") : (G.pg.giocate++, G.savePg(), []);
+    if (window.SFX) SFX.play(win ? "vittoria" : "sconfitta");
+    var nuovi = UI.onEnd("rigori", win);
     $("rover").innerHTML = '<div style="margin-top:auto"></div><b>' + (win ? "Hai vinto " : "Hai perso ") + sum(st.me) + "-" + sum(st.cpu) + '</b>'
       + (nuovi.length ? '<div class="k">' + nuovi.join(" · ") + '</div>' : "") + '<button class="primary" type="button" id="ragain">Rivincita</button>';
     $("rover").style.justifyContent = "flex-end"; $("rover").style.background = "linear-gradient(transparent 55%, rgba(8,14,18,.85))"; $("rover").hidden = false;
