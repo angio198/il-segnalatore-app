@@ -1312,6 +1312,45 @@
     body{max-width:480px;margin-inline:auto;box-shadow:0 0 0 1px var(--line);}
     .tabbar{max-width:480px;margin-inline:auto;}
   }
+
+  /* VERSIONE PER COMPUTER (10/10/2026, richiesta utente: prima il sito). Da 1024 pixel di larghezza: menu a sinistra al
+     posto della barra in basso, contenuto largo e centrato, Segnali e Radar su due colonne, builder piu' grande.
+     Avatar (creazione) e minigiochi restano sul telefono: .mob-solo si nasconde, .pc-solo si vede. Il telefono e il
+     tablet non cambiano (le regole valgono solo da 1024 pixel in su). */
+  .pc-solo{display:none;}
+  @media (min-width:1024px){
+    :root{--side:216px;--wide:1120px;}
+    body{max-width:none!important;margin:0!important;box-shadow:none!important;}
+    .mob-solo{display:none!important;}
+    .pc-solo{display:block;}
+    /* menu a sinistra */
+    .tabbar{position:fixed;left:0;right:auto;top:0;bottom:0;width:var(--side);max-width:none!important;margin:0!important;
+      flex-direction:column;justify-content:flex-start;gap:4px;padding:84px 12px 20px!important;border-top:0;border-right:1px solid var(--line);transform:none!important;z-index:9;}
+    .tab{flex:none!important;flex-direction:row!important;justify-content:flex-start!important;align-items:center;gap:12px!important;
+      width:100%;padding:10px 12px!important;font-size:0.92rem!important;letter-spacing:0!important;border-radius:12px;white-space:nowrap;}
+    .tab:hover{background:color-mix(in srgb, var(--ink) 6%, transparent);}
+    .tab[aria-current="page"]{background:color-mix(in srgb, var(--accent) 16%, transparent);}
+    .tab .ic{width:28px!important;height:28px!important;background:none!important;}
+    .tab .ic .ico{width:24px!important;height:24px!important;}
+    .tab .ndot{top:10px;left:34px;}
+    .tab.hub{order:-1;margin-bottom:6px;}
+    .tab.hub .hubic{width:30px!important;height:30px!important;margin:0!important;box-shadow:none!important;transform:none!important;}
+    .tab.hub .hubic img{width:28px!important;height:28px!important;}
+    .topbar{position:relative;z-index:10;padding-left:24px;padding-right:24px;}
+    /* contenuto largo e centrato nello spazio a destra del menu */
+    .view{padding:26px max(28px, calc((100vw - var(--side) - var(--wide)) / 2)) 48px calc(var(--side) + max(28px, calc((100vw - var(--side) - var(--wide)) / 2)))!important;}
+    .slipbar{left:auto!important;right:28px!important;bottom:20px!important;width:440px;max-width:440px!important;margin:0!important;}
+    /* Segnali e Radar su due colonne */
+    #feed{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start;}
+    #feed > *{margin:0!important;} #feed > :not(.feedcard){grid-column:1/-1;}
+    .rwork{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px!important;align-items:start;}
+    .rhero{max-width:760px;}
+    /* Strategy builder: piu' spazio alla mappa */
+    .bwrap{max-height:none!important;height:62vh;margin:0!important;border:1px solid var(--line);border-radius:12px;}
+    .card.mie{max-width:none;}
+    .sigpop{left:auto;right:32px;transform:translate(0,-20px) scale(.96);}
+    .sigpop.on{transform:translate(0,0) scale(1);}
+  }
 </style>
 </head>
 <body>
@@ -3688,8 +3727,8 @@
         + '<div class="trvth">' + Object.keys(QTH).map(function (k) { return '<span style="--c:' + QTH[k].c + '">' + ic(QTH[k].ic) + ' ' + QTH[k].name + '</span>'; }).join("") + '</div>'
         + '<button class="primary block trvgo" type="button" data-tvgo="1"' + (w ? " disabled" : "") + '>' + ic("vs") + ' ' + (w === -1 ? "Hai fatto le 3 sfide di oggi" : w ? "Prossima sfida tra " + Math.ceil(w / 60) + " min" : "Cerca un avversario") + '</button>'
         + '<div class="k trvrule">Sfide di oggi: ' + today + '/' + TRV.perDay + ' · una ogni ora · ' + TRV.right + ' monete per risposta giusta, ' + TRV.win + ' se vinci, ' + TRV.draw + ' col pari.</div></div>'
-        + '<h2 class="sectiontitle">Minigiochi col tuo omino</h2><div class="duo"><button class="primary" type="button" data-omgame="rigori">' + ic("calcio") + ' Rigori</button><button class="primary" type="button" data-omgame="tennis">' + ic("tennis") + ' Tennis</button><button class="primary" type="button" data-omgame="basket">' + ic("basket") + ' Basket</button><button class="primary" type="button" data-omgame="baseball">' + ic("baseball") + ' Baseball</button><button class="primary" type="button" data-omgame="football">' + ic("football") + ' Football</button><button class="primary" type="button" data-omgame="airhockey">' + ic("airhockey") + ' Air hockey</button></div>'
-        + '<div class="k" style="margin:6px 2px 0;">15 monete a vittoria, fino a 5 vittorie premiate al giorno. <button class="linkbtn" type="button" data-omino="corpo">Vesti il tuo omino</button></div>'
+        + '<div class="pc-solo note" style="margin-top:14px;">' + ic("info") + ' Minigiochi e omino si giocano nell’app sul telefono.</div><div class="mob-solo"><h2 class="sectiontitle">Minigiochi col tuo omino</h2><div class="duo"><button class="primary" type="button" data-omgame="rigori">' + ic("calcio") + ' Rigori</button><button class="primary" type="button" data-omgame="tennis">' + ic("tennis") + ' Tennis</button><button class="primary" type="button" data-omgame="basket">' + ic("basket") + ' Basket</button><button class="primary" type="button" data-omgame="baseball">' + ic("baseball") + ' Baseball</button><button class="primary" type="button" data-omgame="football">' + ic("football") + ' Football</button><button class="primary" type="button" data-omgame="airhockey">' + ic("airhockey") + ' Air hockey</button></div>'
+        + '<div class="k" style="margin:6px 2px 0;">15 monete a vittoria, fino a 5 vittorie premiate al giorno. <button class="linkbtn" type="button" data-omino="corpo">Vesti il tuo omino</button></div></div>'
         + (last.filter(function (x) { return x.res; }).length ? '<h2 class="sectiontitle">Ultime sfide</h2><div class="card">' + last.filter(function (x) { return x.res; }).map(function (x) {
           var o = oppOf(x);
           return '<div class="trvhist">' + avatar(o.id, 34) + '<span><b>' + esc(o.name) + '</b><span class="k">' + whenLabel(x.ts) + ' · ' + x.rounds.map(function (t) { return QTH[t] ? QTH[t].name : t; }).join(", ") + '</span></span>'
@@ -4680,7 +4719,7 @@
     if (meEdit) {
       var d = meEdit, lvl = rewardState(pronostici()).level, curAv = /^(av|sp|cm):/.test(d.seed) ? d.seed : "av:" + avIndex(d.seed);
       html = '<div class="card meedit">'
-        + '<div class="mepicrow">' + avOf(d, 88) + '<div class="mepicbtns"><button class="chip" type="button" data-omino="corpo">' + ic("pen") + ' Crea e vesti il tuo omino</button>'
+        + '<div class="mepicrow">' + avOf(d, 88) + '<div class="mepicbtns mob-solo"><button class="chip" type="button" data-omino="corpo">' + ic("pen") + ' Crea e vesti il tuo omino</button>'
         + '<button class="chip" type="button" data-omino="foto">' + ic("camera") + ' Scatta una foto al tuo omino</button></div></div>'
         + '<div class="k" style="margin:8px 0 10px;">La foto del profilo è sempre il tuo omino: niente foto dal telefono.</div>'
         + '<label class="melabel" for="mename">Nome</label><input id="mename" class="meinput" maxlength="24" value="' + esc(d.name) + '" placeholder="Come ti vedono gli altri" translate="no"><div class="note namemsg" id="menamemsg" role="alert" hidden></div>'
