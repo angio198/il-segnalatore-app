@@ -1,6 +1,22 @@
 // Dizionario italiano -> inglese dell'app (lo usa i18n.js). "#" = un numero qualsiasi, " *" alla fine = prefisso.
 // Per tradurre una frase nuova: aggiungerla qui, uguale a come appare nell'app (i numeri diventano #).
 window.I18N_EN = {
+  // 10/10: Strategie, Radar, Match, ippica, minigiochi
+  "Le mie": "Mine",
+  "Catalogo": "Catalog",
+  "Marketplace": "Marketplace",
+  "Strategie al lavoro": "Strategies at work",
+  "# accese": "# on",
+  "controlla": "scanning",
+  "scattata": "fired",
+  "Nostra": "Ours",
+  "Tua": "Yours",
+  "Crea o modifica una strategia": "Create or edit a strategy",
+  "In partenza": "Starting soon",
+  "Programmate": "Scheduled",
+  "Cavalli in partenza delle nostre strategie": "Our strategies' horses about to start",
+  "Tutto il programma delle corse": "Full race schedule",
+  "Classifica generale": "Overall ranking",
   // >>> generate da i18n_aggiungi.py
   "Prima della partita, # campionati europei (Serie A e B, Premier e leghe inglesi, Liga, Bundesliga, Ligue #, Eredivisie, Portogallo, Belgio, Turchia, Grecia, Scozia). Si gioca la vittoria della squadra che in questa stagione ha fatto meno del # dei punti a partita dell'avversario, ma che il mercato dà comunque almeno al #. Motivo, lo stesso di classifica_inganna nel tennis: la classifica è lenta e il pubblico la guarda, così chi sta davanti viene pagato un pò meno del giusto e chi sta dietro un pò di più. Storico ## (# partite): queste squadre vincono circa il # in più di quanto dice la quota, in tutti e due i periodi controllati; la squadra davanti in classifica, nelle partite equilibrate, perde il # anche alla quota Pinnacle. Rendimento storico: # a quota Betfair Exchange con commissione, # alla miglior quota, circa zero a Bet#. Per questo ogni messaggio porta una quota minima. Attenzione: provata su altri # campionati (Brasile, MLS, Scandinavia, Giappone...) la stessa regola non ha funzionato. Per questo resta in prova e solo sui # campionati europei principali: sarà la verifica dal vivo a dire se l'effetto è vero.": "Pre-match, # European leagues (Serie A and B, Premier and English leagues, Liga, Bundesliga, Ligue #, Eredivisie, Portugal, Belgium, Turkey, Greece, Scotland). We back the team that this season has made less than # of the opponent's points per game, but that the market still rates at least #. Reason, the same as classifica_inganna in tennis: the table is slow and the public watches it, so the team ahead is priced a little below fair and the team behind a little above. History ## (# matches): these teams win about # more than the odds say, in both periods checked; the team higher in the table, in balanced matches, loses # even at Pinnacle odds. Historical return: # at Betfair Exchange odds with commission, # at the best odds, about zero at Bet#. That's why every message carries a minimum odds. Warning: tested on another # leagues (Brazil, MLS, Scandinavia, Japan...) the same rule didn't work. So it stays on trial and only on the # main European leagues: the live check will tell whether the effect is real.",
   "Stessa idea di classifica_inganna, per avere più segnali: prima della partita, solo circuito maggiore ATP e WTA, si punta il giocatore che ha fra il # e il # dei punti dell'avversario ma che il mercato dà almeno al #. Le due strategie non si sovrappongono (classifica_inganna prende i divari sotto il #; la fascia ## nello storico non rendeva ed è esclusa). Circa ## segnali al giorno. Il vantaggio è più sottile: storico ## # alla quota Pinnacle, # alla miglior quota, ma # a Bet#. Per questo ogni messaggio porta una quota minima: sotto quella, nello storico la giocata perdeva. Con questa regola a Bet# restava giocabile un segnale su quattro, con #; alla miglior quota quasi tutti, con #.": "Same idea as classifica_inganna, for more signals: pre-match, main ATP and WTA tour only, we back the player who has between # and # of the opponent's ranking points but whom the market rates at least #. The two strategies don't overlap (classifica_inganna takes gaps below #; the ## band didn't pay in history and is excluded). About ## signals a day. The edge is thinner: history ## # at Pinnacle odds, # at the best odds, but # at Bet#. That's why every message carries a minimum odds: below it, the bet lost in history. With this rule one signal in four stayed playable at Bet#, at #; at the best odds almost all, at #.",
