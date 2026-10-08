@@ -8,14 +8,30 @@
   "use strict";
   var G = window.G, $ = G.$;
   var OM_KEY = "statsight.omino", GAME_COINS = 15, GAME_COINS_DAY = 5;
-  var om = Object.assign({ buy: {}, regali: [], games: [] }, G.load(OM_KEY, {}));
+  var om = Object.assign({ buy: {}, regali: [], games: [], gx: {} }, G.load(OM_KEY, {}));
+  // livello di ogni minigioco (10/10): esperienza propria (vittoria 30, sconfitta 10) e premi per l'omino che si
+  // aprono a quel livello del gioco, anche se il livello dell'app e' piu' basso
+  var GX_WIN = 30, GX_LOSS = 10, GX_STEPS = [0, 40, 100, 180, 280, 400, 540, 700, 880, 1080];
+  var GAME_REW = {
+    rigori: [[2, "guanti", "arancio"], [3, "pallone", "retro"], [4, "maglia", "portiere"], [6, "pallone", "notte"], [8, "guanti", "rosa"]],
+    tennis: [[2, "racchetta", "rossa"], [3, "cappello", "visiera"], [4, "racchetta", "blu"], [6, "racchetta", "legno"], [8, "accessorio", "polsini"]],
+    basket: [[2, "maglia", "canotta"], [3, "accessorio", "polsini"], [4, "capelli", "afro"], [6, "cappello", "rovescio"], [8, "accessorio", "occhiali"]],
+    baseball: [[2, "cappello", "cappellino"], [3, "cappello", "rovescio"], [5, "capelli", "mullet"], [7, "accessorio", "quadrati"]],
+    football: [[2, "cappello", "casco"], [3, "maglia", "banda"], [5, "maglia", "tuta"], [7, "esulta", "pugno"]],
+    airhockey: [[2, "accessorio", "tondi"], [3, "cappello", "cuffie"], [5, "capelli", "ciuffo"], [7, "esulta", "aereo"]]
+  };
+  function gxLevel(xp) { var l = 1; while (l < GX_STEPS.length && xp >= GX_STEPS[l]) l++; if (l === GX_STEPS.length) l += Math.floor((xp - GX_STEPS[GX_STEPS.length - 1]) / 220); return l; }
+  function gxNext(l) { return l < GX_STEPS.length ? GX_STEPS[l] : GX_STEPS[GX_STEPS.length - 1] + (l - GX_STEPS.length + 1) * 220; }
+  function gameInfo(g) { var xp = (om.gx || {})[g] || 0, l = gxLevel(xp); return { xp: xp, lv: l, next: gxNext(l), rew: GAME_REW[g] || [] }; }
+  function itemName(cat, id) { var it = (G.CAT[cat] || []).filter(function (x) { return x[0] === id; })[0]; return it ? it[1] : id; }
+  function gameUnlocked(cat, id) { return Object.keys(GAME_REW).some(function (g) { var lv = gameInfo(g).lv; return GAME_REW[g].some(function (r) { return r[1] === cat && r[2] === id && lv >= r[0]; }); }); }
   function saveOm() { G.save(OM_KEY, om); }
   function SS() { return window.SS || { level: function () { return 1; }, coins: function () { return 0; }, toast: G.toast }; }
   function key(cat, id) { return cat + ":" + id; }
   // sbloccato: pezzo base col livello, pezzo strano solo comprato (o vinto alla ruota)
   G.setUnlock(function (cat, id) {
     var r = G.reqOf(cat, id);
-    if (om.buy[key(cat, id)] || om.regali.indexOf(key(cat, id)) >= 0) return true;
+    if (om.buy[key(cat, id)] || om.regali.indexOf(key(cat, id)) >= 0 || gameUnlocked(cat, id)) return true;
     return typeof r === "number" ? SS().level() >= r : false;
   });
   // monete: spese al negozio (-) e vinte ai minigiochi (+), dentro rewardState dell'app
@@ -180,17 +196,34 @@
   // ------------------------------------------------------------------ minigiochi
   var game = null;
   var GIOCHI = { rigori: ["Rigori", "Sfida ai rigori"], tennis: ["Tennis", "Sfida a tennis"], basket: ["Basket", "Sfida a canestro"], baseball: ["Baseball", "Sfida a baseball"], football: ["Football", "Sfida di football americano"], airhockey: ["Airhockey", "Air hockey"] };
+  // sotto il titolo del gioco: livello, esperienza e prossimo premio
+  function gameHead(g) {
+    var el = $("giocolv"); if (!el) return; var i = gameInfo(g), nx = i.rew.filter(function (r) { return r[0] > i.lv; })[0];
+    var prev = i.lv - 1 < GX_STEPS.length ? GX_STEPS[i.lv - 1] : gxNext(i.lv - 1), pc = Math.round(100 * (i.xp - prev) / Math.max(1, i.next - prev));
+    el.innerHTML = '<b>Livello ' + i.lv + '</b> <span class="k">' + i.xp + "/" + i.next + ' esperienza' + (nx ? " · al livello " + nx[0] + ": " + itemName(nx[1], nx[2]) : "") + '</span><div class="gxbar"><i style="width:' + Math.max(0, Math.min(100, pc)) + '%"></i></div>';
+  }
   function mod(which) { return window[GIOCHI[which][0]]; }
   function openGame(which) {
     game = which;
     Object.keys(GIOCHI).forEach(function (k) { $("t-" + k).hidden = k !== which; });
-    $("giocotitle").textContent = GIOCHI[which][1];
+    $("giocotitle").textContent = GIOCHI[which][1]; gameHead(which);
     SS().show("gioco"); window.scrollTo(0, 0);
     setTimeout(function () { var M = mod(which); M.resize(); M.show(); }, 30);
   }
   // vittoria: monete (al massimo GAME_COINS_DAY partite premiate al giorno, per non farne un rubinetto)
   window.UI = {
     tab: function () { return game && !$("view-gioco").hidden ? game : ""; },
+    // fine partita (vinta o persa): esperienza del gioco, livello nuovo e premi; le monete solo se vinci
+    onEnd: function (g, win) {
+      var before = gameInfo(g); om.gx = om.gx || {}; om.gx[g] = before.xp + (win ? GX_WIN : GX_LOSS); saveOm();
+      var after = gameInfo(g), out = win ? UI.onWin(g) : (G.pg.giocate++, G.savePg(), []);
+      out.push("+" + (win ? GX_WIN : GX_LOSS) + " esperienza");
+      if (after.lv > before.lv) {
+        out.push("Livello " + after.lv + " in questo gioco!");
+        after.rew.filter(function (r) { return r[0] > before.lv && r[0] <= after.lv; }).forEach(function (r) { out.push("Sbloccato: " + itemName(r[1], r[2])); });
+      }
+      gameHead(g); return out;
+    },
     onWin: function (g) {
       var today = new Date().toISOString().slice(0, 10), n = om.games.filter(function (x) { return x.d === today && x.coins; }).length;
       var c = n < GAME_COINS_DAY ? GAME_COINS : 0;
@@ -203,7 +236,8 @@
     if (e.target.id === "omnome") { G.av.nome = e.target.value.slice(0, 12); G.saveAv(); changed(); }
     if (e.target.id === "omnum") { var n = parseInt(e.target.value, 10); G.av.num = isNaN(n) ? "" : Math.max(0, Math.min(99, n)); G.saveAv(); }
   });
-  window.addEventListener("resize", function () { if ($("view-omino") && !$("view-omino").hidden) renderEditor(); else if (game && !$("view-gioco").hidden) mod(game).resize(); });
+  // la tastiera del telefono cambia l'altezza dello schermo: se stai scrivendo il nome non si ridisegna (si chiuderebbe)
+  window.addEventListener("resize", function () { var ae = document.activeElement; if (ae && ae.closest && ae.closest("#omino") && /INPUT|TEXTAREA/.test(ae.tagName)) return; if ($("view-omino") && !$("view-omino").hidden) renderEditor(); else if (game && !$("view-gioco").hidden) mod(game).resize(); });
   var lvT = 0;
   function loop() {
     var t = now();
