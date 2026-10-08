@@ -1450,6 +1450,12 @@
     <div class="stage"><canvas id="rcv"></canvas><div class="over" id="rover" hidden></div></div>
     <p class="help" id="rhelp"></p>
   </section>
+  <section id="t-basket" hidden>
+    <div class="hud"><div class="who" id="bme"></div><div class="big" id="bsc">0 - 0</div><div class="who" id="bcpu"></div></div>
+    <div class="ruota">Gira il telefono in verticale per giocare.</div>
+    <div class="stage"><canvas id="bcv"></canvas><div class="over" id="bover" hidden></div></div>
+    <p class="help" id="bhelp"></p>
+  </section>
   <section id="t-tennis" hidden>
     <div class="hud"><div class="who" id="tme"></div><div class="big" id="tsc">0 - 0</div><div class="who" id="tcpu"></div></div>
     <div class="ruota">Gira il telefono in verticale per giocare.</div>
@@ -3477,7 +3483,7 @@
         + '<div class="trvth">' + Object.keys(QTH).map(function (k) { return '<span style="--c:' + QTH[k].c + '">' + ic(QTH[k].ic) + ' ' + QTH[k].name + '</span>'; }).join("") + '</div>'
         + '<button class="primary block trvgo" type="button" data-tvgo="1"' + (w ? " disabled" : "") + '>' + ic("vs") + ' ' + (w === -1 ? "Hai fatto le 3 sfide di oggi" : w ? "Prossima sfida tra " + Math.ceil(w / 60) + " min" : "Cerca un avversario") + '</button>'
         + '<div class="k trvrule">Sfide di oggi: ' + today + '/' + TRV.perDay + ' · una ogni ora · ' + TRV.right + ' monete per risposta giusta, ' + TRV.win + ' se vinci, ' + TRV.draw + ' col pari.</div></div>'
-        + '<h2 class="sectiontitle">Minigiochi col tuo omino</h2><div class="duo"><button class="primary" type="button" data-omgame="rigori">' + ic("calcio") + ' Rigori</button><button class="primary" type="button" data-omgame="tennis">' + ic("tennis") + ' Tennis</button></div>'
+        + '<h2 class="sectiontitle">Minigiochi col tuo omino</h2><div class="duo"><button class="primary" type="button" data-omgame="rigori">' + ic("calcio") + ' Rigori</button><button class="primary" type="button" data-omgame="tennis">' + ic("tennis") + ' Tennis</button><button class="primary" type="button" data-omgame="basket" style="grid-column:1/-1">' + ic("basket") + ' Basket</button></div>'
         + '<div class="k" style="margin:6px 2px 0;">15 monete a vittoria, fino a 5 vittorie premiate al giorno. <button class="linkbtn" type="button" data-omino="corpo">Vesti il tuo omino</button></div>'
         + (last.filter(function (x) { return x.res; }).length ? '<h2 class="sectiontitle">Ultime sfide</h2><div class="card">' + last.filter(function (x) { return x.res; }).map(function (x) {
           var o = oppOf(x);
@@ -8505,5 +8511,6 @@
 <script src="omino.js"></script>
 <script src="giochi_rigori.js"></script>
 <script src="giochi_tennis.js"></script>
+<script src="giochi_basket.js"></script>
 </body>
 </html>
