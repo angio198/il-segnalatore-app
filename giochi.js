@@ -177,7 +177,7 @@
     // in mano
     if (pose.hold === "ball") drawBall(c, armL.end[0] + 2, armL.end[1] - 8, 13, A.pallone, 0.3);
     if (pose.hold === "racket" || opt.racket) { c.save(); c.translate(armR.end[0], armR.end[1]); c.rotate(pose.racketAng != null ? pose.racketAng : armR.ang + Math.PI); drawRacket(c, 62, A.racchetta); c.restore(); }
-    if (pose.hold === "bat") { c.save(); c.translate((armL.end[0] + armR.end[0]) / 2, (armL.end[1] + armR.end[1]) / 2); c.rotate(pose.batAng || 0); drawBat(c, 78); c.restore(); }
+    if (pose.hold === "bat") { c.save(); c.translate((armL.end[0] + armR.end[0]) / 2, (armL.end[1] + armR.end[1]) / 2); c.rotate(pose.batAng || 0); drawBat(c, 78 * (pose.batLen || 1)); c.restore(); }
     if (pose.hold === "nfl") { c.save(); c.translate(armR.end[0], armR.end[1] - 6); c.rotate(-0.6); drawFootball(c, 0, 0, 11); c.restore(); }
     if (pose.hold === "trofeo") { c.save(); c.translate((armL.end[0] + armR.end[0]) / 2, Math.min(armL.end[1], armR.end[1]) - 6); trophy(c); c.restore(); }
     // collo e testa
@@ -259,7 +259,8 @@
       // barba prima di naso e bocca, cosi' la bocca resta visibile; segue il mento della forma scelta
       if (A.barba !== "no" && A.barba !== "baffi") {
         c.fillStyle = hair; c.globalAlpha = A.barba === "corta" ? 0.45 : 0.95;
-        if (A.barba === "piena") headPart(c, A, x, y, R, 1.02, function () { below(c, x, y, R, x - W - 3, y + 2, x, y + 22, x + W + 3, y + 2); });
+        // la barba parte sotto gli zigomi: fra cappello e barba resta la pelle (non fa il giro del viso)
+        if (A.barba === "piena") headPart(c, A, x, y, R, 1.02, function () { below(c, x, y, R, x - W - 3, y + 8, x, y + 22, x + W + 3, y + 8); });
         else headPart(c, A, x, y, R, 1.0, function () { below(c, x, y, R, x - W - 3, y + 9, x, y + 24, x + W + 3, y + 9); });
         c.globalAlpha = 1;
       }
@@ -381,7 +382,7 @@
       c.fillStyle = "#1C1F24"; c.beginPath(); c.ellipse(x, cb, W + 7, 4.5, 0, 0, TAU); c.fill();
     }
     else if (h === "casco") {
-      cap(1.14, y + 6); c.fillStyle = "rgba(255,255,255,.85)"; headPart(c, A, x, y, R, 1.15, function () { c.rect(x - 3, y - 3 * R, 6, 3 * R); });
+      cap(1.14, y - 1); c.fillStyle = "rgba(255,255,255,.85)"; headPart(c, A, x, y, R, 1.15, function () { c.rect(x - 3, y - 3 * R, 6, 3 * R); });
       if (!back) { c.strokeStyle = "#B0B6BC"; c.lineWidth = 2.5; c.beginPath(); c.moveTo(x - W * 0.95, y + 6); c.lineTo(x + W * 0.95, y + 6); c.moveTo(x - W * 0.8, y + 15); c.lineTo(x + W * 0.8, y + 15); c.moveTo(x, y + 6); c.lineTo(x, y + 15); c.stroke(); }
     }
     else if (h === "vichingo") {
