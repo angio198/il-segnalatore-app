@@ -72,10 +72,10 @@
     var win = st.me > st.cpu;
     st.phase = "end"; st.celebrate = { win: win, t0: performance.now() / 1000 };
     if (window.SFX) SFX.play(win ? "vittoria" : "sconfitta");
-    var nuovi = UI.onEnd("football", win);
+    var nuovi = UI.onEnd("football", win, st.me, st.cpu);
     $("fover").innerHTML = '<div style="margin-top:auto"></div><b>' + (win ? "Hai vinto " : "Hai perso ") + st.me + "-" + st.cpu + '</b>'
-      + (nuovi.length ? '<div class="k">' + nuovi.join(" · ") + '</div>' : "") + '<button class="primary" type="button" id="fagain">Rivincita</button>';
-    $("fover").style.justifyContent = "flex-end"; $("fover").style.background = "linear-gradient(transparent 55%, rgba(8,14,18,.85))"; $("fover").hidden = false;
+      + (UI.endCard ? UI.endCard("football", nuovi) : "") + '<button class="primary" type="button" id="fagain">Rivincita</button>';
+    $("fover").style.justifyContent = "flex-end"; $("fover").style.background = "linear-gradient(rgba(8,14,18,.35), rgba(8,14,18,.9))"; $("fover").hidden = false;
     $("fagain").onclick = newGame;
   }
   function step(now, dt) {
