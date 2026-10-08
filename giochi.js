@@ -14,7 +14,7 @@
 
   // ------------------------------------------------------------------ catalogo (need = vittorie per sbloccare)
   var PELLE = ["#F6D7B8", "#EDC09A", "#D9A273", "#B97F51", "#8D5A35", "#5E3B22"];
-  var CAPELLI_COL = ["#1E1712", "#4A2E1B", "#7A4B26", "#B7782F", "#E2C27A", "#B8B8B8", "#C0392B", "#2F6FB5"];
+  var CAPELLI_COL = ["#1E1712", "#4A2E1B", "#7A4B26", "#B7782F", "#E2C27A", "#B8B8B8", "#C0392B", "#2F6FB5", "#E2488F", "#36A86A", "#F4F4F4", "#7E57C2"];
   var COLORI = ["#E8E8E8", "#1C1F24", "#C62828", "#1565C0", "#2E7D32", "#F9A825", "#6A1B9A", "#00838F", "#EF6C00", "#AD1457", "#5D4037", "#90CAF9"];
   // req: numero = livello che lo sblocca (nel prototipo: vittorie); "c:N" = si compra con N monete (le cose strane)
   var CAT = {
@@ -25,11 +25,11 @@
     occhi: [["normali", "Normali", 0], ["grandi", "Grandi", 0], ["sorridenti", "Sorridenti", 0], ["allungati", "Allungati", 2], ["assonnati", "Assonnati", 5], ["stelle", "A stella", "c:400"]],
     naso: [["piccolo", "Piccolo", 0], ["dritto", "Dritto", 0], ["largo", "Largo", 0], ["patata", "A patata", 4], ["aquilino", "Aquilino", 8]],
     bocca: [["sorriso", "Sorriso", 0], ["sorrisone", "Sorrisone", 0], ["seria", "Seria", 0], ["smorfia", "Smorfia", 3], ["furbo", "Sorriso furbo", 2], ["linguaccia", "Linguaccia", "c:250"], ["dente", "Dente d'oro", "c:600"]],
-    capelli: [["corti", "Corti", 0], ["rasati", "Rasati", 0], ["frangia", "Frangia", 0], ["ricci", "Ricci", 0], ["lunghi", "Lunghi", 0], ["calvo", "Calvo", 0], ["coda", "Coda", 2], ["afro", "Afro", 4], ["cresta", "Cresta", 7]],
+    capelli: [["corti", "Corti", 0], ["rasati", "Rasati", 0], ["frangia", "Frangia", 0], ["ricci", "Ricci", 0], ["lunghi", "Lunghi", 0], ["calvo", "Calvo", 0], ["coda", "Coda", 2], ["afro", "Afro", 4], ["cresta", "Cresta", 7], ["spettinati", "Spettinati", 0], ["chignon", "Chignon", 3], ["trecce", "Trecce", 5], ["ciuffo", "Ciuffo", 6], ["mullet", "Mullet", "c:350"]],
     barba: [["no", "Niente", 0], ["corta", "Corta", 0], ["baffi", "Baffi", 2], ["piena", "Piena", 5]],
     maglia: [["maglia", "Maglia", 0], ["strisce", "Strisce", 0], ["polo", "Polo tennis", 0], ["righe", "Righe", 2], ["canotta", "Canotta", 3], ["meta", "Metà e metà", 4], ["banda", "Banda", 6], ["felpa", "Felpa", 8], ["portiere", "Maglia portiere", 10], ["cappuccio", "Felpa col cappuccio", 12], ["tuta", "Giacca tuta", 15]],
-    cappello: [["no", "Niente", 0], ["fascia", "Fascia", 0], ["cappellino", "Cappellino", 2], ["berretto", "Berretto di lana", 5], ["rovescio", "Cappellino al contrario", 9], ["visiera", "Visiera", 11], ["bandana", "Bandana", "c:300"], ["corona", "Corona", "c:1500"]],
-    accessorio: [["no", "Niente", 0], ["polsini", "Polsini", 3], ["occhiali", "Occhiali da sole", 7], ["capitano", "Fascia da capitano", 14], ["collana", "Catenina d'oro", "c:500"]],
+    cappello: [["no", "Niente", 0], ["fascia", "Fascia", 0], ["cappellino", "Cappellino", 2], ["berretto", "Berretto di lana", 5], ["rovescio", "Cappellino al contrario", 9], ["visiera", "Visiera", 11], ["cuffie", "Cuffie", 4], ["cowboy", "Cappello da cowboy", 8], ["casco", "Casco da football", 10], ["bandana", "Bandana", "c:300"], ["cilindro", "Cilindro", "c:350"], ["vichingo", "Elmo vichingo", "c:900"], ["corona", "Corona", "c:1500"]],
+    accessorio: [["no", "Niente", 0], ["tondi", "Occhiali tondi", 2], ["polsini", "Polsini", 3], ["quadrati", "Occhiali squadrati", 5], ["occhiali", "Occhiali da sole", 7], ["maschera", "Maschera da supereroe", 9], ["cuore", "Occhiali a cuore", "c:300"], ["capitano", "Fascia da capitano", 14], ["collana", "Catenina d'oro", "c:500"]],
     scarpe: [["scarpini", "Scarpini", 0], ["tennis", "Scarpe da tennis", 0], ["oro", "Scarpini d'oro", "c:1200"]],
     pallone: [["classico", "Classico", 0], ["retro", "Cuoio anni '70", 6], ["notte", "Notturno", 10], ["arcobaleno", "Arcobaleno", "c:400"], ["stelle", "Stelle", "c:600"], ["fiamme", "Fiamme", "c:800"], ["oro", "Pallone d'oro", "c:2000"]],
     racchetta: [["classica", "Classica", 0], ["rossa", "Rossa", 3], ["blu", "Blu", 5], ["legno", "Legno vintage", 9], ["neon", "Neon", "c:500"], ["carbonio", "Carbonio", "c:800"], ["oro", "Racchetta d'oro", "c:2000"]],
@@ -239,6 +239,9 @@
     if (st === "lunghi") { rr(c, x - W - 2, y - 6, 2 * W + 4, 40, 10); c.fill(); }
     if (st === "afro") { c.beginPath(); c.ellipse(x, y - 6 - (D.top - R) * 0.5, W + 11, D.top + 11, 0, 0, TAU); c.fill(); }
     if (st === "coda") { c.beginPath(); c.ellipse(x + (back ? 0 : W * 0.9), y + 6, 7, 18, back ? 0 : -0.3, 0, TAU); c.fill(); }
+    if (st === "mullet") { rr(c, x - W * 0.8, y - 2, W * 1.6, 36, 8); c.fill(); }
+    if (st === "chignon") { c.beginPath(); c.arc(x, y - D.top - 5, 10, 0, TAU); c.fill(); }
+    if (st === "trecce") for (var b = 0; b < 6; b++) { c.beginPath(); c.arc(x - W - 1, y + 2 + b * 6.5, 4.6 - b * 0.25, 0, TAU); c.arc(x + W + 1, y + 2 + b * 6.5, 4.6 - b * 0.25, 0, TAU); c.fill(); }
     // orecchie e testa
     c.fillStyle = skin; c.beginPath(); c.arc(x - W + 1, y + 3, 5, 0, TAU); c.arc(x + W - 1, y + 3, 5, 0, TAU); c.fill();
     headShape(c, A.testa, x, y, R); c.fill();
@@ -250,6 +253,7 @@
         c.globalAlpha = 1;
       }
       if (st === "cresta") { for (var q = -2; q <= 2; q++) { c.beginPath(); c.moveTo(x - 5, y - D.top + 2 + q * 6); c.lineTo(x, y - D.top - 9 + Math.abs(q) * 3); c.lineTo(x + 5, y - D.top + 2 + q * 6); c.fill(); } }
+      if (st === "spettinati") spikes(c, A, D, x, y, 1.1);
       if (st === "ricci") for (var k2 = 0; k2 < 9; k2++) { var p2 = rim(A.testa, D, x, y, Math.PI + k2 / 8 * Math.PI); c.beginPath(); c.arc(p2[0], p2[1], 8, 0, TAU); c.fill(); }
     } else {
       // barba prima di naso e bocca, cosi' la bocca resta visibile; segue il mento della forma scelta
@@ -305,7 +309,7 @@
       if (A.barba === "baffi") { c.fillStyle = hair; c.beginPath(); c.ellipse(x - 4, y + 9, 5, 2.4, 0.2, 0, TAU); c.ellipse(x + 4, y + 9, 5, 2.4, -0.2, 0, TAU); c.fill(); }
       // capelli davanti: la calotta prende il contorno della testa, l'attaccatura resta quella del taglio
       c.fillStyle = hair;
-      if (st === "corti" || st === "lunghi" || st === "coda") headPart(c, A, x, y, R, 1.06, function () { above(c, x, y, R, x + W + 2, y - 2, x + 8, y - 16, x - W + 2, y - 8); });
+      if (st === "corti" || st === "lunghi" || st === "coda" || st === "mullet" || st === "trecce") headPart(c, A, x, y, R, 1.06, function () { above(c, x, y, R, x + W + 2, y - 2, x + 8, y - 16, x - W + 2, y - 8); });
       if (st === "lunghi") { rr(c, x - W - 3, y - 10, 9, 36, 4); c.fill(); rr(c, x + W - 6, y - 10, 9, 36, 4); c.fill(); }
       if (st === "frangia") headPart(c, A, x, y, R, 1.06, function () { above(c, x, y, R, x + W + 2, y - 6, x, y - 4, x - W - 2, y - 6); });
       if (st === "rasati") { c.globalAlpha = 0.45; headPart(c, A, x, y, R, 1.02, function () { above(c, x, y, R, x + W + 2, y - 5, x, y - 18, x - W - 2, y - 7); }); c.globalAlpha = 1; }
@@ -314,10 +318,24 @@
         for (var k = 0; k < 9; k++) { var p = rim(A.testa, D, x, y - 4, Math.PI + k / 8 * Math.PI, 0.9); c.beginPath(); c.arc(p[0], p[1], 8, 0, TAU); c.fill(); }
       }
       if (st === "cresta") { for (var q2 = -1; q2 <= 1; q2++) { c.beginPath(); c.moveTo(x - 7 + q2 * 5, y - D.top + 4); c.lineTo(x + q2 * 6, y - D.top - 12); c.lineTo(x + 7 + q2 * 5, y - D.top + 4); c.fill(); } }
+      if (st === "chignon") headPart(c, A, x, y, R, 1.05, function () { above(c, x, y, R, x + W + 2, y - 3, x, y - 13, x - W - 2, y - 3); });
+      if (st === "spettinati") { headPart(c, A, x, y, R, 1.05, function () { above(c, x, y, R, x + W + 2, y - 4, x, y - 10, x - W - 2, y - 6); }); spikes(c, A, D, x, y, 1); }
+      if (st === "ciuffo") { headPart(c, A, x, y, R, 1.05, function () { above(c, x, y, R, x + W + 2, y - 6, x, y - 12, x - W - 2, y - 6); }); c.beginPath(); c.ellipse(x - 3, y - D.top - 3, W * 0.85, 11, -0.18, 0, TAU); c.fill(); c.fillStyle = shade(hair, 0.15); c.beginPath(); c.ellipse(x - 6, y - D.top - 6, W * 0.45, 4, -0.18, 0, TAU); c.fill(); c.fillStyle = hair; }
       if (st === "afro") headPart(c, A, x, y, R, 1.16, function () { above(c, x, y, R, x + W + 6, y - 12, x, y - 18, x - W - 6, y - 10); });
+      if (A.accessorio === "tondi") { c.strokeStyle = "#8A6A1E"; c.lineWidth = 2; c.beginPath(); c.arc(x - 9, y, 7, 0, TAU); c.moveTo(x + 16, y); c.arc(x + 9, y, 7, 0, TAU); c.moveTo(x - 2, y - 1); c.lineTo(x + 2, y - 1); c.moveTo(x - 16, y - 1); c.lineTo(x - W, y - 2); c.moveTo(x + 16, y - 1); c.lineTo(x + W, y - 2); c.stroke(); c.fillStyle = "rgba(200,230,255,.18)"; c.beginPath(); c.arc(x - 9, y, 6, 0, TAU); c.arc(x + 9, y, 6, 0, TAU); c.fill(); }
+      if (A.accessorio === "quadrati") { c.strokeStyle = "#1C1F24"; c.lineWidth = 3; rr(c, x - 17, y - 6, 14, 11, 2); c.stroke(); rr(c, x + 3, y - 6, 14, 11, 2); c.stroke(); c.beginPath(); c.moveTo(x - 3, y - 2); c.lineTo(x + 3, y - 2); c.moveTo(x - 17, y - 2); c.lineTo(x - W, y - 2); c.moveTo(x + 17, y - 2); c.lineTo(x + W, y - 2); c.stroke(); }
+      if (A.accessorio === "maschera") { c.fillStyle = "#B71C1C"; c.beginPath(); c.moveTo(x - W, y - 7); c.quadraticCurveTo(x, y - 11, x + W, y - 7); c.lineTo(x + W, y + 4); c.quadraticCurveTo(x, y + 1, x - W, y + 4); c.closePath(); c.fill(); c.fillStyle = "#fff"; c.beginPath(); c.ellipse(x - 9, y - 1, 4.5, 3.2, 0.15, 0, TAU); c.ellipse(x + 9, y - 1, 4.5, 3.2, -0.15, 0, TAU); c.fill(); c.fillStyle = "#1d2326"; c.beginPath(); c.arc(x - 9, y - 1, 1.8, 0, TAU); c.arc(x + 9, y - 1, 1.8, 0, TAU); c.fill(); }
+      if (A.accessorio === "cuore") { c.fillStyle = "#E2488F"; [-9, 9].forEach(function (dx) { var hx = x + dx, hy = y - 4; c.beginPath(); c.moveTo(hx, hy + 9); c.bezierCurveTo(hx - 11, hy + 2, hx - 7, hy - 6, hx, hy - 1); c.bezierCurveTo(hx + 7, hy - 6, hx + 11, hy + 2, hx, hy + 9); c.fill(); }); c.strokeStyle = "#E2488F"; c.lineWidth = 2; c.beginPath(); c.moveTo(x - 3, y - 1); c.lineTo(x + 3, y - 1); c.stroke(); }
       if (A.accessorio === "occhiali") { c.fillStyle = "#111"; rr(c, x - 17, y - 5, 14, 9, 3); c.fill(); rr(c, x + 3, y - 5, 14, 9, 3); c.fill(); c.strokeStyle = "#111"; c.lineWidth = 2; c.beginPath(); c.moveTo(x - 3, y - 2); c.lineTo(x + 3, y - 2); c.moveTo(x - 17, y - 2); c.lineTo(x - W, y - 1); c.moveTo(x + 17, y - 2); c.lineTo(x + W, y - 1); c.stroke(); c.fillStyle = "rgba(255,255,255,.25)"; c.fillRect(x - 15, y - 4, 4, 2); c.fillRect(x + 5, y - 4, 4, 2); }
     }
     hat(c, A, x, y, R, back, D);
+  }
+  // ciuffi a punta tutto intorno alla testa (capelli spettinati)
+  function spikes(c, A, D, x, y, k) {
+    for (var i = 0; i <= 8; i++) {
+      var a = Math.PI + i / 8 * Math.PI, p = rim(A.testa, D, x, y - 2, a), q = rim(A.testa, D, x, y - 2, a - 0.2), o = rim(A.testa, D, x, y - 2, a + 0.2);
+      c.beginPath(); c.moveTo(q[0], q[1] + 4); c.lineTo(p[0] + Math.cos(a) * 10 * k, p[1] + Math.sin(a) * 11 * k); c.lineTo(o[0], o[1] + 4); c.closePath(); c.fill();
+    }
   }
   function headShape(c, t, x, y, R) {
     c.beginPath();
@@ -346,6 +364,31 @@
     } else if (h === "fascia") { headPart(c, A, x, y, R, 1.05 * hairUp, function () { band(c, x, y, R, y - 14, y - 7); }); }
     else if (h === "bandana") { cap(1.06, y - 4); c.fillStyle = "#fff"; for (var i = -2; i <= 2; i++) { c.beginPath(); c.arc(x + i * W * 0.36, y - 14, 1.6, 0, TAU); c.fill(); } if (back) { c.fillStyle = col; c.beginPath(); c.moveTo(x - 4, y - 6); c.lineTo(x - 12, y + 8); c.lineTo(x + 2, y + 2); c.fill(); } }
     else if (h === "visiera") { headPart(c, A, x, y, R, 1.05 * hairUp, function () { band(c, x, y, R, y - 13, y - 7); }); if (!back) { c.fillStyle = shade(col, -0.25); c.beginPath(); c.ellipse(x, y - 8, W * hairUp + 8, 5, 0, 0, Math.PI); c.fill(); } }
+    else if (h === "cuffie") {
+      c.strokeStyle = shade(col, -0.2); c.lineWidth = 5; c.beginPath(); c.ellipse(x, y - 2, W + 3, D.top + 4, 0, Math.PI * 1.02, Math.PI * 1.98); c.stroke();
+      c.fillStyle = col; rr(c, x - W - 7, y - 8, 10, 17, 4); c.fill(); rr(c, x + W - 3, y - 8, 10, 17, 4); c.fill();
+      c.fillStyle = "rgba(255,255,255,.3)"; c.fillRect(x - W - 5, y - 6, 2, 12); c.fillRect(x + W - 1, y - 6, 2, 12);
+    }
+    else if (h === "cowboy") {
+      var by = y - D.top * 0.5; c.fillStyle = col; c.beginPath(); c.moveTo(x - W * 0.75, by); c.lineTo(x - W * 0.62, y - D.top - 13); c.quadraticCurveTo(x, y - D.top - 6, x + W * 0.62, y - D.top - 13); c.lineTo(x + W * 0.75, by); c.closePath(); c.fill();
+      c.fillStyle = shade(col, -0.3); c.fillRect(x - W * 0.74, by - 6, W * 1.48, 5);
+      c.fillStyle = shade(col, -0.12); c.beginPath(); c.ellipse(x, by, W * 1.45, 6, 0, 0, TAU); c.fill();
+      c.beginPath(); c.moveTo(x - W * 1.45, by); c.quadraticCurveTo(x - W * 1.6, by - 10, x - W * 1.3, by - 9); c.lineTo(x - W * 1.1, by - 2); c.fill(); c.beginPath(); c.moveTo(x + W * 1.45, by); c.quadraticCurveTo(x + W * 1.6, by - 10, x + W * 1.3, by - 9); c.lineTo(x + W * 1.1, by - 2); c.fill();
+    }
+    else if (h === "cilindro") {
+      var cb = y - D.top * 0.7; c.fillStyle = "#1C1F24"; rr(c, x - W * 0.66, cb - 34, W * 1.32, 34, 3); c.fill();
+      c.fillStyle = col; c.fillRect(x - W * 0.66, cb - 9, W * 1.32, 6);
+      c.fillStyle = "#1C1F24"; c.beginPath(); c.ellipse(x, cb, W + 7, 4.5, 0, 0, TAU); c.fill();
+    }
+    else if (h === "casco") {
+      cap(1.14, y + 6); c.fillStyle = "rgba(255,255,255,.85)"; headPart(c, A, x, y, R, 1.15, function () { c.rect(x - 3, y - 3 * R, 6, 3 * R); });
+      if (!back) { c.strokeStyle = "#B0B6BC"; c.lineWidth = 2.5; c.beginPath(); c.moveTo(x - W * 0.95, y + 6); c.lineTo(x + W * 0.95, y + 6); c.moveTo(x - W * 0.8, y + 15); c.lineTo(x + W * 0.8, y + 15); c.moveTo(x, y + 6); c.lineTo(x, y + 15); c.stroke(); }
+    }
+    else if (h === "vichingo") {
+      c.fillStyle = "#E8DCC4"; [-1, 1].forEach(function (sd) { c.beginPath(); c.moveTo(x + sd * W * 0.7, y - D.top * 0.55); c.quadraticCurveTo(x + sd * (W + 16), y - D.top * 0.7, x + sd * (W + 12), y - D.top - 18); c.quadraticCurveTo(x + sd * (W + 4), y - D.top * 0.8, x + sd * W * 0.5, y - D.top * 0.85); c.closePath(); c.fill(); });
+      c.fillStyle = "#9AA3AD"; cap(1.07, y - 6); c.fillStyle = "#6E7780"; headPart(c, A, x, y, R, 1.08 * hairUp, function () { band(c, x, y, R, y - 10, y - 5); });
+      for (var r2 = -2; r2 <= 2; r2++) { c.beginPath(); c.arc(x + r2 * W * 0.35, y - 7.5, 1.4, 0, TAU); c.fill(); }
+    }
     else if (h === "corona") { c.save(); c.translate(0, R * 1.06 - D.top * hairUp); var cw = W / (R * 0.94); c.fillStyle = "#F2C230"; c.beginPath(); c.moveTo(x - 18 * cw, y - 16); c.lineTo(x - 20 * cw, y - 36); c.lineTo(x - 9 * cw, y - 26); c.lineTo(x, y - 40); c.lineTo(x + 9 * cw, y - 26); c.lineTo(x + 20 * cw, y - 36); c.lineTo(x + 18 * cw, y - 16); c.closePath(); c.fill(); c.fillStyle = "#C62828"; c.beginPath(); c.arc(x, y - 22, 3, 0, TAU); c.fill(); c.restore(); }
   }
   // ------------------------------------------------------------------ pose ed esultanze (funzione del tempo)
@@ -394,8 +437,21 @@
   }
   function pt(cv, e) { var r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
   // sfondi della foto profilo
-  function drawBg(c, W, H, bg, t) {
-    var g;
+  // fondi a disegno col colore scelto (10/10): ognuno ha la foto col suo colore
+  var FONDI = ["tinta", "righe", "pois", "raggi", "scacchi", "onde", "stelline"];
+  function drawBg(c, W, H, bg, t, ci) {
+    var g, base = COLORI[ci != null ? ci : 8] || "#EF6C00", dk = shade(base, -0.35), lt = shade(base, 0.3);
+    if (FONDI.indexOf(bg) > 0) {
+      c.fillStyle = base; c.fillRect(0, 0, W, H); c.fillStyle = dk;
+      if (bg === "righe") { c.save(); c.translate(W / 2, H / 2); c.rotate(-0.6); for (var q = -12; q < 12; q += 2) c.fillRect(q * W / 10, -H, W / 10, 2 * H); c.restore(); }
+      else if (bg === "pois") { c.fillStyle = lt; for (var py = 0; py < 9; py++) for (var px = 0; px < 9; px++) { c.beginPath(); c.arc((px + (py % 2) * 0.5) * W / 8, py * H / 8, W * 0.032, 0, TAU); c.fill(); } }
+      else if (bg === "raggi") { for (var ra = 0; ra < 16; ra += 2) { c.beginPath(); c.moveTo(W / 2, H * 0.55); c.arc(W / 2, H * 0.55, W * 1.2, ra / 16 * TAU, (ra + 1) / 16 * TAU); c.closePath(); c.fill(); } }
+      else if (bg === "scacchi") { for (var sy = 0; sy < 8; sy++) for (var sx = 0; sx < 8; sx++) if ((sx + sy) % 2) c.fillRect(sx * W / 8, sy * H / 8, W / 8 + 0.5, H / 8 + 0.5); }
+      else if (bg === "onde") { c.lineWidth = H / 18; c.strokeStyle = dk; for (var oy = 0; oy < 9; oy += 1) { c.beginPath(); for (var ox = 0; ox <= W; ox += 4) c[ox ? "lineTo" : "moveTo"](ox, oy * H / 8 + Math.sin(ox / W * TAU * 1.5) * H * 0.03); c.stroke(); } }
+      else if (bg === "stelline") { c.fillStyle = dk; c.fillRect(0, 0, W, H); c.fillStyle = lt; for (var si = 0; si < 22; si++) star(c, (si * 67) % W, (si * 139) % H, W * (0.015 + (si % 3) * 0.008)); }
+      var vg = c.createRadialGradient(W / 2, H * 0.45, W * 0.2, W / 2, H / 2, W * 0.75); vg.addColorStop(0, "rgba(255,255,255,.12)"); vg.addColorStop(1, "rgba(0,0,0,.25)"); c.fillStyle = vg; c.fillRect(0, 0, W, H);
+      return;
+    }
     if (bg === "stadio") {
       g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#0B1A33"); g.addColorStop(0.55, "#1D3B5C"); g.addColorStop(0.56, "#2E7D32"); g.addColorStop(1, "#1B5E20"); c.fillStyle = g; c.fillRect(0, 0, W, H);
       c.fillStyle = "#24364F"; c.fillRect(0, H * 0.36, W, H * 0.2);
@@ -412,14 +468,29 @@
       g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#2B1B4A"); g.addColorStop(0.5, "#E0703A"); g.addColorStop(0.75, "#F7C25C"); g.addColorStop(0.76, "#3D6B3A"); g.addColorStop(1, "#24452A"); c.fillStyle = g; c.fillRect(0, 0, W, H);
       c.fillStyle = "rgba(255,230,160,.85)"; c.beginPath(); c.arc(W * 0.7, H * 0.62, W * 0.12, Math.PI, 0); c.fill();
     } else if (bg === "tinta") {
-      g = c.createRadialGradient(W / 2, H * 0.4, 10, W / 2, H / 2, W * 0.75); g.addColorStop(0, "#F0B36B"); g.addColorStop(1, "#8A5115"); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      g = c.createRadialGradient(W / 2, H * 0.4, 10, W / 2, H / 2, W * 0.75); g.addColorStop(0, lt); g.addColorStop(1, dk); c.fillStyle = g; c.fillRect(0, 0, W, H);
     } else {
       c.fillStyle = "#132029"; c.fillRect(0, 0, W, H);
       for (var k = 0; k < 70; k++) { var x = (k * 53 + t * 20 * ((k % 3) + 1)) % W, y = (k * 97 + t * 60 * ((k % 4) + 1)) % H; c.save(); c.translate(x, y); c.rotate(t * 2 + k); c.fillStyle = ["#E8A252", "#6FBE92", "#E08268", "#90CAF9", "#FDD835"][k % 5]; c.fillRect(-3, -5, 6, 10); c.restore(); }
     }
   }
+  // cornice della foto secondo il livello (10/10): bronzo dal 5, argento dal 10, oro dal 20, diamante dal 35
+  var CORNICI = [[35, "Diamante", ["#E1F5FE", "#4FC3F7", "#B3E5FC"]], [20, "Oro", ["#FFF3C4", "#C9A227", "#FFE082"]], [10, "Argento", ["#FFFFFF", "#90A4AE", "#ECEFF1"]], [5, "Bronzo", ["#F3D2B3", "#8D5524", "#E0A46A"]]];
+  function cornice(lv) { for (var i = 0; i < CORNICI.length; i++) if (lv >= CORNICI[i][0]) return CORNICI[i]; return null; }
+  function drawFrame(c, W, H, lv) {
+    var f = cornice(lv), lw = W * 0.075;
+    if (f) {
+      var g = c.createLinearGradient(0, 0, W, H); g.addColorStop(0, f[2][0]); g.addColorStop(0.45, f[2][1]); g.addColorStop(0.55, f[2][2]); g.addColorStop(1, f[2][1]);
+      c.save(); c.lineWidth = lw; c.strokeStyle = g; rr(c, lw / 2, lw / 2, W - lw, H - lw, W * 0.24); c.stroke();
+      c.lineWidth = 1.5; c.strokeStyle = "rgba(0,0,0,.25)"; rr(c, lw, lw, W - 2 * lw, H - 2 * lw, W * 0.2); c.stroke(); c.restore();
+    }
+    // numero del livello in basso a destra
+    var r = W * 0.095, bx = W - r * 1.3, by = H - r * 1.3;
+    c.beginPath(); c.arc(bx, by, r, 0, TAU); c.fillStyle = f ? f[2][1] : "#2B3A44"; c.fill(); c.lineWidth = W * 0.015; c.strokeStyle = "#fff"; c.stroke();
+    c.fillStyle = "#fff"; c.font = "800 " + Math.round(r * 1.05) + "px Archivo, sans-serif"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(String(lv), bx, by + r * 0.05);
+  }
   window.G = { $: $, TAU: TAU, clamp: clamp, lerp: lerp, ease: ease, rnd: rnd, pick: pick, load: load, save: save, toast: toast, CAT: CAT, PELLE: PELLE, CAPELLI_COL: CAPELLI_COL, COLORI: COLORI,
                get av() { return av; }, set av(v) { av = v; }, pg: pg, wins: wins, unlocked: unlocked, reqOf: reqOf, price: price, AV_DEF: AV_DEF,
                setUnlock: function (fn) { unlockFn = fn; }, saveAv: saveAv, savePg: savePg, drawBall: drawBall, drawTennisBall: drawTennisBall, drawRacket: drawRacket, drawBat: drawBat, drawFootball: drawFootball, shade: shade,
-               drawGuy: drawGuy, drawBg: drawBg, P: P, POSE0: POSE0, POSES: POSES, WINS: WINS, SAD: SAD, poseOf: poseOf, mixPose: mixPose, drawPoseExtras: drawPoseExtras, randomAv: randomAv, setup: setup, pt: pt, rr: rr, star: star };
+               drawGuy: drawGuy, drawBg: drawBg, FONDI: FONDI, CORNICI: CORNICI, cornice: cornice, drawFrame: drawFrame, P: P, POSE0: POSE0, POSES: POSES, WINS: WINS, SAD: SAD, poseOf: poseOf, mixPose: mixPose, drawPoseExtras: drawPoseExtras, randomAv: randomAv, setup: setup, pt: pt, rr: rr, star: star };
 })();
