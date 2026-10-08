@@ -24,13 +24,15 @@
   }
   function goal(who) {
     if (who === "me") st.me++; else st.cpu++;
+    if (window.SFX) { SFX.play("sirena"); SFX.play(who === "me" ? "folla" : "delusione", 0.2); }
     st.msg = who === "me" ? "Gol!" : "Gol della CPU"; st.msgGood = who === "me"; st.msgT = performance.now() / 1000; st.phase = "goal"; hud();
     setTimeout(function () { if (st.me >= WIN_AT || st.cpu >= WIN_AT) return end(); place(who === "me" ? "cpu" : "me"); st.phase = "play"; }, 1200);
   }
   function end() {
     var win = st.me > st.cpu;
     st.phase = "end"; st.celebrate = { win: win, t0: performance.now() / 1000 };
-    var nuovi = win ? UI.onWin("airhockey") : (G.pg.giocate++, G.savePg(), []);
+    if (window.SFX) SFX.play(win ? "vittoria" : "sconfitta");
+    var nuovi = UI.onEnd("airhockey", win);
     $("hover").innerHTML = '<div style="margin-top:auto"></div><b>' + (win ? "Hai vinto " : "Hai perso ") + st.me + "-" + st.cpu + '</b>'
       + (nuovi.length ? '<div class="k">' + nuovi.join(" · ") + '</div>' : "") + '<button class="primary" type="button" id="hagain">Rivincita</button>';
     $("hover").style.justifyContent = "flex-end"; $("hover").style.background = "linear-gradient(transparent 55%, rgba(8,14,18,.85))"; $("hover").hidden = false;
@@ -51,7 +53,7 @@
     if (l >= min || l === 0) return;
     var nx = dx / l, ny = dy / l; p.x = m.x + nx * min; p.y = m.y + ny * min;   // fuori dalla racchetta
     var rvx = p.vx - m.vx, rvy = p.vy - m.vy, vn = rvx * nx + rvy * ny;
-    if (vn < 0) { p.vx -= 1.9 * vn * nx; p.vy -= 1.9 * vn * ny; }
+    if (vn < 0) { p.vx -= 1.9 * vn * nx; p.vy -= 1.9 * vn * ny; if (window.SFX && -vn > d.W * 0.3) SFX.play("disco"); }
     var sp = Math.hypot(p.vx, p.vy), max = d.W * 4.2; if (sp > max) { p.vx *= max / sp; p.vy *= max / sp; }
   }
   function physics(dt) {
