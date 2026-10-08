@@ -1299,6 +1299,9 @@
     <symbol id="i-tennis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="url(#g-tennis)" stroke="#8FA614" stroke-width="1"/><path d="M5.6 5.4c3.2 3.5 3.2 9.7 0 13.2M18.4 5.4c-3.2 3.5-3.2 9.7 0 13.2" stroke="#FFFFFF" stroke-width="1.8"/></symbol>
     <symbol id="i-ippica" viewBox="0 0 24 24"><path d="M7 4.2C4.9 6.1 4 8.6 4 11.5 4 16.4 7.6 20 12 20s8-3.6 8-8.5c0-2.9-.9-5.4-3-7.3" stroke="#8A6A2E" stroke-width="4.2"/><path d="M7 4.2C4.9 6.1 4 8.6 4 11.5 4 16.4 7.6 20 12 20s8-3.6 8-8.5c0-2.9-.9-5.4-3-7.3" stroke="url(#g-gold)" stroke-width="2.6"/><path d="M5.6 9v.1M18.4 9v.1M6.6 14.4v.1M17.4 14.4v.1M12 19.9v.1" stroke="#6B4F1D" stroke-width="1.6"/></symbol>
     <symbol id="i-hockey" viewBox="0 0 24 24"><path d="M5 2.6l7.6 13.4h6.9a1.8 1.8 0 0 1 0 3.6H11.2L3.2 3.6z" fill="#D49A5A" stroke="#7A4B1E" stroke-width="1.1"/><path d="M13.2 16h3.4v3.6h-3.4z" fill="#1C1C1C" stroke="none"/><ellipse cx="6.3" cy="19.6" rx="3.3" ry="1.5" fill="#1C1C1C" stroke="#555" stroke-width=".8"/></symbol>
+    <symbol id="i-baseball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="#FAFAFA" stroke="#9AA3AD" stroke-width="1"/><path d="M6.2 4.8c2.4 2 2.4 12.4 0 14.4M17.8 4.8c-2.4 2-2.4 12.4 0 14.4" stroke="#D32F2F" stroke-width="1.6" stroke-dasharray="1.6 1.2"/></symbol>
+    <symbol id="i-football" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10.4" ry="6.4" transform="rotate(-35 12 12)" fill="#8B4A22" stroke="#5A2C10" stroke-width="1"/><path d="M8.6 14.4l6.8-4.8M10 11.4l1.2 1.6M11.6 10.3l1.2 1.6M13.2 9.2l1.2 1.6" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round"/></symbol>
+    <symbol id="i-airhockey" viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#CFE3F2" stroke="#5B7FA0" stroke-width="1"/><circle cx="9" cy="14.5" r="4.6" fill="#D32F2F"/><circle cx="9" cy="14.5" r="2" fill="#B71C1C"/><circle cx="16" cy="7.5" r="2.6" fill="#1C1F24"/></symbol>
     <symbol id="i-basket" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="url(#g-basket)" stroke="#7A3510" stroke-width="1"/><path d="M2.6 12h18.8M12 2.6v18.8M5.6 5.4c2.5 2 4 4.3 4 6.6s-1.5 4.6-4 6.6M18.4 5.4c-2.5 2-4 4.3-4 6.6s1.5 4.6 4 6.6" stroke="#5C260A" stroke-width="1.2"/></symbol>
     <symbol id="i-segnali" viewBox="0 0 24 24"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="url(#g-red)" stroke="none"/><path d="M4.5 12.5h3l2.2-5.5 4.4 10.5 2.2-5h3.2" stroke="#FFFFFF" stroke-width="2"/></symbol>
     <symbol id="i-strategie" viewBox="0 0 24 24"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="url(#g-blue)" stroke="none"/><path d="M5.5 8.5h7.5M17.5 8.5h1M5.5 15.5h2.5M12 15.5h6.5" stroke="#FFFFFF" stroke-width="1.9"/><circle cx="15.2" cy="8.5" r="2.2" fill="#FFFFFF" stroke="none"/><circle cx="10" cy="15.5" r="2.2" fill="#FFFFFF" stroke="none"/></symbol>
@@ -1455,6 +1458,24 @@
     <div class="ruota">Gira il telefono in verticale per giocare.</div>
     <div class="stage"><canvas id="bcv"></canvas><div class="over" id="bover" hidden></div></div>
     <p class="help" id="bhelp"></p>
+  </section>
+  <section id="t-baseball" hidden>
+    <div class="hud"><div class="who" id="yme"></div><div class="big" id="ysc">0 - 0</div><div class="who" id="ycpu"></div></div>
+    <div class="ruota">Gira il telefono in verticale per giocare.</div>
+    <div class="stage"><canvas id="ycv"></canvas><div class="over" id="yover" hidden></div></div>
+    <p class="help" id="yhelp"></p>
+  </section>
+  <section id="t-football" hidden>
+    <div class="hud"><div class="who" id="fme"></div><div class="big" id="fsc">0 - 0</div><div class="who" id="fcpu"></div></div>
+    <div class="ruota">Gira il telefono in verticale per giocare.</div>
+    <div class="stage"><canvas id="fcv"></canvas><div class="over" id="fover" hidden></div></div>
+    <p class="help" id="fhelp"></p>
+  </section>
+  <section id="t-airhockey" hidden>
+    <div class="hud"><div class="who" id="hme"></div><div class="big" id="hsc">0 - 0</div><div class="who" id="hcpu"></div></div>
+    <div class="ruota">Gira il telefono in verticale per giocare.</div>
+    <div class="stage"><canvas id="hcv"></canvas><div class="over" id="hover" hidden></div></div>
+    <p class="help" id="hhelp"></p>
   </section>
   <section id="t-tennis" hidden>
     <div class="hud"><div class="who" id="tme"></div><div class="big" id="tsc">0 - 0</div><div class="who" id="tcpu"></div></div>
@@ -3483,7 +3504,7 @@
         + '<div class="trvth">' + Object.keys(QTH).map(function (k) { return '<span style="--c:' + QTH[k].c + '">' + ic(QTH[k].ic) + ' ' + QTH[k].name + '</span>'; }).join("") + '</div>'
         + '<button class="primary block trvgo" type="button" data-tvgo="1"' + (w ? " disabled" : "") + '>' + ic("vs") + ' ' + (w === -1 ? "Hai fatto le 3 sfide di oggi" : w ? "Prossima sfida tra " + Math.ceil(w / 60) + " min" : "Cerca un avversario") + '</button>'
         + '<div class="k trvrule">Sfide di oggi: ' + today + '/' + TRV.perDay + ' · una ogni ora · ' + TRV.right + ' monete per risposta giusta, ' + TRV.win + ' se vinci, ' + TRV.draw + ' col pari.</div></div>'
-        + '<h2 class="sectiontitle">Minigiochi col tuo omino</h2><div class="duo"><button class="primary" type="button" data-omgame="rigori">' + ic("calcio") + ' Rigori</button><button class="primary" type="button" data-omgame="tennis">' + ic("tennis") + ' Tennis</button><button class="primary" type="button" data-omgame="basket" style="grid-column:1/-1">' + ic("basket") + ' Basket</button></div>'
+        + '<h2 class="sectiontitle">Minigiochi col tuo omino</h2><div class="duo"><button class="primary" type="button" data-omgame="rigori">' + ic("calcio") + ' Rigori</button><button class="primary" type="button" data-omgame="tennis">' + ic("tennis") + ' Tennis</button><button class="primary" type="button" data-omgame="basket">' + ic("basket") + ' Basket</button><button class="primary" type="button" data-omgame="baseball">' + ic("baseball") + ' Baseball</button><button class="primary" type="button" data-omgame="football">' + ic("football") + ' Football</button><button class="primary" type="button" data-omgame="airhockey">' + ic("airhockey") + ' Air hockey</button></div>'
         + '<div class="k" style="margin:6px 2px 0;">15 monete a vittoria, fino a 5 vittorie premiate al giorno. <button class="linkbtn" type="button" data-omino="corpo">Vesti il tuo omino</button></div>'
         + (last.filter(function (x) { return x.res; }).length ? '<h2 class="sectiontitle">Ultime sfide</h2><div class="card">' + last.filter(function (x) { return x.res; }).map(function (x) {
           var o = oppOf(x);
@@ -8512,5 +8533,8 @@
 <script src="giochi_rigori.js"></script>
 <script src="giochi_tennis.js"></script>
 <script src="giochi_basket.js"></script>
+<script src="giochi_baseball.js"></script>
+<script src="giochi_football.js"></script>
+<script src="giochi_airhockey.js"></script>
 </body>
 </html>
