@@ -196,6 +196,21 @@
   // ------------------------------------------------------------------ minigiochi
   var game = null;
   var GIOCHI = { rigori: ["Rigori", "Sfida ai rigori"], tennis: ["Tennis", "Sfida a tennis"], basket: ["Basket", "Sfida a canestro"], baseball: ["Baseball", "Sfida a baseball"], football: ["Football", "Sfida di football americano"], airhockey: ["Airhockey", "Air hockey"] };
+  // classifica generale del gioco per esperienza: tu e i personaggi del Team StatSight (dichiarati: giocano con una
+  // regola fissa, piu' o meno forti, e salgono un po' ogni giorno). Col server diventa quella degli utenti veri.
+  function hashStr(t) { var h = 2166136261; for (var i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0); }
+  function board(g) {
+    var team = SS().team ? SS().team() : [], days = Math.max(1, Math.floor((Date.now() - Date.UTC(2026, 9, 1)) / 864e5));
+    var rows = team.map(function (p) { var h = hashStr(p.id + ":" + g), skill = 0.25 + (h % 1000) / 1000; return { id: p.id, name: p.name, xp: Math.round(skill * (40 + days * (8 + (h >> 10) % 14))) }; });
+    rows.push({ me: true, name: SS().myName ? SS().myName() : "Tu", xp: gameInfo(g).xp });
+    rows.sort(function (a, b) { return b.xp - a.xp; });
+    var pos = rows.findIndex(function (r) { return r.me; }), from = Math.max(0, Math.min(pos - 2, rows.length - 5));
+    var view = rows.slice(from, from + 5);
+    return '<div class="lb"><b>Classifica generale</b> <span style="opacity:.7">· sei ' + (pos + 1) + '° su ' + rows.length + '</span>' + view.map(function (r) {
+      var i = rows.indexOf(r);
+      return '<div class="lbr' + (r.me ? " me" : "") + '"><i>' + (i + 1) + '</i>' + (r.me ? (SS().myAvatar ? SS().myAvatar(20) : "") : (SS().avatar ? SS().avatar(r.id, 20) : "")) + '<span>' + esc(r.name) + (r.me ? "" : ' <span style="opacity:.6">(Team)</span>') + '</span><em>liv ' + gxLevel(r.xp) + ' · ' + r.xp + '</em></div>';
+    }).join("") + '</div>';
+  }
   // sotto il titolo del gioco: livello, esperienza e prossimo premio
   function gameHead(g) {
     var el = $("giocolv"); if (!el) return; var i = gameInfo(g), nx = i.rew.filter(function (r) { return r[0] > i.lv; })[0];
@@ -214,18 +229,36 @@
   window.UI = {
     tab: function () { return game && !$("view-gioco").hidden ? game : ""; },
     // fine partita (vinta o persa): esperienza del gioco, livello nuovo e premi; le monete solo se vinci
-    onEnd: function (g, win) {
-      var before = gameInfo(g); om.gx = om.gx || {}; om.gx[g] = before.xp + (win ? GX_WIN : GX_LOSS); saveOm();
-      var after = gameInfo(g), out = win ? UI.onWin(g) : (G.pg.giocate++, G.savePg(), []);
+    // a = tuo punteggio, b = dell'avversario. Statistiche e record del gioco (om.gs), premi: vittoria (monete, max 5 al
+    // giorno), prima vittoria del giorno in quel gioco (+10), nuovo record (+10), livello nuovo (+20 x livello)
+    onEnd: function (g, win, a, b) {
+      var before = gameInfo(g), today = new Date().toISOString().slice(0, 10); om.gx = om.gx || {}; om.gs = om.gs || {};
+      var s = om.gs[g] = Object.assign({ p: 0, w: 0, cur: 0, best: 0, rec: null, day: "" }, om.gs[g] || {});
+      s.p++; if (win) { s.w++; s.cur++; s.best = Math.max(s.best, s.cur); } else s.cur = 0;
+      om.gx[g] = before.xp + (win ? GX_WIN : GX_LOSS);
+      var after = gameInfo(g), out = win ? UI.onWin(g) : (G.pg.giocate++, G.savePg(), []), bonus = 0;
+      if (win && s.day !== today) { s.day = today; bonus += 10; out.push("prima vittoria del giorno: +10 monete"); }
+      var m = a != null && b != null ? a - b : null;
+      if (win && m != null && (s.rec == null || m > s.rec)) { if (s.rec != null) { bonus += 10; out.push("nuovo record: +10 monete"); } s.rec = m; }
       out.push("+" + (win ? GX_WIN : GX_LOSS) + " esperienza");
       if (after.lv > before.lv) {
-        out.push("Livello " + after.lv + " in questo gioco!");
+        bonus += 20 * after.lv; out.push("Livello " + after.lv + "! +" + 20 * after.lv + " monete");
         after.rew.filter(function (r) { return r[0] > before.lv && r[0] <= after.lv; }).forEach(function (r) { out.push("Sbloccato: " + itemName(r[1], r[2])); });
       }
-      gameHead(g); return out;
+      if (bonus) { om.games.push({ g: g, d: today, coins: bonus, bonus: 1 }); SS().refresh(); }
+      saveOm(); gameHead(g); return out;
+    },
+    // riepilogo di fine partita: livello del gioco, statistiche, record, premi e classifica generale
+    endCard: function (g, out) {
+      var i = gameInfo(g), s = (om.gs || {})[g] || { p: 0, w: 0, best: 0, rec: null }, prev = i.lv - 1 < GX_STEPS.length ? GX_STEPS[i.lv - 1] : gxNext(i.lv - 1), pc = Math.round(100 * (i.xp - prev) / Math.max(1, i.next - prev));
+      var nx = i.rew.filter(function (r) { return r[0] > i.lv; })[0];
+      return '<div class="gend"><div class="gl"><b>Livello ' + i.lv + '</b><span>' + i.xp + "/" + i.next + ' esperienza</span></div><div class="gxbar"><i style="width:' + Math.max(0, Math.min(100, pc)) + '%"></i></div>'
+        + (nx ? '<div style="opacity:.8">Al livello ' + nx[0] + ': ' + esc(itemName(nx[1], nx[2])) + '</div>' : "")
+        + '<div class="gs"><div><b>' + s.p + '</b><span>partite</span></div><div><b>' + s.w + '</b><span>vinte</span></div><div><b>' + s.best + '</b><span>serie record</span></div><div><b>' + (s.rec != null ? (s.rec > 0 ? "+" : "") + s.rec : "–") + '</b><span>miglior scarto</span></div></div>'
+        + (out && out.length ? '<div class="gn">' + out.map(esc).join(" · ") + '</div>' : "") + board(g) + '</div>';
     },
     onWin: function (g) {
-      var today = new Date().toISOString().slice(0, 10), n = om.games.filter(function (x) { return x.d === today && x.coins; }).length;
+      var today = new Date().toISOString().slice(0, 10), n = om.games.filter(function (x) { return x.d === today && x.coins && !x.bonus; }).length;
       var c = n < GAME_COINS_DAY ? GAME_COINS : 0;
       om.games.push({ g: g, d: today, coins: c }); saveOm(); SS().refresh();
       return [c ? "+" + c + " monete" : "monete del giorno già prese (" + GAME_COINS_DAY + " vittorie)"];
