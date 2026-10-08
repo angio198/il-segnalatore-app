@@ -86,7 +86,7 @@
   }
   // l'omino e' cambiato: la foto del profilo si rifa' da sola (se non ne hai scattata una tu)
   var picT = null;
-  function changed() { clearTimeout(picT); picT = setTimeout(function () { if (SS().setPic) SS().setPic(autoPic(), true); }, 400); }
+  function changed() { clearTimeout(picT); picT = setTimeout(function () { if (SS().setPic) SS().setPic(renderPic(), "rifai"); }, 400); }
   // omino a caso (10/10, per chi non vuole configurarlo): solo pezzi gia' aperti, colori a caso, maglia a due colori
   function casuale() {
     var pick = function (cat) { var ok = G.CAT[cat].filter(function (it) { return G.unlocked(cat, it[0]); }); return (ok.length ? G.pick(ok) : G.CAT[cat][0])[0]; };
@@ -97,7 +97,7 @@
     G.av.pelle = n(G.PELLE); G.av.capCol = Math.random() < 0.8 ? n(G.CAPELLI_COL.slice(0, 6)) : n(G.CAPELLI_COL);
     G.av.c1 = n(G.COLORI); do { G.av.c2 = n(G.COLORI); } while (G.av.c2 === G.av.c1);
     G.av.pant = n(G.COLORI); G.av.calze = n(G.COLORI); G.av.scCol = n(G.COLORI); G.av.hatCol = n(G.COLORI);
-    G.av.num = Math.floor(Math.random() * 99) + 1;
+    G.av.num = Math.floor(Math.random() * 99) + 1; G.av.fbg = G.pick(G.FONDI); G.av.fcol = n(G.COLORI);
     G.saveAv(); changed(); renderEditor();
   }
   function itemOf(cat, id) { return G.CAT[cat].filter(function (x) { return x[0] === id; })[0]; }
@@ -118,45 +118,52 @@
       G.av[d.omkey] = it[0]; G.saveAv(); changed(); if (d.omcat === "posa" || d.omcat === "esulta") preview = { pose: it[0], t: now() };
       renderEditor(); return;
     }
-    if (d.ombg) { foto.bg = d.ombg; renderEditor(); return; }
-    if (d.omzoom) { foto.zoom = d.omzoom; renderEditor(); return; }
-    if (d.omfp) { var fi = itemOf(d.omfcat, d.omfp); if (!G.unlocked(d.omfcat, d.omfp)) { SS().toast(G.price(fi[2]) ? "Si compra con " + G.price(fi[2]) + " monete" : "Si apre al livello " + fi[2], ""); return; } foto.pose = d.omfp; foto.t = now(); renderEditor(); return; }
+    if (d.ombg) { G.av.fbg = d.ombg; G.saveAv(); changed(); renderEditor(); return; }
+    if (d.omzoom) { G.av.fzoom = d.omzoom; G.saveAv(); changed(); renderEditor(); return; }
+    if (d.omfp) { var fi = itemOf(d.omfcat, d.omfp); if (!G.unlocked(d.omfcat, d.omfp)) { SS().toast(G.price(fi[2]) ? "Si compra con " + G.price(fi[2]) + " monete" : "Si apre al livello " + fi[2], ""); return; } G.av.fpose = d.omfp; foto.t = now(); G.saveAv(); changed(); renderEditor(); return; }
     if (d.omscatta) { scatta(); return; }
     if (d.omgioca) { openGame(d.omgioca); return; }
   }
   // ------------------------------------------------------------------ foto profilo
-  var BGS = [["stadio", "Stadio"], ["tennis", "Campo da tennis"], ["terra", "Terra rossa"], ["tramonto", "Tramonto"], ["tinta", "Tinta unita"], ["coriandoli", "Coriandoli"]];
-  var foto = { bg: "stadio", pose: "piedi", zoom: "busto", cv: null, t: 0 };
+  // Foto del profilo (10/10): sfondo (scena o disegno col colore scelto), posa e inquadratura restano salvati
+  // nell'omino; la foto si rifa' da sola quando cambi l'omino o sali di livello (cornice e numero del livello),
+  // cosi' fra tanti utenti ognuno si riconosce dal suo colore, dalla cornice e dal livello.
+  var BGS = [["tinta", "Tinta unita"], ["righe", "Righe"], ["pois", "Pois"], ["raggi", "Raggi"], ["scacchi", "Scacchi"], ["onde", "Onde"], ["stelline", "Stelline"],
+             ["stadio", "Stadio"], ["tennis", "Campo da tennis"], ["terra", "Terra rossa"], ["tramonto", "Tramonto"], ["coriandoli", "Coriandoli"]];
+  var foto = { cv: null, t: 0 };
+  function fset() { var a = G.av; return { bg: a.fbg || "tinta", col: a.fcol != null ? a.fcol : 8, pose: a.fpose || "piedi", zoom: a.fzoom || "busto" }; }
+  if (G.av.fbg == null) {   // chi non l'ha mai scelto parte da un disegno e un colore a caso, non tutti uguali
+    G.av.fbg = G.pick(G.FONDI); G.av.fcol = Math.floor(Math.random() * G.COLORI.length); G.saveAv();
+  }
+  function lvl() { var l = SS().level(); return l > 0 ? l : 1; }
   function fotoHtml() {
-    var ch = function (cat) { return G.CAT[cat].map(function (p) { var lock = !G.unlocked(cat, p[0]); return '<button type="button" data-omfp="' + p[0] + '" data-omfcat="' + cat + '" aria-pressed="' + (p[0] === foto.pose) + '"' + (lock ? ' class="lk"' : "") + '>' + p[1] + '</button>'; }).join(""); };
+    var f = fset(), lv = lvl(), cn = G.cornice(lv), nx = G.CORNICI.slice().reverse().filter(function (x) { return x[0] > lv; })[0];
+    var ch = function (cat) { return G.CAT[cat].map(function (p) { var lock = !G.unlocked(cat, p[0]); return '<button type="button" data-omfp="' + p[0] + '" data-omfcat="' + cat + '" aria-pressed="' + (p[0] === f.pose) + '"' + (lock ? ' class="lk"' : "") + '>' + p[1] + '</button>'; }).join(""); };
     return '<div class="omshot"><canvas id="omfotocv"></canvas><div class="omflash" id="omflash"></div></div>'
-      + '<div class="omlbl">Inquadratura</div><div class="omcats">' + [["busto", "Mezzo busto"], ["intero", "Figura intera"]].map(function (z) { return '<button type="button" data-omzoom="' + z[0] + '" aria-pressed="' + (z[0] === foto.zoom) + '">' + z[1] + '</button>'; }).join("") + '</div>'
-      + '<div class="omlbl">Sfondo</div><div class="omcats">' + BGS.map(function (b) { return '<button type="button" data-ombg="' + b[0] + '" aria-pressed="' + (b[0] === foto.bg) + '">' + b[1] + '</button>'; }).join("") + '</div>'
+      + '<div class="k" style="margin:6px 0 2px;">Cornice: <b>' + (cn ? cn[1] : "nessuna") + '</b>' + (nx ? " · " + nx[1].toLowerCase() + " al livello " + nx[0] : "") + '. Il numero è il tuo livello.</div>'
+      + '<div class="omlbl">Inquadratura</div><div class="omcats">' + [["busto", "Mezzo busto"], ["intero", "Figura intera"]].map(function (z) { return '<button type="button" data-omzoom="' + z[0] + '" aria-pressed="' + (z[0] === f.zoom) + '">' + z[1] + '</button>'; }).join("") + '</div>'
+      + '<div class="omlbl">Sfondo</div><div class="omcats">' + BGS.map(function (b) { return '<button type="button" data-ombg="' + b[0] + '" aria-pressed="' + (b[0] === f.bg) + '">' + b[1] + '</button>'; }).join("") + '</div>'
+      + (G.FONDI.indexOf(f.bg) >= 0 ? swatches("fcol", G.COLORI, "Colore dello sfondo") : "")
       + '<div class="omlbl">Posa</div><div class="omcats">' + ch("posa") + '</div><div class="omlbl">Esultanza</div><div class="omcats">' + ch("esulta") + '</div>'
       + '<button class="primary" type="button" data-omscatta="1" style="width:100%;margin-top:10px;">Scatta e usa come foto profilo</button>'
-      + '<div class="k" style="margin-top:6px;">È la tua foto nell\'app: niente foto dal telefono, solo il tuo omino.</div>';
+      + '<div class="k" style="margin-top:6px;">È la tua foto nell\'app: niente foto dal telefono, solo il tuo omino. Si aggiorna da sola quando cambi l\'omino o sali di livello.</div>';
   }
   var drawBg = G.drawBg;
-  function drawFoto(t) {
-    if (!foto.cv || !$("omfotocv")) return;
-    var c = foto.cv.c, W = foto.cv.W, H = foto.cv.H;
-    drawBg(c, W, H, foto.bg, t);
-    var big = foto.zoom === "busto", s = big ? H / 205 : H / 260, fy = big ? H * 1.22 : H * 0.96, ps = G.poseOf(foto.pose, t - foto.t);
-    G.drawGuy(c, G.av, W / 2, fy, s, ps, {}); G.drawPoseExtras(c, G.av, W / 2, fy, s, foto.pose, ps);
+  function paint(c, W, H, t) {   // la foto: sfondo, omino, cornice e livello
+    var f = fset(); drawBg(c, W, H, f.bg, t, f.col);
+    // mezzo busto: la testa grande al centro (in piccolo nel social si deve riconoscere la faccia)
+    var hf = { bassa: 0.86, alta: 1.13 }[G.av.statura] || 1, big = f.zoom === "busto", s = big ? H / 118 : H / 260, fy = big ? H * 0.43 + (40 + 144 * hf) * s : H * 0.96, ps = G.poseOf(f.pose, t);
+    G.drawGuy(c, G.av, W / 2, fy, s, ps, {}); G.drawPoseExtras(c, G.av, W / 2, fy, s, f.pose, ps);
+    G.drawFrame(c, W, H, lvl());
   }
+  function drawFoto(t) { if (foto.cv && $("omfotocv")) paint(foto.cv.c, foto.cv.W, foto.cv.H, t - foto.t); }
+  function renderPic() { var cv = document.createElement("canvas"); cv.width = 256; cv.height = 256; paint(cv.getContext("2d"), 256, 256, 0.4); return cv.toDataURL("image/jpeg", 0.86); }
   function scatta() {
-    var src = $("omfotocv"), out = document.createElement("canvas"); out.width = 256; out.height = 256;
-    out.getContext("2d").drawImage(src, 0, 0, 256, 256);
-    var url = out.toDataURL("image/jpeg", 0.86), fl = $("omflash");
+    var fl = $("omflash");
     if (fl) { fl.style.transition = "none"; fl.style.opacity = "0.9"; setTimeout(function () { fl.style.transition = "opacity .35s"; fl.style.opacity = "0"; }, 40); }
-    SS().setPic(url); SS().toast("Foto profilo aggiornata", "La vedono tutti nell'app");
+    SS().setPic(renderPic()); SS().toast("Foto profilo aggiornata", "La vedono tutti nell'app");
   }
-  // foto automatica (mezzo busto, stadio) per chi non ne ha ancora scattata una
-  function autoPic() {
-    var cv = document.createElement("canvas"); cv.width = 256; cv.height = 256; var c = cv.getContext("2d");
-    drawBg(c, 256, 256, "stadio", 0); G.drawGuy(c, G.av, 128, 256 * 1.22, 256 / 205, G.P({ face: "happy" }), {});
-    return cv.toDataURL("image/jpeg", 0.86);
-  }
+  var autoPic = renderPic;
   window.OMINO.autoPic = autoPic;
   function drawPreview(t) {
     if (!prev || !$("omprev")) return;
@@ -197,8 +204,10 @@
     if (e.target.id === "omnum") { var n = parseInt(e.target.value, 10); G.av.num = isNaN(n) ? "" : Math.max(0, Math.min(99, n)); G.saveAv(); }
   });
   window.addEventListener("resize", function () { if ($("view-omino") && !$("view-omino").hidden) renderEditor(); else if (game && !$("view-gioco").hidden) mod(game).resize(); });
+  var lvT = 0;
   function loop() {
     var t = now();
+    if (t - lvT > 3) { lvT = t; var L = SS().level(); if (window.SS && L > 0 && om.picLv !== L) { om.picLv = L; saveOm(); if (SS().setPic) SS().setPic(renderPic(), "rifai"); } }
     if ($("view-omino") && !$("view-omino").hidden) { drawPreview(t); drawFoto(t); }
     if (game && $("view-gioco") && !$("view-gioco").hidden) mod(game).frame(t);
     requestAnimationFrame(loop);
