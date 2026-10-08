@@ -1026,7 +1026,9 @@
   .bfull .bwrap{flex:1;max-height:none;margin:0;border:none;}
   .bfhint{position:absolute;left:50%;top:60px;transform:translateX(-50%);padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:0.8rem;white-space:nowrap;}
   .bfpanel{position:absolute;left:8px;right:8px;bottom:8px;max-height:52%;overflow:auto;z-index:2;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.45);}
-  .bfpanel .binsp{margin:0;}
+  .bfpanel .binsp{margin:0;} .bfpanel.big{max-height:88%;top:52px;} .bfpctl{position:sticky;top:0;display:flex;justify-content:flex-end;gap:6px;padding:6px 6px 0;z-index:3;}
+  .bfmini{position:absolute;right:12px;bottom:12px;z-index:2;display:flex;align-items:center;gap:8px;padding:8px 14px 8px 8px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.45);cursor:pointer;}
+  .bpb.more{opacity:.85;border-style:dashed;}
   @media (orientation:landscape){ .bfpanel{left:auto;width:340px;top:58px;bottom:8px;max-height:none;} }
   body.bldfull{overflow:hidden;} body.bldfull .tabbar{display:none;}
   /* Mie strategie (09/10): flusso in piccolo e imbuto delle partite di adesso */
@@ -1082,7 +1084,15 @@
   .rteams{display:flex;flex-direction:column;font-weight:700;font-size:0.92rem;min-width:0;} .rteams span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .rscore{display:flex;flex-direction:column;align-items:center;min-width:30px;padding:2px 8px;border-radius:8px;font-size:1.05rem;font-variant-numeric:tabular-nums;transition:background .4s;}
   .rscore.gl{background:color-mix(in srgb, #2BB673 30%, transparent);color:var(--ink);box-shadow:0 0 0 1px #2BB67399;}
-  .rwork{display:flex;flex-direction:column;gap:6px;} .rwrow{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;} .rwrow.on{border-color:color-mix(in srgb, var(--good) 55%, var(--line));}
+  .rwork{display:flex;flex-direction:column;gap:10px;}
+  .rwrow{--c:#4D7CFE;--p:0;border-color:color-mix(in srgb, var(--c) calc(var(--p) * 90%), var(--line));box-shadow:0 0 calc(var(--p) * 22px) calc(var(--p) * -4px) var(--c);background:linear-gradient(90deg,color-mix(in srgb, var(--c) calc(var(--p) * 22%), var(--surface)),var(--surface));}
+  .rwbar{display:block;height:4px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:4px;} .rwbar i{display:block;height:100%;background:var(--c);transition:width .6s;}
+  .rwchip{font-size:0.64rem;font-weight:800;letter-spacing:.03em;padding:3px 7px;border-radius:999px;background:color-mix(in srgb, var(--c) 25%, transparent);color:var(--ink);white-space:nowrap;}
+  .rwrow.near3{animation:rwglow 2.4s ease-in-out infinite;} .rwrow.near2{animation:rwglow 1.5s ease-in-out infinite;} .rwrow.near1{animation:rwglow .8s ease-in-out infinite;}
+  .rwrow.full{border-color:var(--c);background:linear-gradient(90deg,color-mix(in srgb, var(--c) 40%, var(--surface)),color-mix(in srgb, var(--c) 12%, var(--surface)));box-shadow:0 0 22px -2px var(--c);}
+  .rwrow.full .rwchip{background:var(--c);color:#111;}
+  @keyframes rwglow{50%{box-shadow:0 0 26px 0 var(--c);border-color:var(--c);}}
+  @media (prefers-reduced-motion: reduce){ .rwrow{animation:none!important;} } .rwrow{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;} .rwrow.on{border-color:color-mix(in srgb, var(--good) 55%, var(--line));}
   .rwk{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;color:inherit;font:inherit;text-align:left;padding:10px 10px;cursor:pointer;} .rwk > .ico{width:16px;height:16px;flex:none;transition:transform .2s;} .rwk[aria-expanded="true"] > .ico{transform:rotate(90deg);}
   .rwkn{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:0.84rem;} .rwtag{font-size:0.66rem;color:var(--ink-soft);}
   .rwkc{display:flex;flex-direction:column;align-items:center;min-width:42px;} .rwkc b{font-size:1rem;} .rwkc small{font-size:0.6rem;color:var(--ink-soft);}
@@ -2053,12 +2063,53 @@
                  json: ["JSON", "Dati per automazioni: bot, webhook, fogli di calcolo", '{"statsight":1,"signal":{"sport":"calcio","event":"Inter v Milan","pick":"1","odds":2.1,...}}'] };
   function renderTg() {
     var t = tgState(), F = TG_FMT[t.fmt] || TG_FMT.testo;
-    $("tgbar").innerHTML = '<div class="tgrow"><span class="tgic">' + ic("telegram") + '</span><span class="tgt"><b>Notifiche Telegram</b><span class="k">' + (t.on ? "Accese · " + F[0] : "Spente") + '</span></span>'
+    var a = apState();
+    $("tgbar").innerHTML = '<div class="tgrow"><span class="tgic">' + ic("telegram") + '</span><span class="tgt"><b>Telegram ' + (t.on ? "automatico" : "manuale") + '</b><span class="k">' + (t.on ? "Ti arrivano tutti i segnali · " + F[0] : "Scegli tu: tasto Telegram sul segnale") + '</span></span>'
       + '<span class="switch"><input type="checkbox" role="switch" id="tgsw"' + (t.on ? " checked" : "") + ' aria-label="Notifiche Telegram dei segnali"><span class="slider"></span></span>'
       + '<button class="iconbtn sm tgmenu" type="button" data-tgmenu="1" aria-expanded="' + tgOpen + '" aria-label="Formato del messaggio">' + ic("down") + '</button></div>'
       + (tgOpen ? '<div class="tgdrop" role="radiogroup" aria-label="Formato del messaggio">' + ["testo", "json"].map(function (k) {
           return '<button class="tgopt" type="button" role="radio" data-tgfmt="' + k + '" aria-checked="' + (t.fmt === k) + '"><i class="tgdot"></i><span><b>' + TG_FMT[k][0] + '</b><span class="k">' + TG_FMT[k][1] + '</span><pre>' + esc(TG_FMT[k][2]) + '</pre></span></button>';
-        }).join("") + '<div class="k">Si apre Telegram per confermare la scelta al bot. Le notifiche arrivano agli abbonati; quelle delle strategie fatte nel builder arriveranno col server.</div></div>' : "");
+        }).join("") + '<div class="k">Si apre Telegram per confermare la scelta al bot. Le notifiche arrivano agli abbonati; quelle delle strategie fatte nel builder arriveranno col server.</div></div>' : "")
+      + '<div class="tgrow"><span class="tgic">' + ic("coin") + '</span><span class="tgt"><b>Gioco ' + (a.on ? "automatico" : "manuale") + '</b><span class="k">' + (a.on ? "I segnali nuovi si giocano da soli: " + (a.stake || STAKE_DEFAULT) + " monete l'uno, al massimo " + AP_MAX + " al giorno (oggi " + (a.day === dayKey(nowS()) ? a.n : 0) + ")" : "Scegli tu: tasto Gioca sul segnale") + '</span></span>'
+      + '<span class="switch"><input type="checkbox" role="switch" id="apsw"' + (a.on ? " checked" : "") + ' aria-label="Gioco automatico con le monete"><span class="slider"></span></span></div>';
+  }
+  // 10/10: con le notifiche automatiche spente sei in MANUALE: su ogni segnale il tasto Telegram lo manda dove
+  // scegli tu (anche ai Messaggi salvati), col link di condivisione di Telegram, senza server.
+  function tgBtn(txt) {
+    if (tgState().on) return '<a class="tglink" href="' + TG_BOT + '" target="_blank" rel="noopener">' + ic("send") + ' Telegram: automatico</a>';
+    var url = location.origin + location.pathname;
+    return '<a class="tglink" href="https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(txt) + '" target="_blank" rel="noopener">' + ic("send") + ' Manda su Telegram</a>';
+  }
+  function tgText(sport, comp, ev, pick, odds, sname) { return (EMOJI[sport] || "") + " " + (comp || NAME[sport] || "") + "\n" + ev + "\nIndicazione: " + pick + (odds > 1 ? " @ " + oddsTxt(odds) : "") + (sname ? "\nStrategia: " + sname : "") + "\n(StatSight, gioco a punti)"; }
+  // gioco automatico (10/10): i segnali nuovi si giocano da soli con le monete (gratis, guadagnate), al massimo
+  // AP_MAX al giorno; si spegne quando vuoi. Solo i segnali arrivati DOPO l'accensione.
+  var AP_KEY = "statsight.autoplay", AP_MAX = 10;
+  function apState() { try { var x = JSON.parse(localStorage.getItem(AP_KEY)); if (x && typeof x.on === "boolean") return x; } catch (e) {} return { on: false, stake: STAKE_DEFAULT, since: 0, day: "", n: 0 }; }
+  function apSave(a) { try { localStorage.setItem(AP_KEY, JSON.stringify(a)); } catch (e) {} }
+  function apKeys(since) {
+    var out = [];
+    (data.feed || []).forEach(function (f, i) { if (f.kind === "signal" && f.ts >= since && (!f.main || on(f.main))) out.push("i" + i); });
+    catLiveItems().forEach(function (x) { if (x.ts >= since) out.push("c" + x.s.id + "|" + x.m.r.join("|") + "|" + x.side); });
+    builds.concat(mktFollowed()).forEach(function (b) { if (bldSigOn(b)) bldFires(b).forEach(function (x) { if (x.code && x.odds > 1) out.push("b" + b.id + "|" + x.e.id + "|" + x.code); }); });
+    return out;
+  }
+  var apBusy = false;
+  function autoPlayRun() {
+    var a = apState(); if (!a.on || apBusy || !data || !data.diario) return;
+    var today = dayKey(nowS()); if (a.day !== today) { a.day = today; a.n = 0; }
+    var done = 0, saved = slip;
+    apKeys(a.since).forEach(function (key) {
+      if (a.n >= AP_MAX) return;
+      var pk = playedKeyOf(key); if (!pk || played[pk]) return;
+      var P0 = playOf(key); if (!P0) return;
+      slip = { legs: [legOf(P0.e, P0.code)], mode: "singole", k: 2, stake: a.stake || STAKE_DEFAULT };
+      if (slipErrs().length) { slip = saved; return; }
+      commitSlip(null); played[pk] = { slip: mySlips[mySlips.length - 1].id, ts: nowS(), auto: 1 }; a.n++; done++;
+      slip = saved;
+    });
+    slip = saved;
+    if (done) { savePlayed(); apSave(a); apBusy = true; fxToast("coin", "Giocati da soli: " + done + (done === 1 ? " segnale" : " segnali"), "Gioco automatico con le monete"); setTimeout(function () { renderAll(); apBusy = false; }, 0); }
+    else apSave(a);
   }
   function setTg(on, fmt) {
     var t = { on: on, fmt: fmt }; try { localStorage.setItem(TG_KEY, JSON.stringify(t)); } catch (e) {}
@@ -2066,13 +2117,16 @@
     var w = window.open(TG_BOT + "?start=" + (on ? "tg_on_" + fmt : "tg_off"), "_blank");
     fxToast("send", on ? "Notifiche Telegram accese" : "Notifiche Telegram spente", w ? "Conferma su Telegram" : "Apri Telegram per confermare");
   }
-  $("tgbar").addEventListener("change", function (e) { if (e.target.id === "tgsw") setTg(e.target.checked, tgState().fmt); });
+  $("tgbar").addEventListener("change", function (e) {
+    if (e.target.id === "tgsw") setTg(e.target.checked, tgState().fmt);
+    if (e.target.id === "apsw") { var a = apState(); a.on = e.target.checked; if (a.on) a.since = nowS(); apSave(a); renderTg(); renderFeed(); fxToast("coin", a.on ? "Gioco automatico acceso" : "Gioco automatico spento", a.on ? "Da adesso i segnali nuovi si giocano da soli" : "Giochi tu col tasto Gioca"); }
+  });
   $("tgbar").addEventListener("click", function (e) {
     if (e.target.closest("[data-tgmenu]")) { tgOpen = !tgOpen; renderTg(); return; }
     var o = e.target.closest("[data-tgfmt]"); if (o) { var t = tgState(); if (o.dataset.tgfmt !== t.fmt || !t.on) setTg(true, o.dataset.tgfmt); }
   });
   function renderFeed() {
-    renderTg();
+    renderTg(); autoPlayRun();
     var n = Array.from(hidden).filter(known).length;
     $("filternote").hidden = n === 0;
     $("filtertext").textContent = n === 1 ? "Filtro attivo: 1 strategia nascosta" : "Filtro attivo: " + n + " strategie nascoste";
@@ -2106,7 +2160,7 @@
         + (sname ? '<div class="sname">Strategia: <b>' + esc(sname) + '</b>' + esc(stratRoi(f.main || f.strategy)) + '</div>' : "")
         + '<div class="meta">' + (f.prob != null ? esc(f.prob_label) + ' ' + f.prob + '% · ' : "") + 'Quota ' + oddsTxt(f.odds) + '</div>'
         + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml
-        + '<div class="sigbtns">' + (f.timing !== "prepartita" ? '<a class="tglink" href="' + TG_BOT + '" target="_blank" rel="noopener">' + ic("send") + ' Collega Telegram</a>' : "<span></span>")
+        + '<div class="sigbtns">' + (f.timing !== "prepartita" ? tgBtn(tgText(f.sport, f.cat, f.event, f.pick, f.odds, sname)) : "<span></span>")
         + (pl ? '<button class="playbtn" type="button" data-play="i' + i + '">' + ic("coin") + ' Gioca</button>' : "") + '</div></div>';
     });
     // segnali delle strategie con le barre accese su questo telefono, in ordine di tempo con gli altri
@@ -2434,7 +2488,7 @@
       + '<div class="sname">Strategia: <b>' + esc(x.s.name) + '</b>' + esc(stratRoi(x.s.id)) + '</div>'
       + '<div class="meta">Quota ' + oddsTxt(x.odds) + ' · set ' + esc(sc[0]) + ', game ' + esc(sc[1] || "") + '</div>'
       + '<span class="badge info">LE TUE BARRE</span>'
-      + (!done && catPlay(x) ? '<div class="sigbtns"><span></span><button class="playbtn" type="button" data-play="c' + esc(x.s.id) + '|' + esc(x.m.r.join("|")) + '|' + x.side + '">' + ic("coin") + ' Gioca</button></div>' : "") + '</div>';
+      + (!done ? '<div class="sigbtns">' + tgBtn(tgText(x.sport, x.m.lv, x.m.r.join(" v "), x.m.r[x.side - 1], x.odds, x.s.name)) + (catPlay(x) ? '<button class="playbtn" type="button" data-play="c' + esc(x.s.id) + '|' + esc(x.m.r.join("|")) + '|' + x.side + '">' + ic("coin") + ' Gioca</button>' : "") + '</div>' : "") + '</div>';
   }
   function liveHtml(sport, s, key) {
     var L = liveOf(sport);
@@ -5282,6 +5336,11 @@
   }
   function playOf(key) {
     if (key[0] === "i") { var f = data.feed[Number(key.slice(1))]; return f ? sigPlay(f) : null; }
+    if (key[0] === "b") {   // 10/10: segnale di una tua strategia del builder
+      var q = key.slice(1).split("|"), b0 = builds.concat(mktFollowed()).filter(function (x) { return x.id === q[0]; })[0], e0 = evById(Number(q[1]));
+      if (!b0 || !playable(e0) || !e0.mk[q[2]]) return null;
+      return { e: e0, code: q[2], sname: b0.name };
+    }
     var p = key.slice(1).split("|"), sid = p[0], side = Number(p[p.length - 1]), names = p.slice(1, -1).join("|");
     var x = catLiveItems().filter(function (y) { return y.s.id === sid && y.m.r.join("|") === names && y.side === side; })[0];
     return x ? catPlay(x) : null;
@@ -5715,6 +5774,7 @@
     // 10/10: le schede delle partite live stanno in Match; qui solo il lavoro delle strategie
     $("radar").innerHTML = head + '<button class="card navcard" type="button" data-golive="1" style="margin-top:12px;">' + ic("calendar") + '<span><b>Tutte le partite live</b><span class="k">' + evs.length + ' adesso, con statistiche e quote: in Match</span></span>' + ic("chev") + '</button>'
       + (!isFull() ? '<div class="upsell" style="margin-top:10px;">' + ic("lock") + ' Le strategie delle partite calde si vedono con <b>StatSight Full</b>.</div>' : "");
+    radarFlip();
     if (radarWinFx) { radarWinFx = false; hubWin(); }
   }
   // ---------------------------------------------------------------- Radar delle strategie (08/10)
@@ -5746,7 +5806,11 @@
   // quante partite live controlla adesso e cosa succede su ognuna. Toccandola si apre l'elenco: scattata (con
   // indicazione e quota), ferma a un blocco (per le tue: quale regola e il valore vero), in attesa del minuto giusto
   // (barre col minuto), oppure in osservazione. Zero partite = te lo dice e spiega perche'.
-  var rOpen = {};
+  // Strategie al lavoro "come le cartelle del bingo" (10/10): per ogni strategia accesa si cerca la partita su cui e'
+  // piu' vicina a scattare e si contano le condizioni che mancano ("ti mancano 2"). Le piu' vicine salgono in cima,
+  // si illuminano sempre di piu' (colori della vecchia classifica) e quando scattano si accendono del tutto. Accanto
+  // solo il ROI di oggi. Toccandola: le partite che controlla e a che punto e' su ognuna.
+  var rOpen = {}, rPos = {};
   function radarWork(evs, B) {
     var items = [], byB = {}; B.forEach(function (b) { byB[b.open] = b; });
     (data.catalog || []).forEach(function (s) { if (s.sport === rsport && s.timing !== "prepartita" && !s.retired && on(s.id) && !catLocked(s.id)) items.push({ key: "d:" + s.id, name: s.name, tag: "Nostra", kind: "sig", s: s }); });
@@ -5757,45 +5821,69 @@
     var rows = items.map(function (si) {
       var list = [], scan = evs.length, why0 = "";
       if (si.kind === "bld") {
-        var R = bldRun(si.b), src = si.b.nodes.filter(function (n) { return n.t === "src"; })[0], ev = (R.stat._ev || {});
+        var R = bldRun(si.b), src = si.b.nodes.filter(function (n) { return n.t === "src"; })[0], ev = (R.stat._ev || {}), W = R.stat._why || {};
+        var ses = si.b.nodes.filter(function (n) { return n.t === "se"; }), tot = ses.reduce(function (t, n) { return t + Math.max(1, (n.p.rules || []).length); }, 0) || 1;
         var reached = src ? (ev[src.id] || []) : []; scan = reached.length;
         if (!scan) why0 = evs.length ? "nessuna partita live rispetta la fonte (" + nodeLabel(src, si.b) + ")" : "nessuna partita live adesso";
         reached.forEach(function (id) {
           var e = evById(id); if (!e) return;
           var fired = R.res.filter(function (x) { return x.e.id === id; })[0];
-          if (fired) { list.push({ e: e, st: "fired", t: fired.code ? pickName(fired.code, e.sport) + (fired.odds ? " @ " + oddsTxt(fired.odds) : "") : (fired.txt || "Avviso") }); return; }
-          var last = null; si.b.nodes.forEach(function (n) { if ((ev[n.id] || []).indexOf(id) >= 0 && n.t !== "src") last = n; });
-          var stopAt = last || src, w = (R.stat._why || {})[stopAt.id + ":" + id], t = "si ferma a: " + nodeLabel(stopAt, si.b);
-          if (w) { var bad = w.filter(function (x) { return x.ok !== true; })[0]; if (bad) t = dLabel(bad.r.a, si.b) + " = " + (bad.v == null ? "dato che manca" : String(Math.round(bad.v * 100) / 100).replace(".", ",")) + " (serve " + opTxt(bad.r.op) + " " + valTxt(bad.r, si.b) + ")"; }
-          list.push({ e: e, st: "stop", t: t });
+          if (fired) { list.push({ e: e, st: "fired", miss: 0, p: 1, t: fired.code ? pickName(fired.code, e.sport) + (fired.odds ? " @ " + oddsTxt(fired.odds) : "") : (fired.txt || "Avviso") }); return; }
+          // condizioni vere: tutte quelle dei Se gia' superati + quelle vere del Se dove si ferma
+          var ok = 0, stopTxt = "";
+          ses.forEach(function (n) {
+            var w = W[n.id + ":" + id]; if (!w) return;
+            var good = w.filter(function (x) { return x.ok === true; }).length;
+            ok += good;
+            if (good < w.length && !stopTxt) { var bad = w.filter(function (x) { return x.ok !== true; })[0]; stopTxt = dLabel(bad.r.a, si.b) + " = " + (bad.v == null ? "dato che manca" : String(Math.round(bad.v * 100) / 100).replace(".", ",")) + " (serve " + opTxt(bad.r.op) + " " + valTxt(bad.r, si.b) + ")"; }
+          });
+          var miss = Math.max(1, tot - ok);
+          list.push({ e: e, st: "stop", miss: miss, p: Math.min(0.95, ok / tot), t: (miss === 1 ? "ti manca 1 condizione" : "ti mancano " + miss + " condizioni") + (stopTxt ? ": " + stopTxt : "") });
         });
       } else {
         var minP = null;
         if (si.kind === "bar") { var idx = String(catKey(si.s)).split("_"); (si.s.params || []).forEach(function (p, i) { if (p.key === "min") minP = p.values[Number(idx[i])]; }); }
         evs.forEach(function (e) {
           var f = radarStrats(e).filter(function (x) { return x.open === si.key; })[0];
-          if (f) { list.push({ e: e, st: f.done ? (f.hit ? "won" : "lost") : "fired", t: (f.pick || "") + (f.odds ? " @ " + oddsTxt(f.odds) : "") }); return; }
+          if (f) { list.push({ e: e, st: f.done ? (f.hit ? "won" : "lost") : "fired", miss: 0, p: 1, t: (f.pick || "") + (f.odds ? " @ " + oddsTxt(f.odds) : "") }); return; }
           var m = e.st && e.st.minute;
-          if (minP && m != null && m < minP) list.push({ e: e, st: "wait", t: "aspetta il minuto " + minP + " (ora " + m + "')" });
-          else list.push({ e: e, st: "scan", t: "la controlla: le condizioni non ci sono ancora" });
+          if (minP && m != null && m < minP) list.push({ e: e, st: "wait", miss: null, p: Math.min(0.9, m / minP) * 0.8, t: "aspetta il minuto " + minP + " (ora " + m + "'): mancano " + (minP - m) + " minuti" });
+          else list.push({ e: e, st: "scan", miss: null, p: 0, t: "la controlla: le condizioni non ci sono ancora" });
         });
         if (!evs.length) why0 = "nessuna partita live adesso";
       }
-      var nF = list.filter(function (x) { return x.st === "fired" || x.st === "won" || x.st === "lost"; }).length, b0 = byB[si.key] || byB["d:" + (si.s && si.s.id)];
-      var open = !!rOpen[si.key];
-      var head = '<button class="rwk" type="button" data-rwork="' + esc(si.key) + '" aria-expanded="' + open + '"><span class="rwkn"><b>' + esc(si.name) + '</b><span class="rwtag">' + esc(si.tag) + '</span></span>'
-        + '<span class="rwkc"><b>' + scan + '</b><small>controlla</small></span><span class="rwkc' + (nF ? " pos" : "") + '"><b>' + nF + '</b><small>scattata</small></span>'
-        + (b0 ? '<span class="rwkc ' + (b0.pts > 0 ? "pos" : b0.pts < 0 ? "neg" : "") + '"><b>' + (b0.pts > 0 ? "+" : "") + it(b0.pts, 1) + '</b><small>punti</small></span>' : '<span class="rwkc"><b>0</b><small>punti</small></span>') + ic("chev") + '</button>';
-      var body = !open ? "" : '<div class="rwkd">' + (si.kind === "bar" ? '<div class="k">Le tue barre: ' + esc((si.s.params || []).map(function (p, i) { var ix = Number(String(catKey(si.s)).split("_")[i]); return p.label + " " + (p.labels ? p.labels[ix] : p.values[ix]); }).join(" · ")) + '</div>' : "")
+      var nF = list.filter(function (x) { return x.st === "fired" || x.st === "won" || x.st === "lost"; }).length;
+      var best = list.slice().sort(function (a, b) { return b.p - a.p; })[0], p = best ? best.p : 0, miss = best && best.miss != null ? best.miss : null;
+      var b0 = byB[si.key] || byB["d:" + (si.s && si.s.id)], closed = b0 ? b0.w + b0.l : 0, roi = closed ? b0.pts / closed * 100 : null;
+      return { si: si, list: list, nF: nF, scan: scan, p: nF ? 1 : p, miss: nF ? 0 : miss, why0: why0, roi: roi };
+    }).sort(function (a, b) { return b.p - a.p || (a.miss || 99) - (b.miss || 99) || b.scan - a.scan; });
+    var html = rows.map(function (r, i) {
+      var si = r.si, open = !!rOpen[si.key], c = RCOL[i % RCOL.length];
+      var cls = r.nF ? " full" : r.miss === 1 ? " near1" : r.miss === 2 ? " near2" : r.miss === 3 ? " near3" : "";
+      var tag = r.nF ? "SCATTATA" : r.miss != null ? (r.miss === 1 ? "ne manca 1" : "ne mancano " + r.miss) : r.p > 0 ? "in arrivo" : "in osservazione";
+      var head = '<button class="rwk" type="button" data-rwork="' + esc(si.key) + '" aria-expanded="' + open + '"><span class="rwkn"><b>' + esc(si.name) + '</b><span class="rwtag">' + esc(si.tag) + ' · ' + r.scan + (r.scan === 1 ? " partita" : " partite") + '</span>'
+        + '<span class="rwbar"><i style="width:' + Math.round(r.p * 100) + '%"></i></span></span>'
+        + '<span class="rwchip">' + tag + '</span>'
+        + '<span class="rwkc ' + (r.roi > 0 ? "pos" : r.roi < 0 ? "neg" : "") + '"><b>' + (r.roi == null ? "–" : (r.roi > 0 ? "+" : "") + Math.round(r.roi) + "%") + '</b><small>ROI oggi</small></span>' + ic("chev") + '</button>';
+      var body = !open ? "" : '<div class="rwkd">' + (si.kind === "bar" ? '<div class="k">Le tue barre: ' + esc((si.s.params || []).map(function (p, i2) { var ix = Number(String(catKey(si.s)).split("_")[i2]); return p.label + " " + (p.labels ? p.labels[ix] : p.values[ix]); }).join(" · ")) + '</div>' : "")
         + (si.kind === "sig" && si.s.description ? '<div class="k">' + esc(si.s.description) + '</div>' : "")
-        + (list.length ? list.sort(function (a, b) { var o = { won: 0, fired: 1, lost: 2, stop: 3, wait: 4, scan: 5 }; return o[a.st] - o[b.st]; }).map(function (x) {
+        + (r.list.length ? r.list.sort(function (a, b) { return b.p - a.p; }).map(function (x) {
             var icn = { fired: "bolt", won: "check", lost: "x", stop: "minus", wait: "clock", scan: "eye" }[x.st];
             return '<div class="rwm ' + x.st + '" data-ev="' + x.e.id + '" role="button" tabindex="0">' + ic(icn) + '<span><b>' + esc(x.e.home + " - " + x.e.away) + '</b> <span class="k">' + esc(estMinute(x.e) || "") + '</span><br><span class="k">' + esc(x.t) + '</span></span></div>';
-          }).join("") : '<div class="note">0 partite: ' + esc(why0 || "nessuna partita adesso") + '.</div>') + '</div>';
-      return { html: '<div class="rwrow' + (nF ? " on" : "") + '">' + head + body + '</div>', nF: nF, scan: scan };
-    }).sort(function (a, b) { return b.nF - a.nF || b.scan - a.scan; });
-    return '<h2 class="rsec">' + ic("strategie") + ' Strategie al lavoro <span class="k">' + items.length + ' accese</span></h2><div class="rwork">' + rows.map(function (r) { return r.html; }).join("") + '</div>'
-      + '<div class="k rhnote">Tocca una strategia: le partite live che sta controllando e a che punto è su ognuna.</div>';
+          }).join("") : '<div class="note">0 partite: ' + esc(r.why0 || "nessuna partita adesso") + '.</div>') + '</div>';
+      return '<div class="rwrow' + cls + '" data-rwk="' + esc(si.key) + '" style="--c:' + c + ';--p:' + r.p.toFixed(2) + '">' + head + body + '</div>';
+    }).join("");
+    return '<h2 class="rsec">' + ic("strategie") + ' Strategie al lavoro <span class="k">' + items.length + ' accese</span></h2><div class="rwork">' + html + '</div>'
+      + '<div class="k rhnote">Come al bingo: in cima le strategie a cui manca meno per scattare. Tocca una strategia per vedere le partite che controlla.</div>';
+  }
+  // le strategie che cambiano posto scivolano nella nuova posizione (come le cartelle del bingo)
+  function radarFlip() {
+    var box = $("radar"); if (!box) return;
+    box.querySelectorAll(".rwrow[data-rwk]").forEach(function (el) {
+      var k = el.dataset.rwk, top = el.offsetTop, old = rPos[k];
+      if (old != null && Math.abs(old - top) > 2 && !REDUCED) { el.style.transition = "none"; el.style.transform = "translateY(" + (old - top) + "px)"; requestAnimationFrame(function () { el.style.transition = "transform .6s cubic-bezier(.2,.8,.2,1)"; el.style.transform = ""; }); }
+      rPos[k] = top;
+    });
   }
   function radarHeadHtml(evs) {
     var B = radarBoard(evs), open = B.reduce(function (s2, b) { return s2 + b.o; }, 0), w = B.reduce(function (s2, b) { return s2 + b.w; }, 0), l = B.reduce(function (s2, b) { return s2 + b.l; }, 0);
@@ -5808,17 +5896,6 @@
       + '<div class="rhstats"><div><b>' + evs.length + '</b><span>partite live</span></div><div><b>' + B.length + '</b><span>strategie al lavoro</span></div>'
       + '<div><b class="rhopen">' + open + '</b><span>scattate in corso</span></div><div><b><span class="pos">' + w + '</span>-<span class="neg">' + l + '</span></b><span>vinte-perse oggi</span></div></div></div>';
     html += radarWork(evs, B);
-    html += '<h2 class="rsec">' + ic("trophy") + ' Classifica in tempo reale</h2>';
-    html += B.length ? '<div class="rboard">' + B.slice(0, 8).map(function (b, i) {
-        var c = RCOL[i % RCOL.length];
-        return '<button class="rbrow' + (i === 0 && b.pts > 0 ? " lead" : "") + '" type="button" data-rstrat="' + esc(b.open) + '" style="--c:' + c + '">'
-          + '<span class="rbn">' + (i + 1) + '</span><span class="rbw"><b>' + esc(b.name) + '</b>'
-          + '<span class="rbbar"><i style="width:' + Math.round(b.n / maxN * 100) + '%"></i></span>'
-          + '<span class="k">' + b.n + (b.n === 1 ? " scattata" : " scattate") + (b.w ? ' · <span class="pos">' + b.w + (b.w === 1 ? ' vinta' : ' vinte') + '</span>' : "") + (b.l ? ' · <span class="neg">' + b.l + (b.l === 1 ? ' persa' : ' perse') + '</span>' : "") + (b.o ? ' · <span class="rbo">' + b.o + ' in corso</span>' : "") + '</span></span>'
-          + '<span class="rbp ' + (b.pts > 0 ? "pos" : b.pts < 0 ? "neg" : "") + '">' + (b.pts > 0 ? "+" : "") + it(b.pts, 1) + '<small>punti</small></span>'
-          + (i === 0 && b.pts > 0 ? '<span class="rbfire">' + ic("flame") + '</span>' : "") + '</button>';
-      }).join("") + '</div><div class="k rhnote">Punti di oggi: vinta = quota − 1, persa = −1. Tocca una strategia per aprirla.</div>'
-      : '<div class="note">Nessuna strategia è scattata sulle partite live di oggi. Il radar continua a cercare.</div>';
     var myB = [];
     if (myB.length) html += '<h2 class="rsec">' + ic("pen") + ' Le tue strategie <span class="k">Strategy builder</span></h2><div class="rboard">' + myB.map(function (x, i) {
         return '<div class="rbrow mine" style="--c:' + RCOL[(i + 3) % RCOL.length] + '"><span class="rbn">' + ic("strategie") + '</span><span class="rbw"><b>' + esc(x.b.name) + '</b><span class="k">'
@@ -7085,7 +7162,7 @@
   var BLD_KEY = "statsight.builder";
   var builds = (function () { try { var b = JSON.parse(localStorage.getItem(BLD_KEY)); if (Array.isArray(b)) return b.filter(function (x) { return x && x.v === 2; }); } catch (e) {} return []; })();
   function saveBuilds() { try { localStorage.setItem(BLD_KEY, JSON.stringify(builds)); } catch (e) {} }
-  var bld = null, bldSel = null, bldWire = null, bldMsg = "", bldZoom = 1, bldRO = false, bldFull = false;
+  var bld = null, bldSel = null, bldWire = null, bldMsg = "", bldZoom = 1, bldRO = false, bldFull = false, bldPanel = "norm";
   // dati: [chiave, etichetta, gruppo, statistica Full]
   var BD = {
     calcio: {
@@ -7195,10 +7272,63 @@
     return Math.round(v * 100) / 100;
   }
   function poisAtLeast(lam, k) { k = Math.max(0, Math.round(k)); if (!(lam >= 0)) return null; var s = 0, t = Math.exp(-lam); for (var i = 0; i < k; i++) { s += t; t *= lam / (i + 1); } return Math.round((1 - s) * 1000) / 1000; }
-  function bldPal() { return ["src", "se", "dividi", "calc", "storico", "unisci", "gioca", "debug", "nota"].filter(function (t) { return t !== "storico" || !bld || bld.sport === "calcio"; }); }
+  var bldAdv = false;
+  function bldPal() {   // 10/10: prima i blocchi semplici e specifici; gli altri con "Altri blocchi"
+    var b = bld || {}, live = b.mode !== "pre", basic = ["src"].concat(live ? (b.sport === "tennis" ? ["se:ris"] : ["se:min", "se:ris"]) : ["se:ore"]).concat(["se:quota", "se:stat", "se:conf", "gioca"]);
+    var adv = ["se", "dividi", "calc", "storico", "unisci", "debug", "nota"].filter(function (t) { return t !== "storico" || b.sport === "calcio"; });
+    return basic.concat(bldAdv ? adv : []);
+  }
+  function palBtn(t) {
+    var base = t.indexOf("se:") === 0 ? "se" : t, kind = t.slice(3), name = base === "se" && kind ? KIND_NAME[kind] : NT_NAME[t], icn = { min: "clock", ore: "clock", ris: "target", quota: "trend", stat: "layers", conf: "vs" }[kind] || NT[base][1];
+    return '<button class="bpb" type="button" data-badd="' + t + '" style="--nc:' + NT[base][0] + '"><span class="rnic sm">' + ic(icn) + '</span>' + name + '</button>';
+  }
+  function palHtml() { return bldPal().map(palBtn).join("") + '<button class="bpb more" type="button" data-badv="1">' + (bldAdv ? "Meno blocchi" : "Altri blocchi") + '</button>'; }
   function nOuts(n) { return n.t === "se" ? (n.p.no ? 2 : 1) : n.t === "dividi" ? (n.p.cases || []).length + 1 : n.t === "gioca" || n.t === "debug" || n.t === "nota" ? 0 : 1; }
   function nIns(n) { return NT[n.t][2]; }
   function dataList(b) { var L = (BD[b.sport] || BD.calcio)[b.mode] || []; return L.concat(b.nodes.filter(function (n) { return (n.t === "calc" || n.t === "storico") && n.p.name; }).map(function (n) { return ["var:" + n.p.name, n.p.name + " (variabile)", "Variabili"]; })); }
+  // 10/10: ogni dato ha un TIPO (minuti, gol, tiri, quote, percentuali, si/no...). Si confrontano solo dati dello
+  // stesso tipo (i tiri coi tiri, le quote con le quote), i si/no solo con "= sì / = no", e i numeri stanno nei limiti
+  // veri (minuto 0-130, percentuali 0-100, quote da 1,01). Cosi' non si fanno mappe che nella realta' non funzionano.
+  var KIND_RX = [["flag", /\(1 = sì\)|\(1 o 2|1 o 2\)|1 o 2;/], ["quota", /^Quota/], ["min", /^Minut/], ["ore", /^Ore al via/], ["pct", /%/], ["xg", /xG/], ["tiri", /Tiri/],
+    ["gol", /Gol|gol/], ["angoli", /Angoli/], ["att", /Attacchi/], ["cart", /Rossi|Gialli|Cartellini/], ["falli", /Falli/], ["set", /^Set /], ["game", /Game|game/], ["break", /Break|Servizi persi|Palle break/], ["indice", /rivalità/]];
+  var KIND_LIM = { min: [0, 130], ore: [0, 168], pct: [0, 100], quota: [1.01, 1000], flag: [0, 2], set: [0, 5], game: [0, 13] };
+  function dKind(k, b) {
+    if (!k) return "?"; if (String(k).indexOf("var:") === 0) return "var";
+    var d = dataList(b || bld).filter(function (x) { return x[0] === k; })[0], L = d ? d[1] : "";
+    for (var i = 0; i < KIND_RX.length; i++) if (KIND_RX[i][1].test(L)) return KIND_RX[i][0];
+    return "num";
+  }
+  function kCompat(a, c) { return a !== "flag" && c !== "flag" && (a === c || a === "var" || c === "var"); }
+  function kClamp(kind, v) { var L = KIND_LIM[kind] || (kind === "var" ? null : [0, 100000]); v = Number(v); if (isNaN(v)) v = L ? L[0] : 0; return L ? Math.max(L[0], Math.min(L[1], v)) : v; }
+  var FLAG_OPS = [["=", "="], ["!=", "≠"]];
+  // i blocchi specifici (10/10): sono nodi "Se" gia' impostati, con un pannello piu' semplice
+  var KIND_NAME = { min: "Minuto", ore: "Orario", ris: "Punteggio", quota: "Quota", stat: "Statistica", conf: "Confronta" };
+  var KIND_OF = { min: ["min"], ore: ["ore"], quota: ["quota"], ris: ["gol", "set", "game", "break"], stat: null, conf: null };
+  function ntName(n) { return n.t === "se" && n.p && n.p.kind ? KIND_NAME[n.p.kind] || NT_NAME.se : NT_NAME[n.t]; }
+  function kindData(kind, b) {   // i dati che un blocco specifico puo' usare
+    var L = dataList(b || bld), K = KIND_OF[kind];
+    return L.filter(function (x) { var k = dKind(x[0], b); return K ? K.indexOf(k) >= 0 : kind === "stat" ? ["quota", "min", "ore", "var"].indexOf(k) < 0 : k !== "flag"; });
+  }
+  // rimette a posto un nodo dopo ogni modifica: tipi compatibili, operatori giusti, numeri nei limiti
+  function fixNode(n, b) {
+    b = b || bld; var p = n.p || {};
+    if (n.t === "se") {
+      if (p.kind === "min" || p.kind === "ore" || p.kind === "quota") {   // "da ... a ..."
+        var r0 = p.rules[0] || { a: (kindData(p.kind, b)[0] || ["min"])[0] }, r1 = p.rules[1] || {};
+        p.rules = [{ a: r0.a, op: ">=", bt: "n", b: r0.b }, { a: r0.a, op: "<=", bt: "n", b: r1.b != null ? r1.b : r0.b }];
+      }
+      if (p.kind === "conf") (p.rules || []).forEach(function (r) { if (r.bt !== "d") { r.bt = "d"; r.b = null; } });
+      (p.rules || []).forEach(function (r) {
+        var K = dKind(r.a, b);
+        if (K === "flag") { r.bt = "n"; if (r.op !== "=" && r.op !== "!=") r.op = "="; r.b = Math.max(0, Math.min(2, Math.round(Number(r.b) || 0))); return; }
+        if (r.bt === "d") {
+          if (!kCompat(K, dKind(r.b, b))) { var c = dataList(b).filter(function (x) { return x[0] !== r.a && kCompat(K, dKind(x[0], b)); })[0]; if (c) r.b = c[0]; else { r.bt = "n"; r.b = kClamp(K, 0); } }
+        } else r.b = kClamp(K, r.b);
+      });
+      if ((p.kind === "min" || p.kind === "ore" || p.kind === "quota") && p.rules[0].b > p.rules[1].b) { var t = p.rules[0].b; p.rules[0].b = p.rules[1].b; p.rules[1].b = t; }
+    }
+    if (n.t === "dividi") { var K2 = dKind(p.a, b); (p.cases || []).forEach(function (cs) { cs.v = kClamp(K2, cs.v); }); }
+  }
   function dLabel(k, b) { var d = dataList(b || bld).filter(function (x) { return x[0] === k; })[0]; return d ? d[1].replace(/ \(variabile\)$/, "") : k ? String(k).replace(/^var:/, "") : "?"; }
   function opTxt(o, L) { var x = (L || OPS).filter(function (y) { return y[0] === o; })[0]; return x ? x[1] : o; }
   function valTxt(r, b) { return r.bt === "d" ? dLabel(r.b, b) : String(r.b != null ? r.b : "").replace(".", ","); }
@@ -7211,6 +7341,10 @@
     var p = n.p || {}; b = b || bld;
     if (n.name) return n.name;
     if (n.t === "src") return (b.mode === "live" ? "Partite live" : "Partite in programma") + (p.comp ? " · " + p.comp : "") + (p.surf ? " · " + (SURF.filter(function (x) { return x[0] === p.surf; })[0] || ["", p.surf])[1] : "");
+    if (n.t === "se" && (p.kind === "min" || p.kind === "ore" || p.kind === "quota") && p.rules && p.rules.length === 2) {
+      var u = p.kind === "min" ? "'" : p.kind === "ore" ? " h" : "", f2 = function (v) { return String(v).replace(".", ","); };
+      return (p.kind === "min" ? "Minuto" : dLabel(p.rules[0].a, b)) + " " + f2(p.rules[0].b) + u + "–" + f2(p.rules[1].b) + u;
+    }
     if (n.t === "se") return (p.rules || []).map(function (r) { return dLabel(r.a, b) + " " + opTxt(r.op) + " " + valTxt(r, b); }).join(p.any ? " o " : " e ") || "Se…";
     if (n.t === "dividi") return "Dividi per " + dLabel(p.a, b);
     if (n.t === "storico") return (p.name || "x") + " = " + ((ST_STATS.filter(function (x) { return x[0] === p.stat; })[0] || ["", "?"])[1] + " " + (ST_SIDES.filter(function (x) { return x[0] === p.side; })[0] || ["", ""])[1]).trim()
@@ -7398,7 +7532,7 @@
     if (!b.nodes.some(function (n) { return n.t === "src"; })) out.push("Serve un nodo Partite all'inizio.");
     if (!b.nodes.some(function (n) { return n.t === "gioca"; })) out.push("Serve almeno un nodo Segnala alla fine.");
     b.nodes.forEach(function (n) {
-      if (nIns(n) && !b.wires.some(function (w) { return w.t === n.id; })) out.push("Il nodo " + NT_NAME[n.t] + " (" + nodeLabel(n, b) + ") non riceve nessun filo.");
+      if (nIns(n) && !b.wires.some(function (w) { return w.t === n.id; })) out.push("Il nodo " + ntName(n) + " (" + nodeLabel(n, b) + ") non riceve nessun filo.");
       if (n.t === "se" && !(n.p.rules || []).length) out.push("Il nodo Se non ha regole.");
       if (n.t === "gioca" && !n.p.pick) out.push("Scegli cosa segnalare nel nodo Segnala.");
     });
@@ -7433,17 +7567,21 @@
       + '<svg class="bwires" width="' + W + '" height="' + H + '">' + wires + '</svg>' + nodes + '</div></div>';
   }
   function bNode(id) { return bld.nodes.filter(function (n) { return n.id === id; })[0]; }
-  function dataSelect(id, val, b) {
-    var L = dataList(b || bld), groups = [];
+  function dataSelect(id, val, b, flt) {
+    var L = dataList(b || bld).filter(flt || function () { return true; }), groups = [];
     L.forEach(function (x) { if (groups.indexOf(x[2]) < 0) groups.push(x[2]); });
     return '<select class="meinput" data-bf="' + id + '">' + groups.map(function (g) {
       return '<optgroup label="' + esc(g) + '">' + L.filter(function (x) { return x[2] === g; }).map(function (x) { return '<option value="' + esc(x[0]) + '"' + (x[0] === val ? " selected" : "") + '>' + esc(x[1]) + (x[3] && !isFull() ? " (Full)" : "") + '</option>'; }).join("") + '</optgroup>';
     }).join("") + '</select>';
   }
-  function opSelect(id, val, L) { return '<select class="meinput bop" data-bf="' + id + '">' + (L || OPS).map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === val ? " selected" : "") + '>' + o[1] + '</option>'; }).join("") + '</select>'; }
-  function valField(prefix, t, v, b) {   // numero o dato
-    return '<select class="meinput bvt" data-bf="' + prefix + 't"><option value="n"' + (t !== "d" ? " selected" : "") + '>numero</option><option value="d"' + (t === "d" ? " selected" : "") + '>dato</option></select>'
-      + (t === "d" ? dataSelect(prefix, v, b) : '<input class="meinput bnum" data-bf="' + prefix + '" type="number" step="any" inputmode="decimal" value="' + esc(String(v != null ? v : 0)) + '">');
+  function opSelect(id, val, L) { if (L === "flag") L = FLAG_OPS; return opSelect0(id, val, L); }
+  function opSelect0(id, val, L) { return '<select class="meinput bop" data-bf="' + id + '">' + (L || OPS).map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === val ? " selected" : "") + '>' + o[1] + '</option>'; }).join("") + '</select>'; }
+  function valField(prefix, t, v, b, kind) {   // numero o dato (dal 10/10 solo dati dello stesso tipo, si/no solo sì o no)
+    if (kind === "flag") return '<select class="meinput" data-bf="' + prefix + '">' + [[1, "sì (1)"], [0, "no (0)"], [2, "2"]].map(function (o) { return '<option value="' + o[0] + '"' + (Number(v) === o[0] ? " selected" : "") + '>' + o[1] + '</option>'; }).join("") + '</select>';
+    var flt = kind ? function (x) { return kCompat(kind, dKind(x[0], b)); } : null, can = !kind || dataList(b || bld).some(flt);
+    var L = KIND_LIM[kind];
+    return (can ? '<select class="meinput bvt" data-bf="' + prefix + 't"><option value="n"' + (t !== "d" ? " selected" : "") + '>numero</option><option value="d"' + (t === "d" ? " selected" : "") + '>dato</option></select>' : "")
+      + (t === "d" ? dataSelect(prefix, v, b, flt) : '<input class="meinput bnum" data-bf="' + prefix + '" type="number" step="any" inputmode="decimal"' + (L ? ' min="' + L[0] + '" max="' + L[1] + '"' : "") + ' value="' + esc(String(v != null ? v : 0)) + '">');
   }
   function pickSelect(val) {
     var r = regole(), sp = bld.sport, M = (r && r.markets && r.markets[sp]) || {}, ord = (r && r.order && r.order[sp]) || Object.keys(M), groups = {};
@@ -7452,16 +7590,36 @@
     Object.keys(groups).forEach(function (g) { h += '<optgroup label="' + esc(g) + '">' + groups[g].map(function (c) { return '<option value="' + c + '"' + (c === val ? " selected" : "") + '>' + esc(M[c].label) + '</option>'; }).join("") + '</optgroup>'; });
     return h + '</select>';
   }
+  // pannello dei blocchi specifici (10/10): poche scelte, solo dati adatti
+  function kindEditor(n) {
+    var p = n.p, k = p.kind, r0 = p.rules[0] || {}, flt = function (x) { return kindData(k).some(function (y) { return y[0] === x[0]; }); }, h = "";
+    var num = function (f, v, K) { var L = KIND_LIM[K]; return '<input class="meinput bnum" data-bf="' + f + '" type="number" step="any" inputmode="decimal"' + (L ? ' min="' + L[0] + '" max="' + L[1] + '"' : "") + ' value="' + esc(String(v != null ? v : 0)) + '">'; };
+    if (k === "min" || k === "ore" || k === "quota") {
+      var K = dKind(r0.a);
+      h += (kindData(k).length > 1 ? '<label class="melabel">Dato</label>' + dataSelect("r0a", r0.a, null, flt) : '<div class="k">' + esc(dLabel(r0.a)) + '</div>')
+        + '<div class="brule"><span class="k">da</span>' + num("r0b", r0.b, K) + '<span class="k">a</span>' + num("r1b", (p.rules[1] || {}).b, K) + '</div>'
+        + '<div class="k">' + (k === "quota" ? "Passa se la quota è fra questi due valori." : k === "ore" ? "Passa se mancano fra queste ore al via." : "Passa se il minuto è fra questi due (compresi).") + '</div>';
+    } else if (k === "conf") {
+      var KA = dKind(r0.a);
+      h += '<div class="brule">' + dataSelect("r0a", r0.a, null, flt) + opSelect("r0op", r0.op) + dataSelect("r0b", r0.b, null, function (x) { return x[0] !== r0.a && kCompat(KA, dKind(x[0])); }) + '</div>'
+        + '<div class="k">Confronta due dati dello stesso tipo (es. tiri in porta di casa e fuori).</div>';
+    } else {
+      var K2 = dKind(r0.a);
+      h += '<div class="brule">' + dataSelect("r0a", r0.a, null, flt) + opSelect("r0op", r0.op, K2 === "flag" ? "flag" : null) + valField("r0b", "n", r0.b, null, K2 === "flag" ? "flag" : null).replace(/<select class="meinput bvt"[\s\S]*?<\/select>/, "") + '</div>';
+    }
+    return h + '<label class="bchk"><input type="checkbox" data-bf="no"' + (p.no ? " checked" : "") + '> Uscita "no" per le partite che non passano</label>';
+  }
   function editorHtml(n) {
-    var p = n.p, h = '<div class="card binsp"><div class="bih"><span class="rnic sm" style="--nc:' + NT[n.t][0] + '">' + ic(NT[n.t][1]) + '</span><b>' + NT_NAME[n.t] + '</b>'
+    var p = n.p, h = '<div class="card binsp"><div class="bih"><span class="rnic sm" style="--nc:' + NT[n.t][0] + '">' + ic(NT[n.t][1]) + '</span><b>' + ntName(n) + '</b>'
       + (bldRO ? "" : '<button class="chip" type="button" data-bdel="' + n.id + '">' + ic("trash") + ' Elimina</button>') + '</div>';
     if (bldRO) return h + '<div class="k">' + esc(nodeLabel(n)) + '</div></div>';
     if (n.t !== "nota") h += '<input class="meinput" data-bf="name" maxlength="40" placeholder="Nome del nodo (facoltativo)" value="' + esc(n.name || "") + '">';
     if (n.t === "src") h += '<label class="melabel">Solo i campionati che contengono</label><input class="meinput" data-bf="comp" maxlength="40" placeholder="es. Serie A (vuoto = tutti)" value="' + esc(p.comp || "") + '">'
       + (bld.sport === "tennis" ? '<label class="melabel">Superficie</label><select class="meinput" data-bf="surf">' + SURF.map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === (p.surf || "") ? " selected" : "") + '>' + esc(x[1]) + '</option>'; }).join("") + '</select><div class="k">Stimata dal nome del torneo: i tornei sconosciuti restano fuori quando scegli una superficie.</div>' : "");
-    if (n.t === "se") {
+    if (n.t === "se" && p.kind) h += kindEditor(n);
+    else if (n.t === "se") {
       h += '<div class="k">Passa la partita quando ' + '<select class="meinput inl" data-bf="any"><option value="0"' + (!p.any ? " selected" : "") + '>tutte le regole</option><option value="1"' + (p.any ? " selected" : "") + '>almeno una regola</option></select> sono vere.</div>'
-        + (p.rules || []).map(function (r, i) { return '<div class="brule">' + dataSelect("r" + i + "a", r.a) + opSelect("r" + i + "op", r.op) + valField("r" + i + "b", r.bt, r.b) + '<button class="iconbtn sm" type="button" data-brdel="' + i + '" aria-label="Togli">' + ic("x") + '</button></div>'; }).join("")
+        + (p.rules || []).map(function (r, i) { var K = dKind(r.a); return '<div class="brule">' + dataSelect("r" + i + "a", r.a) + opSelect("r" + i + "op", r.op, K === "flag" ? "flag" : null) + valField("r" + i + "b", r.bt, r.b, null, K) + '<button class="iconbtn sm" type="button" data-brdel="' + i + '" aria-label="Togli">' + ic("x") + '</button></div>'; }).join("")
         + '<button class="chip" type="button" data-bradd="1">+ Regola</button>'
         + '<label class="bchk"><input type="checkbox" data-bf="no"' + (p.no ? " checked" : "") + '> Uscita "no" per le partite che non passano</label>';
     }
@@ -7514,10 +7672,13 @@
       var wf = box.querySelector(".bwrap"), fx = wf ? wf.scrollLeft : 0, fy = wf ? wf.scrollTop : 0;
       box.innerHTML = '<div class="bfull"><div class="bftop"><button class="chip on" type="button" data-bfull="0">' + ic("x") + ' Esci</button>'
         + '<button class="iconbtn sm" type="button" data-bz="-" aria-label="Rimpicciolisci">' + ic("minus") + '</button><span class="k bfz">' + Math.round(bldZoom * 100) + '%</span><button class="iconbtn sm" type="button" data-bz="+" aria-label="Ingrandisci">+</button><button class="chip" type="button" data-bz="fit">Adatta</button>'
-        + (bldRO ? "" : bldPal().map(function (t) { return '<button class="bpb" type="button" data-badd="' + t + '" style="--nc:' + NT[t][0] + '"><span class="rnic sm">' + ic(NT[t][1]) + '</span>' + NT_NAME[t] + '</button>'; }).join(""))
+        + (bldRO ? "" : palHtml())
         + '</div><div class="bwrap">' + bldCanvasHtml(R.stat) + '</div>'
         + (bldWire ? '<div class="bfhint">' + ic("bolt") + ' Tocca l\'ingresso (a sinistra) del nodo da collegare</div>' : "")
-        + (sel ? '<div class="bfpanel">' + editorHtml(sel) + '</div>' : "") + '</div>';
+        + (sel ? (bldPanel === "min"
+            ? '<button class="bfmini" type="button" data-bpanel="norm" aria-label="Apri le impostazioni del blocco"><span class="rnic sm" style="--nc:' + NT[sel.t][0] + '">' + ic(NT[sel.t][1]) + '</span>' + esc(ntName(sel)) + '</button>'
+            : '<div class="bfpanel' + (bldPanel === "big" ? " big" : "") + '"><div class="bfpctl"><button class="iconbtn sm" type="button" data-bpanel="min" aria-label="Riduci a icona">' + ic("minus") + '</button>'
+              + '<button class="iconbtn sm" type="button" data-bpanel="' + (bldPanel === "big" ? "norm" : "big") + '" aria-label="' + (bldPanel === "big" ? "Riduci" : "Ingrandisci") + '">' + ic("expand") + '</button></div>' + editorHtml(sel) + '</div>') : "") + '</div>';
       wf = box.querySelector(".bwrap"); if (wf) { wf.scrollLeft = fx; wf.scrollTop = fy; }
       return;
     }
@@ -7525,7 +7686,7 @@
         : '<div class="bldhead"><input class="meinput" id="bldname" maxlength="40" placeholder="Nome della strategia" value="' + esc(bld.name) + '">'
           + '<div class="chips"><span class="chip on" aria-pressed="true">' + EMOJI[bld.sport] + ' ' + NAME[bld.sport] + ' · ' + (bld.mode === "live" ? "live" : "pre-partita") + '</span>'
           + '<button class="chip" type="button" data-bvis="1" aria-pressed="' + (bld.vis === "pub") + '">' + ic(bld.vis === "pub" ? "eye" : "lock") + ' ' + (bld.vis === "pub" ? "Pubblica" : "Privata") + '</button></div></div>'
-          + '<div class="bpal">' + bldPal().map(function (t) { return '<button class="bpb" type="button" data-badd="' + t + '" style="--nc:' + NT[t][0] + '"><span class="rnic sm">' + ic(NT[t][1]) + '</span>' + NT_NAME[t] + '</button>'; }).join("") + '</div>')
+          + '<div class="bpal">' + palHtml() + '</div>')
       + '<div class="bzbar"><button class="iconbtn sm" type="button" data-bz="-" aria-label="Rimpicciolisci">' + ic("minus") + '</button><span class="k">' + Math.round(bldZoom * 100) + '%</span><button class="iconbtn sm" type="button" data-bz="+" aria-label="Ingrandisci">+</button><button class="chip" type="button" data-bz="fit">Adatta</button><button class="chip" type="button" data-bfull="1">' + ic("expand") + ' Schermo intero</button></div>'
       + '<div class="bwrap">' + bldCanvasHtml(R.stat) + '</div>'
       + (bldRO ? "" : '<div class="k bhint">' + (bldWire ? ic("bolt") + ' Ora tocca l\'ingresso (a sinistra) del nodo da collegare.' : "Trascina i nodi; tocca un nodo per le impostazioni. Per un filo tocca un'uscita (a destra) e poi un ingresso; tocca un filo per toglierlo.") + '</div>');
@@ -7565,7 +7726,20 @@
     return '<button class="card navcard" type="button" data-builder="1" style="margin-top:6px;">' + ic("strategie") + '<span><b>Strategy builder</b><span class="k">'
       + (builds.length ? builds.length + (builds.length === 1 ? " strategia tua" : " strategie tue") + " · " : "") + TPL().length + ' strategie StatSight da copiare</span></span>' + ic("chev") + '</button>';
   }
-  function newNode(t, x, y) {
+  function newNode(t0, x, y) {
+    if (String(t0).indexOf("se:") === 0) {   // blocco specifico = nodo Se gia' impostato
+      var kind = t0.slice(3), sp = bld.sport, live = bld.mode !== "pre", R;
+      if (kind === "min") R = [{ a: "min", op: ">=", bt: "n", b: 60 }, { a: "min", op: "<=", bt: "n", b: 80 }];
+      else if (kind === "ore") R = [{ a: "hr", op: ">=", bt: "n", b: 0 }, { a: "hr", op: "<=", bt: "n", b: 24 }];
+      else if (kind === "quota") { var qa = sp === "tennis" ? (live ? "wf" : "pf") : "pf"; R = [{ a: qa, op: ">=", bt: "n", b: 1.3 }, { a: qa, op: "<=", bt: "n", b: 2 }]; }
+      else if (kind === "ris") R = [sp === "tennis" ? { a: "sn", op: "=", bt: "n", b: 0 } : { a: "gd", op: "=", bt: "n", b: 0 }];
+      else if (kind === "conf") R = [sp === "tennis" ? { a: live ? "v1" : "q1", op: ">", bt: "d", b: live ? "v2" : "q2" } : { a: live ? "th" : "q1", op: ">", bt: "d", b: live ? "ta" : "q2" }];
+      else R = [{ a: (kindData("stat")[0] || ["min"])[0], op: ">=", bt: "n", b: 1 }];
+      var nn = { id: "n" + Date.now().toString(36) + Math.floor(Math.random() * 99), t: "se", x: x, y: y, p: { kind: kind, rules: R } };
+      if (!dataList(bld).some(function (d) { return d[0] === R[0].a; })) R[0].a = (kindData(kind)[0] || dataList(bld)[0] || ["min"])[0];
+      fixNode(nn); return nn;
+    }
+    var t = t0;
     var b = bld, d0 = (dataList(b)[0] || ["min"])[0];
     var p = t === "se" ? { rules: [{ a: d0, op: ">=", bt: "n", b: 0 }] } : t === "dividi" ? { a: d0, cases: [{ op: "<", v: 30 }, { op: "<", v: 60 }] }
       : t === "calc" ? { name: "x", at: "d", a: d0, op: "-", bt: "n", b: 0 } : t === "storico" ? { name: "s" + (b.nodes.length + 1), stat: "Tiri in porta", side: "tot", mode: "ult", n: 15, m: 45, a: 46, b: 70 } : t === "gioca" ? { pick: b.sport === "tennis" ? "FAV" : "FAV", min: 1.5 } : t === "nota" ? { text: "" } : {};
@@ -7586,6 +7760,8 @@
       if (!bld) return;
       if (d.bz) { bldZoom = d.bz === "fit" ? (fitZoom(), bldZoom) : Math.max(0.35, Math.min(2, bldZoom * (d.bz === "+" ? 1.25 : 0.8))); renderBuilder(); return; }
       if (d.bfull) { setBldFull(d.bfull === "1"); return; }
+      if (d.badv) { bldAdv = !bldAdv; renderBuilder(); return; }
+      if (d.bpanel) { bldPanel = d.bpanel; renderBuilder(); return; }
       if (d.bback) { setBldFull(false); bld = null; bldRO = false; renderBuilder(); return; }
       if (d.bcopy) { var c = JSON.parse(JSON.stringify(bld)); c.id = "U" + Date.now(); c.team = false; c.vis = "priv"; c.name = bld.name + " (mia)"; delete c.desc; bld = c; bldRO = false; bldSel = null; renderBuilder(); fxToast("copy", "Copiata", "Ora è tua: cambiala e salvala"); return; }
       if (bldRO) return;
@@ -7639,7 +7815,7 @@
       else if (f === "op") p.op = v;
       else if (f === "sstat" || f === "sside" || f === "smode") p[{ sstat: "stat", sside: "side", smode: "mode" }[f]] = v;
       else if ((m = /^s([nmab])$/.exec(f))) p[m[1]] = Math.max(0, Math.min(120, Math.round(Number(v) || 0)));
-      if (!live) renderBuilder();
+      if (!live) { fixNode(n); renderBuilder(); }
     }
     box.addEventListener("change", function (e) {
       if (!bld) return;
@@ -8090,14 +8266,14 @@
     }).join("");
     var rects = b.nodes.map(function (n) { var o = by[n.id];
       return '<rect x="' + n.x + '" y="' + n.y + '" width="' + o.w + '" height="' + o.h + '" rx="6" fill="' + NT[n.t][0] + '"' + (n.t === "nota" ? ' fill-opacity=".25" stroke="var(--ink-soft)" stroke-dasharray="6 4"' : "") + '/>'
-        + (n.t !== "nota" ? '<text x="' + (n.x + 10) + '" y="' + (n.y + o.h / 2 + 7) + '" font-size="19" font-weight="700" fill="#1d2326">' + esc(NT_NAME[n.t]) + '</text>' : ""); }).join("");
+        + (n.t !== "nota" ? '<text x="' + (n.x + 10) + '" y="' + (n.y + o.h / 2 + 7) + '" font-size="19" font-weight="700" fill="#1d2326">' + esc(ntName(n)) + '</text>' : ""); }).join("");
     return '<svg class="bmini" viewBox="-6 -6 ' + (W + 12) + ' ' + (H + 12) + '" role="img" aria-label="Il flusso: ' + esc(bldBlocks(b)) + '">' + wires + rects + '</svg>';
   }
   function bldFunnel(b, R) {   // quante partite di adesso arrivano a ogni nodo
     var L = b.nodes.filter(function (n) { return n.t !== "nota"; }), top = Math.max(1, R.stat[(L.filter(function (n) { return n.t === "src"; })[0] || {}).id] || 0);
     return '<div class="bfun">' + L.map(function (n) {
       var v = R.stat[n.id] || 0;
-      var lb = nodeLabel(n, b), nm = lb.toLowerCase().indexOf(NT_NAME[n.t].toLowerCase()) === 0 ? "" : NT_NAME[n.t] + " ";
+      var lb = nodeLabel(n, b), nm = lb.toLowerCase().indexOf(ntName(n).toLowerCase()) === 0 ? "" : ntName(n) + " ";
       return '<button class="bfr" type="button" data-bfun="' + esc(b.id) + ':' + esc(n.id) + '"><span class="bfl">' + esc(nm) + '<span class="k">' + esc(lb) + '</span></span><span class="bft"><i style="width:' + (v / top * 100).toFixed(1) + '%;background:' + NT[n.t][0] + '"></i></span><b>' + v + '</b></button>'
         + '<div class="bfdet" id="bfd-' + esc(b.id) + '-' + esc(n.id) + '" hidden></div>';
     }).join("") + '<div class="k" style="margin-top:4px;font-size:.72rem;">Tocca una barra: le partite arrivate a quel blocco e cosa le ha fermate.</div></div>';
@@ -8244,7 +8420,9 @@
           + '<div class="pickrow"><span>' + (x.txt ? 'Avviso: <b>' + esc(x.txt) : 'Indicazione: <b>' + esc(pickName(x.code, e.sport))) + '</b></span>' + (x.odds > 1 ? '<span class="ev">' + Math.round(100 / x.odds) + '%</span>' : "") + '</div>'
           + '<div class="sname">Strategia: <b>' + esc(b.name) + '</b></div>'
           + '<div class="meta">' + (x.txt ? "Senza quota" : "Quota " + oddsTxt(x.odds)) + ' · ' + esc((e.sport === "tennis" ? "" : (estMinute(e) || "LIVE") + " · ") + (scoreTxt(e) || "")) + '</div>'
-          + '<span class="badge info">LA TUA STRATEGIA</span></div>' });
+          + '<span class="badge info">LA TUA STRATEGIA</span>'
+          + '<div class="sigbtns">' + tgBtn(tgText(e.sport, e.comp, e.home + " - " + e.away, x.txt ? x.txt : pickName(x.code, e.sport), x.odds, b.name))
+          + (x.code && x.odds > 1 && playable(e) ? '<button class="playbtn" type="button" data-play="b' + esc(b.id) + '|' + e.id + '|' + esc(x.code) + '">' + ic("coin") + ' Gioca</button>' : "") + '</div></div>' });
       });
     });
     return out;
