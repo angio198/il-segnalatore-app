@@ -3,6 +3,22 @@
 // in tutti e due i file (prova: node app/prova_spagnolo.js controlla che le chiavi siano le stesse).
 // In spagnolo i decimali restano con la virgola ("1,81").
 window.I18N_ES = {
+  // 10/10: Strategie, Radar, Match, ippica, minigiochi
+  "Le mie": "Las mías",
+  "Catalogo": "Catálogo",
+  "Marketplace": "Marketplace",
+  "Strategie al lavoro": "Estrategias trabajando",
+  "# accese": "# activas",
+  "controlla": "revisa",
+  "scattata": "activada",
+  "Nostra": "Nuestra",
+  "Tua": "Tuya",
+  "Crea o modifica una strategia": "Crea o edita una estrategia",
+  "In partenza": "A punto de salir",
+  "Programmate": "Programadas",
+  "Cavalli in partenza delle nostre strategie": "Caballos de nuestras estrategias a punto de salir",
+  "Tutto il programma delle corse": "Todo el programa de carreras",
+  "Classifica generale": "Clasificación general",
   "Dei creator": "De los creadores",
   "Diventa creator": "Hazte creador",
   "Rendi pubblica la tua strategia: con l'app pubblica gli altri la provano, la seguono e la possono comprare. A ogni vendita una parte va a te.": "Haz pública tu estrategia: con la app pública los demás la prueban, la siguen y la pueden comprar. Parte de cada venta es para ti.",
