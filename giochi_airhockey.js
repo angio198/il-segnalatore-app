@@ -32,10 +32,10 @@
     var win = st.me > st.cpu;
     st.phase = "end"; st.celebrate = { win: win, t0: performance.now() / 1000 };
     if (window.SFX) SFX.play(win ? "vittoria" : "sconfitta");
-    var nuovi = UI.onEnd("airhockey", win);
+    var nuovi = UI.onEnd("airhockey", win, st.me, st.cpu);
     $("hover").innerHTML = '<div style="margin-top:auto"></div><b>' + (win ? "Hai vinto " : "Hai perso ") + st.me + "-" + st.cpu + '</b>'
-      + (nuovi.length ? '<div class="k">' + nuovi.join(" · ") + '</div>' : "") + '<button class="primary" type="button" id="hagain">Rivincita</button>';
-    $("hover").style.justifyContent = "flex-end"; $("hover").style.background = "linear-gradient(transparent 55%, rgba(8,14,18,.85))"; $("hover").hidden = false;
+      + (UI.endCard ? UI.endCard("airhockey", nuovi) : "") + '<button class="primary" type="button" id="hagain">Rivincita</button>';
+    $("hover").style.justifyContent = "flex-end"; $("hover").style.background = "linear-gradient(rgba(8,14,18,.35), rgba(8,14,18,.9))"; $("hover").hidden = false;
     $("hagain").onclick = newGame;
   }
   // ------------------------------------------------------------------ comandi
