@@ -63,10 +63,10 @@
     var win = st.me > st.cpu;
     st.phase = "end"; st.celebrate = { win: win, t0: performance.now() / 1000 };
     if (window.SFX) SFX.play(win ? "vittoria" : "sconfitta");
-    var nuovi = UI.onEnd("baseball", win);
+    var nuovi = UI.onEnd("baseball", win, st.me, st.cpu);
     $("yover").innerHTML = '<div style="margin-top:auto"></div><b>' + (win ? "Hai vinto " : "Hai perso ") + st.me + "-" + st.cpu + '</b>'
-      + (nuovi.length ? '<div class="k">' + nuovi.join(" · ") + '</div>' : "") + '<button class="primary" type="button" id="yagain">Rivincita</button>';
-    $("yover").style.justifyContent = "flex-end"; $("yover").style.background = "linear-gradient(transparent 55%, rgba(8,14,18,.85))"; $("yover").hidden = false;
+      + (UI.endCard ? UI.endCard("baseball", nuovi) : "") + '<button class="primary" type="button" id="yagain">Rivincita</button>';
+    $("yover").style.justifyContent = "flex-end"; $("yover").style.background = "linear-gradient(rgba(8,14,18,.35), rgba(8,14,18,.9))"; $("yover").hidden = false;
     $("yagain").onclick = newGame;
   }
   function startSwing(now) { st.swing = { t0: now }; if (window.SFX) SFX.play("swing"); }
