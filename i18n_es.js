@@ -3,6 +3,14 @@
 // in tutti e due i file (prova: node app/prova_spagnolo.js controlla che le chiavi siano le stesse).
 // In spagnolo i decimali restano con la virgola ("1,81").
 window.I18N_ES = {
+  "Telegram: automatico": "Telegram: automático",
+  "Manda su Telegram": "Enviar por Telegram",
+  "Telegram automatico": "Telegram automático",
+  "Telegram manuale": "Telegram manual",
+  "Gioco automatico": "Juego automático",
+  "Gioco manuale": "Juego manual",
+  "Scegli tu: tasto Telegram sul segnale": "Eliges tú: botón Telegram en la señal",
+  "Scegli tu: tasto Gioca sul segnale": "Eliges tú: botón Jugar en la señal",
   // 10/10: Strategie, Radar, Match, ippica, minigiochi
   "Le mie": "Las mías",
   "Catalogo": "Catálogo",
