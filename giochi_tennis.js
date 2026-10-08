@@ -64,10 +64,10 @@
     var win = st.games[0] > st.games[1];
     st.phase = "end"; st.celebrate = { win: win, t0: performance.now() / 1000 };
     if (window.SFX) SFX.play(win ? "vittoria" : "sconfitta");
-    var nuovi = UI.onEnd("tennis", win);
+    var nuovi = UI.onEnd("tennis", win, st.games[0], st.games[1]);
     $("tover").innerHTML = '<div style="margin-top:auto"></div><b>' + (win ? "Hai vinto " : "Hai perso ") + st.games[0] + "-" + st.games[1] + '</b>'
-      + (nuovi.length ? '<div class="k">' + nuovi.join(" · ") + '</div>' : "") + '<button class="primary" type="button" id="tagain">Rivincita</button>';
-    $("tover").style.justifyContent = "flex-end"; $("tover").style.background = "linear-gradient(transparent 55%, rgba(8,14,18,.85))"; $("tover").hidden = false;
+      + (UI.endCard ? UI.endCard("tennis", nuovi) : "") + '<button class="primary" type="button" id="tagain">Rivincita</button>';
+    $("tover").style.justifyContent = "flex-end"; $("tover").style.background = "linear-gradient(rgba(8,14,18,.35), rgba(8,14,18,.9))"; $("tover").hidden = false;
     $("tagain").onclick = newGame;
   }
   // ------------------------------------------------------------------ battuta
