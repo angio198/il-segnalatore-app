@@ -4558,7 +4558,8 @@
   window.SS = {
     level: function () { return data ? rewardState(pronostici()).level : 1; },
     coins: function () { return data ? rewardState(pronostici()).coins : 0; },
-    setPic: function (u, auto) { if (auto && me.picShot) return; me.pic = u; me.picOm = true; if (!auto) me.picShot = true; if (meEdit) meEdit.pic = u; saveMe(); if (data && !auto) renderAll(); },
+    // auto === "rifai": la foto dell'omino si rifa' (omino cambiato, livello nuovo) senza ridisegnare tutta l'app
+    setPic: function (u, auto) { if (auto === "rifai") { me.pic = u; me.picOm = true; if (meEdit) meEdit.pic = u; saveMe(); return; } if (auto && me.picShot) return; me.pic = u; me.picOm = true; if (!auto) me.picShot = true; if (meEdit) meEdit.pic = u; saveMe(); if (data && !auto) renderAll(); },
     toast: function (t, s2) { fxToast("coin", t, s2); },
     refresh: function () { if (data) renderProfilo(); },
     show: function (v) { show(v); }
