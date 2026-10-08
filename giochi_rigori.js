@@ -89,10 +89,10 @@
     var win = sum(st.me) > sum(st.cpu);
     st.phase = "end"; st.celebrate = { win: win, t0: performance.now() / 1000 };
     if (window.SFX) SFX.play(win ? "vittoria" : "sconfitta");
-    var nuovi = UI.onEnd("rigori", win);
+    var nuovi = UI.onEnd("rigori", win, sum(st.me), sum(st.cpu));
     $("rover").innerHTML = '<div style="margin-top:auto"></div><b>' + (win ? "Hai vinto " : "Hai perso ") + sum(st.me) + "-" + sum(st.cpu) + '</b>'
-      + (nuovi.length ? '<div class="k">' + nuovi.join(" · ") + '</div>' : "") + '<button class="primary" type="button" id="ragain">Rivincita</button>';
-    $("rover").style.justifyContent = "flex-end"; $("rover").style.background = "linear-gradient(transparent 55%, rgba(8,14,18,.85))"; $("rover").hidden = false;
+      + (UI.endCard ? UI.endCard("rigori", nuovi) : "") + '<button class="primary" type="button" id="ragain">Rivincita</button>';
+    $("rover").style.justifyContent = "flex-end"; $("rover").style.background = "linear-gradient(rgba(8,14,18,.35), rgba(8,14,18,.9))"; $("rover").hidden = false;
     $("ragain").onclick = newGame;
   }
 
