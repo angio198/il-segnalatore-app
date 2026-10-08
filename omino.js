@@ -51,7 +51,7 @@
   function renderEditor() {
     var box = $("omino"); if (!box) return;
     var lv = SS().level(), coins = SS().coins();
-    var h = '<div class="omtop"><span class="omcoins"><svg class="ico"><use href="#i-coin"/></svg><b>' + coins + '</b> monete</span><span class="k">livello ' + lv + '</span></div>'
+    var h = '<div class="omtop"><span class="omcoins"><svg class="ico"><use href="#i-coin"/></svg><b>' + coins + '</b> monete</span><span class="k">livello ' + lv + '</span><button class="chip" type="button" data-omrandom>Casuale</button></div>'
       + '<div class="card omstage"><canvas id="omprev"></canvas><div class="omrow"><input class="meinput" id="omnome" maxlength="12" placeholder="Nome sulla maglia" value="' + esc(G.av.nome || "") + '"><input class="meinput" id="omnum" type="number" min="0" max="99" inputmode="numeric" value="' + esc(String(G.av.num != null ? G.av.num : "")) + '"></div></div>'
       + '<div class="omcats">' + EDCATS.map(function (x) { return '<button type="button" data-omtab="' + x[0] + '" aria-pressed="' + (x[0] === edCat) + '">' + x[1] + '</button>'; }).join("") + '</div><div class="card">';
     if (edCat === "corpo") h += ["testa", "occhi", "naso", "bocca"].map(function (k) { return itemsHtml(k); }).join("") + swatches("pelle", G.PELLE, "Pelle");
@@ -87,10 +87,24 @@
   // l'omino e' cambiato: la foto del profilo si rifa' da sola (se non ne hai scattata una tu)
   var picT = null;
   function changed() { clearTimeout(picT); picT = setTimeout(function () { if (SS().setPic) SS().setPic(autoPic(), true); }, 400); }
+  // omino a caso (10/10, per chi non vuole configurarlo): solo pezzi gia' aperti, colori a caso, maglia a due colori
+  function casuale() {
+    var pick = function (cat) { var ok = G.CAT[cat].filter(function (it) { return G.unlocked(cat, it[0]); }); return (ok.length ? G.pick(ok) : G.CAT[cat][0])[0]; };
+    ["sesso", "statura", "fisico", "testa", "occhi", "naso", "bocca", "capelli", "barba", "maglia", "scarpe", "cappello"].forEach(function (k) { G.av[k] = pick(k); });
+    if (G.av.sesso === "donna" && Math.random() < 0.85) G.av.barba = "no";
+    if (Math.random() < 0.5) G.av.cappello = "no";
+    var n = function (list) { return Math.floor(Math.random() * list.length); };
+    G.av.pelle = n(G.PELLE); G.av.capCol = Math.random() < 0.8 ? n(G.CAPELLI_COL.slice(0, 6)) : n(G.CAPELLI_COL);
+    G.av.c1 = n(G.COLORI); do { G.av.c2 = n(G.COLORI); } while (G.av.c2 === G.av.c1);
+    G.av.pant = n(G.COLORI); G.av.calze = n(G.COLORI); G.av.scCol = n(G.COLORI); G.av.hatCol = n(G.COLORI);
+    G.av.num = Math.floor(Math.random() * 99) + 1;
+    G.saveAv(); changed(); renderEditor();
+  }
   function itemOf(cat, id) { return G.CAT[cat].filter(function (x) { return x[0] === id; })[0]; }
   function onClick(e) {
     var t = e.target.closest("button"); if (!t) return; var d = t.dataset;
     if (d.omtab) { edCat = d.omtab; renderEditor(); return; }
+    if (d.omrandom != null) { casuale(); return; }
     if (d.omsw) { G.av[d.omsw] = Number(d.i); G.saveAv(); changed(); renderEditor(); return; }
     if (d.omval) {
       var it = itemOf(d.omcat, d.omval);
@@ -158,11 +172,12 @@
 
   // ------------------------------------------------------------------ minigiochi
   var game = null;
-  function mod(which) { return { rigori: window.Rigori, tennis: window.Tennis, basket: window.Basket }[which]; }
+  var GIOCHI = { rigori: ["Rigori", "Sfida ai rigori"], tennis: ["Tennis", "Sfida a tennis"], basket: ["Basket", "Sfida a canestro"], baseball: ["Baseball", "Sfida a baseball"], football: ["Football", "Sfida di football americano"], airhockey: ["Airhockey", "Air hockey"] };
+  function mod(which) { return window[GIOCHI[which][0]]; }
   function openGame(which) {
     game = which;
-    $("t-rigori").hidden = which !== "rigori"; $("t-tennis").hidden = which !== "tennis"; $("t-basket").hidden = which !== "basket";
-    $("giocotitle").textContent = { rigori: "Sfida ai rigori", tennis: "Sfida a tennis", basket: "Sfida a canestro" }[which];
+    Object.keys(GIOCHI).forEach(function (k) { $("t-" + k).hidden = k !== which; });
+    $("giocotitle").textContent = GIOCHI[which][1];
     SS().show("gioco"); window.scrollTo(0, 0);
     setTimeout(function () { var M = mod(which); M.resize(); M.show(); }, 30);
   }
