@@ -1028,6 +1028,7 @@
   .bfpanel{position:absolute;left:8px;right:8px;bottom:8px;max-height:52%;overflow:auto;z-index:2;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.45);}
   .bfpanel .binsp{margin:0;} .bfpanel.big{max-height:88%;top:52px;} .bfpctl{position:sticky;top:0;display:flex;justify-content:flex-end;gap:6px;padding:6px 6px 0;z-index:3;}
   .bfmini{position:absolute;right:12px;bottom:12px;z-index:2;display:flex;align-items:center;gap:8px;padding:8px 14px 8px 8px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.45);cursor:pointer;}
+  .qbar{display:flex;gap:8px;margin:6px 0 8px;} .qbar .qbox{flex:1;min-width:0;} .qbar .qsort{width:auto;max-width:46%;}
   .bpb.more{opacity:.85;border-style:dashed;}
   @media (orientation:landscape){ .bfpanel{left:auto;width:340px;top:58px;bottom:8px;max-height:none;} }
   body.bldfull{overflow:hidden;} body.bldfull .tabbar{display:none;}
@@ -1076,9 +1077,10 @@
   .rtop{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:8px;}
   .rmin{color:var(--bad);font-weight:800;font-size:0.82rem;font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:5px;}
   /* in corso (10/10): niente scritta LIVE, un pallino che pulsa e il bordo della scheda che "respira" */
-  .lvdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#E5322D;box-shadow:0 0 0 0 rgba(229,50,45,.6);animation:lvping 1.4s ease-out infinite;flex:none;}
+  .lvdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#E5322D;animation:lvblink 1.1s steps(1,end) infinite;flex:none;}
+  @keyframes lvblink{50%{opacity:.15;}} .lvtag{display:inline-flex;align-items:center;gap:4px;font-size:0.62rem;font-weight:900;letter-spacing:.06em;color:#E5322D;margin-right:6px;}
   @keyframes lvping{0%{box-shadow:0 0 0 0 rgba(229,50,45,.6);}80%{box-shadow:0 0 0 7px rgba(229,50,45,0);}100%{box-shadow:0 0 0 0 rgba(229,50,45,0);}}
-  .lglive{display:flex;flex-direction:column;gap:8px;padding:8px;} .lvwrap .rodds{display:none;} .lvodds{display:flex;gap:6px;margin-top:6px;} .lvodds > *{flex:1;} .lglive .rcard{position:relative;animation:lvbreath 3.2s ease-in-out infinite;}
+  .lglive{display:flex;flex-direction:column;gap:8px;padding:8px;} .lvwrap .rodds{display:none;} .lvodds{display:flex;gap:6px;margin-top:6px;} .lvodds > *{flex:1;} .lglive .rcard{position:relative;}
   @keyframes lvbreath{50%{box-shadow:0 0 0 1px color-mix(in srgb, #E5322D 35%, transparent),0 0 14px -4px rgba(229,50,45,.45);}}
   @media (prefers-reduced-motion: reduce){ .lvdot,.lglive .rcard{animation:none;} }
   .rteams{display:flex;flex-direction:column;font-weight:700;font-size:0.92rem;min-width:0;} .rteams span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -1089,6 +1091,7 @@
   .rwbar{display:block;height:4px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:4px;} .rwbar i{display:block;height:100%;background:var(--c);transition:width .6s;}
   .rwchip{font-size:0.64rem;font-weight:800;letter-spacing:.03em;padding:3px 7px;border-radius:999px;background:color-mix(in srgb, var(--c) 25%, transparent);color:var(--ink);white-space:nowrap;}
   .rwrow.near3{animation:rwglow 2.4s ease-in-out infinite;} .rwrow.near2{animation:rwglow 1.5s ease-in-out infinite;} .rwrow.near1{animation:rwglow .8s ease-in-out infinite;}
+  .rwsig{display:inline-flex;align-items:center;gap:2px;font-size:0.66rem;font-weight:800;color:#3FB97A;} .rwsig .ico{width:12px;height:12px;}
   .rwrow.full{border-color:var(--c);background:linear-gradient(90deg,color-mix(in srgb, var(--c) 40%, var(--surface)),color-mix(in srgb, var(--c) 12%, var(--surface)));box-shadow:0 0 22px -2px var(--c);}
   .rwrow.full .rwchip{background:var(--c);color:#111;}
   @keyframes rwglow{50%{box-shadow:0 0 26px 0 var(--c);border-color:var(--c);}}
@@ -1131,7 +1134,13 @@
   .hbt{display:flex;align-items:center;gap:6px;} .hbp{margin-left:auto;font-weight:900;font-size:1.1rem;color:var(--accent-strong);} .hbnote{font-size:0.72rem;}
   #segview{margin-bottom:10px;}
   .tglink{display:inline-flex;align-items:center;gap:6px;margin-top:10px;margin-left:8px;font-size:0.8rem;font-weight:800;color:#fff;background:#2AABEE;border-radius:999px;padding:5px 12px;text-decoration:none;}
-  .tglink .ico{width:14px;height:14px;}
+  .feedcard.played{border-color:#3FB97A;box-shadow:0 0 0 1px #3FB97A inset;position:relative;} .playedtag{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#fff;background:#2E9E5B;border-radius:999px;padding:3px 9px;} .playedtag .ico{width:12px;height:12px;}
+  .sigpop{position:fixed;left:50%;top:84px;z-index:60;width:min(92vw,420px);transform:translate(-50%,-20px) scale(.96);transform-origin:top left;opacity:0;transition:transform .35s cubic-bezier(.2,1.3,.4,1),opacity .3s;
+    background:linear-gradient(135deg,#1E3A2A,#123022);border:2px solid #3FB97A;border-radius:16px;padding:12px 14px;box-shadow:0 18px 40px rgba(0,0,0,.55),0 0 30px -4px #3FB97A;color:#fff;}
+  .sigpop.on{transform:translate(-50%,0) scale(1);opacity:1;} .sigpop .sph{display:flex;align-items:center;gap:6px;font-weight:900;color:#7CF2A9;letter-spacing:.02em;text-transform:uppercase;font-size:0.8rem;} .sigpop .sph .ico{width:16px;height:16px;}
+  .sigpop .spe{font-weight:800;font-size:1.02rem;margin-top:6px;} .sigpop .spp{margin-top:2px;} .sigpop .spw{margin-top:6px;font-size:0.78rem;opacity:.85;}
+  .feedcard.justin{animation:justin 1.6s ease-out;} @keyframes justin{0%{box-shadow:0 0 0 3px #3FB97A,0 0 24px #3FB97A;}100%{box-shadow:none;}}
+  .tglink .ico{width:14px;height:14px;} .apin{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:0.8rem;} .apin .meinput{width:84px;padding:6px 8px;}
   /* segnali: strategia, Gioca, scheda con le monete (video utente 07/10) */
   .sname{font-size:0.82rem;color:var(--ink-soft);margin-top:4px;}
   .sname b{color:var(--ink);font-weight:700;}
@@ -2070,8 +2079,15 @@
       + (tgOpen ? '<div class="tgdrop" role="radiogroup" aria-label="Formato del messaggio">' + ["testo", "json"].map(function (k) {
           return '<button class="tgopt" type="button" role="radio" data-tgfmt="' + k + '" aria-checked="' + (t.fmt === k) + '"><i class="tgdot"></i><span><b>' + TG_FMT[k][0] + '</b><span class="k">' + TG_FMT[k][1] + '</span><pre>' + esc(TG_FMT[k][2]) + '</pre></span></button>';
         }).join("") + '<div class="k">Si apre Telegram per confermare la scelta al bot. Le notifiche arrivano agli abbonati; quelle delle strategie fatte nel builder arriveranno col server.</div></div>' : "")
-      + '<div class="tgrow"><span class="tgic">' + ic("coin") + '</span><span class="tgt"><b>Gioco ' + (a.on ? "automatico" : "manuale") + '</b><span class="k">' + (a.on ? "I segnali nuovi si giocano da soli: " + (a.stake || STAKE_DEFAULT) + " monete l'uno, al massimo " + AP_MAX + " al giorno (oggi " + (a.day === dayKey(nowS()) ? a.n : 0) + ")" : "Scegli tu: tasto Gioca sul segnale") + '</span></span>'
-      + '<span class="switch"><input type="checkbox" role="switch" id="apsw"' + (a.on ? " checked" : "") + ' aria-label="Gioco automatico con le monete"><span class="slider"></span></span></div>';
+      + '<div class="tgrow"><span class="tgic">' + ic("coin") + '</span><span class="tgt"><b>Gioco ' + (a.on ? "automatico" : "manuale") + '</b><span class="k">' + (a.on ? (AP_MODES[a.mode] || AP_MODES.fisso)[0] + (a.mode === "fisso" ? " · " + a.val + " monete" : a.mode === "pct" ? " · " + a.pctv + "%" : "") + " · max " + (a.max || AP_MAX) + " al giorno (oggi " + (a.day === dayKey(nowS()) ? a.n : 0) + ")" : "Scegli tu: tasto Gioca sul segnale") + '</span></span>'
+      + '<span class="switch"><input type="checkbox" role="switch" id="apsw"' + (a.on ? " checked" : "") + ' aria-label="Gioco automatico con le monete"><span class="slider"></span></span>'
+      + '<button class="iconbtn sm tgmenu" type="button" data-apmenu="1" aria-expanded="' + apOpen + '" aria-label="Quanto puntare">' + ic("down") + '</button></div>'
+      + (apOpen ? '<div class="tgdrop" role="radiogroup" aria-label="Quanto puntare">' + Object.keys(AP_MODES).map(function (k) {
+          var inp = k === "fisso" ? '<span class="apin"><input class="meinput" type="number" min="' + STAKE_MIN + '" step="1" inputmode="numeric" data-apval="val" value="' + a.val + '"> monete</span>'
+            : k === "pct" ? '<span class="apin"><input class="meinput" type="number" min="0.5" max="25" step="0.5" inputmode="decimal" data-apval="pctv" value="' + a.pctv + '"> % del saldo</span>' : "";
+          return '<div class="tgopt" role="radio" aria-checked="' + (a.mode === k) + '" data-apmode="' + k + '" tabindex="0"><i class="tgdot"></i><span><b>' + AP_MODES[k][0] + '</b><span class="k">' + AP_MODES[k][1] + '</span>' + inp + '</span></div>';
+        }).join("") + '<div class="tgopt"><span><b>Al massimo al giorno</b><span class="apin"><input class="meinput" type="number" min="1" max="50" step="1" inputmode="numeric" data-apval="max" value="' + (a.max || AP_MAX) + '"> segnali</span></span></div>'
+        + '<div class="k">Kelly guarda il rendimento storico della strategia (almeno 30 casi): se non c\'è vantaggio quel segnale non si gioca. Le monete si guadagnano soltanto.</div></div>' : "");
   }
   // 10/10: con le notifiche automatiche spente sei in MANUALE: su ogni segnale il tasto Telegram lo manda dove
   // scegli tu (anche ai Messaggi salvati), col link di condivisione di Telegram, senza server.
@@ -2083,8 +2099,38 @@
   function tgText(sport, comp, ev, pick, odds, sname) { return (EMOJI[sport] || "") + " " + (comp || NAME[sport] || "") + "\n" + ev + "\nIndicazione: " + pick + (odds > 1 ? " @ " + oddsTxt(odds) : "") + (sname ? "\nStrategia: " + sname : "") + "\n(StatSight, gioco a punti)"; }
   // gioco automatico (10/10): i segnali nuovi si giocano da soli con le monete (gratis, guadagnate), al massimo
   // AP_MAX al giorno; si spegne quando vuoi. Solo i segnali arrivati DOPO l'accensione.
-  var AP_KEY = "statsight.autoplay", AP_MAX = 10;
-  function apState() { try { var x = JSON.parse(localStorage.getItem(AP_KEY)); if (x && typeof x.on === "boolean") return x; } catch (e) {} return { on: false, stake: STAKE_DEFAULT, since: 0, day: "", n: 0 }; }
+  var AP_KEY = "statsight.autoplay", AP_MAX = 10, apOpen = false;
+  // 10/10: come puntare lo sceglie l'utente (menu sotto la freccetta): numero fisso, percentuale del saldo, Kelly
+  // 1/4 o 1/2 (quanto dice Kelly sul vantaggio storico della strategia: senza vantaggio non gioca), massimo al giorno.
+  var AP_MODES = { fisso: ["Numero fisso", "Sempre le stesse monete a segnale"], pct: ["Percentuale del saldo", "Una parte fissa delle monete che hai"],
+                   kelly4: ["Kelly 1/4", "Un quarto della puntata di Kelly, sul vantaggio storico della strategia"], kelly2: ["Kelly 1/2", "Metà della puntata di Kelly: più aggressivo"] };
+  function apState() {
+    var d = { on: false, mode: "fisso", val: STAKE_DEFAULT, pctv: 2, max: AP_MAX, since: 0, day: "", n: 0 };
+    try { var x = JSON.parse(localStorage.getItem(AP_KEY)); if (x && typeof x.on === "boolean") { if (x.stake && !x.val) x.val = x.stake; return Object.assign(d, x); } } catch (e) {} return d;
+  }
+  function roiNum(id) {   // vantaggio storico della strategia (frazione), solo con almeno 30 casi
+    var s0 = (data.catalog || []).filter(function (c) { return c.id === id; })[0];
+    if (s0) { var st = s0.detail && s0.detail.stats; return st && st.n >= 30 && st.roi != null ? st.roi : null; }
+    var out = null;
+    ["calcio", "tennis", "hockey", "basket"].forEach(function (sp) { var c = catOf(sp); if (out != null || !c || !c.strategies) return; c.strategies.forEach(function (x) { if (x.id === id) { var cell = x.grid[catKey(x)]; if (cell && cell[0] >= 30 && cell[3] != null) out = cell[3]; } }); });
+    return out;
+  }
+  function keyRoi(key) {
+    if (key[0] === "i") { var f = data.feed[Number(key.slice(1))]; return f ? roiNum(f.main || f.strategy) : null; }
+    if (key[0] === "c") return roiNum(key.slice(1).split("|")[0]);
+    if (key[0] === "b") { var S = bldStats(key.slice(1).split("|")[0]); return S.s >= 30 ? S.pts / S.s : null; }
+    return null;
+  }
+  function apStake(a, key, odds, coins) {
+    if (a.mode === "pct") return Math.round(coins * (a.pctv || 2) / 100);
+    if (a.mode === "kelly4" || a.mode === "kelly2") {
+      var roi = keyRoi(key); if (roi == null || !(odds > 1)) return 0;
+      var p = Math.min(0.97, (1 + roi) / odds), f = (p * odds - 1) / (odds - 1);   // Kelly: (p·quota − 1) / (quota − 1)
+      if (f <= 0) return 0;
+      return Math.round(coins * Math.min(0.25, f * (a.mode === "kelly4" ? 0.25 : 0.5)));
+    }
+    return Math.round(a.val || STAKE_DEFAULT);
+  }
   function apSave(a) { try { localStorage.setItem(AP_KEY, JSON.stringify(a)); } catch (e) {} }
   function apKeys(since) {
     var out = [];
@@ -2099,10 +2145,12 @@
     var today = dayKey(nowS()); if (a.day !== today) { a.day = today; a.n = 0; }
     var done = 0, saved = slip;
     apKeys(a.since).forEach(function (key) {
-      if (a.n >= AP_MAX) return;
+      if (a.n >= (a.max || AP_MAX)) return;
       var pk = playedKeyOf(key); if (!pk || played[pk]) return;
       var P0 = playOf(key); if (!P0) return;
-      slip = { legs: [legOf(P0.e, P0.code)], mode: "singole", k: 2, stake: a.stake || STAKE_DEFAULT };
+      var leg0 = legOf(P0.e, P0.code), stk0 = apStake(a, key, leg0.odds, rewardState(pronostici()).coins);
+      if (stk0 < STAKE_MIN) return;   // Kelly senza vantaggio, o saldo troppo basso: non gioca
+      slip = { legs: [leg0], mode: "singole", k: 2, stake: stk0 };
       if (slipErrs().length) { slip = saved; return; }
       commitSlip(null); played[pk] = { slip: mySlips[mySlips.length - 1].id, ts: nowS(), auto: 1 }; a.n++; done++;
       slip = saved;
@@ -2119,12 +2167,43 @@
   }
   $("tgbar").addEventListener("change", function (e) {
     if (e.target.id === "tgsw") setTg(e.target.checked, tgState().fmt);
+    if (e.target.dataset && e.target.dataset.apval) { var a2 = apState(), v2 = Number(String(e.target.value).replace(",", ".")); if (v2 > 0) { a2[e.target.dataset.apval] = e.target.dataset.apval === "pctv" ? Math.min(25, v2) : Math.round(v2); if (e.target.dataset.apval === "val") a2.mode = "fisso"; if (e.target.dataset.apval === "pctv") a2.mode = "pct"; apSave(a2); } renderTg(); return; }
     if (e.target.id === "apsw") { var a = apState(); a.on = e.target.checked; if (a.on) a.since = nowS(); apSave(a); renderTg(); renderFeed(); fxToast("coin", a.on ? "Gioco automatico acceso" : "Gioco automatico spento", a.on ? "Da adesso i segnali nuovi si giocano da soli" : "Giochi tu col tasto Gioca"); }
   });
   $("tgbar").addEventListener("click", function (e) {
     if (e.target.closest("[data-tgmenu]")) { tgOpen = !tgOpen; renderTg(); return; }
+    if (e.target.closest("[data-apmenu]")) { apOpen = !apOpen; renderTg(); return; }
+    var am = e.target.closest("[data-apmode]"); if (am && !e.target.closest("input")) { var a1 = apState(); a1.mode = am.dataset.apmode; apSave(a1); renderTg(); return; }
     var o = e.target.closest("[data-tgfmt]"); if (o) { var t = tgState(); if (o.dataset.tgfmt !== t.fmt || !t.on) setTg(true, o.dataset.tgfmt); }
   });
+  // 10/10: quando una strategia scatta, in Segnali compare in cima un riquadro "Segnale scattato" con la partita e il
+  // perche'; dopo 5 secondi scivola dentro la lista dei Nuovi, sulla sua scheda. Visti: statsight.sigvisti.
+  var SEEN_KEY = "statsight.sigvisti", sigSeen = (function () { try { return JSON.parse(localStorage.getItem(SEEN_KEY)) || null; } catch (e) { return null; } })(), popBusy = false;
+  function sigPop() {
+    if (popBusy || segv !== "nuovi" || !$("view-segnali") || $("view-segnali").hidden) return;
+    var cards = Array.prototype.slice.call(document.querySelectorAll("#feed .feedcard[data-sk]")), first = sigSeen == null;
+    if (first) sigSeen = {};
+    var fresh = cards.filter(function (c) { return !sigSeen[c.dataset.sk]; });
+    fresh.forEach(function (c) { sigSeen[c.dataset.sk] = nowS(); });
+    try { var ks = Object.keys(sigSeen); if (ks.length > 400) ks.sort(function (a, b) { return sigSeen[a] - sigSeen[b]; }).slice(0, ks.length - 300).forEach(function (k) { delete sigSeen[k]; }); localStorage.setItem(SEEN_KEY, JSON.stringify(sigSeen)); } catch (e) {}
+    if (first || !fresh.length || REDUCED) return;
+    var c = fresh[0], ev = c.querySelector(".event"), pick = c.querySelector(".pickrow"), sn = c.querySelector(".sname"), meta = c.querySelector(".meta");
+    var why = c.dataset.why || (sn ? sn.textContent : "");
+    var d = document.createElement("div"); d.className = "sigpop"; d.setAttribute("role", "status");
+    d.innerHTML = '<div class="sph">' + ic("bolt") + ' Segnale scattato' + (fresh.length > 1 ? ' <span class="k">+' + (fresh.length - 1) + ' altri</span>' : "") + '</div>'
+      + '<div class="spe">' + esc(ev ? ev.textContent : "") + '</div><div class="spp">' + esc(pick ? (pick.querySelector("span") || pick).textContent : "") + '</div>'
+      + (meta ? '<div class="k">' + esc(meta.textContent) + '</div>' : "") + (why ? '<div class="spw">' + esc(why) + '</div>' : "");
+    document.body.appendChild(d); popBusy = true;
+    requestAnimationFrame(function () { d.classList.add("on"); });
+    if (window.SFX) SFX.play("vittoria");
+    setTimeout(function () {
+      var tgt = document.querySelector('#feed .feedcard[data-sk="' + c.dataset.sk.replace(/"/g, '\\"') + '"]'), r = d.getBoundingClientRect(), t = tgt ? tgt.getBoundingClientRect() : null;
+      d.style.transition = "transform .7s cubic-bezier(.3,.7,.2,1), opacity .7s";
+      d.style.transform = t ? "translate(" + (t.left - r.left) + "px," + (t.top - r.top) + "px) scale(" + Math.max(0.3, t.width / r.width) + "," + Math.max(0.3, t.height / r.height) + ")" : "translateY(120px) scale(.6)";
+      d.style.opacity = "0";
+      setTimeout(function () { d.remove(); popBusy = false; if (tgt) { tgt.classList.add("justin"); setTimeout(function () { tgt.classList.remove("justin"); }, 1600); } }, 720);
+    }, 5000);
+  }
   function renderFeed() {
     renderTg(); autoPlayRun();
     var n = Array.from(hidden).filter(known).length;
@@ -2134,7 +2213,8 @@
     var G = activeGroup(), skippedG = 0, closedKeys = closedSignalKeys();
     var html = data.feed.map(function (f, i) {
       if (filter !== "all" && f.sport !== filter) return "";
-      if (segv === "nuovi" ? !isNewSignal(f, closedKeys) || played[feedKey(f)] : f.kind !== "outcome") return "";   // Nuovi: giocabili e non giocati; Storico: esiti
+      var pk0 = played[feedKey(f)], justPlayed = pk0 && nowS() - (pk0.ts || 0) < PLAYED_STAY_S;
+      if (segv === "nuovi" ? !isNewSignal(f, closedKeys) && !justPlayed || pk0 && !justPlayed : f.kind !== "outcome") return "";   // Nuovi: giocabili (e i giocati per 10 minuti); Storico: esiti
       if (G && !sigInGroup(f, G)) { skippedG++; return ""; }
       if (!whenOk(f.timing)) return "";
       var extra = (f.extra || []).filter(function (e) { return on(e.strategy); });
@@ -2155,20 +2235,20 @@
       var pr = f.prob != null ? f.prob : f.odds > 1 ? Math.round(100 / f.odds) : null;
       var ev = f.ev == null ? (pr != null ? '<span class="ev">' + pr + '%</span>' : "") : '<span class="ev ' + (f.ev >= 0 ? "pos" : "neg") + '">' + pct(f.ev) + '</span>';
       var sname = nameOf(f.main || f.strategy) || f.strategy, pl = sigPlay(f);
-      return '<div class="card feedcard" data-idx="' + i + '">' + top
+      return '<div class="card feedcard' + (justPlayed ? " played" : "") + '" data-idx="' + i + '" data-sk="i' + esc(feedKey(f)) + '" data-why="' + esc(f.why || f.text || "") + '">' + (justPlayed ? playedTag(pk0) : "") + top
         + '<div class="pickrow"><span>Indicazione: <b>' + esc(f.pick) + '</b></span>' + ev + '</div>'
         + (sname ? '<div class="sname">Strategia: <b>' + esc(sname) + '</b>' + esc(stratRoi(f.main || f.strategy)) + '</div>' : "")
         + '<div class="meta">' + (f.prob != null ? esc(f.prob_label) + ' ' + f.prob + '% · ' : "") + 'Quota ' + oddsTxt(f.odds) + '</div>'
         + '<span class="badge ' + f.tier + '">' + (TIER_LABEL[f.tier] || "INFORMATIVO") + '</span>' + extraHtml
         + '<div class="sigbtns">' + (f.timing !== "prepartita" ? tgBtn(tgText(f.sport, f.cat, f.event, f.pick, f.odds, sname)) : "<span></span>")
-        + (pl ? '<button class="playbtn" type="button" data-play="i' + i + '">' + ic("coin") + ' Gioca</button>' : "") + '</div></div>';
+        + (justPlayed ? "" : pl ? '<button class="playbtn" type="button" data-play="i' + i + '">' + ic("coin") + ' Gioca</button>' : "") + '</div></div>';
     });
     // segnali delle strategie con le barre accese su questo telefono, in ordine di tempo con gli altri
     var list = data.feed.map(function (f, i) { return { ts: f.ts, html: html[i] }; }).filter(function (x) { return x.html; });
     if (whenOk("live") && segv === "nuovi") {
       catLiveItems().forEach(function (x) {
         if (x.m.w === 1 || x.m.w === 2 || nowS() - x.ts > NEW_LIVE_S) return;   // chiuso o non piu' giocabile
-        if (played["c" + x.s.id + "|" + x.m.r.join("|") + "|" + x.side]) return;   // gia' giocato: e' nello Storico
+        var pc = played["c" + x.s.id + "|" + x.m.r.join("|") + "|" + x.side]; if (pc && nowS() - (pc.ts || 0) >= PLAYED_STAY_S) return;   // giocato da piu' di 10 minuti: e' nello Storico
         if (G && !sigInGroup({ sport: x.sport, event: (x.m.r || []).join(" v "), cat: x.m.lv || "" }, G)) return;
         if (filter === "all" || filter === x.sport) list.push({ ts: x.ts, html: catLiveCard(x) });
       });
@@ -2182,6 +2262,7 @@
     $("storico").hidden = true;
     if (segv === "stat") { $("feed").innerHTML = storicoHtml(); return; }
     if (segv === "storico") { $("feed").innerHTML = inCorsoHtml() + '<h2 class="sectiontitle">Vinti e persi</h2>' + (cards.length ? cards.join("") : '<div class="note">Nessun esito per questo filtro, per ora.</div>'); return; }
+    setTimeout(sigPop, 0);
     $("feed").innerHTML = (cards.length ? cards.join("")
       : '<div class="note">' + (segv === "nuovi" ? "Nessun segnale nuovo da giocare adesso. I chiusi sono nello Storico." : "Nessun segnale per questo filtro, per ora.") + ' ' + (G ? ' È attivo il gruppo "' + esc(G.name) + '".' : '') + (top5On ? ' È attivo "Solo le top 5".' : '')
         + (n ? ' Alcune strategie sono nascoste: guarda la sezione Strategie.' : '') + '</div>');
@@ -2274,7 +2355,7 @@
           + '<div class="ds">' + esc(s.description) + '</div><div class="ds">Usa statistiche di StatSight Full: si sblocca con l\'abbonamento.</div></div>'
           + '<span class="switch"><input type="checkbox" role="switch" disabled aria-label="Serve StatSight Full"><span class="slider"></span></span></div>';
       }
-      return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + (withSport && rank >= 0 ? '<span class="rankn">' + (rank + 1) + '</span>' : "") + (withSport ? EMOJI[s.sport] + " " : "") + esc(s.name) + '</label>'
+      return '<div class="strat" data-qs="cat" data-qn="' + esc(s.name + " " + (s.description || "")) + '"><div class="txt"><label class="nm" for="' + id + '">' + (withSport && rank >= 0 ? '<span class="rankn">' + (rank + 1) + '</span>' : "") + (withSport ? EMOJI[s.sport] + " " : "") + esc(s.name) + '</label>'
         + (s.retired ? '<span class="tm spenta">SPENTA DAL ' + esc(s.retired) + '</span>' : tmTag(s.timing))
         + (rank >= 0 && rank < 5 ? '<span class="tm top">TOP 5</span>' : rank >= 5 ? '<span class="tm top">TOP 10</span>' : "")
         + '<div class="ds">' + esc(s.description) + '<button class="more" type="button" data-more="' + esc(s.id) + '">… altro</button></div>'
@@ -2282,8 +2363,8 @@
         + '<span class="switch"><input type="checkbox" role="switch" id="' + id + '" data-strategy="' + esc(s.id) + '"'
         + (hidden.has(s.id) ? "" : " checked") + ' aria-label="Mostra i segnali di ' + esc(s.name) + '"><span class="slider"></span></span></div>';
     }
-    if (stratSport === "mie") { $("strategie").innerHTML = tabs + mieHtml(); return; }
-    if (stratSport === "market") { $("strategie").innerHTML = tabs + mktHtml(); return; }
+    if (stratSport === "mie") { $("strategie").innerHTML = tabs + mieHtml(); qApply("mie"); return; }
+    if (stratSport === "market") { $("strategie").innerHTML = tabs + mktHtml(); qApply("mkt"); return; }
     var NOTE = '<div class="note" style="margin-bottom:10px;">L\'interruttore mostra o nasconde i segnali di quella strategia nella lista "Segnali". I dati non si cancellano e le notifiche Telegram non cambiano.</div>';
     if (TOPS[stratSport]) {
       var R = TOPS[stratSport], ids = topIds(), top = ids.slice(R[0], R[1]).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(Boolean);
@@ -2301,9 +2382,11 @@
       + '<div class="ht">' + EMOJI[stratSport] + ' ' + NAME[stratSport] + '</div><div class="hs">' + count + ' strategie</div>'
       + '<span class="hinfo">Come funziona ›</span></div>';
     $("strategie").innerHTML = tabs + legheCard() + hero + [stratSport].map(function (sport) {
-      var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) { return row(s, false); }).join("");
-      return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2>' + NOTE + '<div class="carousel">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
+      var roiOf = function (s) { var st = s.detail && s.detail.stats; return st && st.roi != null ? st.roi : -9; }, nOf = function (s) { var st = s.detail && s.detail.stats; return st ? st.n || 0 : 0; };
+      var rows = cat.filter(function (s) { return s.sport === sport; }).sort(catSort === "roi" ? function (a, b) { return roiOf(b) - roiOf(a); } : catSort === "casi" ? function (a, b) { return nOf(b) - nOf(a); } : catSort === "nome" ? function (a, b) { return String(a.name).localeCompare(String(b.name), "it"); } : function () { return 0; }).map(function (s) { return row(s, false); }).join("");
+      return rows ? '<h2 class="sectiontitle">Le nostre strategie <span class="k" data-qcount="cat"></span></h2>' + '<div class="qbar">' + qBox("cat", "Cerca una strategia") + '<select class="meinput qsort" data-catsort="1" aria-label="Ordina">' + [["predefinito", "Ordine nostro"], ["roi", "Rendimento (ROI)"], ["casi", "Più casi"], ["nome", "Nome A-Z"]].map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === catSort ? " selected" : "") + '>' + x[1] + '</option>'; }).join("") + '</select></div>' + NOTE + '<div class="carousel">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
     }).join("") + catalogoHtml(stratSport) + (stratSport === "ippica" ? schedeHtml() + esteroHtml() : "");
+    qApply("cat");
   }
 
   // ---------------------------------------------------------------- Come funziona, sport per sport (04/10)
@@ -2479,8 +2562,8 @@
     return out;
   }
   function catLiveCard(x) {
-    var done = x.m.w === 1 || x.m.w === 2, hit = done && x.m.w === x.side, sc = x.score.split(" ");
-    return '<div class="card feedcard" data-catlive="' + esc(x.s.id) + '"><div class="top"><span aria-hidden="true">' + EMOJI[x.sport] + '</span><span class="cat">' + esc(x.m.lv || NAME[x.sport]) + '</span>'
+    var done = x.m.w === 1 || x.m.w === 2, hit = done && x.m.w === x.side, sc = x.score.split(" "), ck = "c" + x.s.id + "|" + x.m.r.join("|") + "|" + x.side, pc = played[ck];
+    return '<div class="card feedcard' + (pc ? " played" : "") + '" data-catlive="' + esc(x.s.id) + '" data-sk="' + esc(ck) + '">' + (pc ? playedTag(pc) : "") + '<div class="top"><span aria-hidden="true">' + EMOJI[x.sport] + '</span><span class="cat">' + esc(x.m.lv || NAME[x.sport]) + '</span>'
       + tmTag("live") + '<span class="time">' + whenLabel(x.ts) + '</span></div>'
       + '<div class="event">' + esc(x.m.r.join(" v ")) + '</div>'
       + '<div class="pickrow"><span>' + (done ? ic(hit ? "check" : "x", hit ? "pos" : "neg") + " " : "") + 'Indicazione: <b>' + esc(x.m.r[x.side - 1]) + '</b></span>'
@@ -2488,7 +2571,7 @@
       + '<div class="sname">Strategia: <b>' + esc(x.s.name) + '</b>' + esc(stratRoi(x.s.id)) + '</div>'
       + '<div class="meta">Quota ' + oddsTxt(x.odds) + ' · set ' + esc(sc[0]) + ', game ' + esc(sc[1] || "") + '</div>'
       + '<span class="badge info">LE TUE BARRE</span>'
-      + (!done ? '<div class="sigbtns">' + tgBtn(tgText(x.sport, x.m.lv, x.m.r.join(" v "), x.m.r[x.side - 1], x.odds, x.s.name)) + (catPlay(x) ? '<button class="playbtn" type="button" data-play="c' + esc(x.s.id) + '|' + esc(x.m.r.join("|")) + '|' + x.side + '">' + ic("coin") + ' Gioca</button>' : "") + '</div>' : "") + '</div>';
+      + (!done ? '<div class="sigbtns">' + tgBtn(tgText(x.sport, x.m.lv, x.m.r.join(" v "), x.m.r[x.side - 1], x.odds, x.s.name)) + (!pc && catPlay(x) ? '<button class="playbtn" type="button" data-play="c' + esc(x.s.id) + '|' + esc(x.m.r.join("|")) + '|' + x.side + '">' + ic("coin") + ' Gioca</button>' : "") + '</div>' : "") + '</div>';
   }
   function liveHtml(sport, s, key) {
     var L = liveOf(sport);
@@ -2527,7 +2610,7 @@
                 + '<div class="ds">' + esc(s.pick) + ' · usa statistiche di StatSight Full<button class="more" type="button" data-cat="' + esc(s.id) + '">… altro</button></div></div>'
                 + '<span class="switch"><input type="checkbox" role="switch" disabled aria-label="Serve StatSight Full"><span class="slider"></span></span></div>';
             }
-            return '<div class="strat"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>' + tmTag(c.timing || "live")
+            return '<div class="strat" data-qs="cat" data-qn="' + esc(s.name + " " + (s.description || "")) + '"><div class="txt"><label class="nm" for="' + id + '">' + esc(s.name) + '</label>' + tmTag(c.timing || "live")
               + (catSel[s.id] && catSel[s.id] !== s.default ? '<span class="tm top">TUA</span>' : "")
               + '<div class="ds">' + esc(s.pick) + (cell[0] ? ' · strike ' + Math.round(cell[1] * 100) + '% · quota ~' + it(cell[2], 2) : "")
               + '<button class="more" type="button" data-cat="' + esc(s.id) + '">… altro</button></div>'
@@ -2970,14 +3053,21 @@
     fights.forEach(function (f) { if (f.res) { var p = personaOf(f.opp); out.push({ ts: f.res.at, ic: "vs", t: "Sfida con " + (p ? p.name : "?") + ": " + (f.res.r === "win" ? "vinta" : f.res.r === "lose" ? "persa" : "pari"), s: f.res.right + " a " + f.res.oppRight + " · +" + f.res.coins + " monete", go: "fight" }); } });
     return out.filter(function (x) { return x.ts; }).sort(function (a, b) { return b.ts - a.ts; }).slice(0, 50);
   }
+  var attType = "tutte";
+  document.addEventListener("click", function (e) { var t = e.target.closest && e.target.closest("[data-atttype]"); if (t && data) { attType = t.dataset.atttype; renderAttivita(); } });
+  function attKind(x) { return x.ic === "segnali" ? "segnali" : x.ic === "vs" ? "sfide" : x.who ? "team" : "pronostici"; }
   function renderAttivita() {
-    var seen = attSeen(), items = attItems();
-    $("attivita").innerHTML = items.length ? '<div class="card attlist">' + items.map(function (x, i) {
+    var seen = attSeen(), all0 = attItems(), items = all0.filter(function (x) { return attType === "tutte" || attKind(x) === attType; });
+    var cnt = function (k) { return all0.filter(function (x) { return k === "tutte" || attKind(x) === k; }).length; };
+    var bar = '<div class="qbar">' + qBox("att", "Cerca nelle notifiche: squadra, strategia, persona") + '</div><div class="chips" style="margin:6px 0 8px;">' + [["tutte", "Tutte"], ["segnali", "Segnali"], ["pronostici", "I tuoi pronostici"], ["team", "Chi segui"], ["sfide", "Sfide"]].map(function (x) {
+      return '<button class="chip" type="button" data-atttype="' + x[0] + '" aria-pressed="' + (x[0] === attType) + '">' + x[1] + ' <span class="k">' + cnt(x[0]) + '</span></button>'; }).join("") + '</div>';
+    $("attivita").innerHTML = bar + (items.length ? '<div class="card attlist">' + items.map(function (x, i) {
       var link = !!x.go, det = !link && x.det;
-      return '<button class="attrow' + (x.ts > seen ? " new" : "") + '" type="button"' + (link ? ' data-attgo="' + esc(x.go) + '"' : det ? ' data-attdet="' + i + '" aria-expanded="false"' : "") + '>'
+      return '<button data-qs="att" data-qn="' + esc(x.t + " " + x.s) + '" class="attrow' + (x.ts > seen ? " new" : "") + '" type="button"' + (link ? ' data-attgo="' + esc(x.go) + '"' : det ? ' data-attdet="' + i + '" aria-expanded="false"' : "") + '>'
         + (x.who ? avatar(x.who, 38) : '<span class="atti">' + ic(x.ic) + '</span>') + '<span class="attw"><b>' + esc(x.t) + '</b><span class="k">' + esc(x.s) + '</span></span><span class="k atime">' + whenLabel(x.ts) + (link || det ? ic("chev") : "") + '</span></button>'
         + (det ? '<div class="attdet" id="attdet' + i + '" hidden>' + det + (x.who ? '<button class="linkbtn" type="button" data-attgo="p:' + esc(x.who) + '">Profilo ›</button>' : "") + '</div>' : "");
-    }).join("") + '</div>' : '<div class="note">Nessuna notifica, per ora. Segui qualcuno del Team nella Home per vedere qui quello che pubblica.</div>';
+    }).join("") + '</div>' : '<div class="note">Nessuna notifica' + (attType !== "tutte" ? " di questo tipo" : "") + ', per ora.</div>');
+    qApply("att");
     try { localStorage.setItem(ATT_KEY, String(nowS())); } catch (e) {}   // le notifiche con l'ora nel futuro non accendono il pallino (10/10)
     paintAttDot();
   }
@@ -5015,7 +5105,7 @@
   function liveRow(e) {
     if (!(e.live && e.st && (e.sport === "calcio" || e.sport === "tennis"))) return evRow(e, false);
     var q = quickCodes(e), labels = e.sport === "calcio" ? ["1", "X", "2"] : ["1", "2"];   // quote da toccare per giocare
-    return '<div class="lvwrap">' + (e.sport === "calcio" ? calcioCard(e) : tennisCard(e)) + '<span class="evodds lvodds">' + q.map(function (c, i) { return tile(e, c, labels[i]); }).join("") + '</span></div>';
+    return '<div class="lvwrap">' + (e.sport === "calcio" ? calcioCard(e, true) : tennisCard(e, true)) + '<span class="evodds lvodds">' + q.map(function (c, i) { return tile(e, c, labels[i]); }).join("") + '</span></div>';
   }
   function evRow(e, showComp) {
     var q = quickCodes(e), labels = e.sport === "calcio" ? ["1", "X", "2"] : ["1", "2"];
@@ -5317,6 +5407,8 @@
     });
     return best;
   }
+  var PLAYED_STAY_S = 10 * 60;   // un segnale giocato resta 10 minuti nei Nuovi, verde con la spunta, poi va nello Storico
+  function playedTag(p) { return '<span class="playedtag">' + ic("check") + (p && p.auto ? " Giocato da solo" : " Giocato") + '</span>'; }
   function playable(e) { return e && (e.live || !e.start || e.start > nowS()); }
   function sigPlay(f) {
     if (!data.diario || f.kind !== "signal" || !f.pick) return null;
@@ -5419,8 +5511,7 @@
     renderAll();
     var nx = nextPlayKey(key);
     if (nx) { d.dataset.key = nx; paintPlay(); return; }
-    closePlay(); playDone = 0;
-    renderLive(); show("live"); window.scrollTo(0, 0);
+    closePlay(); playDone = 0;   // 10/10: si resta qui, il segnale diventa verde con la spunta per 10 minuti
   }
   document.addEventListener("change", function (e) {
     if (e.target.id !== "psstakein") return;
@@ -5676,20 +5767,20 @@
     return '<div class="rtrend" title="' + lab + '"><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" width="100%" height="' + H + '" role="img" aria-label="' + lab + '">' + svg + '</svg>'
       + '<div class="rtlab"><span>' + esc(e ? e.home : "Casa") + '</span><span class="k">' + (tr.k === "da" ? "Dominio" : "Quote") + ' · ' + tr.p[n - 1][0] + "'" + '</span><span>' + esc(e ? e.away : "Ospite") + '</span></div></div>';
   }
-  function calcioCard(e) {
+  function calcioCard(e, clean) {   // clean (Match, 10/10): senza le strategie, con la scritta LIVE
     var st = e.st || {}, fx = radarTrack(e), now = nowS();
     var goalHi = fx.goal && now - fx.goal < GOAL_HI_S, redHi = fx.red && now - fx.red < RED_HI_S;
     var stale = st.ts && now - st.ts > STALE_S, sc = scoreOf(st.score) || ["–", "–"];
     var q = ["1", "X", "2"].map(function (c) { return '<span>' + (e.mk[c] ? oddsTxt(e.mk[c][0]) : "–") + '</span>'; }).join("");
-    var SB = stratBadges(e);
-    var cls = "rcard" + (hotOf(e) ? " hotm" : "") + (fx.flash ? " flashg" : "") + (fx.redFlash || redHi ? " redal" : "") + (e.susp ? " susp" : "") + SB.cls;
+    var SB = clean ? { html: "", cls: "" } : stratBadges(e);
+    var cls = "rcard" + (!clean && hotOf(e) ? " hotm" : "") + (fx.flash ? " flashg" : "") + (fx.redFlash || redHi ? " redal" : "") + (e.susp ? " susp" : "") + SB.cls;
     fx.flash = false; fx.redFlash = false;
     return '<div class="' + cls + '" data-ev="' + e.id + '" role="button" tabindex="0">'
-      + '<div class="rtop"><span class="rmin"><i class="lvdot"></i>' + esc(estMinute(e) || "") + '</span>'
+      + '<div class="rtop"><span class="rmin">' + (clean ? '<span class="lvtag"><i class="lvdot"></i>LIVE</span>' : "") + esc(estMinute(e) || "") + '</span>'
       + '<span class="rteams"><span>' + pname(e, 1) + '</span><span>' + pname(e, 2) + '</span></span>'
       + '<span class="rscore' + (goalHi ? " gl" : "") + '"><b>' + sc[0] + '</b><b>' + sc[1] + '</b></span></div>'
       + (SB.cls.indexOf("wonm") >= 0 ? '<span class="rwon">' + ic("check") + '</span>' : "")
-      + '<div class="rbadges">' + hotTag(e) + SB.html
+      + '<div class="rbadges">' + (clean ? "" : hotTag(e)) + SB.html
       + (goalHi ? '<span class="rb gol">' + ic("calcio") + ' GOL</span>' : "")
       + (redHi || (fx.red && now - fx.red < 120) ? '<span class="rb red">' + ic("alert") + ' Espulsione</span>' : "")
       + (e.susp ? '<span class="rb sus">' + ic("clock") + ' Mercato sospeso</span>' : "")
@@ -5699,7 +5790,7 @@
       + '<span class="rodds"><i>1 X 2</i>' + q + '</span></div></div>';
   }
   function pctOf(v) { var m = /(\d+)\s*\/\s*(\d+)/.exec(String(v)); return m && Number(m[2]) ? Math.round(Number(m[1]) / Number(m[2]) * 100) : null; }
-  function tennisCard(e) {
+  function tennisCard(e, clean) {
     var st = e.st || {}, srv = st.serve, games = st.games || [], sets = String(st.sets || "").split(/\s*-\s*/);
     var cur = games.length - 1, pt = String(st.point || "").split(/\s*-\s*/);
     function row(side) {
@@ -5717,10 +5808,10 @@
     if (rv) { var c = pctOf(rv[0]), d = pctOf(rv[1]); if (c != null && d != null) chips += chipStat("Punti vinti in risposta", c + "%", d + "%", true); }
     ["Ace", "Doppi falli"].forEach(function (k) { var v = statPair(st, k); if (v) chips += chipStat(k, v[0], v[1], false); });
     var q = e.mk.W1 || e.mk.W2 ? '<span class="rodds"><i>Vincente</i><span>' + oddsTxt(e.mk.W1 && e.mk.W1[0]) + '</span><span>' + oddsTxt(e.mk.W2 && e.mk.W2[0]) + '</span></span>' : "";
-    var SB = stratBadges(e);
+    var SB = clean ? { html: "", cls: "" } : stratBadges(e);
     return '<div class="rcard tcard' + (e.susp ? " susp" : "") + SB.cls + '" style="--nset:' + Math.max(1, games.length) + '" data-ev="' + e.id + '" role="button" tabindex="0">'
       + (SB.cls.indexOf("wonm") >= 0 ? '<span class="rwon">' + ic("check") + '</span>' : "")
-      + '<div class="thead"><span></span><span></span><span class="k">Set</span>' + games.map(function (g, i) { return '<span class="k">' + (i + 1) + '</span>'; }).join("") + (pt.length === 2 ? '<span class="k">Game</span>' : "") + '</div>'
+      + '<div class="thead">' + (clean ? '<span class="lvtag"><i class="lvdot"></i>LIVE</span>' : "<span></span>") + '<span></span><span class="k">Set</span>' + games.map(function (g, i) { return '<span class="k">' + (i + 1) + '</span>'; }).join("") + (pt.length === 2 ? '<span class="k">Game</span>' : "") + '</div>'
       + row(1) + row(2)
       + (e.susp || SB.html ? '<div class="rbadges">' + SB.html + (e.susp ? '<span class="rb sus">' + ic("clock") + ' Mercato sospeso</span>' : "") + '</div>' : "")
       + '<div class="rstats">' + chips + q + '</div></div>';
@@ -5774,7 +5865,7 @@
     // 10/10: le schede delle partite live stanno in Match; qui solo il lavoro delle strategie
     $("radar").innerHTML = head + '<button class="card navcard" type="button" data-golive="1" style="margin-top:12px;">' + ic("calendar") + '<span><b>Tutte le partite live</b><span class="k">' + evs.length + ' adesso, con statistiche e quote: in Match</span></span>' + ic("chev") + '</button>'
       + (!isFull() ? '<div class="upsell" style="margin-top:10px;">' + ic("lock") + ' Le strategie delle partite calde si vedono con <b>StatSight Full</b>.</div>' : "");
-    radarFlip();
+    radarFlip(); evs.forEach(function (e) { stratBadges(e); });
     if (radarWinFx) { radarWinFx = false; hubWin(); }
   }
   // ---------------------------------------------------------------- Radar delle strategie (08/10)
@@ -5815,7 +5906,8 @@
     var items = [], byB = {}; B.forEach(function (b) { byB[b.open] = b; });
     (data.catalog || []).forEach(function (s) { if (s.sport === rsport && s.timing !== "prepartita" && !s.retired && on(s.id) && !catLocked(s.id)) items.push({ key: "d:" + s.id, name: s.name, tag: "Nostra", kind: "sig", s: s }); });
     var cc = catOf(rsport);
-    if (cc && cc.strategies && rsport === "tennis") cc.strategies.forEach(function (s) { if (catOn.has(s.id) && !catLocked(s.id)) items.push({ key: "c:" + s.id, name: s.name, tag: "Le tue barre", kind: "bar", s: s }); });
+    // le barre: quelle accese, e quelle che il motore ha fatto scattare su una partita di adesso
+    if (cc && cc.strategies && rsport === "tennis") cc.strategies.forEach(function (s) { if (!catLocked(s.id) && (catOn.has(s.id) || evs.some(function (e) { return radarStrats(e).some(function (x) { return x.open === "c:" + s.id; }); }))) items.push({ key: "c:" + s.id, name: s.name, tag: catOn.has(s.id) ? "Le tue barre" : "Barre di partenza", kind: "bar", s: s }); });
     builds.forEach(function (b) { if (b.mode === "live" && b.sport === rsport && bldSigOn(b)) items.push({ key: "b:" + b.id, name: b.name, tag: "Tua", kind: "bld", b: b }); });
     if (!items.length) return '<h2 class="rsec">' + ic("strategie") + ' Strategie al lavoro</h2><div class="note">Nessuna strategia live accesa per ' + esc(NAME[rsport]) + '. Accendile in Strategie.</div>';
     var rows = items.map(function (si) {
@@ -5853,20 +5945,23 @@
         if (!evs.length) why0 = "nessuna partita live adesso";
       }
       var nF = list.filter(function (x) { return x.st === "fired" || x.st === "won" || x.st === "lost"; }).length;
-      var best = list.slice().sort(function (a, b) { return b.p - a.p; })[0], p = best ? best.p : 0, miss = best && best.miss != null ? best.miss : null;
+      // 10/10: le partite dove e' gia' scattata sono in Segnali: in cima vanno le strategie piu' vicine a scattare ADESSO
+      var open0 = list.filter(function (x) { return x.st !== "fired" && x.st !== "won" && x.st !== "lost"; });
+      var best = open0.slice().sort(function (a, b) { return b.p - a.p; })[0], p = best ? best.p : 0, miss = best && best.miss != null ? best.miss : null;
       var b0 = byB[si.key] || byB["d:" + (si.s && si.s.id)], closed = b0 ? b0.w + b0.l : 0, roi = closed ? b0.pts / closed * 100 : null;
-      return { si: si, list: list, nF: nF, scan: scan, p: nF ? 1 : p, miss: nF ? 0 : miss, why0: why0, roi: roi };
+      return { si: si, list: list, nF: nF, scan: scan, p: p, miss: miss, why0: why0, roi: roi };
     }).sort(function (a, b) { return b.p - a.p || (a.miss || 99) - (b.miss || 99) || b.scan - a.scan; });
     var html = rows.map(function (r, i) {
       var si = r.si, open = !!rOpen[si.key], c = RCOL[i % RCOL.length];
-      var cls = r.nF ? " full" : r.miss === 1 ? " near1" : r.miss === 2 ? " near2" : r.miss === 3 ? " near3" : "";
-      var tag = r.nF ? "SCATTATA" : r.miss != null ? (r.miss === 1 ? "ne manca 1" : "ne mancano " + r.miss) : r.p > 0 ? "in arrivo" : "in osservazione";
+      var cls = r.miss === 1 ? " near1" : r.miss === 2 ? " near2" : r.miss === 3 ? " near3" : "";
+      var tag = r.miss != null ? (r.miss === 1 ? "ne manca 1" : "ne mancano " + r.miss) : r.p > 0 ? "in arrivo" : "in osservazione";
       var head = '<button class="rwk" type="button" data-rwork="' + esc(si.key) + '" aria-expanded="' + open + '"><span class="rwkn"><b>' + esc(si.name) + '</b><span class="rwtag">' + esc(si.tag) + ' · ' + r.scan + (r.scan === 1 ? " partita" : " partite") + '</span>'
         + '<span class="rwbar"><i style="width:' + Math.round(r.p * 100) + '%"></i></span></span>'
-        + '<span class="rwchip">' + tag + '</span>'
+        + '<span class="rwchip">' + tag + '</span>' + (r.nF ? '<span class="rwsig" title="già scattata: è in Segnali">' + ic("bolt") + r.nF + '</span>' : "")
         + '<span class="rwkc ' + (r.roi > 0 ? "pos" : r.roi < 0 ? "neg" : "") + '"><b>' + (r.roi == null ? "–" : (r.roi > 0 ? "+" : "") + Math.round(r.roi) + "%") + '</b><small>ROI oggi</small></span>' + ic("chev") + '</button>';
       var body = !open ? "" : '<div class="rwkd">' + (si.kind === "bar" ? '<div class="k">Le tue barre: ' + esc((si.s.params || []).map(function (p, i2) { var ix = Number(String(catKey(si.s)).split("_")[i2]); return p.label + " " + (p.labels ? p.labels[ix] : p.values[ix]); }).join(" · ")) + '</div>' : "")
         + (si.kind === "sig" && si.s.description ? '<div class="k">' + esc(si.s.description) + '</div>' : "")
+        + (si.kind !== "bld" ? '<button class="linkbtn" type="button" data-rstrat="' + esc(si.key) + '">Apri la strategia ' + ic("chev") + '</button>' : "")
         + (r.list.length ? r.list.sort(function (a, b) { return b.p - a.p; }).map(function (x) {
             var icn = { fired: "bolt", won: "check", lost: "x", stop: "minus", wait: "clock", scan: "eye" }[x.st];
             return '<div class="rwm ' + x.st + '" data-ev="' + x.e.id + '" role="button" tabindex="0">' + ic(icn) + '<span><b>' + esc(x.e.home + " - " + x.e.away) + '</b> <span class="k">' + esc(estMinute(x.e) || "") + '</span><br><span class="k">' + esc(x.t) + '</span></span></div>';
@@ -5904,10 +5999,6 @@
       }).join("") + '</div>';
     var fresh = [];
     B.forEach(function (b, i) { b.evs.forEach(function (x) { fresh.push({ b: b, c: RCOL[i % RCOL.length], e: x.e, pick: x.pick, odds: x.odds }); }); });
-    if (fresh.length) html += '<h2 class="rsec">' + ic("bolt") + ' Appena scattate <span class="k">vanno in Segnali</span></h2><div class="rfresh">' + fresh.slice(0, 6).map(function (x) {
-        return '<div class="rfr" data-ev="' + x.e.id + '" role="button" tabindex="0" style="--c:' + x.c + '"><span class="rfmin">' + esc(estMinute(x.e) || "LIVE") + '</span><span class="rfw"><b>' + esc(x.e.home + " - " + x.e.away) + '</b><span class="k">' + esc(x.b.name) + '</span></span>'
-          + '<span class="rfp">' + esc(x.pick || "") + (x.odds ? ' <b>@ ' + oddsTxt(x.odds) + '</b>' : "") + '</span></div>';
-      }).join("") + '</div>';
     if (hot.length) html += '<h2 class="rsec">' + ic("flame") + ' Partite calde <span class="k">la strategia sta per accendersi</span></h2><div class="rhot">' + hot.slice(0, 5).map(function (x) {
         var p = Math.round(x.h.p * 100);
         return '<div class="rht" data-ev="' + x.e.id + '" role="button" tabindex="0"><div class="rhtt"><span class="rfmin">' + esc(estMinute(x.e) || "LIVE") + '</span><b>' + esc(x.e.home + " - " + x.e.away) + '</b><span class="rhp">' + p + '%</span></div>'
@@ -7274,11 +7365,12 @@
   function poisAtLeast(lam, k) { k = Math.max(0, Math.round(k)); if (!(lam >= 0)) return null; var s = 0, t = Math.exp(-lam); for (var i = 0; i < k; i++) { s += t; t *= lam / (i + 1); } return Math.round((1 - s) * 1000) / 1000; }
   var bldAdv = false;
   function bldPal() {   // 10/10: prima i blocchi semplici e specifici; gli altri con "Altri blocchi"
-    var b = bld || {}, live = b.mode !== "pre", basic = ["src"].concat(live ? (b.sport === "tennis" ? ["se:ris"] : ["se:min", "se:ris"]) : ["se:ore"]).concat(["se:quota", "se:stat", "se:conf", "gioca"]);
+    var b = bld || {}, live = b.mode !== "pre", basic = ["src", "src:sig"].concat(live ? (b.sport === "tennis" ? ["se:ris"] : ["se:min", "se:ris"]) : ["se:ore"]).concat(["se:quota", "se:stat", "se:conf", "gioca"]);
     var adv = ["se", "dividi", "calc", "storico", "unisci", "debug", "nota"].filter(function (t) { return t !== "storico" || b.sport === "calcio"; });
     return basic.concat(bldAdv ? adv : []);
   }
   function palBtn(t) {
+    if (t === "src:sig") return '<button class="bpb" type="button" data-badd="src:sig" style="--nc:' + NT.src[0] + '"><span class="rnic sm">' + ic("bolt") + '</span>Segnale</button>';
     var base = t.indexOf("se:") === 0 ? "se" : t, kind = t.slice(3), name = base === "se" && kind ? KIND_NAME[kind] : NT_NAME[t], icn = { min: "clock", ore: "clock", ris: "target", quota: "trend", stat: "layers", conf: "vs" }[kind] || NT[base][1];
     return '<button class="bpb" type="button" data-badd="' + t + '" style="--nc:' + NT[base][0] + '"><span class="rnic sm">' + ic(icn) + '</span>' + name + '</button>';
   }
@@ -7304,7 +7396,9 @@
   // i blocchi specifici (10/10): sono nodi "Se" gia' impostati, con un pannello piu' semplice
   var KIND_NAME = { min: "Minuto", ore: "Orario", ris: "Punteggio", quota: "Quota", stat: "Statistica", conf: "Confronta" };
   var KIND_OF = { min: ["min"], ore: ["ore"], quota: ["quota"], ris: ["gol", "set", "game", "break"], stat: null, conf: null };
-  function ntName(n) { return n.t === "se" && n.p && n.p.kind ? KIND_NAME[n.p.kind] || NT_NAME.se : NT_NAME[n.t]; }
+  var KIND_ICON = { min: "clock", ore: "clock", ris: "target", quota: "trend", stat: "layers", conf: "vs" };
+  function nodeIcon(n) { return n.t === "se" && n.p && n.p.kind ? KIND_ICON[n.p.kind] || NT.se[1] : n.t === "src" && n.p && n.p.from === "sig" ? "bolt" : NT[n.t][1]; }
+  function ntName(n) { if (n.t === "src" && n.p && n.p.from === "sig") return "Segnale"; return n.t === "se" && n.p && n.p.kind ? KIND_NAME[n.p.kind] || NT_NAME.se : NT_NAME[n.t]; }
   function kindData(kind, b) {   // i dati che un blocco specifico puo' usare
     var L = dataList(b || bld), K = KIND_OF[kind];
     return L.filter(function (x) { var k = dKind(x[0], b); return K ? K.indexOf(k) >= 0 : kind === "stat" ? ["quota", "min", "ore", "var"].indexOf(k) < 0 : k !== "flag"; });
@@ -7340,6 +7434,7 @@
   function nodeLabel(n, b) {
     var p = n.p || {}; b = b || bld;
     if (n.name) return n.name;
+    if (n.t === "src" && p.from === "sig") { var so2 = sigSources(b).filter(function (x) { return x[0] === p.sid; })[0]; return "Segnale: " + (so2 ? so2[1] : "scegli la strategia"); }
     if (n.t === "src") return (b.mode === "live" ? "Partite live" : "Partite in programma") + (p.comp ? " · " + p.comp : "") + (p.surf ? " · " + (SURF.filter(function (x) { return x[0] === p.surf; })[0] || ["", p.surf])[1] : "");
     if (n.t === "se" && (p.kind === "min" || p.kind === "ore" || p.kind === "quota") && p.rules && p.rules.length === 2) {
       var u = p.kind === "min" ? "'" : p.kind === "ore" ? " h" : "", f2 = function (v) { return String(v).replace(".", ","); };
@@ -7475,6 +7570,7 @@
         if (b.mode === "live" ? !e.live : (e.live || !e.start || e.start <= nowS())) return;
         if (e.sport !== b.sport) return;
         if (p.comp && String(e.comp || "").toLowerCase().indexOf(String(p.comp).toLowerCase()) < 0) return;
+        if (p.from === "sig" && !sigFired(e, p.sid)) return;   // 10/10: entrano solo le partite su cui quella strategia e' scattata
         if (p.surf && (!e.sup || (p.surf === "veloce" ? e.sup !== "erba" && e.sup !== "indoor" : e.sup !== p.surf))) return;
         ins = [{ msg: { e: e, v: {} } }];
       }
@@ -7556,7 +7652,7 @@
     var nodes = bld.nodes.map(function (n) {
       var T = NT[n.t], w = nW(n), h = nH(n), k = nOuts(n), L = k > 1 ? outLabels(n) : [], s = stat ? stat[n.id] || 0 : null;
       return '<div class="rnode rn-' + n.t + (bldSel === n.id ? " sel" : "") + '" data-bnode="' + n.id + '" style="left:' + n.x + 'px;top:' + n.y + 'px;width:' + w + 'px;height:' + h + 'px;--nc:' + T[0] + '">'
-        + (n.t !== "nota" ? '<span class="rnic">' + ic(T[1]) + '</span>' : "") + '<span class="rnl">' + esc(nodeLabel(n)) + '</span>'
+        + (n.t !== "nota" ? '<span class="rnic">' + ic(nodeIcon(n)) + '</span>' : "") + '<span class="rnl">' + esc(nodeLabel(n)) + '</span>'
         + (nIns(n) ? '<button class="rport in" type="button" data-bin="' + n.id + '" aria-label="Ingresso"></button>' : "")
         + Array.apply(null, Array(k)).map(function (_, o) { var y = (k === 1 ? h / 2 : 4 + (h - 8) * (o + 0.5) / k) - 6;
           return '<button class="rport out' + (bldWire && bldWire[0] === n.id && bldWire[1] === o ? " armed" : "") + '" type="button" data-bout="' + n.id + ':' + o + '" style="top:' + y + 'px" aria-label="Uscita ' + (o + 1) + '"></button>'
@@ -7610,11 +7706,17 @@
     return h + '<label class="bchk"><input type="checkbox" data-bf="no"' + (p.no ? " checked" : "") + '> Uscita "no" per le partite che non passano</label>';
   }
   function editorHtml(n) {
-    var p = n.p, h = '<div class="card binsp"><div class="bih"><span class="rnic sm" style="--nc:' + NT[n.t][0] + '">' + ic(NT[n.t][1]) + '</span><b>' + ntName(n) + '</b>'
+    var p = n.p, h = '<div class="card binsp"><div class="bih"><span class="rnic sm" style="--nc:' + NT[n.t][0] + '">' + ic(nodeIcon(n)) + '</span><b>' + ntName(n) + '</b>'
       + (bldRO ? "" : '<button class="chip" type="button" data-bdel="' + n.id + '">' + ic("trash") + ' Elimina</button>') + '</div>';
     if (bldRO) return h + '<div class="k">' + esc(nodeLabel(n)) + '</div></div>';
     if (n.t !== "nota") h += '<input class="meinput" data-bf="name" maxlength="40" placeholder="Nome del nodo (facoltativo)" value="' + esc(n.name || "") + '">';
-    if (n.t === "src") h += '<label class="melabel">Solo i campionati che contengono</label><input class="meinput" data-bf="comp" maxlength="40" placeholder="es. Serie A (vuoto = tutti)" value="' + esc(p.comp || "") + '">'
+    if (n.t === "src" && p.from === "sig") {
+      var SO = sigSources(bld), gr = [];
+      SO.forEach(function (x) { if (gr.indexOf(x[2]) < 0) gr.push(x[2]); });
+      h += '<label class="melabel">Segnale in entrata: le partite su cui scatta</label><select class="meinput" data-bf="sid">' + gr.map(function (g) { return '<optgroup label="' + esc(g) + '">' + SO.filter(function (x) { return x[2] === g; }).map(function (x) { return '<option value="' + esc(x[0]) + '"' + (x[0] === p.sid ? " selected" : "") + '>' + esc(x[1]) + '</option>'; }).join("") + '</optgroup>'; }).join("") + '</select>'
+        + '<div class="k">Così non rifai una strategia che c\'è già: prendi le partite su cui scatta e aggiungi i tuoi blocchi.</div>';
+    }
+    if (n.t === "src" && p.from !== "sig") h += '<label class="melabel">Solo i campionati che contengono</label><input class="meinput" data-bf="comp" maxlength="40" placeholder="es. Serie A (vuoto = tutti)" value="' + esc(p.comp || "") + '">'
       + (bld.sport === "tennis" ? '<label class="melabel">Superficie</label><select class="meinput" data-bf="surf">' + SURF.map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === (p.surf || "") ? " selected" : "") + '>' + esc(x[1]) + '</option>'; }).join("") + '</select><div class="k">Stimata dal nome del torneo: i tornei sconosciuti restano fuori quando scegli una superficie.</div>' : "");
     if (n.t === "se" && p.kind) h += kindEditor(n);
     else if (n.t === "se") {
@@ -7676,7 +7778,7 @@
         + '</div><div class="bwrap">' + bldCanvasHtml(R.stat) + '</div>'
         + (bldWire ? '<div class="bfhint">' + ic("bolt") + ' Tocca l\'ingresso (a sinistra) del nodo da collegare</div>' : "")
         + (sel ? (bldPanel === "min"
-            ? '<button class="bfmini" type="button" data-bpanel="norm" aria-label="Apri le impostazioni del blocco"><span class="rnic sm" style="--nc:' + NT[sel.t][0] + '">' + ic(NT[sel.t][1]) + '</span>' + esc(ntName(sel)) + '</button>'
+            ? '<button class="bfmini" type="button" data-bpanel="norm" aria-label="Apri le impostazioni del blocco"><span class="rnic sm" style="--nc:' + NT[sel.t][0] + '">' + ic(nodeIcon(sel)) + '</span>' + esc(ntName(sel)) + '</button>'
             : '<div class="bfpanel' + (bldPanel === "big" ? " big" : "") + '"><div class="bfpctl"><button class="iconbtn sm" type="button" data-bpanel="min" aria-label="Riduci a icona">' + ic("minus") + '</button>'
               + '<button class="iconbtn sm" type="button" data-bpanel="' + (bldPanel === "big" ? "norm" : "big") + '" aria-label="' + (bldPanel === "big" ? "Riduci" : "Ingrandisci") + '">' + ic("expand") + '</button></div>' + editorHtml(sel) + '</div>') : "") + '</div>';
       wf = box.querySelector(".bwrap"); if (wf) { wf.scrollLeft = fx; wf.scrollTop = fy; }
@@ -7726,7 +7828,27 @@
     return '<button class="card navcard" type="button" data-builder="1" style="margin-top:6px;">' + ic("strategie") + '<span><b>Strategy builder</b><span class="k">'
       + (builds.length ? builds.length + (builds.length === 1 ? " strategia tua" : " strategie tue") + " · " : "") + TPL().length + ' strategie StatSight da copiare</span></span>' + ic("chev") + '</button>';
   }
+  // le strategie i cui segnali possono entrare in un'altra (stesso sport e stesso momento: live o pre-partita)
+  function sigSources(b) {
+    var out = [], live = b.mode !== "pre";
+    (data && data.catalog || []).forEach(function (s) { if (s.sport === b.sport && !s.retired && (live ? s.timing !== "prepartita" : s.timing === "prepartita")) out.push(["d:" + s.id, s.name, "Strategie StatSight"]); });
+    var cc = catOf(b.sport); if (live && cc && cc.strategies && b.sport === "tennis") cc.strategies.forEach(function (s) { out.push(["c:" + s.id, s.name, "Strategie con le barre"]); });
+    builds.concat(TPL()).forEach(function (x) { if (x.id !== b.id && x.sport === b.sport && x.mode === b.mode) out.push(["b:" + x.id, x.name, x.team ? "Strategie del builder (StatSight)" : "Le tue strategie"]); });
+    return out;
+  }
+  var sigStack = [];
+  function sigFired(e, sid) {   // la strategia sid e' scattata adesso su questa partita?
+    if (!sid) return false;
+    if (sid[0] === "b") {
+      var id = sid.slice(2); if (sigStack.indexOf(id) >= 0) return false;   // niente giri a vuoto (A usa B che usa A)
+      var o = builds.concat(TPL()).filter(function (x) { return x.id === id; })[0]; if (!o) return false;
+      sigStack.push(id); try { return bldFires(o).some(function (x) { return x.e.id === e.id; }); } finally { sigStack.pop(); }
+    }
+    if (!e.live) return preSignals(e).some(function (f) { return "d:" + (f.main || f.strategy) === sid; });
+    return radarStrats(e).some(function (x) { return x.open === sid && !x.done; });
+  }
   function newNode(t0, x, y) {
+    if (t0 === "src:sig") { var so = sigSources(bld); return { id: "n" + Date.now().toString(36) + Math.floor(Math.random() * 99), t: "src", x: x, y: y, p: { from: "sig", sid: so[0] ? so[0][0] : "" } }; }
     if (String(t0).indexOf("se:") === 0) {   // blocco specifico = nodo Se gia' impostato
       var kind = t0.slice(3), sp = bld.sport, live = bld.mode !== "pre", R;
       if (kind === "min") R = [{ a: "min", op: ">=", bt: "n", b: 60 }, { a: "min", op: "<=", bt: "n", b: 80 }];
@@ -7808,6 +7930,7 @@
       else if (f === "text") p.text = v;
       else if (f === "txt") p.txt = v.slice(0, 60);
       else if (f === "surf") p.surf = v;
+      else if (f === "sid") p.sid = v;
       else if ((m = /^r(\d+)(a|op|b|bt)$/.exec(f))) { var r = p.rules[Number(m[1])]; if (m[2] === "bt") { r.bt = v; r.b = v === "d" ? (dataList(bld)[0] || ["min"])[0] : 0; } else r[m[2]] = m[2] === "b" && r.bt !== "d" ? Number(String(v).replace(",", ".")) : v; }
       else if ((m = /^c(\d+)(op|v)$/.exec(f))) p.cases[Number(m[1])][m[2]] = m[2] === "v" ? Number(String(v).replace(",", ".")) : v;
       else if (f === "a" || f === "b") { if (n.t === "dividi") p.a = v; else p[f] = (p[f + "t"] || (f === "a" ? p.at : p.bt)) === "d" ? v : Number(String(v).replace(",", ".")); }
@@ -8293,20 +8416,39 @@
       return '<div class="bfm"><span class="' + (go ? "pos" : "neg") + '">' + (go ? ic("check") : ic("x")) + '</span><span><b>' + esc(e.home + " - " + e.away) + '</b>' + (e.live ? ' <span class="k">' + esc(estMinute(e) || "") + '</span>' : "") + (det ? '<br><span class="k">' + det + '</span>' : "") + '</span></div>';
     }).join("") + (ev.length > 20 ? '<div class="k">e altre ' + (ev.length - 20) + '</div>' : "");
   }
+  // 10/10: cerca per nome (e descrizione/blocchi) e ordina. Il filtro si fa sulla pagina, senza ridisegnarla, cosi'
+  // la tastiera non si chiude; l'ordine si sceglie da un menu.
+  var qState = { mie: "", cat: "", mkt: "", att: "" }, mieSort = "recenti", catSort = "predefinito";
+  function qBox(scope, ph) { return '<input class="meinput qbox" type="search" data-q="' + scope + '" placeholder="' + esc(ph) + '" value="' + esc(qState[scope] || "") + '" autocomplete="off">'; }
+  function qApply(scope) {
+    var q = String(qState[scope] || "").toLowerCase().trim(), n = 0;
+    document.querySelectorAll('[data-qs="' + scope + '"]').forEach(function (el) { var ok = !q || String(el.dataset.qn || el.innerText).toLowerCase().indexOf(q) >= 0; el.hidden = !ok; if (ok) n++; });
+    var c = document.querySelector('[data-qcount="' + scope + '"]'); if (c) c.textContent = q ? n + " trovate" : "";
+  }
+  document.addEventListener("change", function (e) {
+    if (e.target.dataset && e.target.dataset.miesort) { mieSort = e.target.value; renderStrategie(); }
+    if (e.target.dataset && e.target.dataset.catsort) { catSort = e.target.value; renderStrategie(); }
+  });
+  document.addEventListener("input", function (e) { var sc = e.target.dataset && e.target.dataset.q; if (!sc) return; qState[sc] = e.target.value; qApply(sc); });
   function mieHtml() {
     var sp = "tutti"; try { sp = localStorage.getItem(MIE_KEY) || "tutti"; } catch (e) {}
     builds.forEach(bldLayout);
-    var L = builds.slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); }).filter(function (b) { return sp === "tutti" || b.sport === sp; });
+    var S0 = {}; builds.forEach(function (b) { S0[b.id] = bldStats(b.id); });
+    var SORTS = { recenti: function (a, b) { return (b.ts || 0) - (a.ts || 0); }, nome: function (a, b) { return String(a.name).localeCompare(String(b.name), "it"); },
+      roi: function (a, b) { return (S0[b.id].roi == null ? -9 : S0[b.id].roi) - (S0[a.id].roi == null ? -9 : S0[a.id].roi); }, scattate: function (a, b) { return S0[b.id].n - S0[a.id].n; },
+      strike: function (a, b) { return (S0[b.id].s ? S0[b.id].w / S0[b.id].s : -1) - (S0[a.id].s ? S0[a.id].w / S0[a.id].s : -1); }, adesso: function (a, b) { return bldFires(b).length - bldFires(a).length; } };
+    var L = builds.slice().sort(SORTS[mieSort] || SORTS.recenti).filter(function (b) { return sp === "tutti" || b.sport === sp; });
     var chips = '<div class="chips" style="margin:10px 0 4px;">' + [["tutti", "Tutte"], ["calcio", EMOJI.calcio + " " + NAME.calcio], ["tennis", EMOJI.tennis + " " + NAME.tennis]].map(function (x) {
       var n = x[0] === "tutti" ? builds.length : builds.filter(function (b) { return b.sport === x[0]; }).length;
       return '<button class="chip" type="button" data-miesp="' + x[0] + '" aria-pressed="' + (x[0] === sp) + '">' + x[1] + ' <span class="k">' + n + '</span></button>'; }).join("") + '</div>';
-    var head = builderHero() + '<h2 class="sectiontitle">Mie strategie <span class="k">' + builds.length + '</span></h2>' + chips
+    var head = builderHero() + '<h2 class="sectiontitle">Mie strategie <span class="k">' + builds.length + '</span> <span class="k" data-qcount="mie"></span></h2>'
+      + '<div class="qbar">' + qBox("mie", "Cerca per nome, sport o blocchi") + '<select class="meinput qsort" data-miesort="1" aria-label="Ordina">' + [["recenti", "Più recenti"], ["nome", "Nome A-Z"], ["roi", "Rendimento (ROI)"], ["strike", "Strike"], ["scattate", "Più scattate"], ["adesso", "Scattano adesso"]].map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === mieSort ? " selected" : "") + '>' + x[1] + '</option>'; }).join("") + '</select></div>' + chips
       + '<div class="note" style="margin-bottom:10px;">L\'interruttore manda in Segnali le partite live su cui la strategia scatta. Lo storico qui sotto lo raccoglie il telefono da quando la strategia esiste: ogni volta che scatta la segna, e l\'esito arriva a partita finita. Il rendimento su migliaia di partite arriva col server.</div>';
     if (!L.length) return head + '<div class="note">' + (builds.length ? "Nessuna strategia tua per questo sport." : "Nessuna strategia ancora: creala nello Strategy builder.") + '</div>';
     return head + L.map(function (b) {
       var R = bldRun(b), S = bldStats(b.id), id = "bs-" + b.id;
       var kp = function (v, l, cls) { return '<div class="kpi"><div class="v' + (cls ? " " + cls : "") + '">' + v + '</div><div class="l">' + l + '</div></div>'; };
-      return '<div class="card mie"><div class="strat" style="border-bottom:none;padding-bottom:4px;"><div class="txt"><label class="nm" for="' + id + '">' + EMOJI[b.sport] + ' ' + esc(b.name) + '</label>'
+      return '<div class="card mie" data-qs="mie" data-qn="' + esc([b.name, b.desc, NAME[b.sport], b.mode === "live" ? "live" : "pre-partita", bldBlocks(b)].join(" ")) + '"><div class="strat" style="border-bottom:none;padding-bottom:4px;"><div class="txt"><label class="nm" for="' + id + '">' + EMOJI[b.sport] + ' ' + esc(b.name) + '</label>'
         + (b.mode === "live" ? tmTag("live") : '<span class="tm prepartita">PRE-PARTITA</span>') + (b.prova ? '<span class="tm">PROVA</span>' : "")
         + '<div class="ds">' + esc(b.desc || "Strategia fatta nello Strategy builder.") + '</div>'
         + '<div class="ds">Blocchi: ' + esc(bldBlocks(b)) + '</div></div>'
@@ -8349,13 +8491,13 @@
     L.sort(function (a, b) { var va = a.st.s >= MKT_MIN, vb = b.st.s >= MKT_MIN; if (va !== vb) return va ? -1 : 1; return key(b) - key(a) || b.st.s - a.st.s; });
     var chips = function (attr, list, cur) { return '<div class="chips" style="margin:6px 0;">' + list.map(function (x) { return '<button class="chip" type="button" data-' + attr + '="' + x[0] + '" aria-pressed="' + (x[0] === cur) + '">' + x[1] + '</button>'; }).join("") + '</div>'; };
     var h = '<h2 class="sectiontitle">Marketplace</h2><div class="note" style="margin-bottom:8px;">Strategie in vetrina, ordinate per i numeri e mai per data. Ci entrano solo con almeno ' + MKT_MIN + ' esiti chiusi; con rendimento negativo o una perdita massima oltre ' + MKT_DD + ' unità hanno il bollino "Ad alto rischio". Le metti in vetrina da Mie strategie.</div>'
-      + '<div class="k">Ordina per</div>' + chips("mksort", [["roi", "Rendimento"], ["sharpe", "Costanza"], ["dd", "Perdita massima"], ["fol", "Seguaci"]], mktSort)
+      + qBox("mkt", "Cerca nel Marketplace per nome") + '<div class="k">Ordina per</div>' + chips("mksort", [["roi", "Rendimento"], ["sharpe", "Costanza"], ["dd", "Perdita massima"], ["fol", "Seguaci"]], mktSort)
       + chips("mksp", [["tutti", "Tutte"], ["calcio", EMOJI.calcio + " " + NAME.calcio], ["tennis", EMOJI.tennis + " " + NAME.tennis]], mktSp);
     if (!L.length) return h + '<div class="note">Nessuna strategia in vetrina per questo sport.</div>';
     return h + L.map(function (x, i) {
       var st = x.st, ok = st.s >= MKT_MIN, fol = mkt.follow[x.b.id];
       var kp = function (v, l, cls) { return '<div class="kpi"><div class="v' + (cls ? " " + cls : "") + '">' + v + '</div><div class="l">' + l + '</div></div>'; };
-      return '<div class="card mkt"><div class="mkth"><span class="rankn">' + (i + 1) + '</span><span class="mktn"><b>' + EMOJI[x.b.sport] + ' ' + esc(x.b.name) + '</b><span class="k">'
+      return '<div class="card mkt" data-qs="mkt" data-qn="' + esc(x.b.name + " " + (x.b.desc || "") + " " + NAME[x.b.sport]) + '"><div class="mkth"><span class="rankn">' + (i + 1) + '</span><span class="mktn"><b>' + EMOJI[x.b.sport] + ' ' + esc(x.b.name) + '</b><span class="k">'
         + (x.team ? teamBadge() : "di te") + ' · ' + (x.b.mode === "live" ? "live" : "pre-partita") + ' · ' + (x.price ? x.price + " monete al mese" : "gratis") + (x.copy ? " · copiabile" : "") + '</span></span></div>'
         + '<div class="mktb">' + (ok ? (mktRisk(st) ? '<span class="tm spenta">AD ALTO RISCHIO</span>' : '<span class="tm top">VERIFICATA</span>') : '<span class="tm">IN PROVA · ' + st.s + '/' + MKT_MIN + ' ESITI</span>') + '</div>'
         + (x.b.desc ? '<div class="ds">' + esc(x.b.desc) + '</div>' : "")
@@ -8412,9 +8554,10 @@
       if (!bldSigOn(b) || (filter !== "all" && filter !== b.sport)) return;
       bldFires(b).forEach(function (x) {
         if (!x.code && !x.txt) return;
-        var e = x.e;
+        var e = x.e, bk = "b" + b.id + "|" + e.id + "|" + x.code, pb = played[bk];
+        if (pb && nowS() - (pb.ts || 0) >= PLAYED_STAY_S) return;
         if (G && !sigInGroup({ sport: e.sport, event: e.home + " v " + e.away, cat: e.comp || "" }, G)) return;
-        out.push({ ts: at, html: '<div class="card feedcard" data-bmatch="' + e.id + '"><div class="top"><span aria-hidden="true">' + EMOJI[e.sport] + '</span><span class="cat">' + esc(e.comp || NAME[e.sport]) + '</span>'
+        out.push({ ts: at, html: '<div class="card feedcard' + (pb ? " played" : "") + '" data-bmatch="' + e.id + '" data-sk="' + esc(bk) + '" data-why="' + esc("Blocchi: " + bldBlocks(b)) + '">' + (pb ? playedTag(pb) : "") + '<div class="top"><span aria-hidden="true">' + EMOJI[e.sport] + '</span><span class="cat">' + esc(e.comp || NAME[e.sport]) + '</span>'
           + tmTag("live") + '<span class="time">' + whenLabel(at) + '</span></div>'
           + '<div class="event">' + esc(e.home + " - " + e.away) + '</div>'
           + '<div class="pickrow"><span>' + (x.txt ? 'Avviso: <b>' + esc(x.txt) : 'Indicazione: <b>' + esc(pickName(x.code, e.sport))) + '</b></span>' + (x.odds > 1 ? '<span class="ev">' + Math.round(100 / x.odds) + '%</span>' : "") + '</div>'
@@ -8422,7 +8565,7 @@
           + '<div class="meta">' + (x.txt ? "Senza quota" : "Quota " + oddsTxt(x.odds)) + ' · ' + esc((e.sport === "tennis" ? "" : (estMinute(e) || "LIVE") + " · ") + (scoreTxt(e) || "")) + '</div>'
           + '<span class="badge info">LA TUA STRATEGIA</span>'
           + '<div class="sigbtns">' + tgBtn(tgText(e.sport, e.comp, e.home + " - " + e.away, x.txt ? x.txt : pickName(x.code, e.sport), x.odds, b.name))
-          + (x.code && x.odds > 1 && playable(e) ? '<button class="playbtn" type="button" data-play="b' + esc(b.id) + '|' + e.id + '|' + esc(x.code) + '">' + ic("coin") + ' Gioca</button>' : "") + '</div></div>' });
+          + (!pb && x.code && x.odds > 1 && playable(e) ? '<button class="playbtn" type="button" data-play="b' + esc(b.id) + '|' + e.id + '|' + esc(x.code) + '">' + ic("coin") + ' Gioca</button>' : "") + '</div></div>' });
       });
     });
     return out;
