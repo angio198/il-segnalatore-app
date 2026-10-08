@@ -130,6 +130,10 @@
   .tgopt[aria-checked="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);}
   .tgopt .tgdot{flex:none;width:16px;height:16px;margin-top:2px;border-radius:50%;border:2px solid var(--ink-soft);} .tgopt[aria-checked="true"] .tgdot{border-color:var(--accent);background:radial-gradient(var(--accent) 45%,transparent 50%);}
   .tgopt span{display:flex;flex-direction:column;gap:2px;} .tgopt pre{margin:4px 0 0;font-size:0.68rem;white-space:pre-wrap;word-break:break-all;color:var(--ink-soft);}
+  .segbar.stsec{grid-template-columns:1fr 1fr 1fr;}
+  .bhero{background:linear-gradient(135deg,color-mix(in srgb, var(--accent) 22%, var(--surface)),var(--surface));border-color:color-mix(in srgb, var(--accent) 45%, var(--line));}
+  .bhero .bht{display:flex;align-items:center;gap:8px;font-size:1.05rem;margin-bottom:4px;} .bhero .bht .ico{width:24px;height:24px;}
+  .bhero .bhk{display:flex;gap:14px;margin-top:8px;font-size:0.8rem;} .bhero .bhk b{font-size:1.1rem;}
   .segbar{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:10px;}
   .segbar button{font:inherit;font-weight:700;font-size:0.88rem;border:none;border-radius:9px;padding:9px 6px;background:none;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
   .segbar button[aria-pressed="true"]{background:var(--ink);color:var(--bg);}
@@ -883,7 +887,11 @@
   .tab.hub .hubic{width:62px;height:62px;margin:-38px 0 7px;border-radius:50%;display:grid;place-items:center;background:var(--surface);
     box-shadow:0 0 0 3px var(--surface),0 6px 16px -6px rgba(0,0,0,.6),0 0 0 5px color-mix(in srgb, var(--accent) 40%, transparent);transition:transform .2s,box-shadow .2s;}
   .tab.hub .hubic img{width:54px;height:54px;border-radius:50%;}
-  .tab.hub[aria-current="page"] .hubic{transform:scale(1.06);box-shadow:0 0 0 3px var(--surface),0 6px 18px -6px rgba(0,0,0,.6),0 0 0 6px var(--accent),0 0 18px 2px color-mix(in srgb, var(--accent) 45%, transparent);}
+  /* 10/10: icone piu' grandi, cerchio del Radar piu' piccolo e quasi dentro la barra; premuto si ingrandisce */
+  .tab .ic{width:44px;height:32px;} .tab .ic .ico{width:27px;height:27px;} .tab{font-size:0.6rem;gap:2px;}
+  .tab.hub{flex:0 0 62px;} .tab.hub .hubic{width:54px;height:54px;margin:-20px 0 6px;transform-origin:50% 100%;} .tab.hub .hubic img{width:47px;height:47px;}
+  @media (max-width:360px){ .tab .ic{width:36px;} .tab .ic .ico{width:24px;height:24px;} }
+  .tab.hub[aria-current="page"] .hubic{transform:scale(1.14);box-shadow:0 0 0 3px var(--surface),0 6px 18px -6px rgba(0,0,0,.6),0 0 0 6px var(--accent),0 0 18px 2px color-mix(in srgb, var(--accent) 45%, transparent);}
   .tab.hub:not([aria-current="page"]) .hubic img{filter:saturate(.75);}
   @media (max-height:500px){ .tab.hub .hubic{width:40px;height:40px;margin:-12px 0 0;} .tab.hub .hubic img{width:34px;height:34px;} .tab.hub{flex-direction:row;align-items:center;justify-content:center;} }
   @media (prefers-reduced-motion: reduce){ .tab.hub .hubic{transition:none;} }
@@ -1003,6 +1011,11 @@
   #view-gioco .dots{display:flex;gap:4px;margin-top:3px;} #view-gioco .dots i{width:11px;height:11px;border-radius:50%;background:var(--surface);border:1px solid var(--line);} #view-gioco .dots i.g{background:var(--good);} #view-gioco .dots i.m{background:var(--bad);}
   #view-gioco .big{font-size:1.6rem;font-weight:800;font-stretch:115%;font-variant-numeric:tabular-nums;} #view-gioco .help{font-size:0.8rem;color:var(--ink-soft);margin:8px 2px 0;}
   #view-gioco .giocolv{margin:-4px 2px 8px;font-size:0.85rem;} #view-gioco .gxbar{height:5px;border-radius:3px;background:rgba(255,255,255,.12);margin-top:4px;overflow:hidden;} #view-gioco .gxbar i{display:block;height:100%;background:#6FBE92;}
+  .gend{width:100%;max-width:340px;background:rgba(12,20,26,.92);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 12px;text-align:left;font-size:0.8rem;}
+  #view-gioco .over .gend b{font-size:0.9rem;} #view-gioco .over .gend .gs b{font-size:1.05rem;}
+  .gend .gl{display:flex;justify-content:space-between;align-items:baseline;} .gend .gxbar{height:6px;border-radius:3px;background:rgba(255,255,255,.12);margin:4px 0 6px;overflow:hidden;} .gend .gxbar i{display:block;height:100%;background:#6FBE92;}
+  .gend .gs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center;margin:4px 0;} .gend .gs b{display:block;font-size:1rem;} .gend .gs span{font-size:0.66rem;opacity:.7;}
+  .gend .gn{color:#FFD54F;font-weight:700;margin:4px 0;} .gend .lb{margin-top:6px;} .gend .lbr{display:flex;align-items:center;gap:6px;padding:2px 0;} .gend .lbr .avatar{width:20px;height:20px;border-radius:6px;} .gend .lbr.me{color:#FFD54F;font-weight:800;} .gend .lbr i{font-style:normal;width:18px;text-align:right;opacity:.7;} .gend .lbr em{margin-left:auto;font-style:normal;opacity:.8;}
   #view-gioco .stage{position:relative;display:flex;justify-content:center;} #view-gioco .over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:14px;text-align:center;padding:16px;color:#fff;}
   #view-gioco .over b{font-size:1.5rem;font-stretch:115%;} #view-gioco .ruota{display:none;}
   @media (orientation:landscape) and (max-height:500px){ #view-gioco .ruota{display:block;text-align:center;padding:30px 16px;font-weight:700;} #view-gioco .stage,#view-gioco .hud{display:none;} }
@@ -1024,6 +1037,8 @@
   .bmini{display:block;width:100%;height:auto;max-height:130px;margin-bottom:4px;}
   .bfun{display:flex;flex-direction:column;gap:5px;margin-top:4px;}
   .bfr{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;gap:8px;align-items:center;font-size:0.76rem;}
+  button.bfr{width:100%;background:none;border:0;color:inherit;font:inherit;font-size:0.76rem;text-align:left;cursor:pointer;padding:3px 0;border-radius:6px;} button.bfr:active{background:rgba(255,255,255,.06);}
+  .bfdet{margin:2px 0 8px;padding:8px;border-radius:8px;background:rgba(255,255,255,.04);font-size:0.76rem;} .bfm{display:flex;gap:6px;padding:3px 0;} .bfm .ico{width:14px;height:14px;}
   .bfl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .bfl .k{font-size:0.7rem;}
   .bft{height:9px;border-radius:5px;background:var(--line);overflow:hidden;} .bft i{display:block;height:100%;border-radius:5px;}
   .bfr b{font-variant-numeric:tabular-nums;min-width:18px;text-align:right;}
@@ -1057,10 +1072,22 @@
   .rghead{font-size:0.78rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase;margin:0 4px 8px;display:flex;align-items:center;gap:6px;}
   .rcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer;position:relative;}
   .rtop{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:8px;}
-  .rmin{color:var(--bad);font-weight:800;font-size:0.82rem;font-variant-numeric:tabular-nums;}
+  .rmin{color:var(--bad);font-weight:800;font-size:0.82rem;font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:5px;}
+  /* in corso (10/10): niente scritta LIVE, un pallino che pulsa e il bordo della scheda che "respira" */
+  .lvdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#E5322D;box-shadow:0 0 0 0 rgba(229,50,45,.6);animation:lvping 1.4s ease-out infinite;flex:none;}
+  @keyframes lvping{0%{box-shadow:0 0 0 0 rgba(229,50,45,.6);}80%{box-shadow:0 0 0 7px rgba(229,50,45,0);}100%{box-shadow:0 0 0 0 rgba(229,50,45,0);}}
+  .lglive{display:flex;flex-direction:column;gap:8px;padding:8px;} .lvwrap .rodds{display:none;} .lvodds{display:flex;gap:6px;margin-top:6px;} .lvodds > *{flex:1;} .lglive .rcard{position:relative;animation:lvbreath 3.2s ease-in-out infinite;}
+  @keyframes lvbreath{50%{box-shadow:0 0 0 1px color-mix(in srgb, #E5322D 35%, transparent),0 0 14px -4px rgba(229,50,45,.45);}}
+  @media (prefers-reduced-motion: reduce){ .lvdot,.lglive .rcard{animation:none;} }
   .rteams{display:flex;flex-direction:column;font-weight:700;font-size:0.92rem;min-width:0;} .rteams span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .rscore{display:flex;flex-direction:column;align-items:center;min-width:30px;padding:2px 8px;border-radius:8px;font-size:1.05rem;font-variant-numeric:tabular-nums;transition:background .4s;}
   .rscore.gl{background:color-mix(in srgb, #2BB673 30%, transparent);color:var(--ink);box-shadow:0 0 0 1px #2BB67399;}
+  .rwork{display:flex;flex-direction:column;gap:6px;} .rwrow{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;} .rwrow.on{border-color:color-mix(in srgb, var(--good) 55%, var(--line));}
+  .rwk{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;color:inherit;font:inherit;text-align:left;padding:10px 10px;cursor:pointer;} .rwk > .ico{width:16px;height:16px;flex:none;transition:transform .2s;} .rwk[aria-expanded="true"] > .ico{transform:rotate(90deg);}
+  .rwkn{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:0.84rem;} .rwtag{font-size:0.66rem;color:var(--ink-soft);}
+  .rwkc{display:flex;flex-direction:column;align-items:center;min-width:42px;} .rwkc b{font-size:1rem;} .rwkc small{font-size:0.6rem;color:var(--ink-soft);}
+  .rwkd{padding:0 10px 10px;display:flex;flex-direction:column;gap:6px;font-size:0.78rem;} .rwm{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.04);cursor:pointer;} .rwm .ico{width:16px;height:16px;flex:none;margin-top:2px;}
+  .rwm.fired .ico,.rwm.won .ico{color:var(--good);} .rwm.lost .ico{color:var(--bad);} .rwm.stop .ico,.rwm.wait .ico,.rwm.scan .ico{color:var(--ink-soft);}
   .rbadges{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;} .rbadges:empty{display:none;}
   .rb,.hottag{display:inline-flex;align-items:center;gap:4px;font-size:0.7rem;font-weight:800;padding:2px 8px;border-radius:999px;}
   .rb .ico,.hottag .ico{width:13px;height:13px;}
@@ -2109,7 +2136,8 @@
   // Sport scelto in alto nella scheda Strategie (ricordato su questo telefono)
   var SPORT_KEY = "segnalatore.sport";
   var STRAT_SPORTS = ["calcio", "tennis", "hockey", "basket", "ippica"];
-  var stratSport = (function () { try { return localStorage.getItem(SPORT_KEY) || "calcio"; } catch (e) { return "calcio"; } })();
+  var stratSport = (function () { try { return localStorage.getItem(SPORT_KEY) || "mie"; } catch (e) { return "mie"; } })();
+  var lastCat = stratSport === "mie" || stratSport === "market" ? "top5" : stratSport;   // ultima scelta dentro il Catalogo
   // Sfondi disegnati da noi (niente foto di terzi): campo, linee e colori di ogni sport
   function svgBg(body, bg) {
     // apici singoli: l'url finisce dentro un attributo style="..." scritto con le doppie virgolette
@@ -2164,22 +2192,27 @@
   function renderStrategie() {
     var cat = data.catalog || [];
     if (!cat.length) {
-      $("strategie").innerHTML = '<div class="chips sporttabs" role="tablist"><button class="chip" type="button" role="tab" data-ssport="mie" aria-pressed="' + (stratSport === "mie") + '">' + ic("pen") + ' Mie strategie</button><button class="chip" type="button" role="tab" data-ssport="market" aria-pressed="' + (stratSport === "market") + '">' + ic("trophy") + ' Marketplace</button></div>'
-        + (stratSport === "mie" ? mieHtml() : stratSport === "market" ? mktHtml() : builderCard() + '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'); return;
+      var sec0 = stratSport === "mie" ? "mie" : stratSport === "market" ? "market" : "cat";
+      $("strategie").innerHTML = '<div class="segbar stsec" role="tablist">' + [["mie", "pen", "Le mie"], ["market", "trophy", "Marketplace"], ["cat", "layers", "Catalogo"]].map(function (x) {
+          return '<button type="button" role="tab" data-ssport="' + (x[0] === "cat" ? lastCat : x[0]) + '" aria-pressed="' + (x[0] === sec0) + '">' + ic(x[1]) + ' ' + x[2] + '</button>'; }).join("") + '</div>'
+        + (sec0 === "mie" ? mieHtml() : sec0 === "market" ? mktHtml() : '<div class="note">Elenco delle strategie non ancora disponibile: aggiorna tra qualche minuto.</div>'); return;
     }
     var cc = catOf(stratSport), nCat = cc && cc.strategies ? cc.strategies.length : 0;
     // classifica per rendimento storico: "Top 5" e "Dalla 6 alla 10" (prima la Top 10 ripeteva meta' della Top 5)
     var TOPS = { top5: [0, 5], top10: [5, 10] };
     if (!HERO[stratSport] && !TOPS[stratSport] && stratSport !== "mie" && stratSport !== "market") stratSport = "calcio";
-    var tabs = '<div class="chips sporttabs" role="tablist">'
+    // 10/10: Strategie in ordine. In alto tre sezioni: Mie strategie (Strategy builder in evidenza), Marketplace,
+    // Catalogo; le classifiche e gli sport stanno solo dentro il Catalogo
+    var sec = stratSport === "mie" ? "mie" : stratSport === "market" ? "market" : "cat"; if (sec === "cat") lastCat = stratSport;
+    var tabs = '<div class="segbar stsec" role="tablist">' + [["mie", "pen", "Le mie"], ["market", "trophy", "Marketplace"], ["cat", "layers", "Catalogo"]].map(function (x) {
+        return '<button type="button" role="tab" data-ssport="' + (x[0] === "cat" ? lastCat : x[0]) + '" aria-pressed="' + (x[0] === sec) + '">' + ic(x[1]) + ' ' + x[2] + '</button>'; }).join("") + '</div>'
+      + (sec !== "cat" ? "" : '<div class="chips sporttabs" role="tablist">'
       + ["top5", "top10"].map(function (t) {
         return '<button class="chip" type="button" role="tab" data-ssport="' + t + '" aria-pressed="' + (t === stratSport) + '">' + ic("star") + (t === "top5" ? " Top 5" : " Dalla 6 alla 10") + '</button>';
       }).join("")
-      + '<button class="chip" type="button" role="tab" data-ssport="mie" aria-pressed="' + (stratSport === "mie") + '">' + ic("pen") + ' Mie strategie</button>'
-      + '<button class="chip" type="button" role="tab" data-ssport="market" aria-pressed="' + (stratSport === "market") + '">' + ic("trophy") + ' Marketplace</button>'
       + STRAT_SPORTS.map(function (sp) {
         return '<button class="chip" type="button" role="tab" data-ssport="' + sp + '" aria-pressed="' + (sp === stratSport) + '">' + EMOJI[sp] + ' ' + NAME[sp] + '</button>';
-      }).join("") + '</div>';
+      }).join("") + '</div>');
     function row(s, withSport) {
       var id = "sw-" + s.id, rank = topIds().indexOf(s.id);
       if (catLocked(s.id)) {
@@ -2201,7 +2234,7 @@
     if (TOPS[stratSport]) {
       var R = TOPS[stratSport], ids = topIds(), top = ids.slice(R[0], R[1]).map(function (id) { return cat.find(function (s) { return s.id === id; }); }).filter(Boolean);
       var mc = (data.top5 && data.top5.min_cases) || 100;
-      $("strategie").innerHTML = tabs + builderCard() + legheCard()
+      $("strategie").innerHTML = tabs + legheCard()
         + '<div class="hero" style="background-image:linear-gradient(120deg,#3B2F0B,#8A6A14 60%,#C9A227);"><div class="ht">' + ic("star") + (R[0] ? ' Dalla 6 alla 10' : ' Top 5') + '</div><div class="hs">Le strategie col rendimento storico più alto, tutti gli sport (almeno ' + mc + ' casi)</div></div>'
         + topSwitchHtml(R)
         + (top.length ? '<h2 class="sectiontitle">' + (R[0] ? "Posizioni dalla 6 alla 10" : "Le prime 5") + '</h2>' + NOTE + '<div class="card">' + top.map(function (s) { return row(s, true); }).join("") + '</div>'
@@ -2213,7 +2246,7 @@
     var hero = '<div class="hero hinfob" role="button" tabindex="0" data-sportinfo="' + stratSport + '" aria-label="Come funziona: ' + esc(NAME[stratSport]) + '" style="background-image:linear-gradient(90deg,rgba(10,16,18,.72),rgba(10,16,18,.2)),' + HERO[stratSport] + ';">'
       + '<div class="ht">' + EMOJI[stratSport] + ' ' + NAME[stratSport] + '</div><div class="hs">' + count + ' strategie</div>'
       + '<span class="hinfo">Come funziona ›</span></div>';
-    $("strategie").innerHTML = tabs + builderCard() + legheCard() + hero + [stratSport].map(function (sport) {
+    $("strategie").innerHTML = tabs + legheCard() + hero + [stratSport].map(function (sport) {
       var rows = cat.filter(function (s) { return s.sport === sport; }).map(function (s) { return row(s, false); }).join("");
       return rows ? '<h2 class="sectiontitle">Le nostre strategie</h2>' + NOTE + '<div class="carousel">' + rows + '</div>' : '<div class="note" style="margin-top:14px;">Nessuna strategia nostra per questo sport, per ora.</div>';
     }).join("") + catalogoHtml(stratSport) + (stratSport === "ippica" ? schedeHtml() + esteroHtml() : "");
@@ -2891,7 +2924,7 @@
         + (x.who ? avatar(x.who, 38) : '<span class="atti">' + ic(x.ic) + '</span>') + '<span class="attw"><b>' + esc(x.t) + '</b><span class="k">' + esc(x.s) + '</span></span><span class="k atime">' + whenLabel(x.ts) + (link || det ? ic("chev") : "") + '</span></button>'
         + (det ? '<div class="attdet" id="attdet' + i + '" hidden>' + det + (x.who ? '<button class="linkbtn" type="button" data-attgo="p:' + esc(x.who) + '">Profilo ›</button>' : "") + '</div>' : "");
     }).join("") + '</div>' : '<div class="note">Nessuna notifica, per ora. Segui qualcuno del Team nella Home per vedere qui quello che pubblica.</div>';
-    try { localStorage.setItem(ATT_KEY, String(nowS())); } catch (e) {}
+    try { localStorage.setItem(ATT_KEY, String(nowS())); } catch (e) {}   // le notifiche con l'ora nel futuro non accendono il pallino (10/10)
     paintAttDot();
   }
   // Live (07/10 sera): le tue giocate in corso, in un formato diverso dal Radar: punteggio della partita adesso,
@@ -2955,11 +2988,13 @@
         return '<div class="card lvcard closed"><div class="lvhead"><b>' + esc(s.legs.map(function (l) { return l.event; }).join(", ")) + '</b><span class="' + (s.won === 1 ? "pos" : s.won === 0 ? "neg" : "k") + '">' + (s.won === 1 ? "vinto" : s.won === 0 ? "perso" : "nullo") + '</span></div></div>';
       }).join("") + '<button class="chip" type="button" data-livehist="1">' + ic("diario") + ' Tutto lo storico</button>' : "");
     var t = document.querySelector('.tab[data-view="live"]');
-    if (t) { var dd = t.querySelector(".ndot"), on2 = open.length > 0; if (on2 && !dd) t.insertAdjacentHTML("beforeend", '<span class="ndot lv"></span>'); else if (!on2 && dd) dd.remove(); }
+    // pallino solo se una tua giocata ha una partita in corso adesso (10/10: prima bastava una giocata aperta)
+    var liveNow = open.some(function (s) { return s.legs.some(function (l) { var e = l.result == null ? evById(Number(l.event_id)) : null; return e && e.live; }); });
+    if (t) { var dd = t.querySelector(".ndot"), on2 = liveNow; if (on2 && !dd) t.insertAdjacentHTML("beforeend", '<span class="ndot lv"></span>'); else if (!on2 && dd) dd.remove(); }
   }
   function paintAttDot() {
     var t = document.querySelector('.tab[data-view="attivita"]'); if (!t || !data) return;
-    var seen = attSeen(), on2 = attItems().some(function (x) { return x.ts > seen; }), d = t.querySelector(".ndot");
+    var seen = attSeen(), now2 = nowS(), on2 = attItems().some(function (x) { return x.ts > seen && x.ts <= now2 + 60; }), d = t.querySelector(".ndot");
     if (on2 && !d) t.insertAdjacentHTML("beforeend", '<span class="ndot"></span>'); else if (!on2 && d) d.remove();
   }
   function renderAll() {
@@ -4567,7 +4602,12 @@
     setPic: function (u, auto) { if (auto === "rifai") { me.pic = u; me.picOm = true; if (meEdit) meEdit.pic = u; saveMe(); return; } if (auto && me.picShot) return; me.pic = u; me.picOm = true; if (!auto) me.picShot = true; if (meEdit) meEdit.pic = u; saveMe(); if (data && !auto) renderAll(); },
     toast: function (t, s2) { fxToast("coin", t, s2); },
     refresh: function () { if (data) renderProfilo(); },
-    show: function (v) { show(v); }
+    show: function (v) { show(v); },
+    // per la classifica dei minigiochi: i personaggi del Team StatSight (dichiarati) e le loro facce
+    team: function () { return team().map(function (p) { return { id: p.id, name: p.name }; }); },
+    avatar: function (id, size) { return avatar(id, size); },
+    myAvatar: function (size) { return myAvatar(size); },
+    myName: function () { return me.name || "Tu"; }
   };
 
   // classifica della settimana: tu in mezzo al Team StatSight, stessi punti lega (vinto = quota − 1, perso = −1)
@@ -4643,11 +4683,14 @@
   function ippicaDiarioHtml() {
     var evs = ippicaEvents().filter(function (e) { return e.start > nowS(); });
     if (!evs.length) return '<div class="note">Nessuna corsa in arrivo sugli ippodromi di cui abbiamo lo storico dei cavalli.</div>';
-    var by = {}, order = [];
-    evs.forEach(function (e) { var k = e.country || "?"; if (!by[k]) { by[k] = []; order.push(k); } by[k].push(e); });
-    return '<div class="note" style="margin-bottom:8px;">Vincente: vince se il cavallo arriva primo; ritirato = nullo. Quota fissa vista ora. Si pronostica solo sugli ippodromi di cui abbiamo lo storico.</div>'
+    // 10/10: programma delle corse come le partite: "In partenza" (entro 30 minuti) e "Programmate", per ippodromo
+    var by = {}, order = [], soon = nowS() + 30 * 60;
+    evs.sort(function (a, b) { return a.start - b.start; }).forEach(function (e) { var k = (e.start <= soon ? "0" : "1") + "|" + ((e.race && e.race.track) || e.home || "") + ((e.race && e.race.country) ? " · " + (PAESI[e.race.country] || e.race.country) : ""); if (!by[k]) { by[k] = []; order.push(k); } by[k].push(e); });
+    var lastSec = null;
+    return '<div class="note" style="margin-bottom:8px;">Vincente: vince se il cavallo arriva primo; ritirato = nullo. Quota fissa vista ora. Solo gli ippodromi di cui abbiamo lo storico dei cavalli.</div>'
       + order.map(function (k) {
-        return '<h2 class="sectiontitle">' + esc(PAESI[k] || k) + ' <span class="k">' + by[k].length + '</span></h2>' + by[k].map(function (e) {
+        var sec = k[0] === "0" ? "In partenza" : "Programmate", h = sec !== lastSec ? '<h2 class="calsec">' + (sec === "In partenza" ? '<i class="lvdot"></i> ' : ic("clock") + " ") + sec + '</h2>' : ""; lastSec = sec;
+        return h + '<h2 class="sectiontitle">' + esc(k.slice(2) || "?") + ' <span class="k">' + by[k].length + '</span></h2>' + by[k].map(function (e) {
           var rs = e.runners.filter(function (x) { return x.odds > 1; }).sort(function (a, b) { return a.odds - b.odds; });
           return '<div class="card irace"><div class="irtop"><span><b>' + esc(startLabel(e.start)) + '</b> · ' + esc(e.home) + '</span>'
             + '<button class="linkbtn" type="button" data-race="' + esc(e.id) + '">Schede ' + ic("chev") + '</button></div>'
@@ -4895,6 +4938,7 @@
     }
     if (!evs.length) html += '<div class="note">' + (G ? 'Nessuna partita in questa vista per il gruppo "' + esc(G.name) + '".'
       : isLive ? "Nessuna partita in corso con quote in questo momento." : "Nessuna partita in programma con quote nelle prossime 24 ore.") + '</div>';
+    if (isLive && evs.some(function (e) { return e.sport === "tennis" && e.st; })) html += '<div class="note rlegend">' + ic("info") + ' <b>Punti vinti al servizio</b>: su 100 punti che ognuno gioca quando serve, quanti ne vince (primo giocatore - secondo). <b>In risposta</b>: lo stesso, quando risponde. Sono percentuali separate: non si sommano.</div>';
     $("diarioevents").innerHTML = html;
   }
   // segnali pre-partita (08/10): non stanno piu' in Segnali, si vedono sulla partita nel Calendario
@@ -4911,12 +4955,18 @@
     return '<div class="lgcard' + (open ? " open" : "") + '"><div class="lghead"><button class="lgtoggle" type="button" data-cexp="' + esc(k) + '" aria-expanded="' + open + '">'
       + '<span class="flag">' + flagOf(e0) + '</span><span class="lgn"><b>' + esc(campLabel(e0)) + '</b><small>' + esc(countryOf(e0)) + (nl && dview !== "live" ? " · " + nl + " live" : "") + '</small></span>'
       + '<span class="lgc">' + list.length + '</span><span class="lgchev">' + ic("chev") + '</span></button>' + starBtn("comp", k, isPrefComp(e0)) + '</div>'
-      + (open ? '<div class="lgcols">' + cols.map(function (c) { return '<span>' + c + '</span>'; }).join("") + '</div>' + list.map(function (e) { return evRow(e, false); }).join("") : "") + '</div>';
+      + (open ? (dview === "live" ? '<div class="lglive">' + list.map(liveRow).join("") + '</div>' : '<div class="lgcols">' + cols.map(function (c) { return '<span>' + c + '</span>'; }).join("") + '</div>' + list.map(function (e) { return evRow(e, false); }).join("")) : "") + '</div>';
+  }
+  // 10/10: nella vista Live di Match ogni partita con statistiche e' la scheda del Radar; senza statistiche la riga
+  function liveRow(e) {
+    if (!(e.live && e.st && (e.sport === "calcio" || e.sport === "tennis"))) return evRow(e, false);
+    var q = quickCodes(e), labels = e.sport === "calcio" ? ["1", "X", "2"] : ["1", "2"];   // quote da toccare per giocare
+    return '<div class="lvwrap">' + (e.sport === "calcio" ? calcioCard(e) : tennisCard(e)) + '<span class="evodds lvodds">' + q.map(function (c, i) { return tile(e, c, labels[i]); }).join("") + '</span></div>';
   }
   function evRow(e, showComp) {
     var q = quickCodes(e), labels = e.sport === "calcio" ? ["1", "X", "2"] : ["1", "2"];
     var sc = e.st ? scoreOf(e.sport === "calcio" ? e.st.score : e.st.sets) : null, today = dayOf(nowS());
-    var time = e.live ? '<b class="livemin">' + esc(estMinute(e) || "LIVE") + '</b>'
+    var time = e.live ? '<b class="livemin"><i class="lvdot"></i>' + esc(estMinute(e) || "") + '</b>'
       : e.start ? hhmm(e.start) + (dayOf(e.start) !== today ? '<small>' + WD[new Date(e.start * 1000).getDay()] + " " + new Date(e.start * 1000).getDate() + '</small>' : "") : "";
     function side(n) { return '<span>' + teamLogo(n === 1 ? e.home : e.away, e.sport) + '<span class="tn">' + pname(e, n) + '</span>' + (sc ? '<b class="sc">' + sc[n - 1] + '</b>' : "") + '</span>'; }
     return '<div class="evline' + (e.live ? " islive" : "") + '">' + starBtn("ev", e.id, isPrefEv(e))
@@ -5369,6 +5419,8 @@
   $("diarioevents").addEventListener("click", function (ev) {
     var dc = ev.target.closest("button[data-dcomp]");
     if (dc) { dcomp = dc.dataset.dcomp; renderDiario(); return; }
+    var rst = ev.target.closest("[data-rstrat]"); if (rst && data) { openRadarStrat(rst.dataset.rstrat); return; }   // la strategia sotto i nomi apre la strategia
+    var rcd = ev.target.closest(".rcard[data-ev]"); if (rcd && data) { openMatch(rcd.dataset.ev); return; }
     var lg = ev.target.closest("button[data-lega]");
     if (lg) { setLega(lg.dataset.lega); return; }
     if (ev.target.closest("button[data-campi]")) { openCampionati(); return; }
@@ -5574,7 +5626,7 @@
     var cls = "rcard" + (hotOf(e) ? " hotm" : "") + (fx.flash ? " flashg" : "") + (fx.redFlash || redHi ? " redal" : "") + (e.susp ? " susp" : "") + SB.cls;
     fx.flash = false; fx.redFlash = false;
     return '<div class="' + cls + '" data-ev="' + e.id + '" role="button" tabindex="0">'
-      + '<div class="rtop"><span class="rmin">' + esc(estMinute(e) || "LIVE") + '</span>'
+      + '<div class="rtop"><span class="rmin"><i class="lvdot"></i>' + esc(estMinute(e) || "") + '</span>'
       + '<span class="rteams"><span>' + pname(e, 1) + '</span><span>' + pname(e, 2) + '</span></span>'
       + '<span class="rscore' + (goalHi ? " gl" : "") + '"><b>' + sc[0] + '</b><b>' + sc[1] + '</b></span></div>'
       + (SB.cls.indexOf("wonm") >= 0 ? '<span class="rwon">' + ic("check") + '</span>' : "")
@@ -5628,7 +5680,10 @@
   // Radar ippica (04/10, signals/ippica_radar.py): Prossime con i partenti e il NOSTRO pronostico (FROZEN_TOP3, la
   // strategia dichiarata piu' vincente, un cavallo da primi tre; Full), Recenti col trio d'arrivo
   function renderRadarIppica() {
-    var S0 = data.ippica_schede || {}, R0 = data.ippica_radar || {}, races = (S0.races || []).slice(0, 15), rec = R0.record;
+    var S0 = data.ippica_schede || {}, R0 = data.ippica_radar || {}, rec = R0.record, D0 = data.ippica_diario || {}, tk = {};
+    (D0.tracks || []).forEach(function (t) { tk[t] = 1; });
+    // 10/10: solo le corse sugli ippodromi con lo storico dei cavalli e con un cavallo scelto dalla nostra strategia
+    var races = (S0.races || []).filter(function (r) { return (!D0.tracks || tk[String(r.track || "").trim().toUpperCase()]) && (R0.picks || {})[r.key]; }).slice(0, 15);
     var head = '<div class="note" style="margin-bottom:10px;">' + ic("ippica") + ' Il nostro pronostico è quello di <b>' + esc(R0.strategy || "FROZEN_TOP3") + '</b>: un cavallo da primi tre, scelto 15 minuti prima del via.'
       + (rec ? ' Finora ' + rec[1] + ' piazzati su ' + rec[0] + ' corse, rendimento ' + pct(rec[2]) + '.' : "") + ' Strategia in prova: nessun cavallo è sicuro.</div>';
     var prox = races.length ? races.map(function (r) {
@@ -5639,14 +5694,16 @@
         + '<div class="irfav">' + fav.map(function (x) { return '<span translate="no">' + esc(x.horse) + ' <b>' + oddsTxt(x.odds) + '</b></span>'; }).join("") + '</div>'
         + (pk ? (isFull() ? '<div class="irpick">' + ic("star") + '<span>Nostro pronostico: <b translate="no">' + esc(pk.horse) + '</b> piazzato' + (pk.odds ? ' @ ' + oddsTxt(pk.odds) : "") + '</span></div>'
           : '<div class="irpick">' + ic("lock") + ' Nostro pronostico con StatSight Full</div>') : "") + '</button>';
-    }).join("") : '<div class="note">Nessuna corsa in partenza nelle prossime ore.</div>';
+    }).join("") : '<div class="note">Nessun cavallo delle nostre strategie in partenza adesso.</div>';
     var recent = (R0.recent || []).length ? '<div class="card">' + R0.recent.map(function (x) {
       var pk = x.pick;
       return '<div class="irrec"><div><b>' + esc(x.track || "") + ' · corsa ' + x.race_no + '</b><span class="k"> · ' + esc(x.time || dmy(x.date)) + ' · ' + esc(PAESI[x.country] || x.country || "") + '</span></div>'
         + '<div class="trio">' + x.trio.map(function (t, i) { return '<span><i>' + (i + 1) + '°</i> <span translate="no">' + esc(t[0]) + '</span>' + (t[1] ? ' <span class="k">' + oddsTxt(t[1]) + '</span>' : "") + '</span>'; }).join("") + '</div>'
         + (pk && isFull() ? '<div class="irpick ' + (pk.hit === 1 ? "pos" : pk.hit === 0 ? "neg" : "") + '">' + ic(pk.hit === 1 ? "check" : pk.hit === 0 ? "x" : "clock") + ' Nostro pronostico: ' + esc(pk.horse) + (pk.hit === 1 ? " · piazzato" : pk.hit === 0 ? " · non piazzato" : " · in attesa") + '</div>' : "") + '</div>';
     }).join("") + '</div>' : '<div class="note">Ancora nessun arrivo oggi.</div>';
-    $("radar").innerHTML = head + '<h2 class="sectiontitle">Prossime</h2>' + prox + '<h2 class="sectiontitle">Recenti</h2>' + recent;
+    $("radar").innerHTML = head + '<h2 class="sectiontitle">Cavalli in partenza delle nostre strategie</h2>' + prox
+      + '<button class="card navcard" type="button" data-goippica="1" style="margin-top:8px;">' + ic("calendar") + '<span><b>Tutto il programma delle corse</b><span class="k">In partenza e programmate: in Match</span></span>' + ic("chev") + '</button>'
+      + '<h2 class="sectiontitle">Recenti</h2>' + recent;
   }
   function renderRadar() {
     if (rsport === "ippica") { $("radarage").textContent = ""; renderRadarIppica(); return; }
@@ -5655,16 +5712,9 @@
     $("radarage").textContent = dz ? "dati di " + ageTxt(dz.at) : "";
     var head = radarHeadHtml(evs);
     if (!evs.length) { $("radar").innerHTML = head + '<div class="note">Nessuna partita live con statistiche in questo momento.</div>'; return; }
-    var groups = {}, order = [];
-    evs.forEach(function (e) { var k = e.comp || NAME[e.sport]; if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(e); });
-    var hotFirst = function (k) { return groups[k].some(function (e) { return !!hotOf(e) || radarStrats(e).length > 0; }) ? 1 : 0; };
-    order.sort(function (a, b) { return hotFirst(b) - hotFirst(a) || groups[b].length - groups[a].length || (a > b ? 1 : -1); });
-    $("radar").innerHTML = head + '<h2 class="rsec">' + ic("radar") + ' Tutte le partite live <span class="k">' + evs.length + '</span></h2>' + order.map(function (k) {
-      var list = groups[k].sort(function (a, b) { return (hotOf(b) || radarStrats(b).length ? 1 : 0) - (hotOf(a) || radarStrats(a).length ? 1 : 0) || ((b.st && b.st.minute) || 0) - ((a.st && a.st.minute) || 0); });
-      return '<section class="rgroup" style="--tint:' + compTint(k) + '"><div class="rghead">' + EMOJI[rsport] + ' ' + esc(shortComp(k)) + ' <span class="k">' + list.length + '</span></div>'
-        + list.map(function (e) { return rsport === "calcio" ? calcioCard(e) : tennisCard(e); }).join("") + '</section>';
-    }).join("") + (rsport === "tennis" ? '<div class="note rlegend">' + ic("info") + ' <b>Punti vinti al servizio</b>: su 100 punti che ognuno gioca quando serve, quanti ne vince (primo giocatore - secondo). <b>In risposta</b>: lo stesso, quando risponde. Sono percentuali separate: non si sommano.</div>' : "")
-      + (!isFull() ? '<div class="upsell" style="margin-top:10px;">' + ic("lock") + ' Le statistiche col lucchetto e le strategie delle partite calde si vedono con <b>StatSight Full</b>.</div>' : "");
+    // 10/10: le schede delle partite live stanno in Match; qui solo il lavoro delle strategie
+    $("radar").innerHTML = head + '<button class="card navcard" type="button" data-golive="1" style="margin-top:12px;">' + ic("calendar") + '<span><b>Tutte le partite live</b><span class="k">' + evs.length + ' adesso, con statistiche e quote: in Match</span></span>' + ic("chev") + '</button>'
+      + (!isFull() ? '<div class="upsell" style="margin-top:10px;">' + ic("lock") + ' Le strategie delle partite calde si vedono con <b>StatSight Full</b>.</div>' : "");
     if (radarWinFx) { radarWinFx = false; hubWin(); }
   }
   // ---------------------------------------------------------------- Radar delle strategie (08/10)
@@ -5692,6 +5742,61 @@
     });
     return order.map(function (k) { return by[k]; }).sort(function (a, b) { return b.pts - a.pts || b.o - a.o || b.n - a.n; });
   }
+  // Strategie al lavoro (10/10): ogni strategia accesa di questo sport (nostre, con le tue barre, tue del builder),
+  // quante partite live controlla adesso e cosa succede su ognuna. Toccandola si apre l'elenco: scattata (con
+  // indicazione e quota), ferma a un blocco (per le tue: quale regola e il valore vero), in attesa del minuto giusto
+  // (barre col minuto), oppure in osservazione. Zero partite = te lo dice e spiega perche'.
+  var rOpen = {};
+  function radarWork(evs, B) {
+    var items = [], byB = {}; B.forEach(function (b) { byB[b.open] = b; });
+    (data.catalog || []).forEach(function (s) { if (s.sport === rsport && s.timing !== "prepartita" && !s.retired && on(s.id) && !catLocked(s.id)) items.push({ key: "d:" + s.id, name: s.name, tag: "Nostra", kind: "sig", s: s }); });
+    var cc = catOf(rsport);
+    if (cc && cc.strategies && rsport === "tennis") cc.strategies.forEach(function (s) { if (catOn.has(s.id) && !catLocked(s.id)) items.push({ key: "c:" + s.id, name: s.name, tag: "Le tue barre", kind: "bar", s: s }); });
+    builds.forEach(function (b) { if (b.mode === "live" && b.sport === rsport && bldSigOn(b)) items.push({ key: "b:" + b.id, name: b.name, tag: "Tua", kind: "bld", b: b }); });
+    if (!items.length) return '<h2 class="rsec">' + ic("strategie") + ' Strategie al lavoro</h2><div class="note">Nessuna strategia live accesa per ' + esc(NAME[rsport]) + '. Accendile in Strategie.</div>';
+    var rows = items.map(function (si) {
+      var list = [], scan = evs.length, why0 = "";
+      if (si.kind === "bld") {
+        var R = bldRun(si.b), src = si.b.nodes.filter(function (n) { return n.t === "src"; })[0], ev = (R.stat._ev || {});
+        var reached = src ? (ev[src.id] || []) : []; scan = reached.length;
+        if (!scan) why0 = evs.length ? "nessuna partita live rispetta la fonte (" + nodeLabel(src, si.b) + ")" : "nessuna partita live adesso";
+        reached.forEach(function (id) {
+          var e = evById(id); if (!e) return;
+          var fired = R.res.filter(function (x) { return x.e.id === id; })[0];
+          if (fired) { list.push({ e: e, st: "fired", t: fired.code ? pickName(fired.code, e.sport) + (fired.odds ? " @ " + oddsTxt(fired.odds) : "") : (fired.txt || "Avviso") }); return; }
+          var last = null; si.b.nodes.forEach(function (n) { if ((ev[n.id] || []).indexOf(id) >= 0 && n.t !== "src") last = n; });
+          var stopAt = last || src, w = (R.stat._why || {})[stopAt.id + ":" + id], t = "si ferma a: " + nodeLabel(stopAt, si.b);
+          if (w) { var bad = w.filter(function (x) { return x.ok !== true; })[0]; if (bad) t = dLabel(bad.r.a, si.b) + " = " + (bad.v == null ? "dato che manca" : String(Math.round(bad.v * 100) / 100).replace(".", ",")) + " (serve " + opTxt(bad.r.op) + " " + valTxt(bad.r, si.b) + ")"; }
+          list.push({ e: e, st: "stop", t: t });
+        });
+      } else {
+        var minP = null;
+        if (si.kind === "bar") { var idx = String(catKey(si.s)).split("_"); (si.s.params || []).forEach(function (p, i) { if (p.key === "min") minP = p.values[Number(idx[i])]; }); }
+        evs.forEach(function (e) {
+          var f = radarStrats(e).filter(function (x) { return x.open === si.key; })[0];
+          if (f) { list.push({ e: e, st: f.done ? (f.hit ? "won" : "lost") : "fired", t: (f.pick || "") + (f.odds ? " @ " + oddsTxt(f.odds) : "") }); return; }
+          var m = e.st && e.st.minute;
+          if (minP && m != null && m < minP) list.push({ e: e, st: "wait", t: "aspetta il minuto " + minP + " (ora " + m + "')" });
+          else list.push({ e: e, st: "scan", t: "la controlla: le condizioni non ci sono ancora" });
+        });
+        if (!evs.length) why0 = "nessuna partita live adesso";
+      }
+      var nF = list.filter(function (x) { return x.st === "fired" || x.st === "won" || x.st === "lost"; }).length, b0 = byB[si.key] || byB["d:" + (si.s && si.s.id)];
+      var open = !!rOpen[si.key];
+      var head = '<button class="rwk" type="button" data-rwork="' + esc(si.key) + '" aria-expanded="' + open + '"><span class="rwkn"><b>' + esc(si.name) + '</b><span class="rwtag">' + esc(si.tag) + '</span></span>'
+        + '<span class="rwkc"><b>' + scan + '</b><small>controlla</small></span><span class="rwkc' + (nF ? " pos" : "") + '"><b>' + nF + '</b><small>scattata</small></span>'
+        + (b0 ? '<span class="rwkc ' + (b0.pts > 0 ? "pos" : b0.pts < 0 ? "neg" : "") + '"><b>' + (b0.pts > 0 ? "+" : "") + it(b0.pts, 1) + '</b><small>punti</small></span>' : '<span class="rwkc"><b>0</b><small>punti</small></span>') + ic("chev") + '</button>';
+      var body = !open ? "" : '<div class="rwkd">' + (si.kind === "bar" ? '<div class="k">Le tue barre: ' + esc((si.s.params || []).map(function (p, i) { var ix = Number(String(catKey(si.s)).split("_")[i]); return p.label + " " + (p.labels ? p.labels[ix] : p.values[ix]); }).join(" · ")) + '</div>' : "")
+        + (si.kind === "sig" && si.s.description ? '<div class="k">' + esc(si.s.description) + '</div>' : "")
+        + (list.length ? list.sort(function (a, b) { var o = { won: 0, fired: 1, lost: 2, stop: 3, wait: 4, scan: 5 }; return o[a.st] - o[b.st]; }).map(function (x) {
+            var icn = { fired: "bolt", won: "check", lost: "x", stop: "minus", wait: "clock", scan: "eye" }[x.st];
+            return '<div class="rwm ' + x.st + '" data-ev="' + x.e.id + '" role="button" tabindex="0">' + ic(icn) + '<span><b>' + esc(x.e.home + " - " + x.e.away) + '</b> <span class="k">' + esc(estMinute(x.e) || "") + '</span><br><span class="k">' + esc(x.t) + '</span></span></div>';
+          }).join("") : '<div class="note">0 partite: ' + esc(why0 || "nessuna partita adesso") + '.</div>') + '</div>';
+      return { html: '<div class="rwrow' + (nF ? " on" : "") + '">' + head + body + '</div>', nF: nF, scan: scan };
+    }).sort(function (a, b) { return b.nF - a.nF || b.scan - a.scan; });
+    return '<h2 class="rsec">' + ic("strategie") + ' Strategie al lavoro <span class="k">' + items.length + ' accese</span></h2><div class="rwork">' + rows.map(function (r) { return r.html; }).join("") + '</div>'
+      + '<div class="k rhnote">Tocca una strategia: le partite live che sta controllando e a che punto è su ognuna.</div>';
+  }
   function radarHeadHtml(evs) {
     var B = radarBoard(evs), open = B.reduce(function (s2, b) { return s2 + b.o; }, 0), w = B.reduce(function (s2, b) { return s2 + b.w; }, 0), l = B.reduce(function (s2, b) { return s2 + b.l; }, 0);
     var hot = evs.filter(function (e) { return hotOf(e); }).map(function (e) { return { e: e, h: hotOf(e).slice().sort(function (a, b) { return b.p - a.p; })[0] }; }).sort(function (a, b) { return b.h.p - a.h.p; });
@@ -5702,6 +5807,7 @@
       }).join("") + '</div>'
       + '<div class="rhstats"><div><b>' + evs.length + '</b><span>partite live</span></div><div><b>' + B.length + '</b><span>strategie al lavoro</span></div>'
       + '<div><b class="rhopen">' + open + '</b><span>scattate in corso</span></div><div><b><span class="pos">' + w + '</span>-<span class="neg">' + l + '</span></b><span>vinte-perse oggi</span></div></div></div>';
+    html += radarWork(evs, B);
     html += '<h2 class="rsec">' + ic("trophy") + ' Classifica in tempo reale</h2>';
     html += B.length ? '<div class="rboard">' + B.slice(0, 8).map(function (b, i) {
         var c = RCOL[i % RCOL.length];
@@ -5713,7 +5819,7 @@
           + (i === 0 && b.pts > 0 ? '<span class="rbfire">' + ic("flame") + '</span>' : "") + '</button>';
       }).join("") + '</div><div class="k rhnote">Punti di oggi: vinta = quota − 1, persa = −1. Tocca una strategia per aprirla.</div>'
       : '<div class="note">Nessuna strategia è scattata sulle partite live di oggi. Il radar continua a cercare.</div>';
-    var myB = builds.filter(function (b) { return b.mode === "live" && b.sport === rsport; }).map(function (b) { return { b: b, f: bldFires(b) }; });
+    var myB = [];
     if (myB.length) html += '<h2 class="rsec">' + ic("pen") + ' Le tue strategie <span class="k">Strategy builder</span></h2><div class="rboard">' + myB.map(function (x, i) {
         return '<div class="rbrow mine" style="--c:' + RCOL[(i + 3) % RCOL.length] + '"><span class="rbn">' + ic("strategie") + '</span><span class="rbw"><b>' + esc(x.b.name) + '</b><span class="k">'
           + (x.f.length ? "scatterebbe adesso su " + x.f.map(function (y) { return y.e.home + " - " + y.e.away; }).slice(0, 3).join(", ") : "adesso non scatta su nessuna partita") + '</span></span>'
@@ -5739,7 +5845,11 @@
     if (data) renderRadar();
   });
   function openRadarStrat(v) { var id = v.slice(2); if (v[0] === "c") renderCat(id); else renderDetail(id); }
-  $("radar").addEventListener("click", function (e) { var rs = e.target.closest("[data-rstrat]"); if (rs && data) { openRadarStrat(rs.dataset.rstrat); return; } var rc = e.target.closest("[data-race]"); if (rc && data) { renderRace(rc.dataset.race); return; } var r = e.target.closest("[data-ev]"); if (r && data) { openMatch(r.dataset.ev); } });
+  $("radar").addEventListener("click", function (e) {
+    var wk = e.target.closest("[data-rwork]"); if (wk && data) { rOpen[wk.dataset.rwork] = !rOpen[wk.dataset.rwork]; renderRadar(); return; }
+    if (e.target.closest("[data-goippica]") && data) { dview = "pre"; dsport = "ippica"; renderDiario(); show("diario"); window.scrollTo(0, 0); return; }
+    if (e.target.closest("[data-golive]") && data) { dview = "live"; dsport = rsport; renderDiario(); show("diario"); window.scrollTo(0, 0); return; }
+    var rs = e.target.closest("[data-rstrat]"); if (rs && data) { openRadarStrat(rs.dataset.rstrat); return; } var rc = e.target.closest("[data-race]"); if (rc && data) { renderRace(rc.dataset.race); return; } var r = e.target.closest("[data-ev]"); if (r && data) { openMatch(r.dataset.ev); } });
   $("radar").addEventListener("keydown", function (e) { var rs = e.target.closest("[data-rstrat]"); if (rs && data && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openRadarStrat(rs.dataset.rstrat); return; } var r = e.target.closest("[data-ev]"); if (r && data && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openMatch(r.dataset.ev); } });
 
   // ---------------------------------------------------------------- Il mio occhio: esperienza, leghe, badge
@@ -7244,11 +7354,12 @@
       }
       ins.slice(0, n.t === "unisci" ? 1 : 1).forEach(function (x) {
         var msg = x.msg;
-        if (stat) stat[id] = (stat[id] || 0) + 1;
+        if (stat) { stat[id] = (stat[id] || 0) + 1; stat._ev = stat._ev || {}; (stat._ev[id] = stat._ev[id] || []).push(e.id); }
         if (n.t === "src" || n.t === "unisci") send(n, 0, msg);
         else if (n.t === "se") {
           var rs = (p.rules || []).map(function (r) { return cmp(bData(e, r.a, msg.v), r.op, rVal(e, r.bt, r.b, msg.v)); });
           var ok = rs.length && (p.any ? rs.some(function (z) { return z === true; }) : rs.every(function (z) { return z === true; }));
+          if (stat) { stat._why = stat._why || {}; stat._why[id + ":" + e.id] = (p.rules || []).map(function (r, ri) { return { r: r, v: bData(e, r.a, msg.v), ok: rs[ri] }; }); }
           var known = rs.every(function (z) { return z !== null; });
           if (ok) send(n, 0, msg); else if (p.no && known) send(n, 1, msg);
         } else if (n.t === "dividi") {
@@ -7442,6 +7553,14 @@
   }
   function openBuilder() { bld = null; bldSel = null; bldWire = null; bldMsg = ""; renderBuilder(); show("builder"); window.scrollTo(0, 0); }
   function openFlow(b, ro) { bldLayout(b); bld = JSON.parse(JSON.stringify(b)); bldRO = !!ro; bldSel = null; bldWire = null; bldMsg = ""; renderBuilder(); fitZoom(); renderBuilder(); window.scrollTo(0, 0); }
+  // 10/10: il builder in evidenza in cima a "Le mie"
+  function builderHero() {
+    var on = builds.filter(function (b) { return b.mode === "live" && bldSigOn(b); }).length;
+    return '<div class="card bhero"><div class="bht">' + ic("strategie") + ' <b>Strategy builder</b></div>'
+      + '<div class="k">Costruisci la tua strategia a blocchi: fonte delle partite, condizioni, cosa giocare. La vedi lavorare sulle partite di adesso, blocco per blocco, e quando è pronta la accendi per riceverne i segnali o la pubblichi nel Marketplace.</div>'
+      + '<div class="bhk"><span><b>' + builds.length + '</b> tue</span><span><b>' + on + '</b> accese</span><span><b>' + TPL().length + '</b> da copiare</span></div>'
+      + '<button class="primary" type="button" data-builder="1" style="width:100%;margin-top:8px;">' + ic("pen") + ' Crea o modifica una strategia</button></div>';
+  }
   function builderCard() {
     return '<button class="card navcard" type="button" data-builder="1" style="margin-top:6px;">' + ic("strategie") + '<span><b>Strategy builder</b><span class="k">'
       + (builds.length ? builds.length + (builds.length === 1 ? " strategia tua" : " strategie tue") + " · " : "") + TPL().length + ' strategie StatSight da copiare</span></span>' + ic("chev") + '</button>';
@@ -7979,8 +8098,24 @@
     return '<div class="bfun">' + L.map(function (n) {
       var v = R.stat[n.id] || 0;
       var lb = nodeLabel(n, b), nm = lb.toLowerCase().indexOf(NT_NAME[n.t].toLowerCase()) === 0 ? "" : NT_NAME[n.t] + " ";
-      return '<div class="bfr"><span class="bfl">' + esc(nm) + '<span class="k">' + esc(lb) + '</span></span><span class="bft"><i style="width:' + (v / top * 100).toFixed(1) + '%;background:' + NT[n.t][0] + '"></i></span><b>' + v + '</b></div>';
-    }).join("") + '</div>';
+      return '<button class="bfr" type="button" data-bfun="' + esc(b.id) + ':' + esc(n.id) + '"><span class="bfl">' + esc(nm) + '<span class="k">' + esc(lb) + '</span></span><span class="bft"><i style="width:' + (v / top * 100).toFixed(1) + '%;background:' + NT[n.t][0] + '"></i></span><b>' + v + '</b></button>'
+        + '<div class="bfdet" id="bfd-' + esc(b.id) + '-' + esc(n.id) + '" hidden></div>';
+    }).join("") + '<div class="k" style="margin-top:4px;font-size:.72rem;">Tocca una barra: le partite arrivate a quel blocco e cosa le ha fermate.</div></div>';
+  }
+  // dettaglio di un blocco (10/10): partite arrivate, quali passano oltre, e per i "Se" il valore vero di ogni regola
+  function bldFunDetail(b, nid) {
+    var R = bldRun(b), ev = ((R.stat._ev || {})[nid]) || [], n = b.nodes.filter(function (x) { return x.id === nid; })[0]; if (!n) return "";
+    var outs = b.wires.filter(function (w) { return w.f === nid; }).map(function (w) { return w.t; }), passed = {};
+    outs.forEach(function (t) { ((R.stat._ev || {})[t] || []).forEach(function (id) { passed[id] = 1; }); });
+    var fired = {}; R.res.forEach(function (x) { if (x.node === nid) fired[x.e.id] = 1; });
+    if (!ev.length) return '<div class="k">Nessuna partita arriva qui adesso' + (n.t === "src" ? ": non ci sono partite " + (b.mode === "live" ? "live" : "in programma") + " che rispettano la fonte." : ": si fermano tutte ai blocchi prima.") + '</div>';
+    var fmt = function (v) { return v == null ? "dato che manca" : typeof v === "number" ? String(Math.round(v * 100) / 100).replace(".", ",") : String(v); };
+    return ev.slice(0, 20).map(function (id) {
+      var e = evById(id); if (!e) return "";
+      var go = n.t === "gioca" ? fired[id] : !outs.length || passed[id], why = (R.stat._why || {})[nid + ":" + id];
+      var det = why ? why.map(function (w) { return '<span class="' + (w.ok ? "pos" : "neg") + '">' + esc(dLabel(w.r.a, b)) + ' = <b>' + esc(fmt(w.v)) + '</b> (serve ' + esc(opTxt(w.r.op)) + ' ' + esc(valTxt(w.r, b)) + ')</span>'; }).join(" · ") : "";
+      return '<div class="bfm"><span class="' + (go ? "pos" : "neg") + '">' + (go ? ic("check") : ic("x")) + '</span><span><b>' + esc(e.home + " - " + e.away) + '</b>' + (e.live ? ' <span class="k">' + esc(estMinute(e) || "") + '</span>' : "") + (det ? '<br><span class="k">' + det + '</span>' : "") + '</span></div>';
+    }).join("") + (ev.length > 20 ? '<div class="k">e altre ' + (ev.length - 20) + '</div>' : "");
   }
   function mieHtml() {
     var sp = "tutti"; try { sp = localStorage.getItem(MIE_KEY) || "tutti"; } catch (e) {}
@@ -7989,7 +8124,7 @@
     var chips = '<div class="chips" style="margin:10px 0 4px;">' + [["tutti", "Tutte"], ["calcio", EMOJI.calcio + " " + NAME.calcio], ["tennis", EMOJI.tennis + " " + NAME.tennis]].map(function (x) {
       var n = x[0] === "tutti" ? builds.length : builds.filter(function (b) { return b.sport === x[0]; }).length;
       return '<button class="chip" type="button" data-miesp="' + x[0] + '" aria-pressed="' + (x[0] === sp) + '">' + x[1] + ' <span class="k">' + n + '</span></button>'; }).join("") + '</div>';
-    var head = '<h2 class="sectiontitle">Mie strategie <span class="k">Strategy builder</span></h2>' + chips
+    var head = builderHero() + '<h2 class="sectiontitle">Mie strategie <span class="k">' + builds.length + '</span></h2>' + chips
       + '<div class="note" style="margin-bottom:10px;">L\'interruttore manda in Segnali le partite live su cui la strategia scatta. Lo storico qui sotto lo raccoglie il telefono da quando la strategia esiste: ogni volta che scatta la segna, e l\'esito arriva a partita finita. Il rendimento su migliaia di partite arriva col server.</div>';
     if (!L.length) return head + '<div class="note">' + (builds.length ? "Nessuna strategia tua per questo sport." : "Nessuna strategia ancora: creala nello Strategy builder.") + '</div>';
     return head + L.map(function (b) {
@@ -8009,7 +8144,7 @@
           : '<div class="k" style="margin:6px 2px;">' + (S.n ? S.s + (S.s === 1 ? " chiusa" : " chiuse") + ", " + S.open + " in attesa dell'esito: il grafico compare dalla seconda chiusa." : "Non è ancora scattata: il grafico compare quando ci sono esiti.") + '</div>')
         + (S.last.length ? '<div class="lastres"><span class="k">Ultimi ' + S.last.length + '</span>' + S.last.map(function (x) { return '<i class="' + (x.r === 1 ? "w" : "l") + '" title="' + esc(x.ev) + '"></i>'; }).join("") + '</div>' : "")
         + mktPublishHtml(b, S) + '</div>';
-    }).join("") + builderCard();
+    }).join("");
   }
   // ---------------------------------------------------------------- Marketplace (09/10, richiesta utente)
   // In Strategie, accanto a Mie strategie. Modello ibrido: le strategie restano private (la sandbox di ognuno); chi
@@ -8494,6 +8629,12 @@
     var mb = e.target.closest("button"); if (mb && data && mktClick(mb.dataset)) return;
     var ms = e.target.closest("button[data-miesp]");
     if (ms && data) { try { localStorage.setItem(MIE_KEY, ms.dataset.miesp); } catch (er) {} renderStrategie(); return; }
+    var bf = e.target.closest("button[data-bfun]");
+    if (bf && data) {   // barra del funnel: apre e chiude il dettaglio del blocco
+      var pr = bf.dataset.bfun.split(":"), bb = builds.filter(function (x) { return x.id === pr[0]; })[0], box = document.getElementById("bfd-" + pr[0] + "-" + pr[1]);
+      if (bb && box) { box.hidden = !box.hidden; bf.setAttribute("aria-expanded", String(!box.hidden)); if (!box.hidden) box.innerHTML = bldFunDetail(bb, pr[1]); }
+      return;
+    }
     var bo = e.target.closest("button[data-bmie]");
     if (bo && data) { var b0 = builds.filter(function (x) { return x.id === bo.dataset.bmie; })[0]; if (b0) { show("builder"); openFlow(b0, false); } return; }
     var cs2 = e.target.closest("button[data-catsport]");
