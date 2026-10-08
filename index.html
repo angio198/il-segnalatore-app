@@ -1002,6 +1002,7 @@
   #view-gioco .hud{display:flex;justify-content:space-between;align-items:center;margin:4px 2px 8px;gap:8px;} #view-gioco .who{font-weight:700;font-size:0.85rem;}
   #view-gioco .dots{display:flex;gap:4px;margin-top:3px;} #view-gioco .dots i{width:11px;height:11px;border-radius:50%;background:var(--surface);border:1px solid var(--line);} #view-gioco .dots i.g{background:var(--good);} #view-gioco .dots i.m{background:var(--bad);}
   #view-gioco .big{font-size:1.6rem;font-weight:800;font-stretch:115%;font-variant-numeric:tabular-nums;} #view-gioco .help{font-size:0.8rem;color:var(--ink-soft);margin:8px 2px 0;}
+  #view-gioco .giocolv{margin:-4px 2px 8px;font-size:0.85rem;} #view-gioco .gxbar{height:5px;border-radius:3px;background:rgba(255,255,255,.12);margin-top:4px;overflow:hidden;} #view-gioco .gxbar i{display:block;height:100%;background:#6FBE92;}
   #view-gioco .stage{position:relative;display:flex;justify-content:center;} #view-gioco .over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:14px;text-align:center;padding:16px;color:#fff;}
   #view-gioco .over b{font-size:1.5rem;font-stretch:115%;} #view-gioco .ruota{display:none;}
   @media (orientation:landscape) and (max-height:500px){ #view-gioco .ruota{display:block;text-align:center;padding:30px 16px;font-weight:700;} #view-gioco .stage,#view-gioco .hud{display:none;} }
@@ -1447,6 +1448,7 @@
 <main class="view" id="view-gioco" hidden>
   <button class="back" type="button" data-back="fight">‹ StatsFight</button>
   <h1 class="dtitle" id="giocotitle">Minigioco</h1>
+  <div class="giocolv" id="giocolv"></div>
   <section id="t-rigori" hidden>
     <div class="hud"><div><div class="who" id="rme"></div><div class="dots" id="rdme"></div></div><div class="big" id="rsc">0 - 0</div><div style="text-align:right"><div class="who" id="rcpu"></div><div class="dots" id="rdcpu" style="justify-content:flex-end"></div></div></div>
     <div class="ruota">Gira il telefono in verticale per giocare.</div>
@@ -3309,6 +3311,7 @@
       + '<circle cx="120" cy="120" r="18" fill="#1F2A44" stroke="#fff" stroke-width="3"/><circle cx="120" cy="120" r="6" fill="url(#g-gold)"/></svg>';
   }
   function prizeLine(sp) {
+    if (sp.k === "paletto") return "niente, la ruota si è fermata sul paletto";
     var p = WHEEL.filter(function (x) { return x.k === sp.k; })[0]; if (!p) return "";
     return p.k === "part" && sp.part ? (/^om:/.test(sp.part) ? "Pezzo dell'omino sbloccato: " + sp.part.slice(3) : "Pezzo d'avatar: " + (CM_LABEL[sp.part.split(":")[0]] || "") + " sbloccato")
       : p.k === "stk" && sp.stk ? "Adesivo: " + sp.stk + (sp.dup ? " (doppio: +5 monete)" : "") : sp.alt ? sp.alt : p.t;
@@ -3316,8 +3319,8 @@
   function renderRuota() {
     var sp = wheelToday();
     $("ruota").innerHTML = '<div class="coinbar">' + ic("coin") + '<b>' + rewardState(pronostici()).coins + '</b> monete</div><div class="wheelwrap"><div class="wpointer"></div>' + wheelSvg() + '</div>'
-      + (sp ? '<div class="card wres">' + ic("check") + ' <span>Oggi hai vinto: <b>' + esc(prizeLine(sp)) + '</b></span></div><div class="note" style="text-align:center;">Torna domani per un altro giro.</div>'
-        : '<button class="primary" type="button" id="wheelgo" style="width:100%;">Gira la ruota</button><div class="note" style="text-align:center;margin-top:8px;">Un giro al giorno, gratis. Le monete si guadagnano soltanto: non si comprano e non diventano soldi.</div>')
+      + (sp ? '<div class="card wres">' + ic(sp.k === "paletto" ? "x" : "check") + ' <span>' + (sp.k === "paletto" ? "Oggi: " : "Oggi hai vinto: ") + '<b>' + esc(prizeLine(sp)) + '</b></span></div><div class="note" style="text-align:center;">Torna domani per un altro giro.</div>'
+        : '<button class="primary" type="button" id="wheelgo" style="width:100%;">Gira la ruota</button><div class="note" style="text-align:center;margin-top:8px;">Un giro al giorno, gratis. Se si ferma sul paletto fra due spicchi non si vince niente. Le monete si guadagnano soltanto: non si comprano e non diventano soldi.</div>')
       + '<h2 class="sectiontitle">Premi</h2><div class="card wlist">' + WHEEL.map(function (p) { return '<div class="wrow"><span class="wdot" style="background:' + p.col + '"></span>' + ic(p.ic) + ' <span>' + esc(p.t) + '</span><span class="k">' + p.w + '%</span></div>'; }).join("") + '</div>'
       + '<h2 class="sectiontitle">I tuoi adesivi <span class="k">' + wheel.stickers.length + '/' + STICKERS.length + '</span></h2><div class="stkrow">' + STICKERS.map(function (s) {
         var has = wheel.stickers.indexOf(s[0]) >= 0;
@@ -3329,6 +3332,7 @@
     for (var i = 0; i < WHEEL.length; i++) { acc += WHEEL[i].w; if (r < acc) return i; }
     return 0;
   }
+  function wheelNothing() { var sp = { k: "paletto", ts: nowS() }; wheel.spins[dayKey(nowS())] = sp; saveWheel(); return sp; }
   function wheelApply(i) {
     var p = WHEEL[i], sp = { k: p.k, ts: nowS() }, R2 = rewardState(pronostici()), won = R2.closed.filter(function (b) { return b.result === 1; }).length;
     if (p.c) wheel.coins += p.c;
@@ -3348,16 +3352,17 @@
   function spinWheel() {
     if (wheelBusy || wheelToday()) return;
     wheelBusy = true;
-    var i = wheelPick(), deg = 360 * 5 + (360 - (i * 45 + 22.5)), svg = $("wheelsvg"), go = $("wheelgo");
+    // dove si ferma dentro lo spicchio e' a caso; a meno di 2 gradi dal confine si ferma sul paletto: niente (10/10)
+    var i = wheelPick(), off = (Math.random() * 2 - 1) * 22.5, peg = Math.abs(off) > 20.5, deg = 360 * 5 + (360 - (i * 45 + 22.5 + off)), svg = $("wheelsvg"), go = $("wheelgo");
     if (go) go.disabled = true;
     var before = coinShown();
-    var sp = wheelApply(i);   // salvato subito: chiudere l'app durante il giro non regala un secondo giro
+    var sp = peg ? wheelNothing() : wheelApply(i);   // salvato subito: chiudere l'app durante il giro non regala un secondo giro
     svg.style.transform = "rotate(" + deg + "deg)";
     wheelTicks(svg);
-    var p = WHEEL[i], gain = p.c || (sp.alt ? 20 : sp.dup ? 5 : 0);
+    var p = WHEEL[i], gain = peg ? 0 : p.c || (sp.alt ? 20 : sp.dup ? 5 : 0);
     setTimeout(function () {
-      sndWin();
-      fxToast(p.ic, "Ruota del giorno", prizeLine(sp));
+      if (peg) { sndTick(); fxToast("x", "Sul paletto!", "La ruota si è fermata fra due spicchi: niente stavolta"); }
+      else { sndWin(); fxToast(p.ic, "Ruota del giorno", prizeLine(sp)); }
       if (gain) fxCoins($("wheelsvg"), Math.min(14, 6 + Math.round(gain / 5)), before, before == null ? null : before + gain);
       setTimeout(function () { wheelBusy = false; renderRuota(); renderProfilo(); renderOcchio(); newsTick(); }, REDUCED ? 0 : 1600);
     }, REDUCED ? 0 : 4300);
@@ -8531,6 +8536,7 @@
 })();
 </script>
 <script src="omino.js"></script>
+<script src="giochi_suoni.js"></script>
 <script src="giochi_rigori.js"></script>
 <script src="giochi_tennis.js"></script>
 <script src="giochi_basket.js"></script>
