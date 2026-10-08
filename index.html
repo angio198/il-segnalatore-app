@@ -2595,8 +2595,7 @@
   }
   function catOf(sport) { return sport === "calcio" ? data.catalogo : data["catalogo_" + sport]; }
   // strategie che si reggono su statistiche "Full" (xG, attacchi pericolosi, statistiche al servizio)
-  var PREMIUM_CAT = ["ltd_xg", "lay_dog_lucky", "lead_vs_xg", "xg_diff_win", "snore", "next_pressing", "serve_dominance",
-                     "first_serve_bad", "dominio_servizio"];
+  var PREMIUM_CAT = ["lead_vs_xg", "snore", "dominio_servizio"];   // dopo la pulizia del 09/10
   function catLocked(id) { return !isFull() && PREMIUM_CAT.indexOf(id) >= 0; }
   // Motore live (signals/catalogo_live.py): prova dal vivo OGNI combinazione delle barre; qui si prende la tua.
   var LIVE_SPORTS = ["tennis"];
@@ -8128,89 +8127,64 @@
     d.innerHTML = '<b>Che sport?</b><span class="k">I dati dei nodi saranno solo quelli di questo sport.</span><div class="duo"><button class="primary" type="button" data-bsp="calcio">' + EMOJI.calcio + ' Calcio</button><button class="primary" type="button" data-bsp="tennis">' + EMOJI.tennis + ' Tennis</button></div>';
     $("builder").insertBefore(d, $("builder").firstChild);
   }
-  // ---- strategie StatSight tradotte in flussi (research/calcio_catalogo.py e le nostre live/pre). Ogni modello:
-  // [id, nome, sport, live/pre, descrizione, regole (dato, op, valore o "@dato"), cosa giocare, quota minima]
-  // piu' qualche flusso a rami fatto a mano (xG contro il punteggio, chi spinge, primo tempo).
+  // ---- strategie StatSight in flussi. Pulizia del 09/10 (docs/pulizia_strategie.md): restano solo quelle che hanno
+  // battuto il prezzo anche sui dati mai usati per sceglierle, ognuna col suo nome. Le nostre che usano dati che il
+  // builder non ha (classifiche, ranking, circuito) entrano dal loro segnale ("Segnale: ...").
   var TPL_CACHE = null;
   function TPL() {
     if (TPL_CACHE) return TPL_CACHE;
     var R = function (a, op, b) { return typeof b === "string" && b[0] === "@" ? { a: a, op: op, bt: "d", b: b.slice(1) } : { a: a, op: op, bt: "n", b: b }; };
-    var simple = [
-      ["ltd", "Contro il pareggio sul pari", "calcio", "live", "dal 60', favorita netta, punteggio in parità", [R("min", ">=", 60), R("gd", "=", 0), R("pf", "<=", 1.65)], "12", 1.3],
-      ["ltd_xg", "Contro il pareggio con tanti xG", "calcio", "live", "dal 70', pari, almeno 2 xG in totale", [R("min", ">=", 70), R("gd", "=", 0), R("xt", ">=", 2)], "12", 1.3],
-      ["draw_late", "Pareggio negli ultimi minuti", "calcio", "live", "dall'80' sul pari", [R("min", ">=", 80), R("gd", "=", 0)], "X", 1.4],
-      ["btf", "Favorita sotto di un gol: vince", "calcio", "live", "la nostra Favorita sotto, fra il 5' e il 70'", [R("min", ">=", 5), R("min", "<=", 70), R("pf", "<=", 1.8), R("gdf", "=", -1)], "FAV", 2],
-      ["btf_dc", "Favorita sotto di un gol: non perde", "calcio", "live", "doppia chance con la favorita", [R("min", "<=", 70), R("pf", "<=", 1.8), R("gdf", "=", -1)], "DCFAV", 1.5],
-      ["fav_scores_back", "La favorita ha subito: segna ancora", "calcio", "live", "primo tempo, super favorita sotto", [R("min", "<=", 45), R("pf", "<=", 1.6), R("gs", ">=", 1)], "FAVSC", 1.3],
-      ["lay_fav_lead", "Contro la favorita in vantaggio di un gol", "calcio", "live", "doppia chance con la sfavorita", [R("min", ">=", 10), R("min", "<=", 70), R("pf", "<=", 1.8), R("gdf", "=", 1)], "DCDOG", 2],
-      ["fav_level", "Favorita sul pari al 45': vince", "calcio", "live", "intervallo, super favorita sul pari", [R("min", ">=", 45), R("min", "<=", 50), R("gd", "=", 0), R("pf", "<=", 1.6)], "FAV", 1.6],
-      ["fav_00_late", "Favorita sullo 0-0 nel finale: segna", "calcio", "live", "dal 75', 0-0, super favorita", [R("min", ">=", 75), R("gt", "=", 0), R("pf", "<=", 1.6)], "FAVSC", 1.5],
-      ["next_fav", "Prossimo gol della favorita", "calcio", "live", "dal 60', favorita netta non in vantaggio", [R("min", ">=", 60), R("pf", "<=", 1.6), R("gf", "<=", "@gs")], "PFAV", 1.4],
-      ["lay_dog_lucky", "Contro la sfavorita in vantaggio fortunato", "calcio", "live", "la sfavorita è avanti con pochi xG", [R("min", "<=", 60), R("gs", ">", "@gf"), R("xs", "<", 0.5)], "DCFAV", 1.5],
-      ["dog_ahead", "Sfavorita in vantaggio: non perde", "calcio", "live", "fino al 75'", [R("min", "<=", 75), R("gs", ">", "@gf"), R("pf", "<=", 1.8)], "DCDOG", 1.2],
-      ["dog_level", "Sfavorita non sotto al 60'", "calcio", "live", "doppia chance con la sfavorita", [R("min", ">=", 60), R("gs", ">=", "@gf"), R("pf", "<=", 1.8)], "DCDOG", 1.3],
-      ["home_level_late", "Casa sul pari nel finale: vince", "calcio", "live", "dal 75'", [R("min", ">=", 75), R("gd", "=", 0)], "1", 2.5],
-      ["home_behind", "Casa sotto di un gol: non perde", "calcio", "live", "fino al 70'", [R("min", "<=", 70), R("gd", "=", -1)], "1X", 1.8],
-      ["home_comeback", "Casa sotto di un gol: vince", "calcio", "live", "fino al 60'", [R("min", "<=", 60), R("gd", "=", -1)], "1", 3],
-      ["lay_away_20", "Contro la squadra ospite sul 2-0", "calcio", "live", "la casa avanti 2-0", [R("gh", "=", 2), R("ga", "=", 0)], "1X", 1.05],
-      ["fhg", "Gol nel primo tempo dallo 0-0", "calcio", "live", "dal 20' al 35', 0-0", [R("tempo", "=", 1), R("min", ">=", 20), R("min", "<=", 35), R("gt", "=", 0)], "1O05", 1.6],
-      ["over15_1t", "Due gol nel primo tempo dallo 0-0", "calcio", "live", "nei primi 15'", [R("tempo", "=", 1), R("min", "<=", 15), R("gt", "=", 0)], "1O15", 2],
-      ["late_goal", "Ancora un gol nel finale", "calcio", "live", "dal 70', Over dei gol attuali", [R("min", ">=", 70), R("min", "<=", 80)], "OVNEXT", 1.8],
-      ["over15_low", "Over 1,5 con pochi gol a metà gara", "calcio", "live", "dal 45', al massimo un gol", [R("min", ">=", 45), R("gt", "<=", 1)], "O15", 1.6],
-      ["over25_early", "Over 2,5 dopo un gol presto", "calcio", "live", "un gol nei primi 20'", [R("min", "<=", 20), R("gt", "=", 1)], "O25", 1.7],
-      ["second_half_goal", "Gol nel secondo tempo dopo lo 0-0", "calcio", "live", "intervallo sullo 0-0", [R("tempo", "=", 2), R("min", "<=", 50), R("gt", "=", 0)], "O05", 1.3],
-      ["pressure_sot", "Tanti tiri in porta: altro gol", "calcio", "live", "almeno 8 tiri in porta entro il 60'", [R("min", "<=", 60), R("tt", ">=", 8)], "OVNEXT", 1.5],
-      ["crazy", "Partita pazza: ancora gol", "calcio", "live", "3 gol o più entro il 60'", [R("min", "<=", 60), R("gt", ">=", 3)], "OVNEXT", 1.4],
-      ["under25_00", "Under 2,5 dallo 0-0", "calcio", "live", "dal 60' sullo 0-0", [R("min", ">=", 60), R("gt", "=", 0)], "U25", 1.1],
-      ["under15_1t", "Under 1,5 primo tempo dallo 0-0", "calcio", "live", "dal 30'", [R("tempo", "=", 1), R("min", ">=", 30), R("gt", "=", 0)], "1U15", 1.05],
-      ["snore", "0-0 nel finale: resta 0-0", "calcio", "live", "dall'80'", [R("min", ">=", 80), R("gt", "=", 0)], "U05", 1.3],
-      ["btts_live", "Goal a partita in corso", "calcio", "live", "un solo gol entro il 60'", [R("min", "<=", 60), R("gt", "=", 1)], "GG", 1.8],
-      ["btts_fav_behind", "Goal quando la favorita è sotto 0-1", "calcio", "live", "fino al 70'", [R("min", "<=", 70), R("gf", "=", 0), R("gs", "=", 1), R("pf", "<=", 1.8)], "GG", 1.6],
-      ["cs_00", "Risultato esatto 0-0", "calcio", "live", "dall'80'", [R("min", ">=", 80), R("gt", "=", 0)], "CS00", 1.4],
-      ["pre_fav_casa", "Favorita forte in casa", "calcio", "pre", "quota della favorita fino a 1,50, in casa", [R("pf", "<=", 1.5), R("favh", "=", 1)], "FAV", 1.25],
-      ["pre_equilibrio_under", "Partite equilibrate: Under 2,5", "calcio", "pre", "1 e 2 fra 2,40 e 3,40", [R("q1", ">=", 2.4), R("q1", "<=", 3.4), R("q2", ">=", 2.4), R("q2", "<=", 3.4)], "U25", 1.6],
-      ["pre_goal", "Goal quando l'Over è basso", "calcio", "pre", "Over 2,5 sotto 1,70", [R("qo25", "<=", 1.7)], "GG", 1.5],
-      ["t_dog_serve", "Sfavorito che domina al servizio nel primo set", "tennis", "live", "primo set, 10 punti percentuali meglio al servizio", [R("sn", "=", 0), R("vd", ">=", "@vf"), R("pf", "<=", 1.7)], "DOG", 2],
-      ["t_fav_lost_set", "Favorito che perde il primo set: vince", "tennis", "live", "favorito netto sotto di un set", [R("sd", "=", 1), R("sf", "=", 0), R("pf", "<=", 1.5)], "FAV", 1.6],
-      ["t_fav_pre", "Favorito netto", "tennis", "pre", "quota del favorito fino a 1,30", [R("pf", "<=", 1.3)], "FAV", 1.1]
+    var C = function (id, x, y, name, a, op, b) { return { id: id, t: "calc", x: x, y: y, p: { name: name, at: "d", a: a, op: op, bt: typeof b === "number" ? "n" : "d", b: b } }; };
+    var flow = function (id, name, sport, mode, desc, nodes, wires) { return { v: 2, id: "T_" + id, team: true, name: name, sport: sport, mode: mode, desc: desc, vis: "pub", nodes: nodes, wires: wires }; };
+    var chain = function (ids) { var w = []; for (var i = 0; i + 1 < ids.length; i++) w.push({ f: ids[i], o: 0, t: ids[i + 1] }); return w; };
+    var sig = function (id, name, sport, mode, desc, sid) {
+      return flow(id, name, sport, mode, desc, [{ id: "s", t: "src", x: 10, y: 40, p: { from: "sig", sid: "d:" + sid } }, { id: "g", t: "gioca", x: 260, y: 40, p: { pick: "TXT", txt: "La giocata di " + name } }], chain(["s", "g"]));
+    };
+    var out = [
+      flow("fav_level", "Favorita al bivio", "calcio", "live", "al 60' la favorita (almeno 50%) è sul pari: vince. Prova sul 2025-26: 282 casi, +5,8%",
+        [{ id: "s", t: "src", x: 10, y: 40, p: {} }, { id: "f", t: "se", x: 150, y: 40, name: "Al 60' sul pari", p: { rules: [R("min", ">=", 60), R("min", "<=", 61), R("gd", "=", 0), R("pf", "<=", 2)] } },
+          { id: "g", t: "gioca", x: 430, y: 40, p: { pick: "FAV", min: 1.3 } }], chain(["s", "f", "g"])),
+      flow("lead_vs_xg", "Vantaggio bugiardo", "calcio", "live", "chi è sotto ha almeno 0,3 xG in più, dal 20' al 70': doppia chance con lui. Prova sul 2025-26: 309 casi, +8,4%",
+        [{ id: "s", t: "src", x: 10, y: 80, p: {} }, { id: "t", t: "se", x: 150, y: 80, name: "Dal 20' al 70'", p: { rules: [R("min", ">=", 20), R("min", "<=", 70)] } },
+          C("c", 330, 80, "dxg", "xh", "-", "xa"), { id: "d", t: "dividi", x: 480, y: 70, p: { a: "gd", cases: [{ op: ">", v: 0 }, { op: "<", v: 0 }] } },
+          { id: "c1", t: "se", x: 660, y: 20, name: "Ospite sotto con più xG", p: { rules: [R("var:dxg", "<=", -0.3)] } }, { id: "c2", t: "se", x: 660, y: 130, name: "Casa sotto con più xG", p: { rules: [R("var:dxg", ">=", 0.3)] } },
+          { id: "g1", t: "gioca", x: 880, y: 20, p: { pick: "X2", min: 1.3 } }, { id: "g2", t: "gioca", x: 880, y: 130, p: { pick: "1X", min: 1.3 } }],
+        chain(["s", "t", "c", "d"]).concat([{ f: "d", o: 0, t: "c1" }, { f: "d", o: 1, t: "c2" }, { f: "c1", o: 0, t: "g1" }, { f: "c2", o: 0, t: "g2" }])),
+      flow("snore", "Partita addormentata", "calcio", "live", "al 60' sullo 0-0 con al massimo 0,15 xG negli ultimi 15': resta 0-0. Prova sul 2025-26: 105 casi, +15,2%",
+        [{ id: "s", t: "src", x: 10, y: 40, p: {} }, { id: "f", t: "se", x: 150, y: 40, name: "Al 60' sullo 0-0", p: { rules: [R("min", ">=", 60), R("min", "<=", 61), R("gt", "=", 0)] } },
+          C("c", 380, 40, "xg15", "x15h", "+", "x15a"), { id: "q", t: "se", x: 540, y: 40, name: "Pochi xG di recente", p: { rules: [R("var:xg15", "<=", 0.15)] } },
+          { id: "g", t: "gioca", x: 740, y: 40, p: { pick: "UNNEXT", min: 1.3 } }], chain(["s", "f", "c", "q", "g"])),
+      flow("fav_sotto_fasi", "Rimonta a tempo", "calcio", "live", "favorita (quota fino a 1,80) sotto di un gol: prima del 40' vince, fino al 70' non perde, dopo segna. Prova sul 2025-26: 175 casi, +1,4%",
+        [{ id: "s", t: "src", x: 10, y: 90, p: {} }, { id: "f", t: "se", x: 150, y: 90, name: "Favorita sotto di un gol", p: { rules: [R("pf", "<=", 1.8), R("gdf", "=", -1)] } },
+          { id: "d", t: "dividi", x: 380, y: 80, p: { a: "min", cases: [{ op: "<", v: 40 }, { op: "<", v: 70 }] } },
+          { id: "g1", t: "gioca", x: 580, y: 10, p: { pick: "FAV", min: 2 } }, { id: "g2", t: "gioca", x: 580, y: 90, p: { pick: "DCFAV", min: 1.3 } }, { id: "g3", t: "gioca", x: 580, y: 170, p: { pick: "FAVSC", min: 1.3 } }],
+        chain(["s", "f", "d"]).concat([{ f: "d", o: 0, t: "g1" }, { f: "d", o: 1, t: "g2" }, { f: "d", o: 2, t: "g3" }])),
+      flow("favorita_sotto", "Favorita ferita", "calcio", "live", "la favorita va sotto di un gol fra il 5' e il 70': vince. In prova dal 01/10 sulle quote vere",
+        [{ id: "s", t: "src", x: 10, y: 40, p: {} }, { id: "f", t: "se", x: 150, y: 40, name: "Favorita sotto, 5'-70'", p: { rules: [R("min", ">=", 5), R("min", "<=", 70), R("gdf", "=", -1)] } },
+          { id: "g", t: "gioca", x: 420, y: 40, p: { pick: "FAV", min: 1.5 } }], chain(["s", "f", "g"])),
+      sig("classifica_calcio", "Classifica che inganna", "calcio", "pre", "quote e classifica non raccontano la stessa storia (la regola usa la classifica: entra dal segnale)", "classifica_calcio"),
+      sig("big_serie_a", "Le grandi di Serie A", "calcio", "pre", "le grandi della Serie A contro le altre (entra dal segnale)", "big_serie_a"),
+      flow("fav_break_down", "Controbreak", "tennis", "live", "primo set, favorito (quota fino a 1,25) sotto di almeno un game: vince. Dal vivo dal 02/10: 37 casi, +13,2%",
+        [{ id: "s", t: "src", x: 10, y: 40, p: {} }, { id: "f", t: "se", x: 150, y: 40, name: "Primo set, favorito netto", p: { rules: [R("sn", "=", 0), R("pf", "<=", 1.25)] } },
+          C("c", 380, 40, "svantaggio", "gd1", "-", "gf1"), { id: "q", t: "se", x: 540, y: 40, name: "Sotto di un game", p: { rules: [R("var:svantaggio", ">=", 1)] } },
+          { id: "g", t: "gioca", x: 740, y: 40, p: { pick: "FAV", min: 1.1 } }], chain(["s", "f", "c", "q", "g"])),
+      flow("fav_drift", "Quota in salita", "tennis", "live", "la quota del favorito (fino a 1,43 al via) sale del 30%: punta il favorito. Dal vivo dal 02/10: 81 casi, +0,5%",
+        [{ id: "s", t: "src", x: 10, y: 40, p: {} }, { id: "f", t: "se", x: 150, y: 40, name: "Favorito al via", p: { rules: [R("pf", "<=", 1.43)] } },
+          C("c", 330, 40, "soglia", "pf", "*", 1.3), { id: "q", t: "se", x: 500, y: 40, name: "Quota salita del 30%", p: { rules: [R("wf", ">=", "@var:soglia")] } },
+          { id: "g", t: "gioca", x: 720, y: 40, p: { pick: "FAV", min: 1.3 } }], chain(["s", "f", "c", "q", "g"])),
+      flow("start_fav", "Favorito in partenza", "tennis", "live", "a inizio partita il favorito netto (quota fino a 1,25): vince. Dal vivo dal 02/10: 76 casi, +0,9%",
+        [{ id: "s", t: "src", x: 10, y: 40, p: {} }, { id: "f", t: "se", x: 150, y: 40, name: "Primo set, favorito netto", p: { rules: [R("sn", "=", 0), R("pf", "<=", 1.25)] } },
+          C("c", 380, 40, "giochi", "g1", "+", "g2"), { id: "q", t: "se", x: 540, y: 40, name: "Al massimo un game giocato", p: { rules: [R("var:giochi", "<=", 1)] } },
+          { id: "g", t: "gioca", x: 760, y: 40, p: { pick: "FAV", min: 1.05 } }], chain(["s", "f", "c", "q", "g"])),
+      flow("dominio_servizio", "Padrone del servizio", "tennis", "live", "primo set dopo 6 game, lo sfavorito vince 10 punti percentuali in più al servizio: punta lui. In prova dal 01/10",
+        [{ id: "s", t: "src", x: 10, y: 40, p: {} }, { id: "f", t: "se", x: 150, y: 40, name: "Primo set", p: { rules: [R("sn", "=", 0)] } },
+          C("c1", 300, 40, "giochi", "g1", "+", "g2"), C("c2", 450, 40, "servizio", "vd", "-", "vf"),
+          { id: "q", t: "se", x: 610, y: 40, name: "Lo sfavorito serve meglio", p: { rules: [R("var:giochi", ">=", 6), R("var:servizio", ">=", 10)] } },
+          { id: "g", t: "gioca", x: 840, y: 40, p: { pick: "DOG", min: 1.5 } }], chain(["s", "f", "c1", "c2", "q", "g"])),
+      sig("favorita_circuito", "Favorita del circuito", "tennis", "live", "ATP e WTA a inizio secondo e terzo set (la regola usa il circuito: entra dal segnale)", "favorita_circuito"),
+      sig("classifica_inganna", "Ranking che inganna", "tennis", "pre", "quote e ranking non raccontano la stessa storia (entra dal segnale)", "classifica_inganna"),
+      sig("classifica_larga", "Ranking che inganna, versione larga", "tennis", "pre", "la stessa idea su più partite (entra dal segnale)", "classifica_larga")
     ];
-    var out = simple.map(function (s) {
-      return { v: 2, id: "T_" + s[0], team: true, name: s[1], sport: s[2], mode: s[3], desc: s[4], vis: "pub",
-               nodes: [{ id: "s", t: "src", x: 10, y: 40, p: {} }, { id: "f", t: "se", x: 150, y: 40, p: { rules: s[5] } }, { id: "g", t: "gioca", x: 0, y: 40, p: { pick: s[6], min: s[7] } }],
-               wires: [{ f: "s", o: 0, t: "f" }, { f: "f", o: 0, t: "g" }] };
-    });
-    // flussi a rami, fatti a mano
-    out.push({ v: 2, id: "T_lead_vs_xg", team: true, name: "Contro chi è avanti contro l'andamento", sport: "calcio", mode: "live", vis: "pub", desc: "chi è sotto ha più xG: doppia chance con lui",
-      nodes: [{ id: "s", t: "src", x: 10, y: 80, p: {} }, { id: "d", t: "dividi", x: 150, y: 70, p: { a: "gd", cases: [{ op: ">", v: 0 }, { op: "<", v: 0 }] } },
-        { id: "c1", t: "se", x: 360, y: 20, name: "Ospite più xG", p: { rules: [R("xa", ">=", "@xh"), R("min", "<=", 70)] } }, { id: "c2", t: "se", x: 360, y: 120, name: "Casa più xG", p: { rules: [R("xh", ">=", "@xa"), R("min", "<=", 70)] } },
-        { id: "g1", t: "gioca", x: 560, y: 20, p: { pick: "X2", min: 1.5 } }, { id: "g2", t: "gioca", x: 560, y: 120, p: { pick: "1X", min: 1.5 } },
-        { id: "n", t: "nota", x: 150, y: 190, p: { text: "Dividi per differenza gol: avanti la casa, avanti l'ospite, pari (non usato)" } }],
-      wires: [{ f: "s", o: 0, t: "d" }, { f: "d", o: 0, t: "c1" }, { f: "d", o: 1, t: "c2" }, { f: "c1", o: 0, t: "g1" }, { f: "c2", o: 0, t: "g2" }] });
-    out.push({ v: 2, id: "T_xg_diff", team: true, name: "Chi domina gli xG: vince", sport: "calcio", mode: "live", vis: "pub", desc: "un xG di vantaggio, dal 30' al 70'",
-      nodes: [{ id: "s", t: "src", x: 10, y: 70, p: {} }, { id: "t", t: "se", x: 150, y: 70, name: "Dal 30' al 70'", p: { rules: [R("min", ">=", 30), R("min", "<=", 70)] } },
-        { id: "c", t: "calc", x: 320, y: 70, p: { name: "dxg", at: "d", a: "xh", op: "-", bt: "d", b: "xa" } },
-        { id: "d", t: "dividi", x: 480, y: 60, p: { a: "var:dxg", cases: [{ op: ">=", v: 1 }, { op: "<=", v: -1 }] } },
-        { id: "g1", t: "gioca", x: 680, y: 20, p: { pick: "1", min: 1.6 } }, { id: "g2", t: "gioca", x: 680, y: 110, p: { pick: "2", min: 1.6 } }],
-      wires: [{ f: "s", o: 0, t: "t" }, { f: "t", o: 0, t: "c" }, { f: "c", o: 0, t: "d" }, { f: "d", o: 0, t: "g1" }, { f: "d", o: 1, t: "g2" }] });
-    out.push({ v: 2, id: "T_next_pressing", team: true, name: "Prossimo gol di chi spinge", sport: "calcio", mode: "live", vis: "pub", desc: "attacchi pericolosi, 15 di differenza",
-      nodes: [{ id: "s", t: "src", x: 10, y: 70, p: {} }, { id: "c", t: "calc", x: 150, y: 70, p: { name: "pressione", at: "d", a: "dh", op: "-", bt: "d", b: "da" } },
-        { id: "d", t: "dividi", x: 340, y: 60, p: { a: "var:pressione", cases: [{ op: ">=", v: 15 }, { op: "<=", v: -15 }] } },
-        { id: "g1", t: "gioca", x: 540, y: 20, p: { pick: "P1", min: 1.6 } }, { id: "g2", t: "gioca", x: 540, y: 110, p: { pick: "P2", min: 1.6 } }],
-      wires: [{ f: "s", o: 0, t: "c" }, { f: "c", o: 0, t: "d" }, { f: "d", o: 0, t: "g1" }, { f: "d", o: 1, t: "g2" }] });
-    out.push({ v: 2, id: "T_casa_spinge_1t", team: true, name: "Casa favorita che tira tanto nel primo tempo", sport: "calcio", mode: "live", vis: "pub", desc: "1° tempo, 8 tiri della casa favorita, ancora 0-0",
-      nodes: [{ id: "s", t: "src", x: 10, y: 60, p: {} }, { id: "a", t: "se", x: 150, y: 10, name: "Primo tempo, 0-0", p: { rules: [R("tempo", "=", 1), R("min", ">=", 25), R("gt", "=", 0)] } },
-        { id: "b", t: "se", x: 150, y: 110, name: "Casa favorita che tira", p: { rules: [R("favh", "=", 1), R("sh", ">=", 8), R("sh", ">=", "@sa")] } },
-        { id: "u", t: "unisci", x: 360, y: 60, p: {} }, { id: "g", t: "gioca", x: 500, y: 60, p: { pick: "1O05", min: 1.5 } }, { id: "dbg", t: "debug", x: 360, y: 150, p: {} }],
-      wires: [{ f: "s", o: 0, t: "a" }, { f: "s", o: 0, t: "b" }, { f: "a", o: 0, t: "u" }, { f: "b", o: 0, t: "u" }, { f: "u", o: 0, t: "g" }, { f: "b", o: 0, t: "dbg" }] });
-    out.push({ v: 2, id: "T_fav_sotto_fasi", team: true, name: "Favorita sotto: cosa giocare per fase", sport: "calcio", mode: "live", vis: "pub", desc: "presto vince, a metà non perde, tardi segna",
-      nodes: [{ id: "s", t: "src", x: 10, y: 90, p: {} }, { id: "f", t: "se", x: 150, y: 90, name: "Favorita sotto di un gol", p: { rules: [R("pf", "<=", 1.8), R("gdf", "=", -1)] } },
-        { id: "d", t: "dividi", x: 360, y: 80, p: { a: "min", cases: [{ op: "<", v: 40 }, { op: "<", v: 70 }] } },
-        { id: "g1", t: "gioca", x: 560, y: 10, p: { pick: "FAV", min: 2 } }, { id: "g2", t: "gioca", x: 560, y: 90, p: { pick: "DCFAV", min: 1.5 } }, { id: "g3", t: "gioca", x: 560, y: 170, p: { pick: "FAVSC", min: 1.5 } }],
-      wires: [{ f: "s", o: 0, t: "f" }, { f: "f", o: 0, t: "d" }, { f: "d", o: 0, t: "g1" }, { f: "d", o: 1, t: "g2" }, { f: "d", o: 2, t: "g3" }] });
-    out.forEach(function (b) { if (b.nodes.length === 3 && b.nodes[2].x === 0) b.nodes[2].x = b.nodes[1].x + nW(b.nodes[1], b) + 50; });
-    // 08/10 sera, decisione utente: poche nostre per sport (4-5) e spazio ai creator
-    var KEEP = ["T_btf", "T_ltd", "T_under25_00", "T_fav_sotto_fasi", "T_next_pressing", "T_t_dog_serve", "T_t_fav_lost_set", "T_t_fav_pre"];
-    out = out.filter(function (b) { return KEEP.indexOf(b.id) >= 0; });
     TPL_CACHE = out;
     return out;
   }
