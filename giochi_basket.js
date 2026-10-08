@@ -1,23 +1,25 @@
 // StatsFight giochi (10/10): sfida a canestro. Cinque posizioni (sotto canestro, media, tiro libero, tripla
 // dall'angolo, tripla frontale): tiri tu, poi la CPU dallo stesso punto; 2 o 3 punti a canestro. Pari dopo 5 giri:
-// tiri liberi a oltranza. Tiro: trascina il dito verso l'alto, la direzione e' la mira e la lunghezza la forza; la
-// barra a destra mostra la forza e la zona verde quella giusta per quella posizione (piu' stretta per le triple).
+// tiri liberi a oltranza. La telecamera sta sempre dietro al tiratore, che quindi e' girato verso il canestro anche
+// dai lati (campo in prospettiva vera, misure in metri). Tiro: trascini il dito verso l'alto; mentre trascini si vede
+// l'arco del tiro (la mira: verde = dentro) e la barra della forza con la zona verde giusta per quella distanza.
 (function () {
   "use strict";
   var G = window.G, $ = G.$;
-  var cv = $("bcv"), S = null, st = null, cpuAv = null, drag = null;
-  // u = lato (-1 sinistra, 1 destra), v = distanza dal fondo (0 linea di fondo .. 1 vicino a te), pow = forza giusta
+  var cv = $("bcv"), S = null, st = null, cpuAv = null, drag = null, cam = null;
+  var RIM = { x: 0, y: 3.05, z: 1.575 }, RIM_R = 0.23, BALL_R = 0.12;
+  // r = distanza dal ferro in metri, a = angolo (0 = di fronte, positivo = a destra), pow = forza giusta
   var SPOTS = [
-    { nome: "Sotto canestro", u: 0.4, v: 0.3, pts: 2, pow: 0.42, cpu: 0.8 },
-    { nome: "Media distanza", u: -0.55, v: 0.42, pts: 2, pow: 0.6, cpu: 0.55 },
-    { nome: "Tiro libero", u: 0, v: 0.36, pts: 2, pow: 0.56, cpu: 0.7 },
-    { nome: "Tripla dall'angolo", u: 0.95, v: 0.1, pts: 3, pow: 0.78, cpu: 0.4 },
-    { nome: "Tripla frontale", u: 0, v: 0.85, pts: 3, pow: 0.9, cpu: 0.38 }
+    { nome: "Sotto canestro", r: 2.1, a: 0.55, pts: 2, pow: 0.42, cpu: 0.8 },
+    { nome: "Media distanza", r: 4.6, a: -0.75, pts: 2, pow: 0.6, cpu: 0.55 },
+    { nome: "Tiro libero", r: 4.2, a: 0, pts: 2, pow: 0.56, cpu: 0.7 },
+    { nome: "Tripla dall'angolo", r: 6.7, a: 1.35, pts: 3, pow: 0.8, cpu: 0.4 },
+    { nome: "Tripla frontale", r: 7.2, a: 0, pts: 3, pow: 0.9, cpu: 0.38 }
   ];
   var FT = SPOTS[2];
   function newGame() {
     cpuAv = G.randomAv();
-    st = { round: 0, turn: "me", me: 0, cpu: 0, log: [], phase: "aim", shot: null, msg: "", msgT: 0, celebrate: null, extra: false };
+    st = { round: 0, turn: "me", me: 0, cpu: 0, phase: "aim", shot: null, msg: "", msgT: 0, celebrate: null, extra: false };
     $("bover").hidden = true; startTurn();
   }
   function spot() { return st.extra ? FT : SPOTS[Math.min(st.round, SPOTS.length - 1)]; }
@@ -26,24 +28,44 @@
     $("bsc").textContent = st.me + " - " + st.cpu;
     var sp = spot();
     $("bhelp").textContent = (st.extra ? "Pari: tiri liberi a oltranza. " : "Giro " + (st.round + 1) + " di " + SPOTS.length + ": " + sp.nome + " (" + sp.pts + " punti). ")
-      + (st.turn === "me" ? "Trascina il dito verso l'alto: la direzione è la mira, la lunghezza è la forza. Fermati nella zona verde della barra." : "Tira la CPU dallo stesso punto.");
+      + (st.turn === "me" ? "Trascina il dito verso l'alto. L'arco tratteggiato è la mira: deve finire nel ferro (verde). La lunghezza è la forza: fermati nella zona verde della barra." : "Tira la CPU dallo stesso punto.");
   }
   function startTurn() {
-    st.phase = "aim"; st.shot = null; hud();
-    if (st.turn === "cpu") { st.phase = "wait"; st.waitT = performance.now() / 1000 + 0.9; }
+    st.phase = "aim"; st.shot = null; st.ballP = null; cam = null; hud();
+    if (st.turn === "cpu") { st.phase = "wait"; st.waitT = performance.now() / 1000 + 1; }
   }
-  // geometria dello schermo
-  function geo() {
-    var W = S.W, H = S.H;
-    return { W: W, H: H, rimX: W / 2, rimY: H * 0.3, rimR: W * 0.085, base: H * 0.46 };
+
+  // ------------------------------------------------------------------ 3D: telecamera dietro al tiratore
+  function shooterPos(sp) { return { x: sp.r * Math.sin(sp.a), y: 0, z: RIM.z + sp.r * Math.cos(sp.a) }; }
+  function makeCam() {
+    var sp = spot(), s = shooterPos(sp), bx = s.x - RIM.x, bz = s.z - RIM.z, bl = Math.hypot(bx, bz); bx /= bl; bz /= bl;
+    var side = 0.55;   // un po' di lato: il tiratore non copre il canestro
+    var C = { x: s.x + bx * 3 - bz * side, y: 2.2, z: s.z + bz * 3 + bx * side };
+    var fx = RIM.x - C.x, fz = RIM.z - C.z, fl = Math.hypot(fx, fz); fx /= fl; fz /= fl;
+    var c = { C: C, fx: fx, fz: fz, F: 1, cy: 0 };
+    // F e cy scelti perche' il ferro stia al 30% dell'altezza e i piedi del tiratore al 96%
+    var pr = raw(c, RIM), pf = raw(c, s);
+    c.F = G.clamp((0.96 - 0.3) * S.H / (pr.yy - pf.yy), S.W * 0.7, S.W * 2.2);
+    c.cy = S.H * 0.3 + c.F * pr.yy;
+    return c;
   }
-  function court(g, u, v) { var hw = G.lerp(g.W * 0.27, g.W * 0.56, v); return { x: g.W / 2 + u * hw, y: G.lerp(g.H * 0.5, g.H * 0.97, v), s: G.lerp(0.42, 0.78, v) * g.H / 430 }; }
-  function hands(g, sp) { var p = court(g, sp.u, sp.v); return { x: p.x + 2 * p.s, y: p.y - 232 * p.s, r: 13 * p.s * 1.25, s: p.s, px: p.x, py: p.y }; }
-  // direzione giusta del dito: verso il ferro, contando un'altezza fissa (la palla parte spesso alla quota del ferro)
-  function aimTo(g, h) { return Math.atan2(g.rimX - h.x, g.H * 0.4); }
+  function raw(c, p) { var dx = p.x - c.C.x, dy = p.y - c.C.y, dz = p.z - c.C.z; var X = dx * -c.fz + dz * c.fx, Z = dx * c.fx + dz * c.fz; return { xx: X / Z, yy: dy / Z, z: Z }; }
+  function P3(p) { var r = raw(cam, p); return { x: S.W / 2 + cam.F * r.xx, y: cam.cy - cam.F * r.yy, z: r.z, k: cam.F / r.z }; }
+  // linea 3D campionata, spezzata dove passa dietro la telecamera
+  function line3(c, pts, step) {
+    var all = []; for (var i = 0; i < pts.length - 1; i++) { var a = pts[i], b = pts[i + 1], n = Math.max(1, Math.ceil(Math.hypot(b.x - a.x, b.y - a.y, b.z - a.z) / (step || 0.3)));
+      for (var j = 0; j < n; j++) all.push({ x: G.lerp(a.x, b.x, j / n), y: G.lerp(a.y, b.y, j / n), z: G.lerp(a.z, b.z, j / n) }); }
+    all.push(pts[pts.length - 1]);
+    c.beginPath(); var pen = false;
+    all.forEach(function (p) { var q = P3(p); if (q.z < 0.4) { pen = false; return; } if (pen) c.lineTo(q.x, q.y); else c.moveTo(q.x, q.y); pen = true; });
+    c.stroke();
+  }
+  function poly3(c, pts) { c.beginPath(); pts.forEach(function (p, i) { var q = P3(p); c[i ? "lineTo" : "moveTo"](q.x, q.y); }); c.closePath(); }
+  function arc3(cx, cz, r, a0, a1) { var o = []; for (var i = 0; i <= 40; i++) { var a = G.lerp(a0, a1, i / 40); o.push({ x: cx + Math.sin(a) * r, y: 0, z: cz + Math.cos(a) * r }); } return o; }
+
+  // ------------------------------------------------------------------ tiro
   function tolP(sp) { return sp.pts === 3 ? 0.045 : 0.06; }
-  var TOL_A = 0.085;   // radianti di errore di mira che portano al bordo del ferro
-  // esito dagli errori (in unita' di tolleranza: 1 = bordo del ferro)
+  var TOL_A = 0.075;   // radianti di errore di mira che portano al bordo del ferro
   function judge(ae, pe) {
     var e = Math.hypot(ae, pe);
     if (e < 0.45) return { r: "ciuff", dentro: true };
@@ -52,27 +74,53 @@
     if (pe < -1.6) return { r: "air", dentro: false };
     return { r: "fuori", dentro: false };
   }
+  function handPos() { var sp = spot(), s = shooterPos(sp); return { x: s.x - Math.sin(sp.a) * 0.25, y: 2.45, z: s.z - Math.cos(sp.a) * 0.25 }; }
+  // punto d'arrivo: di lato per l'errore di mira, corto o lungo per l'errore di forza
+  function target(ae, pe) {
+    var h = handPos(), dx = RIM.x - h.x, dz = RIM.z - h.z, l = Math.hypot(dx, dz); dx /= l; dz /= l;
+    var lat = G.clamp(ae, -4, 4) * RIM_R, lon = G.clamp(pe, -4, 4) * RIM_R * 0.8;
+    return { x: RIM.x - dz * lat + dx * lon, y: RIM.y + 0.05, z: RIM.z + dx * lat + dz * lon };
+  }
+  function flight(ae, pe, t) {
+    var sp = spot(), h = handPos(), T = target(ae, pe), apex = 1.1 + 0.12 * sp.r;
+    return { x: G.lerp(h.x, T.x, t), y: G.lerp(h.y, T.y, t) + 4 * apex * t * (1 - t), z: G.lerp(h.z, T.z, t) };
+  }
   function release(ae, pe, res) {
-    var sp = spot(), now = performance.now() / 1000;
-    st.shot = { ae: ae, pe: pe, res: res, t0: now, dur: 0.75 + 0.3 * sp.pow };
+    var sp = spot();
+    st.shot = { ae: ae, pe: pe, res: res, t0: performance.now() / 1000, dur: 0.8 + 0.07 * sp.r };
     st.phase = "fly";
   }
   function cpuShoot() {
     var sp = spot(), dentro = Math.random() < sp.cpu, ae, pe, res;
-    for (var i = 0; i < 40; i++) {   // errori finti coerenti con l'esito scelto
+    for (var i = 0; i < 40; i++) {
       var k = dentro ? G.rnd(0, 0.95) : G.rnd(0.9, 2.2), a = G.rnd(0, G.TAU);
       ae = Math.cos(a) * k; pe = Math.sin(a) * k; res = judge(ae, pe);
       if (res.dentro === dentro) break;
     }
     release(ae, pe, res);
   }
+  // dopo il volo: la palla prosegue con un po' di fisica (gravita', rimbalzi)
+  function startAfter() {
+    var sh = st.shot, r = sh.res.r, T = target(sh.ae, sh.pe), h = handPos(), dx = T.x - h.x, dz = T.z - h.z, l = Math.hypot(dx, dz); dx /= l; dz /= l;
+    var b = { x: T.x, y: T.y, z: T.z, vx: dx * 2, vy: -3, vz: dz * 2, net: false };
+    if (r === "ciuff" || r === "ferro_dentro" || r === "tabella") { b.x = RIM.x; b.z = RIM.z; b.y = RIM.y; b.vx = 0; b.vz = 0; b.vy = r === "ciuff" ? -2.5 : -1.2; b.net = true; }
+    else if (r === "ferro") { var sg = sh.ae < 0 ? -1 : 1; b.vx = -dz * sg * 2.2 + dx * 0.5; b.vz = dx * sg * 2.2 + dz * 0.5; b.vy = 2.6; }
+    else if (r === "tabellone") { b.vx = -dx * 2.5; b.vz = -dz * 2.5; b.vy = 1; }
+    st.ballP = b; st.lastT = performance.now() / 1000;
+  }
+  function stepAfter(now) {
+    var b = st.ballP, dt = Math.min(0.05, now - st.lastT); st.lastT = now;
+    b.vy -= 9.8 * dt; b.x += b.vx * dt; b.y += b.vy * dt; b.z += b.vz * dt;
+    if (b.net && b.y < RIM.y - 0.45) { b.net = false; b.vx = (Math.random() - 0.5) * 1.5; b.vz = 1.5; }
+    if (b.y < BALL_R) { b.y = BALL_R; b.vy = Math.abs(b.vy) * 0.55; b.vx *= 0.8; b.vz *= 0.8; }
+  }
   function finishShot() {
     var sp = spot(), r = st.shot.res, mine = st.turn === "me";
     if (r.dentro) { if (mine) st.me += sp.pts; else st.cpu += sp.pts; }
     st.msg = { ciuff: "Ciuff!", ferro_dentro: "Dentro dopo il ferro", tabella: "Di tabella!", ferro: "Ferro!", tabellone: "Lungo sul tabellone", air: "Air ball!", fuori: "Fuori!" }[r.r]
       + (r.dentro ? " +" + sp.pts : "");
-    st.msgGood = mine === r.dentro; st.msgT = performance.now() / 1000; st.phase = "result"; hud();
-    setTimeout(next, 1500);
+    st.msgGood = mine === r.dentro; st.msgT = performance.now() / 1000; st.phase = "result"; startAfter(); hud();
+    setTimeout(next, 1700);
   }
   function next() {
     if (st.turn === "me") { st.turn = "cpu"; return startTurn(); }
@@ -93,18 +141,20 @@
 
   // ------------------------------------------------------------------ comandi
   function power(d) { return G.clamp(Math.hypot(d.dx, d.dy) / (S.H * 0.5), 0, 1.3); }
+  // direzione giusta: verso il ferro in orizzontale, con un'altezza fissa (la palla parte quasi alla quota del ferro e il
+  // dito andrebbe quasi di lato): in pratica dritto in su = al centro, e l'arco tratteggiato mostra dove va
+  function wantAng() { var h = P3(handPos()), r = P3(RIM); return Math.atan2(r.x - h.x, S.H * 0.45); }
+  function aimErr(d) { return (Math.atan2(d.dx, -d.dy) - wantAng()) / TOL_A; }   // dito rispetto alla direzione mano -> ferro
   cv.addEventListener("pointerdown", function (e) {
     if (!st || st.turn !== "me" || st.phase !== "aim") return;
     var p = G.pt(cv, e); drag = { x: p.x, y: p.y, dx: 0, dy: 0 };
     try { cv.setPointerCapture(e.pointerId); } catch (er) {}
   });
   cv.addEventListener("pointermove", function (e) { if (!drag) return; var p = G.pt(cv, e); drag.dx = p.x - drag.x; drag.dy = p.y - drag.y; });
-  cv.addEventListener("pointerup", function (e) {
+  cv.addEventListener("pointerup", function () {
     if (!drag || !st) return; var d = drag; drag = null;
     if (st.turn !== "me" || st.phase !== "aim" || d.dy > -20) return;
-    var g = geo(), sp = spot(), h = hands(g, sp);
-    var want = aimTo(g, h), got = Math.atan2(d.dx, -d.dy);   // 0 = dritto in su
-    var ae = (got - want) / TOL_A, pe = (power(d) - sp.pow) / tolP(sp);
+    var sp = spot(), ae = aimErr(d), pe = (power(d) - sp.pow) / tolP(sp);
     release(ae, pe, judge(ae, pe));
   });
   cv.addEventListener("pointercancel", function () { drag = null; });
@@ -119,106 +169,109 @@
     c.beginPath(); c.arc(-r * 1.25, 0, r * 0.95, -0.75, 0.75); c.stroke(); c.beginPath(); c.arc(r * 1.25, 0, r * 0.95, Math.PI - 0.75, Math.PI + 0.75); c.stroke();
     c.restore();
   }
-  function arena(c, g) {
-    var W = g.W, H = g.H, sky = c.createLinearGradient(0, 0, 0, g.base); sky.addColorStop(0, "#07090D"); sky.addColorStop(1, "#141B26"); c.fillStyle = sky; c.fillRect(0, 0, W, g.base);
-    for (var row = 0; row < 9; row++) {   // tribune
-      var y = H * 0.12 + row * H * 0.037, a = 0.25 + row * 0.07;
-      for (var i = 0; i < 46; i++) { c.globalAlpha = a; c.fillStyle = ["#8E9AAA", "#5D6878", "#B54A4A", "#C9CED6", "#3E4A5C"][(i * 7 + row * 3) % 5]; c.beginPath(); c.arc((i + (row % 2) * 0.5) * W / 45, y, W * 0.009, 0, G.TAU); c.fill(); }
+  function arena(c) {
+    var W = S.W, H = S.H, hz = G.clamp(cam.cy, H * 0.25, H * 0.75);   // orizzonte
+    var sky = c.createLinearGradient(0, 0, 0, hz); sky.addColorStop(0, "#07090D"); sky.addColorStop(1, "#18202C"); c.fillStyle = sky; c.fillRect(0, 0, W, hz);
+    // tribune che scorrono con la telecamera
+    var yaw = Math.atan2(cam.fx, -cam.fz);
+    for (var row = 0; row < 11; row++) {
+      var y = hz - H * 0.02 - row * H * 0.03, a = 0.75 - row * 0.05, sz = W * (0.011 - row * 0.0004), off = ((yaw * W * 0.8) % (W / 30) + W / 30) % (W / 30);
+      for (var i = -1; i < 32; i++) { c.globalAlpha = a; c.fillStyle = ["#8E9AAA", "#5D6878", "#B54A4A", "#C9CED6", "#3E4A5C", "#D9B44A"][(i * 7 + row * 3 + 600) % 6]; c.beginPath(); c.arc(i * W / 30 + off + (row % 2) * W / 60, y, sz, 0, G.TAU); c.fill(); }
     }
     c.globalAlpha = 1;
-    c.fillStyle = "#16306B"; c.fillRect(0, H * 0.075, W, H * 0.022); c.fillStyle = "#B3202E"; c.fillRect(W * 0.62, H * 0.075, W * 0.38, H * 0.022);
-    c.fillStyle = "rgba(255,255,255,.75)"; c.font = "700 " + Math.round(H * 0.013) + "px Archivo"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("STATSFIGHT ARENA", W * 0.3, H * 0.086);
-    // parquet in prospettiva
-    var fl = c.createLinearGradient(0, g.base, 0, H); fl.addColorStop(0, "#C99F6E"); fl.addColorStop(1, "#E3C095"); c.fillStyle = fl; c.fillRect(0, g.base, W, H - g.base);
-    c.strokeStyle = "rgba(120,80,40,.18)"; c.lineWidth = 1;
-    for (var k = -12; k <= 12; k++) { c.beginPath(); c.moveTo(W / 2 + k * W * 0.05, g.base); c.lineTo(W / 2 + k * W * 0.16, H); c.stroke(); }
-    // area (vernice) e linee
-    var ft = court(g, 0, FT.v), kb = court(g, 0, 0);
-    c.fillStyle = "#1C8C8A"; c.beginPath(); c.moveTo(W * 0.38, g.base + 2); c.lineTo(W * 0.62, g.base + 2); c.lineTo(W / 2 + W * 0.17, ft.y); c.lineTo(W / 2 - W * 0.17, ft.y); c.closePath(); c.fill();
-    c.strokeStyle = "rgba(255,255,255,.9)"; c.lineWidth = 2.5; c.stroke();
-    c.beginPath(); c.moveTo(0, g.base + 2); c.lineTo(W, g.base + 2); c.stroke();
-    c.beginPath(); c.ellipse(W / 2, ft.y, W * 0.17, H * 0.035, 0, 0, Math.PI); c.stroke();
-    c.setLineDash([6, 6]); c.beginPath(); c.ellipse(W / 2, ft.y, W * 0.17, H * 0.035, 0, Math.PI, G.TAU); c.stroke(); c.setLineDash([]);
-    c.beginPath(); c.ellipse(W / 2, kb.y - 2, W * 0.5, H * 0.42, 0, 0.02, Math.PI - 0.02); c.stroke();   // linea da tre
+    var by = hz - H * 0.36; c.fillStyle = "#16306B"; c.fillRect(0, by, W, H * 0.022); c.fillStyle = "#B3202E"; c.fillRect(W * 0.62, by, W * 0.38, H * 0.022);
+    c.fillStyle = "rgba(255,255,255,.75)"; c.font = "700 " + Math.round(H * 0.013) + "px Archivo"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("STATSFIGHT ARENA", W * 0.3, by + H * 0.011);
+    // parquet
+    var fl = c.createLinearGradient(0, hz, 0, H); fl.addColorStop(0, "#BF946A"); fl.addColorStop(1, "#E6C49A"); c.fillStyle = fl; c.fillRect(0, hz, W, H - hz);
+    c.strokeStyle = "rgba(120,80,40,.16)"; c.lineWidth = 1;
+    for (var k = -7; k <= 7; k++) line3(c, [{ x: k, y: 0, z: 0 }, { x: k, y: 0, z: 14 }], 0.5);
+    // area, lunetta, tre punti
+    c.fillStyle = "#1C8C8A"; poly3(c, [{ x: -2.45, y: 0, z: 0 }, { x: 2.45, y: 0, z: 0 }, { x: 2.45, y: 0, z: 5.8 }, { x: -2.45, y: 0, z: 5.8 }]); c.fill();
+    c.strokeStyle = "rgba(255,255,255,.9)"; c.lineWidth = 2.5;
+    line3(c, [{ x: -2.45, y: 0, z: 0 }, { x: -2.45, y: 0, z: 5.8 }, { x: 2.45, y: 0, z: 5.8 }, { x: 2.45, y: 0, z: 0 }]);
+    line3(c, [{ x: -7.5, y: 0, z: 0 }, { x: 7.5, y: 0, z: 0 }]);
+    line3(c, arc3(0, 5.8, 1.8, -Math.PI / 2, Math.PI / 2));
+    line3(c, [{ x: -6.6, y: 0, z: 0 }, { x: -6.6, y: 0, z: 2.99 }].concat(arc3(RIM.x, RIM.z, 6.75, -1.35, 1.35)).concat([{ x: 6.6, y: 0, z: 2.99 }, { x: 6.6, y: 0, z: 0 }]));
+    line3(c, [{ x: -7.5, y: 0, z: 0 }, { x: -7.5, y: 0, z: 14 }]); line3(c, [{ x: 7.5, y: 0, z: 0 }, { x: 7.5, y: 0, z: 14 }]);
   }
-  function hoopBack(c, g, sway) {
-    var W = g.W, H = g.H, bx = g.rimX, bw = W * 0.36, top = g.rimY - H * 0.16, bot = g.rimY + H * 0.012;
-    // sostegno dietro al tabellone
-    c.fillStyle = "#9AA3AD"; c.fillRect(bx - 4, bot, 8, g.base - bot - 4);
-    c.fillStyle = "#C62828"; c.fillRect(bx - W * 0.06, g.base - H * 0.05, W * 0.12, H * 0.05);
-    c.fillStyle = "rgba(20,24,30,.55)"; c.fillRect(bx - bw / 2, top, bw, bot - top);
-    c.strokeStyle = "#F4F4F4"; c.lineWidth = 4; c.strokeRect(bx - bw / 2, top, bw, bot - top);
-    c.lineWidth = 3; c.strokeRect(bx - W * 0.07, g.rimY - H * 0.07, W * 0.14, H * 0.06);
-    // ferro dietro
-    c.strokeStyle = "#D84315"; c.lineWidth = 3; c.beginPath(); c.ellipse(g.rimX, g.rimY, g.rimR, g.rimR * 0.28, 0, Math.PI, G.TAU); c.stroke();
-  }
-  function hoopFront(c, g, sway) {
-    var r = g.rimR, y = g.rimY, nh = g.H * 0.075;
+  function hoop(c, front, sway) {
+    var zc = P3(RIM).z, isFront = function (p) { return P3(p).z <= zc; };
+    if (!front) {
+      // sostegno, tabellone, ferro dietro
+      c.fillStyle = "#C62828"; poly3(c, [{ x: -0.6, y: 0, z: -1.2 }, { x: 0.6, y: 0, z: -1.2 }, { x: 0.6, y: 1.1, z: -1.2 }, { x: -0.6, y: 1.1, z: -1.2 }]); c.fill();
+      c.strokeStyle = "#9AA3AD"; c.lineWidth = Math.max(3, P3({ x: 0, y: 2, z: -1 }).k * 0.12); line3(c, [{ x: 0, y: 1.1, z: -1.2 }, { x: 0, y: 3.3, z: -1.2 }, { x: 0, y: 3.3, z: 1.15 }]);
+      c.fillStyle = "rgba(225,235,245,.18)"; poly3(c, [{ x: -0.9, y: 2.9, z: 1.2 }, { x: 0.9, y: 2.9, z: 1.2 }, { x: 0.9, y: 3.95, z: 1.2 }, { x: -0.9, y: 3.95, z: 1.2 }]); c.fill();
+      c.strokeStyle = "#F4F4F4"; c.lineWidth = 3.5; c.stroke();
+      c.lineWidth = 2.5; poly3(c, [{ x: -0.3, y: 3.05, z: 1.2 }, { x: 0.3, y: 3.05, z: 1.2 }, { x: 0.3, y: 3.5, z: 1.2 }, { x: -0.3, y: 3.5, z: 1.2 }]); c.stroke();
+      c.strokeStyle = "#B23A12"; c.lineWidth = 3; line3(c, [{ x: 0, y: RIM.y, z: 1.2 }, { x: 0, y: RIM.y, z: RIM.z - RIM_R }]);
+    }
+    // rete: dal ferro a un anello piu' stretto e piu' basso
     c.strokeStyle = "rgba(255,255,255,.85)"; c.lineWidth = 1.2;
-    for (var i = 0; i <= 8; i++) {   // rete
-      var a = Math.PI * i / 8, x0 = g.rimX + Math.cos(a) * r, x1 = g.rimX + Math.cos(a) * r * 0.55 + sway * 6;
-      c.beginPath(); c.moveTo(x0, y + Math.sin(a) * r * 0.28); c.lineTo(x1, y + nh); c.stroke();
+    for (var j = 0; j < 16; j++) {
+      var a2 = j / 16 * G.TAU, top = { x: RIM.x + Math.cos(a2) * RIM_R, y: RIM.y, z: RIM.z + Math.sin(a2) * RIM_R }, bot = { x: RIM.x + Math.cos(a2) * RIM_R * 0.6 + sway * 0.05, y: RIM.y - 0.42, z: RIM.z + Math.sin(a2) * RIM_R * 0.6 };
+      if (isFront(top) === front) line3(c, [top, bot], 0.5);
     }
-    for (var j = 1; j <= 3; j++) { var f = j / 3.4; c.beginPath(); c.ellipse(g.rimX + sway * 6 * f, y + nh * f, r * (1 - 0.45 * f), r * 0.2, 0, 0, Math.PI); c.stroke(); }
-    c.strokeStyle = "#E64A19"; c.lineWidth = 3.5; c.beginPath(); c.ellipse(g.rimX, y, r, r * 0.28, 0, 0, Math.PI); c.stroke();
+    for (var n = 1; n <= 2; n++) { var rr = RIM_R * (1 - 0.2 * n), yy = RIM.y - 0.14 * n, ring = []; for (var m = 0; m <= 24; m++) { var am = m / 24 * G.TAU; ring.push({ x: RIM.x + Math.cos(am) * rr + sway * 0.03 * n, y: yy, z: RIM.z + Math.sin(am) * rr }); } drawHalf(c, ring, front, isFront); }
+    c.strokeStyle = front ? "#E64A19" : "#B23A12"; c.lineWidth = Math.max(2.5, P3(RIM).k * 0.03);
+    var rim = []; for (var i = 0; i <= 32; i++) { var a = i / 32 * G.TAU; rim.push({ x: RIM.x + Math.cos(a) * RIM_R, y: RIM.y, z: RIM.z + Math.sin(a) * RIM_R }); }
+    drawHalf(c, rim, front, isFront);
   }
-  // posizione della palla in volo e dopo
-  function ballAt(g, now) {
-    var sp = spot(), h = hands(g, sp), sh = st.shot;
-    if (!sh) return { x: h.x, y: h.y, r: h.r, rot: 0, behind: false };
-    var t = G.clamp((now - sh.t0) / sh.dur, 0, 1);
-    var ex = g.rimX + G.clamp(sh.ae, -3.5, 3.5) * g.rimR * 0.95, ey = g.rimY - 4 - G.clamp(sh.pe, -3, 3) * g.rimR * 0.45;
-    var rEnd = g.rimR * 0.42, apex = g.H * 0.24 + (1 - sp.v) * g.H * 0.05;
-    var x = G.lerp(h.x, ex, t), y = G.lerp(h.y, ey, t) - 4 * apex * t * (1 - t), r = G.lerp(h.r, rEnd, Math.sqrt(t));
-    var res = st.phase === "result" ? sh.res.r : null, rt = res ? G.clamp((now - st.msgT) / 0.9, 0, 1) : 0, side = sh.ae < 0 ? -1 : 1;
-    if (!res) return { x: x, y: y, r: r, rot: t * 9, behind: false };
-    if (res === "ciuff" || res === "ferro_dentro" || res === "tabella") {
-      var wob = res === "ferro_dentro" ? Math.sin(rt * 18) * (1 - rt) * g.rimR * 0.5 : 0, dy0 = res === "tabella" ? -g.rimR * 0.4 * (1 - rt) : 0;
-      return { x: g.rimX + wob, y: g.rimY - 2 + dy0 + rt * rt * g.H * 0.2, r: rEnd, rot: 9 + rt * 4, behind: true };
-    }
-    if (res === "ferro") return { x: ex + side * rt * g.W * 0.28, y: ey - Math.sin(rt * Math.PI) * g.H * 0.07 + rt * g.H * 0.16, r: rEnd * (1 + rt * 0.3), rot: 9 + rt * 6, behind: false };
-    if (res === "tabellone") return { x: ex + side * rt * g.W * 0.12, y: ey + rt * g.H * 0.3, r: rEnd * (1 + rt * 0.8), rot: 9 - rt * 6, behind: false };
-    return { x: ex + side * rt * g.W * 0.05, y: ey + rt * g.H * 0.22, r: rEnd * (1 + rt * 0.2), rot: 9 + rt * 3, behind: false };
+  function drawHalf(c, pts, front, isFront) {
+    c.beginPath(); var pen = false;
+    pts.forEach(function (p) { var q = P3(p); if (isFront(p) === front) { if (pen) c.lineTo(q.x, q.y); else c.moveTo(q.x, q.y); pen = true; } else pen = false; });
+    c.stroke();
+  }
+  function ballWorld(now) {
+    if (st.phase === "result" && st.ballP) return st.ballP;
+    if (!st.shot) return handPos();
+    return flight(st.shot.ae, st.shot.pe, G.clamp((now - st.shot.t0) / st.shot.dur, 0, 1));
   }
   function frame() {
     if (!S || !st) return;
-    var c = S.c, g = geo(), W = g.W, H = g.H, now = performance.now() / 1000, sp = spot();
+    var c = S.c, W = S.W, H = S.H, now = performance.now() / 1000, sp = spot();
+    if (!cam) cam = makeCam();
     if (st.phase === "wait" && now >= st.waitT) cpuShoot();
     if (st.phase === "fly" && now - st.shot.t0 >= st.shot.dur) finishShot();
+    if (st.phase === "result" && st.ballP) stepAfter(now);
     var inNet = st.phase === "result" && st.shot && st.shot.res.dentro, sway = inNet ? Math.sin((now - st.msgT) * 14) * Math.max(0, 1 - (now - st.msgT) * 1.4) : 0;
-    arena(c, g); hoopBack(c, g, sway);
-    var b = ballAt(g, now);
-    if (b.behind) ball(c, b.x, b.y, b.r, b.rot);
-    hoopFront(c, g, sway);
-    // tiratore di schiena: braccia su col pallone, poi il rilascio con un saltino
-    var p = court(g, sp.u, sp.v), av = st.turn === "me" ? G.av : cpuAv, rel = st.shot ? G.clamp((now - st.shot.t0) / 0.25, 0, 1) : 0;
-    var jump = st.shot ? Math.sin(Math.min(1, (now - st.shot.t0) / 0.5) * Math.PI) * 18 : 0;
-    var pose = st.shot ? G.P({ al: [-2.95, 0.05], ar: [2.95, -0.05], lift: jump, ll: [-0.1, 0.25], lr: [0.1, -0.25] })
+    arena(c);
+    var bw = ballWorld(now), bq = P3(bw), behind = bq.z > P3(RIM).z + 0.05 || !!(st.ballP && st.ballP.net);
+    hoop(c, false, sway);
+    if (behind) ball(c, bq.x, bq.y, BALL_R * bq.k, now * 6);
+    hoop(c, true, sway);
+    // tiratore di schiena, girato verso il canestro (la telecamera e' dietro di lui)
+    var s = shooterPos(sp), fq = P3(s), scale = fq.k * 1.85 / 215, av = st.turn === "me" ? G.av : cpuAv;
+    var jump = st.shot ? Math.sin(Math.min(1, (now - st.shot.t0) / 0.5) * Math.PI) * 0.25 : 0;
+    var pose = st.shot ? G.P({ al: [-2.95, 0.05], ar: [2.95, -0.05], lift: jump * 215 / 1.85, ll: [-0.1, 0.25], lr: [0.1, -0.25] })
       : G.P({ al: [-2.75, 0.35], ar: [2.75, -0.35], ll: [-0.1, 0.2], lr: [0.12, -0.2] });
-    if (st.phase !== "end") G.drawGuy(c, av, p.x, p.y, p.s, pose, { back: true });
-    if (!b.behind && st.phase !== "end") ball(c, b.x, b.y - (st.shot ? 0 : jump * p.s), b.r, b.rot);
-    // mira e forza mentre trascini
+    if (st.phase !== "end") G.drawGuy(c, av, fq.x, fq.y, scale, pose, { back: true });
+    if (!behind && st.phase !== "end") ball(c, bq.x, bq.y, BALL_R * bq.k, st.shot ? now * 6 : 0);
+    // mira (arco tratteggiato) e forza (barra) mentre trascini
     if (drag && drag.dy < -5) {
-      var h = hands(g, sp), pw = power(drag), L = H * 0.3;
-      var ang = Math.atan2(drag.dx, -drag.dy);
-      c.strokeStyle = "rgba(255,255,255,.75)"; c.setLineDash([6, 6]); c.lineWidth = 3; c.beginPath(); c.moveTo(h.x, h.y); c.lineTo(h.x + Math.sin(ang) * L, h.y - Math.cos(ang) * L); c.stroke(); c.setLineDash([]);
-      var bx = W - 22, by0 = H * 0.86, bh = H * 0.5, k = 1 / 1.3;
+      var ae = aimErr(drag), col = Math.abs(ae) < 0.45 ? "#6FBE92" : Math.abs(ae) < 1 ? "#E8C552" : "#E08268";
+      c.strokeStyle = col; c.lineWidth = 3; c.setLineDash([5, 7]); c.beginPath();
+      for (var i = 0; i <= 30; i++) { var q = P3(flight(ae, 0, i / 30)); c[i ? "lineTo" : "moveTo"](q.x, q.y); }
+      c.stroke(); c.setLineDash([]);
+      var tq = P3(target(ae, 0)); c.beginPath(); c.arc(tq.x, tq.y, 6, 0, G.TAU); c.fillStyle = col; c.fill();
+      var pw = power(drag), bx = W - 22, by0 = H * 0.86, bh = H * 0.5, k = 1 / 1.3;
       c.fillStyle = "rgba(0,0,0,.45)"; c.fillRect(bx - 7, by0 - bh, 14, bh);
       c.fillStyle = "#6FBE92"; c.fillRect(bx - 7, by0 - bh * (sp.pow + tolP(sp)) * k, 14, bh * 2 * tolP(sp) * k);
       c.fillStyle = pw > sp.pow + tolP(sp) ? "#E08268" : "#E8A252"; c.fillRect(bx - 4, by0 - bh * pw * k, 8, bh * pw * k);
       c.strokeStyle = "rgba(255,255,255,.6)"; c.lineWidth = 1.5; c.strokeRect(bx - 7, by0 - bh, 14, bh);
+      c.font = "700 11px Archivo"; c.fillStyle = "#fff"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("forza", bx, by0 + 12);
     }
     if (st.phase === "aim" && st.turn === "me" && !drag) {
-      var hh = hands(g, sp), pulse = 0.5 + 0.5 * Math.sin(now * 5);
+      var hq = P3(handPos()), pulse = 0.5 + 0.5 * Math.sin(now * 5);
       c.strokeStyle = "rgba(255,213,79," + (0.4 + 0.5 * pulse) + ")"; c.lineWidth = 4;
-      for (var i = 0; i < 3; i++) { var yy = hh.y - H * 0.06 - i * H * 0.03; c.beginPath(); c.moveTo(hh.x - 10, yy + 8); c.lineTo(hh.x, yy); c.lineTo(hh.x + 10, yy + 8); c.stroke(); }
-      c.font = "800 " + Math.round(W * 0.06) + "px Archivo"; c.textAlign = "center"; c.textBaseline = "middle"; c.lineWidth = 5; c.strokeStyle = "rgba(0,0,0,.6)";
-      var lbl = sp.nome + " · " + sp.pts + " punti"; c.strokeText(lbl, W / 2, H * 0.94); c.fillStyle = "#FFD54F"; c.fillText(lbl, W / 2, H * 0.94);
+      for (var a = 0; a < 3; a++) { var yy = hq.y - H * 0.07 - a * H * 0.03; c.beginPath(); c.moveTo(hq.x - 10, yy + 8); c.lineTo(hq.x, yy); c.lineTo(hq.x + 10, yy + 8); c.stroke(); }
     }
-    if (st.phase === "wait") { c.font = "700 14px Archivo"; c.fillStyle = "#E8A252"; c.textAlign = "center"; c.fillText("Tira la CPU", W / 2, H * 0.52); }
+    if (st.phase === "aim" || st.phase === "wait") {
+      c.font = "800 " + Math.round(W * 0.055) + "px Archivo"; c.textAlign = "center"; c.textBaseline = "middle"; c.lineWidth = 5; c.strokeStyle = "rgba(0,0,0,.6)";
+      var lbl = (st.turn === "cpu" ? "CPU · " : "") + sp.nome + " · " + sp.pts + " punti"; c.strokeText(lbl, W / 2, H * 0.06); c.fillStyle = st.turn === "cpu" ? "#E8A252" : "#FFD54F"; c.fillText(lbl, W / 2, H * 0.06);
+    }
     if (st.phase === "result" && st.msg) {
-      var a = Math.min(1, (now - st.msgT) * 4); c.save(); c.globalAlpha = a; c.font = "800 " + Math.round(W * 0.09) + "px Archivo"; c.textAlign = "center"; c.textBaseline = "middle";
-      c.lineWidth = 6; c.strokeStyle = "rgba(0,0,0,.6)"; c.strokeText(st.msg, W / 2, H * 0.55); c.fillStyle = st.msgGood ? "#6FBE92" : "#E08268"; c.fillText(st.msg, W / 2, H * 0.55); c.restore();
+      var al = Math.min(1, (now - st.msgT) * 4); c.save(); c.globalAlpha = al; c.font = "800 " + Math.round(W * 0.09) + "px Archivo"; c.textAlign = "center"; c.textBaseline = "middle";
+      c.lineWidth = 6; c.strokeStyle = "rgba(0,0,0,.6)"; c.strokeText(st.msg, W / 2, H * 0.12); c.fillStyle = st.msgGood ? "#6FBE92" : "#E08268"; c.fillText(st.msg, W / 2, H * 0.12); c.restore();
     }
     if (st.phase === "end") {
       c.fillStyle = "rgba(8,14,18,.55)"; c.fillRect(0, 0, W, H);
@@ -228,8 +281,9 @@
   }
   window.Basket = {
     show: function () { if (!st) newGame(); else hud(); },
-    resize: function () { S = G.setup(cv, 1.25, 190); },
+    resize: function () { S = G.setup(cv, 1.25, 190); cam = null; },
     frame: frame,
-    _st: function () { return st; }, _spot: function () { var g = geo(), sp = spot(), h = hands(g, sp); return { want: aimTo(g, h), len: sp.pow * S.H * 0.5 }; }
+    _st: function () { return st; },
+    _ideal: function () { if (!cam) cam = makeCam(); return { want: wantAng(), len: spot().pow * S.H * 0.5 }; }
   };
 })();
