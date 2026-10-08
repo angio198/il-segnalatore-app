@@ -1,6 +1,14 @@
 // Dizionario italiano -> inglese dell'app (lo usa i18n.js). "#" = un numero qualsiasi, " *" alla fine = prefisso.
 // Per tradurre una frase nuova: aggiungerla qui, uguale a come appare nell'app (i numeri diventano #).
 window.I18N_EN = {
+  "Telegram: automatico": "Telegram: automatic",
+  "Manda su Telegram": "Send on Telegram",
+  "Telegram automatico": "Automatic Telegram",
+  "Telegram manuale": "Manual Telegram",
+  "Gioco automatico": "Automatic play",
+  "Gioco manuale": "Manual play",
+  "Scegli tu: tasto Telegram sul segnale": "You choose: Telegram button on the signal",
+  "Scegli tu: tasto Gioca sul segnale": "You choose: Play button on the signal",
   // 10/10: Strategie, Radar, Match, ippica, minigiochi
   "Le mie": "Mine",
   "Catalogo": "Catalog",
