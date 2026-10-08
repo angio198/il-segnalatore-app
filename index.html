@@ -746,6 +746,29 @@
   .minfo > div{display:flex;justify-content:space-between;gap:10px;} .minfo span{color:var(--ink-soft);}
   .morebtn{display:block;width:100%;margin-top:10px;font:inherit;font-weight:700;font-size:0.88rem;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--accent-strong);cursor:pointer;}
   .comphead .starbtn .ico{width:17px;height:17px;}
+  /* Ippica nel Match come i siti di ippica (11/10, foto dell'utente): corse in fila, testata scura, tabella dei partenti */
+  .iptabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin:0 0 8px;padding-bottom:2px;} .iptabs::-webkit-scrollbar{display:none;}
+  .iptab{flex:0 0 auto;display:grid;grid-template-columns:auto auto;align-items:baseline;column-gap:4px;font:inherit;padding:5px 9px 4px;border:1px solid var(--line);border-bottom-width:3px;border-radius:8px 8px 4px 4px;background:var(--surface);color:var(--ink);cursor:pointer;}
+  .iptab b{font-size:0.95rem;} .iptab i{font-style:normal;font-size:0.7rem;color:var(--ink-soft);} .iptab span{grid-column:1 / 3;font-size:0.72rem;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+  .iptab.soon{border-bottom-color:#E5322D;} .iptab.sel{background:#1F3A5F;border-color:#1F3A5F;color:#FFC93C;} .iptab.sel span,.iptab.sel i{color:#DCE6F2;}
+  .ipcard{padding:0;overflow:hidden;}
+  .iphead{background:linear-gradient(180deg,#2B3036,#16191D);color:#fff;padding:10px 12px;}
+  .iph1{font-size:1.02rem;} .iph1 b{font-size:1.12rem;letter-spacing:.02em;} .ipdisc{color:#FFC93C;font-weight:800;font-size:0.8rem;}
+  .iph2{color:#D5DADF;font-size:0.9rem;margin-top:2px;font-weight:700;}
+  .ipgrid{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:2px 10px;margin-top:8px;font-size:0.76rem;} .ipgrid span{color:#B8C0C8;} .ipgrid b{text-align:right;}
+  .ipth,.iprow{display:grid;gap:6px;align-items:center;padding:0 10px;}
+  .ipth{background:#1F5BA8;color:#fff;font-size:0.7rem;font-weight:700;padding-top:5px;padding-bottom:5px;} .ipth span{text-align:center;}
+  .iprow{grid-template-columns:30px minmax(0,1fr) auto 62px 62px;padding-top:8px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .ipth{grid-template-columns:30px minmax(0,1fr) 62px 62px;} .ipth span:first-child{grid-column:1 / 3;}
+  .ipn{font-size:1.5rem;font-weight:900;color:#1F5BA8;text-align:center;font-variant-numeric:tabular-nums;} :root[data-dark="1"] .ipn{color:#6FA8F0;}
+  .iphorse{min-width:0;display:flex;flex-direction:column;} .iphorse b{font-size:0.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#1F5BA8;} :root[data-dark="1"] .iphorse b{color:#8DBBF5;}
+  .ipjd{font-size:0.68rem;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase;}
+  .ipform{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-size:0.66rem;color:var(--ink-soft);font-variant-numeric:tabular-nums;max-width:74px;} .ipform > span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:74px;}
+  .ipic{display:flex;align-items:center;gap:4px;} .ipcup .ico{width:14px;height:14px;color:#E0A100;}
+  .ipbar{border:0;background:none;padding:0;cursor:pointer;color:#1F5BA8;display:flex;} .ipbar .ico{width:16px;height:16px;} :root[data-dark="1"] .ipbar{color:#6FA8F0;}
+  .ipq{padding:9px 2px;border-radius:6px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);} .ipq b{font-size:1rem;font-variant-numeric:tabular-nums;}
+  .ipq.off{display:block;text-align:center;color:var(--ink-soft);border:1px dashed var(--line);border-radius:6px;padding:9px 2px;}
+  .ipq.on{background:var(--accent);border-color:var(--accent);color:#12181A;}
   /* Notifiche (03/10) */
   .navcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;}
   .navcard > .ico{width:26px;height:26px;} .navcard > span{flex:1;display:flex;flex-direction:column;}
@@ -1268,8 +1291,8 @@
   #ptr{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) - 44px);z-index:40;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;transform:translate(-50%,0);box-shadow:0 4px 12px rgba(0,0,0,.25);pointer-events:none;transition:transform .15s;}
   #ptr .ico{width:20px;height:20px;} #ptr.ready{border-color:#2BB673;} body.ptrbusy #ptr{transform:translate(-50%,104px);animation:none;}
   body.ptrbusy #ptr .ico{animation:lvspin .8s linear infinite;}
-  .rtrend{position:relative;margin:6px 0 2px;} .rtrend svg{display:block;}
-  .rtlab{display:flex;justify-content:space-between;gap:8px;font-size:0.62rem;margin-top:2px;color:var(--ink-soft);} .rtlab span:first-child{color:var(--accent-strong);font-weight:800;} .rtlab span:last-child{color:#E5322D;font-weight:800;}
+  .rtrend{position:relative;margin:6px 0 2px;} .rtrend svg{display:block;height:auto;}
+  .rtlab{display:flex;justify-content:space-between;gap:8px;font-size:0.62rem;margin-top:2px;color:var(--ink-soft);} .rtlab .th{color:#E5322D;font-weight:800;} .rtlab .ta{color:#3D8BFD;font-weight:800;}
   .rcard{position:relative;}
   .rcard.stratm{box-shadow:0 0 0 2px var(--accent-strong) inset, 0 0 14px color-mix(in srgb, var(--accent) 30%, transparent);}
   .rcard.wonm{box-shadow:0 0 0 2px #2BB673 inset;}
@@ -4863,26 +4886,46 @@
     ippCache = { at: S0.at, d: D0.at, list: list };
     return list;
   }
+  // 11/10 (foto dell'utente): programma come i siti di ippica. In alto le corse in fila (ippodromo, numero, bandiera,
+  // ora), sotto la corsa scelta: testata scura (ippodromo, disciplina, corsa, premio, distanza) e la tabella dei
+  // partenti per numero di gara: numero grande, cavallo, guidatore, forma (piazzamenti dal piu' vecchio al piu'
+  // recente), coppa se ha gia' vinto in questo ippodromo, colonne Vincente e Piazzato da toccare.
+  var ippSel = null;
+  function flagCC(cc) { cc = String(cc || "").toUpperCase(); if (cc === "GB") return "🇬🇧"; return /^[A-Z]{2}$/.test(cc) ? String.fromCodePoint(127397 + cc.charCodeAt(0), 127397 + cc.charCodeAt(1)) : ""; }
+  function hhmm(ts) { var d = new Date(ts * 1000); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+  function formTxt(x) { return (x.last || []).slice().reverse().map(function (l) { var m = /^(\d+)°$/.exec(l[2] || ""); return m ? (Number(m[1]) > 9 ? "0" : m[1]) : "-"; }).join("."); }
+  function ippOdd(e, code, v) {
+    if (!(v > 1)) return '<span class="ipq off">–</span>';
+    var on = inSlip(e.id, code);
+    return '<button class="otile ipq' + (on ? " on" : "") + '" type="button" data-iev="' + esc(e.id) + '" data-code="' + esc(code) + '" aria-pressed="' + on + '"><b>' + oddsTxt(v) + '</b></button>';
+  }
   function ippicaDiarioHtml() {
-    var evs = ippicaEvents().filter(function (e) { return e.start > nowS(); });
+    var evs = ippicaEvents().filter(function (e) { return e.start > nowS(); }).sort(function (a, b) { return a.start - b.start; });
     if (!evs.length) return '<div class="note">Nessuna corsa in arrivo sugli ippodromi di cui abbiamo lo storico dei cavalli.</div>';
-    // 10/10: programma delle corse come le partite: "In partenza" (entro 30 minuti) e "Programmate", per ippodromo
-    var by = {}, order = [], soon = nowS() + 30 * 60;
-    evs.sort(function (a, b) { return a.start - b.start; }).forEach(function (e) { var k = (e.start <= soon ? "0" : "1") + "|" + ((e.race && e.race.track) || e.home || "") + ((e.race && e.race.country) ? " · " + (PAESI[e.race.country] || e.race.country) : ""); if (!by[k]) { by[k] = []; order.push(k); } by[k].push(e); });
-    var lastSec = null;
-    return '<div class="note" style="margin-bottom:8px;">Vincente: vince se il cavallo arriva primo; ritirato = nullo. Quota fissa vista ora. Solo gli ippodromi di cui abbiamo lo storico dei cavalli.</div>'
-      + order.map(function (k) {
-        var sec = k[0] === "0" ? "In partenza" : "Programmate", h = sec !== lastSec ? '<h2 class="calsec">' + (sec === "In partenza" ? '<i class="lvdot"></i> ' : ic("clock") + " ") + sec + '</h2>' : ""; lastSec = sec;
-        return h + '<h2 class="sectiontitle">' + esc(k.slice(2) || "?") + ' <span class="k">' + by[k].length + '</span></h2>' + by[k].map(function (e) {
-          var rs = e.runners.filter(function (x) { return x.odds > 1; }).sort(function (a, b) { return a.odds - b.odds; });
-          return '<div class="card irace"><div class="irtop"><span><b>' + esc(startLabel(e.start)) + '</b> · ' + esc(e.home) + '</span>'
-            + '<button class="linkbtn" type="button" data-race="' + esc(e.id) + '">Schede ' + ic("chev") + '</button></div>'
-            + '<div class="otiles ippt">' + rs.map(function (x) {
-              var code = "V:" + normH(x.horse), on = inSlip(e.id, code);
-              return '<button class="otile' + (on ? " on" : "") + '" type="button" data-iev="' + esc(e.id) + '" data-code="' + esc(code) + '" aria-pressed="' + on + '"><span class="ol" translate="no">' + (x.n != null ? x.n + " " : "") + esc(x.horse) + '</span><b>' + oddsTxt(x.odds) + '</b></button>';
-            }).join("") + '</div></div>';
-        }).join("");
-      }).join("");
+    var e = evs.filter(function (x) { return x.id === ippSel; })[0] || evs[0]; ippSel = e.id;
+    var r = e.race || {}, soon = nowS() + 30 * 60;
+    var tabs = '<div class="iptabs" role="tablist">' + evs.map(function (x) {
+      var t = (x.race && x.race.track) || "", sel = x.id === e.id;
+      return '<button class="iptab' + (sel ? " sel" : "") + (x.start <= soon ? " soon" : "") + '" type="button" role="tab" aria-selected="' + sel + '" data-ippsel="' + esc(x.id) + '" title="' + esc(x.home) + '">'
+        + '<b translate="no">' + esc(t.slice(0, 3)) + '</b><i>' + esc((x.race && x.race.race_no) || "") + '</i><span>' + flagCC(x.country) + ' ' + hhmm(x.start) + '</span></button>';
+    }).join("") + '</div>';
+    var rs = (e.runners || []).slice().sort(function (a, b) { return (a.n == null ? 999 : a.n) - (b.n == null ? 999 : b.n) || a.odds - b.odds; });
+    var head = '<div class="iphead"><div class="iph1">' + flagCC(e.country) + ' <b translate="no">' + esc(String(r.track || "").toUpperCase()) + '</b>'
+      + (r.disc ? ' <span class="ipdisc">' + esc((DISC[r.disc] || r.disc).toUpperCase()) + '</span>' : "") + ' corsa ' + esc(r.race_no || "") + ' - ' + hhmm(e.start) + '</div>'
+      + (r.name ? '<div class="iph2" translate="no">' + esc(r.name) + '</div>' : "")
+      + '<div class="ipgrid"><span>Distanza</span><b>' + (r.dist ? r.dist + " m" : "–") + '</b><span>Partenti</span><b>' + rs.length + '</b>'
+      + '<span>Paese</span><b>' + esc(PAESI[e.country] || e.country || "–") + '</b><span>Data</span><b>' + esc(startLabel(e.start)) + '</b></div></div>';
+    var rows = rs.map(function (x) {
+      var nm = normH(x.horse), won = x.track && x.track[1] > 0;
+      return '<div class="iprow"><span class="ipn">' + (x.n != null ? x.n : "") + '</span>'
+        + '<span class="iphorse"><b translate="no">' + esc(String(x.horse || "").toUpperCase()) + '</b><span class="ipjd" translate="no">' + esc(x.jd ? x.jd.name : "") + '</span></span>'
+        + '<span class="ipform"><span>' + esc(formTxt(x) || "") + '</span><span class="ipic">' + (won ? '<span class="ipcup" title="Ha già vinto in questo ippodromo">' + ic("trophy") + '</span>' : "")
+        + '<button class="ipbar" type="button" data-race="' + esc(e.id) + '" aria-label="Scheda del cavallo">' + ic("trend") + '</button></span></span>'
+        + ippOdd(e, "V:" + nm, x.odds) + ippOdd(e, "P:" + nm, x.place_odds) + '</div>';
+    }).join("");
+    return tabs + '<div class="card ipcard">' + head
+      + '<div class="ipth"><span></span><span>VINCENTE</span><span>PIAZZATO</span></div>' + rows + '</div>'
+      + '<div class="note" style="margin-top:8px;">Vincente: vince se il cavallo arriva primo; ritirato = nullo. Quota fissa vista ora. Forma: piazzamenti delle ultime corse (0 = oltre il nono, - = non finita). Coppa: ha già vinto in questo ippodromo. Solo gli ippodromi di cui abbiamo lo storico dei cavalli.</div>';
   }
   function estMinute(e) {
     var st = e.st;
@@ -5619,6 +5662,7 @@
     if (st) { toggleStar(st); renderDiario(); return; }
     var cx = ev.target.closest("button[data-cexp]");
     if (cx) { cexp[cx.dataset.cexp] = cx.getAttribute("aria-expanded") !== "true"; renderDiario(); return; }
+    var ips = ev.target.closest("button[data-ippsel]"); if (ips) { ippSel = ips.dataset.ippsel; renderDiario(); return; }
     var ie = ev.target.closest("button.otile[data-iev]");
     if (ie) { var ei = evById(ie.dataset.iev); if (ei) { toggleLeg(ei, ie.dataset.code); renderDiario(); } return; }
     var rc2 = ev.target.closest("button[data-race]"); if (rc2) { renderRace(rc2.dataset.race); return; }
@@ -5782,29 +5826,68 @@
   // Andamento (04/10, come i siti di scommesse): UNA linea nel tempo; sopra la meta' domina la squadra di casa, sotto
   // l'ospite. Valore = (casa - ospite) / (casa + ospite) degli attacchi pericolosi di ogni tratto, oppure senza
   // statistiche la differenza fra le probabilita' di vittoria dalle quote. Asse: minuti da 0 a 90 (o oltre).
-  var trN = 0;
+  // 11/10 (foto dell'utente, come i siti di scommesse): fondo scuro, linea curva rossa quando domina la casa (sopra) e
+  // blu quando domina l'ospite (sotto), fascia dell'intervallo "INT.", minuti sotto; sopra la linea gli eventi della
+  // casa e sotto quelli dell'ospite, dalla partita minuto per minuto (st.tl): pallone = gol, pallino pieno = tiro in
+  // porta, cerchio vuoto = tiro fuori, rettangolo giallo/rosso = cartellino.
+  var trN = 0, TR_H = "#E5322D", TR_A = "#3D8BFD";
+  function trEvents(tl) {   // [[minuto, lato 1/2, tipo]] tipo: g gol, s tiro in porta, o tiro fuori, y giallo, r rosso
+    if (!tl || !tl.length) return [];
+    var out = [], prev = tl[0][0] > 6 ? tl[0] : null;
+    function d(r, p, i) { var x = r[i], y = p ? p[i] : 0; return x == null || (p && y == null) ? 0 : Math.max(0, Number(x) - Number(y || 0)); }
+    tl.forEach(function (r, k) {
+      if (prev === r) return;
+      [1, 2].forEach(function (side) {
+        var o = side - 1, g = d(r, prev, 1 + o), on = Math.max(0, d(r, prev, 3 + o) - g), off = Math.max(0, d(r, prev, 5 + o) - d(r, prev, 3 + o));
+        var add = function (n, t) { for (var j = 0; j < Math.min(n, 3); j++) out.push([r[0], side, t]); };
+        add(g, "g"); add(on, "s"); add(off, "o"); add(d(r, prev, 15 + o), "y"); add(d(r, prev, 19 + o), "r");
+      });
+      prev = r;
+    });
+    return out;
+  }
+  function smoothPath(pts) {   // Catmull-Rom in curve di Bezier
+    var d = "M" + pts[0][0].toFixed(1) + " " + pts[0][1].toFixed(1);
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+      d += " C" + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + " " + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + " " + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + " " + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + " " + p2[0].toFixed(1) + " " + p2[1].toFixed(1);
+    }
+    return d;
+  }
   function trendSvg(tr, e) {
     if (!tr || !tr.p || tr.p.length < 2) return "";
-    var W = 300, H = 44, mid = H / 2, amp = mid - 3, n = tr.p.length, id = "trc" + (++trN);
+    var W = 320, H = 112, X0 = 6, X1 = W - 6, mid = 54, amp = 20, n = tr.p.length, id = "trc" + (++trN);
     var raw = tr.p.map(function (p) { return tr.k === "da" ? (p[1] - p[2]) / Math.max(p[1] + p[2], 2) : (p[1] - p[2]) / 100; });
-    var v = raw.map(function (x, i) { var a = raw[i - 1], b = raw[i + 1]; return (x * 2 + (a != null ? a : x) + (b != null ? b : x)) / 4; });   // un po' liscia
-    var maxM = Math.max(90, tr.p[n - 1][0]);
-    var pts = tr.p.map(function (p, i) { return [(p[0] / maxM) * W, mid - Math.max(-1, Math.min(1, v[i])) * amp]; });
-    pts.unshift([0, mid]);
-    var line = pts.map(function (q, i) { return (i ? "L" : "M") + q[0].toFixed(1) + " " + q[1].toFixed(1); }).join(" ");
-    var area = line + " L" + pts[pts.length - 1][0].toFixed(1) + " " + mid + " Z";
-    var now = pts[pts.length - 1][0];
-    var svg = '<defs><clipPath id="' + id + 't"><rect x="0" y="0" width="' + W + '" height="' + mid + '"/></clipPath><clipPath id="' + id + 'b"><rect x="0" y="' + mid + '" width="' + W + '" height="' + mid + '"/></clipPath></defs>'
-      + '<rect x="0" y="0" width="' + W + '" height="' + H + '" rx="6" fill="var(--bg)"/>'
-      + '<line x1="' + (W / 2) + '" y1="2" x2="' + (W / 2) + '" y2="' + (H - 2) + '" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>'
-      + '<path d="' + area + '" fill="var(--accent-strong)" fill-opacity=".75" clip-path="url(#' + id + 't)"/>'
-      + '<path d="' + area + '" fill="#E5322D" fill-opacity=".75" clip-path="url(#' + id + 'b)"/>'
-      + '<line x1="0" y1="' + mid + '" x2="' + W + '" y2="' + mid + '" stroke="var(--ink-soft)" stroke-opacity=".5" stroke-width="1"/>'
-      + '<path d="' + line + '" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linejoin="round"/>'
-      + '<circle cx="' + now.toFixed(1) + '" cy="' + pts[pts.length - 1][1].toFixed(1) + '" r="2.6" fill="var(--ink)"/>';
-    var lab = tr.k === "da" ? "Chi domina: sopra la metà la squadra di casa, sotto l'ospite (attacchi pericolosi)" : "Chi è favorito: sopra la metà la squadra di casa, sotto l'ospite (quote)";
-    return '<div class="rtrend" title="' + lab + '"><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" width="100%" height="' + H + '" role="img" aria-label="' + lab + '">' + svg + '</svg>'
-      + '<div class="rtlab"><span>' + esc(e ? e.home : "Casa") + '</span><span class="k">' + (tr.k === "da" ? "Dominio" : "Quote") + ' · ' + tr.p[n - 1][0] + "'" + '</span><span>' + esc(e ? e.away : "Ospite") + '</span></div></div>';
+    var v = raw.map(function (x, i) { var a = raw[i - 1], b = raw[i + 1]; return (x * 2 + (a != null ? a : x) + (b != null ? b : x)) / 4; });
+    var tl = (e && e.st && e.st.tl) || [], maxM = Math.max(90, tr.p[n - 1][0], tl.length ? tl[tl.length - 1][0] : 0);
+    function X(m) { return X0 + Math.min(1, m / maxM) * (X1 - X0); }
+    var pts = tr.p.map(function (p, i) { return [X(p[0]), mid - Math.max(-1, Math.min(1, v[i])) * amp]; });
+    pts.unshift([X0, mid]);
+    var line = smoothPath(pts), last = pts[pts.length - 1];
+    var area = line + " L" + last[0].toFixed(1) + " " + mid + " L" + X0 + " " + mid + " Z";
+    var svg = '<defs><clipPath id="' + id + 't"><rect x="0" y="0" width="' + W + '" height="' + mid + '"/></clipPath><clipPath id="' + id + 'b"><rect x="0" y="' + mid + '" width="' + W + '" height="' + (H - mid) + '"/></clipPath></defs>'
+      + '<rect x="0" y="0" width="' + W + '" height="' + H + '" rx="8" fill="#14181D"/>';
+    [15, 30, 60, 75, 90, 105, 120].forEach(function (m) { if (m <= maxM) svg += '<line x1="' + X(m).toFixed(1) + '" y1="6" x2="' + X(m).toFixed(1) + '" y2="' + (H - 14) + '" stroke="#fff" stroke-opacity=".06"/>' + '<text x="' + X(m).toFixed(1) + '" y="' + (H - 3) + '" fill="#8B949E" font-size="8" text-anchor="middle">' + m + "'</text>"; });
+    if (last[0] >= X(45)) svg += '<rect x="' + (X(45) - 4).toFixed(1) + '" y="14" width="8" height="' + (H - 28) + '" fill="#fff" fill-opacity=".07"/><text x="' + X(45).toFixed(1) + '" y="10" fill="#C9D1D9" font-size="7.5" text-anchor="middle">INT.</text><text x="' + X(45).toFixed(1) + '" y="' + (H - 3) + '" fill="#8B949E" font-size="8" text-anchor="middle">45\'</text>';
+    svg += '<line x1="' + X0 + '" y1="' + mid + '" x2="' + X1 + '" y2="' + mid + '" stroke="#fff" stroke-opacity=".12"/>'
+      + '<path d="' + area + '" fill="' + TR_H + '" fill-opacity=".22" clip-path="url(#' + id + 't)"/>'
+      + '<path d="' + area + '" fill="' + TR_A + '" fill-opacity=".22" clip-path="url(#' + id + 'b)"/>'
+      + '<path d="' + line + '" fill="none" stroke="' + TR_H + '" stroke-width="1.8" stroke-linejoin="round" clip-path="url(#' + id + 't)"/>'
+      + '<path d="' + line + '" fill="none" stroke="' + TR_A + '" stroke-width="1.8" stroke-linejoin="round" clip-path="url(#' + id + 'b)"/>'
+      + '<circle cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.4" fill="#fff"/>';
+    var stack = {};
+    trEvents(tl).forEach(function (ev) {
+      var x = X(ev[0]), key = ev[1] + ":" + Math.round(x / 7), k = stack[key] = (stack[key] || 0) + 1;
+      var y = ev[1] === 1 ? 26 - (k - 1) * 8 : 82 + (k - 1) * 8, col = ev[1] === 1 ? TR_H : TR_A;
+      if (y < 4 || y > H - 16) return;
+      if (ev[2] === "g") svg += '<circle cx="' + x.toFixed(1) + '" cy="' + y + '" r="4.2" fill="#fff" stroke="' + col + '" stroke-width="1.2"/><circle cx="' + x.toFixed(1) + '" cy="' + y + '" r="1.6" fill="#14181D"/>';
+      else if (ev[2] === "s") svg += '<circle cx="' + x.toFixed(1) + '" cy="' + y + '" r="2.8" fill="' + col + '"/>';
+      else if (ev[2] === "o") svg += '<circle cx="' + x.toFixed(1) + '" cy="' + y + '" r="2.5" fill="none" stroke="' + col + '" stroke-width="1.2"/>';
+      else svg += '<rect x="' + (x - 2.2).toFixed(1) + '" y="' + (y - 3.2) + '" width="4.4" height="6.4" rx=".8" fill="' + (ev[2] === "r" ? "#E5322D" : "#F5B800") + '"/>';
+    });
+    var lab = tr.k === "da" ? "Chi domina: rosso sopra la squadra di casa, blu sotto l'ospite (attacchi pericolosi)" : "Chi è favorito: rosso sopra la squadra di casa, blu sotto l'ospite (quote)";
+    return '<div class="rtrend" title="' + lab + '"><svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="' + lab + '">' + svg + '</svg>'
+      + '<div class="rtlab"><span class="th">' + esc(e ? e.home : "Casa") + '</span><span class="k">' + (tr.k === "da" ? "Dominio" : "Quote") + ' · ' + tr.p[n - 1][0] + "'" + '</span><span class="ta">' + esc(e ? e.away : "Ospite") + '</span></div></div>';
   }
   function calcioCard(e, clean) {   // clean (Match, 10/10): senza le strategie, con la scritta LIVE
     var st = e.st || {}, fx = radarTrack(e), now = nowS();
