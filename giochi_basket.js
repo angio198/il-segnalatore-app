@@ -28,7 +28,7 @@
     $("bsc").textContent = st.me + " - " + st.cpu;
     var sp = spot();
     $("bhelp").textContent = (st.extra ? "Pari: tiri liberi a oltranza. " : "Giro " + (st.round + 1) + " di " + SPOTS.length + ": " + sp.nome + " (" + sp.pts + " punti). ")
-      + (st.turn === "me" ? "Trascina il dito verso l'alto. L'arco tratteggiato è la mira: deve finire nel ferro (verde). La lunghezza è la forza: fermati nella zona verde della barra." : "Tira la CPU dallo stesso punto.");
+      + (st.turn === "me" ? "Tieni il dito sullo schermo: il cursore della barra in basso va avanti e indietro, lascia quando è nel verde. Per mirare sposta il dito: l'arco tratteggiato deve finire nel ferro (verde)." : "Tira la CPU dallo stesso punto.");
   }
   function startTurn() {
     st.phase = "aim"; st.shot = null; st.ballP = null; cam = null; hud();
@@ -70,7 +70,7 @@
     var e = Math.hypot(ae, pe);
     if (e < 0.45) return { r: "ciuff", dentro: true };
     if (e < 1) return Math.random() < 1 - e * 0.55 ? { r: "ferro_dentro", dentro: true } : { r: "ferro", dentro: false };
-    if (pe > 1 && Math.abs(ae) < 1.3) return Math.random() < 0.35 ? { r: "tabella", dentro: true } : { r: "tabellone", dentro: false };
+    if (pe > 1 && Math.abs(ae) < 1.3) return pe < 2.3 && Math.random() < 0.35 ? { r: "tabella", dentro: true } : { r: "tabellone", dentro: false };   // dal rosso in poi: mai dentro
     if (pe < -1.6) return { r: "air", dentro: false };
     return { r: "fuori", dentro: false };
   }
@@ -88,7 +88,7 @@
   function release(ae, pe, res) {
     var sp = spot();
     st.shot = { ae: ae, pe: pe, res: res, t0: performance.now() / 1000, dur: 0.8 + 0.07 * sp.r };
-    st.phase = "fly";
+    st.phase = "fly"; if (window.SFX) SFX.play("lancio");
   }
   function cpuShoot() {
     var sp = spot(), dentro = Math.random() < sp.cpu, ae, pe, res;
@@ -120,6 +120,7 @@
     st.msg = { ciuff: "Ciuff!", ferro_dentro: "Dentro dopo il ferro", tabella: "Di tabella!", ferro: "Ferro!", tabellone: "Lungo sul tabellone", air: "Air ball!", fuori: "Fuori!" }[r.r]
       + (r.dentro ? " +" + sp.pts : "");
     st.msgGood = mine === r.dentro; st.msgT = performance.now() / 1000; st.phase = "result"; startAfter(); hud();
+    if (window.SFX) { SFX.play({ ciuff: "ciuff", ferro_dentro: "ferro", tabella: "tabellone", ferro: "ferro", tabellone: "tabellone", air: "delusione", fuori: "rimbalzo" }[r.r]); SFX.play(r.dentro === mine ? "folla" : "delusione", 0.25); }
     setTimeout(next, 1700);
   }
   function next() {
@@ -132,7 +133,8 @@
   function end() {
     var win = st.me > st.cpu;
     st.phase = "end"; st.celebrate = { win: win, t0: performance.now() / 1000 };
-    var nuovi = win ? UI.onWin("basket") : (G.pg.giocate++, G.savePg(), []);
+    if (window.SFX) SFX.play(win ? "vittoria" : "sconfitta");
+    var nuovi = UI.onEnd("basket", win);
     $("bover").innerHTML = '<div style="margin-top:auto"></div><b>' + (win ? "Hai vinto " : "Hai perso ") + st.me + "-" + st.cpu + '</b>'
       + (nuovi.length ? '<div class="k">' + nuovi.join(" · ") + '</div>' : "") + '<button class="primary" type="button" id="bagain">Rivincita</button>';
     $("bover").style.justifyContent = "flex-end"; $("bover").style.background = "linear-gradient(transparent 55%, rgba(8,14,18,.85))"; $("bover").hidden = false;
@@ -140,21 +142,25 @@
   }
 
   // ------------------------------------------------------------------ comandi
-  function power(d) { return G.clamp(Math.hypot(d.dx, d.dy) / (S.H * 0.5), 0, 1.3); }
+  // forza (10/10): tenendo il dito sullo schermo il cursore della barra in basso va avanti e indietro; si lascia
+  // quando e' nel verde al centro (poi giallo, rosso, bianco: sempre piu' corto o lungo)
+  function period(sp) { return sp.pts === 3 ? 1.05 : 1.3; }
+  function meter(d, now) { var k = ((now - d.t0) / period(spot())) % 2; return k < 1 ? k : 2 - k; }
+  function zone(sp) { var g = tolP(sp) * 1.1; return [g, g * 2.2, g * 3.8]; }
   // direzione giusta: verso il ferro in orizzontale, con un'altezza fissa (la palla parte quasi alla quota del ferro e il
   // dito andrebbe quasi di lato): in pratica dritto in su = al centro, e l'arco tratteggiato mostra dove va
   function wantAng() { var h = P3(handPos()), r = P3(RIM); return Math.atan2(r.x - h.x, S.H * 0.45); }
-  function aimErr(d) { return (Math.atan2(d.dx, -d.dy) - wantAng()) / TOL_A; }   // dito rispetto alla direzione mano -> ferro
+  function aimErr(d) { return ((Math.abs(d.dy) < 20 && Math.abs(d.dx) < 20 ? wantAng() : Math.atan2(d.dx, Math.max(20, -d.dy))) - wantAng()) / TOL_A; }   // dito fermo = dritto al ferro
   cv.addEventListener("pointerdown", function (e) {
     if (!st || st.turn !== "me" || st.phase !== "aim") return;
-    var p = G.pt(cv, e); drag = { x: p.x, y: p.y, dx: 0, dy: 0 };
+    var p = G.pt(cv, e); drag = { x: p.x, y: p.y, dx: 0, dy: 0, t0: performance.now() / 1000 };
     try { cv.setPointerCapture(e.pointerId); } catch (er) {}
   });
   cv.addEventListener("pointermove", function (e) { if (!drag) return; var p = G.pt(cv, e); drag.dx = p.x - drag.x; drag.dy = p.y - drag.y; });
   cv.addEventListener("pointerup", function () {
     if (!drag || !st) return; var d = drag; drag = null;
-    if (st.turn !== "me" || st.phase !== "aim" || d.dy > -20) return;
-    var sp = spot(), ae = aimErr(d), pe = (power(d) - sp.pow) / tolP(sp);
+    if (st.turn !== "me" || st.phase !== "aim") return;
+    var sp = spot(), ae = aimErr(d), pe = (meter(d, performance.now() / 1000) - 0.5) / zone(sp)[0];
     release(ae, pe, judge(ae, pe));
   });
   cv.addEventListener("pointercancel", function () { drag = null; });
@@ -246,19 +252,25 @@
       : G.P({ al: [-2.75, 0.35], ar: [2.75, -0.35], ll: [-0.1, 0.2], lr: [0.12, -0.2] });
     if (st.phase !== "end") G.drawGuy(c, av, fq.x, fq.y, scale, pose, { back: true });
     if (!behind && st.phase !== "end") ball(c, bq.x, bq.y, BALL_R * bq.k, st.shot ? now * 6 : 0);
-    // mira (arco tratteggiato) e forza (barra) mentre trascini
-    if (drag && drag.dy < -5) {
+    // mira (arco tratteggiato) mentre trascini, e la barra della forza in basso
+    if (drag) {
       var ae = aimErr(drag), col = Math.abs(ae) < 0.45 ? "#6FBE92" : Math.abs(ae) < 1 ? "#E8C552" : "#E08268";
       c.strokeStyle = col; c.lineWidth = 3; c.setLineDash([5, 7]); c.beginPath();
       for (var i = 0; i <= 30; i++) { var q = P3(flight(ae, 0, i / 30)); c[i ? "lineTo" : "moveTo"](q.x, q.y); }
       c.stroke(); c.setLineDash([]);
       var tq = P3(target(ae, 0)); c.beginPath(); c.arc(tq.x, tq.y, 6, 0, G.TAU); c.fillStyle = col; c.fill();
-      var pw = power(drag), bx = W - 22, by0 = H * 0.86, bh = H * 0.5, k = 1 / 1.3;
-      c.fillStyle = "rgba(0,0,0,.45)"; c.fillRect(bx - 7, by0 - bh, 14, bh);
-      c.fillStyle = "#6FBE92"; c.fillRect(bx - 7, by0 - bh * (sp.pow + tolP(sp)) * k, 14, bh * 2 * tolP(sp) * k);
-      c.fillStyle = pw > sp.pow + tolP(sp) ? "#E08268" : "#E8A252"; c.fillRect(bx - 4, by0 - bh * pw * k, 8, bh * pw * k);
-      c.strokeStyle = "rgba(255,255,255,.6)"; c.lineWidth = 1.5; c.strokeRect(bx - 7, by0 - bh, 14, bh);
-      c.font = "700 11px Archivo"; c.fillStyle = "#fff"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("forza", bx, by0 + 12);
+    }
+    if (st.turn === "me" && st.phase === "aim") {
+      var z = zone(sp), bw = W * 0.78, bx0 = (W - bw) / 2, bh = 16, by = H - bh - 12, X = function (m) { return bx0 + m * bw; };
+      G.rr(c, bx0 - 3, by - 3, bw + 6, bh + 6, 8); c.fillStyle = "rgba(0,0,0,.55)"; c.fill();
+      c.fillStyle = "#F4F4F4"; c.fillRect(bx0, by, bw, bh);
+      [["#E35D4F", z[2]], ["#F2C94C", z[1]], ["#4CC27A", z[0]]].forEach(function (zz) { c.fillStyle = zz[0]; c.fillRect(X(0.5 - zz[1]), by, (X(0.5 + zz[1]) - X(0.5 - zz[1])), bh); });
+      if (drag) {
+        var m = meter(drag, now), mx = X(m);
+        c.fillStyle = "#1C1F24"; c.beginPath(); c.moveTo(mx - 8, by - 9); c.lineTo(mx + 8, by - 9); c.lineTo(mx, by + 2); c.closePath(); c.fill();
+        c.fillRect(mx - 1.5, by, 3, bh); c.strokeStyle = "#fff"; c.lineWidth = 1; c.strokeRect(mx - 2, by, 4, bh);
+      }
+      c.font = "700 11px Archivo"; c.fillStyle = "#fff"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(drag ? "lascia nel verde" : "forza: tieni il dito, lascia nel verde", W / 2, by - 14);
     }
     if (st.phase === "aim" && st.turn === "me" && !drag) {
       var hq = P3(handPos()), pulse = 0.5 + 0.5 * Math.sin(now * 5);
@@ -284,6 +296,7 @@
     resize: function () { S = G.setup(cv, 1.25, 190); cam = null; },
     frame: frame,
     _st: function () { return st; },
-    _ideal: function () { if (!cam) cam = makeCam(); return { want: wantAng(), len: spot().pow * S.H * 0.5 }; }
+    _ideal: function () { if (!cam) cam = makeCam(); return { want: wantAng(), len: spot().pow * S.H * 0.5 }; },
+    _meter: function () { return drag ? meter(drag, performance.now() / 1000) : null; }
   };
 })();
