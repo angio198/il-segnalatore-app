@@ -1513,6 +1513,9 @@
   @media (prefers-reduced-motion: reduce){
     .ss-btn,.ss-progress > i,.ss-steps .seg i{transition:none;} .ss-tag.live::before{animation:none;}
   }
+
+/* evidenzia un elemento aperto da un link diretto (es. #installa) */
+.ss-flash{box-shadow:0 0 0 2px var(--brand),0 0 18px var(--brand-soft);transition:box-shadow .3s;}
   /* ================================================================ Primo avvio (09/10/2026, 41_1_primo_avvio.js)
      A tutto schermo: niente barra in alto ne' menu, testata con "Passo 1 di 3", bottone grande fisso in fondo. */
   body:has(#view-benvenuto:not([hidden])) .topbar{display:none;}
@@ -7308,6 +7311,7 @@
       // l'app si apre sui segnali; la prima volta col benvenuto (nazione, sport, campionato, squadra)
       if (!$("view-lock").hidden) { if (me.onboarded || me.sport) show("radar"); else { renderBenvenuto(); show("benvenuto"); } }
       if (me.onboarded || me.sport) openShareHash();   // link "#s=" di una schedina condivisa
+      if (location.hash === "#installa") openInstall();   // link diretto per installare su PC
       msg.textContent = "";
     } catch (e) {
       if (window.console) console.error(e);
@@ -9335,6 +9339,14 @@
       : "Apri l'app con Chrome o Edge e usa l'icona di installazione nella barra dell'indirizzo (o il menu ⋮ > Installa).";
     note.hidden = false;
   });
+  // Link diretto https://angio198.github.io/il-segnalatore-app/#installa (richiesta utente 09/10): dopo la password
+  // apre Impostazioni sul bottone, evidenziato (la richiesta del browser parte solo da un tocco vero).
+  function openInstall() {
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    $("settingsbtn").click();
+    var b = $("installbtn"); if (!b || b.hidden) return;
+    setTimeout(function () { b.scrollIntoView({ block: "center" }); b.classList.add("ss-flash"); setTimeout(function () { b.classList.remove("ss-flash"); }, 2500); }, 150);
+  }
   renderInstall();
   // ---------------------------------------------------------------- Notifiche (richiesta 03/10, idea BetMines)
   // Per ogni strategia accesa e per "Le tue barre": notifica si'/no e cosa mostrare nel messaggio. Oggi sono solo
