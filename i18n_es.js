@@ -1958,6 +1958,8 @@ window.I18N_ES = {
   "Questo nome è riservato: scegline un altro.": "Este nombre está reservado: elige otro.",
   "Questo nome è di un personaggio del Team StatSight: scegline un altro.": "Este nombre es de un personaje del Equipo StatSight: elige otro.",
   "Guida": "Guía",
+  "Rifai il primo avvio": "Repetir la primera configuración",
+  "Cosa segui, le 3 strategie regalate e il primo segnale, dall'inizio": "Lo que sigues, tus 3 estrategias de regalo y tu primera señal, desde el principio",
   "Rivedi il tutorial": "Volver a ver el tutorial",
   "Strategie, avvisi, Radar e Diario in quattro passi": "Estrategias, avisos, Radar y Diario en cuatro pasos",
   "Passo # di #": "Paso # de #",
