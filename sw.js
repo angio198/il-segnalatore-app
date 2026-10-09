@@ -1,9 +1,10 @@
 // Service worker di StatSight: prima la rete (dati sempre freschi
 // quando c'e' connessione), poi la copia salvata (l'app si apre anche offline
 // con gli ultimi dati visti). Tutto quello che mette in cache e' gia'
-// pubblico sul sito: i dati restano cifrati anche qui.
-const CACHE = "statsight-v22";
-const SHELL = ["./", "./index.html", "./regole.js", "./i18n.js", "./i18n_en.js", "./i18n_es.js", "./moderazione.json", "./moderazione.js", "./anagrafica.js", "./feed_rank.js", "./condividi.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
+// pubblico sul sito: codice e dati restano cifrati anche qui (dal 10/10 il
+// sito ha solo la porta con la password e il codice cifrato app.enc.json).
+const CACHE = "statsight-v23";
+const SHELL = ["./", "./index.html", "./app.enc.json", "./moderazione.json", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)));
