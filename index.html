@@ -1374,6 +1374,208 @@
     .sigpop{left:auto;right:32px;transform:translate(0,-20px) scale(.96);}
     .sigpop.on{transform:translate(0,0) scale(1);}
   }
+  /* ================================================================ Sistema grafico (09/10/2026)
+     Un solo linguaggio per tutte le schede (regole in docs/sistema_grafico.md). Le chat di sezione usano questi
+     pezzi (classi "ss-") invece di inventarne di nuovi. I colori di base (--bg, --surface, --ink, --accent, ...)
+     restano quelli di 01_1: qui si aggiungono i livelli, i colori di stato, raggi, ombre, spazi e caratteri. */
+  :root{
+    --surface-2:#F6F8F4; --surface-3:#E9EEE6; --ink-mute:#7A8789;
+    --brand:var(--accent); --brand-ink:#1A1206; --brand-soft:color-mix(in srgb, var(--accent) 14%, transparent);
+    --teal-soft:color-mix(in srgb, var(--teal) 16%, transparent);
+    --live:#D9302B; --info:#2F79C9; --warn:#C98A12;
+    --good-soft:color-mix(in srgb, var(--good) 16%, transparent); --bad-soft:color-mix(in srgb, var(--bad) 16%, transparent);
+    --grad-brand:linear-gradient(135deg,#E8A252 0%,#D9782A 100%);
+    --grad-teal:linear-gradient(135deg,#5E9C92 0%,#2F6A61 100%);
+    --grad-hero:radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--accent) 22%, transparent) 0%, transparent 60%),
+                radial-gradient(110% 80% at 100% 100%, color-mix(in srgb, var(--teal) 24%, transparent) 0%, transparent 60%);
+    --r-s:8px; --r-m:12px; --r-l:18px; --r-xl:24px; --r-pill:999px;
+    --sh-1:0 1px 2px rgba(16,30,40,.08), 0 1px 1px rgba(16,30,40,.04);
+    --sh-2:0 10px 30px rgba(16,30,40,.14);
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+    --fs-xs:.72rem; --fs-s:.84rem; --fs-m:.95rem; --fs-l:1.15rem; --fs-xl:1.5rem; --fs-xxl:2.1rem;
+    --ease:cubic-bezier(.23,1,.32,1);
+  }
+  :root[data-dark="1"]{
+    --surface-2:#182833; --surface-3:#1F323E; --ink-mute:#7F8F92;
+    --brand-ink:#17110A; --live:#F0453F; --info:#5AA5F0; --warn:#E8B54A;
+    --sh-1:0 1px 2px rgba(0,0,0,.35);
+    --sh-2:0 14px 36px rgba(0,0,0,.45);
+  }
+
+  /* --- caratteri: titoli Archivo stretto e pieno, numeri sempre tabellari */
+  .ss-h1{font-size:var(--fs-xxl);font-weight:800;font-stretch:87.5%;letter-spacing:-0.02em;line-height:1.08;margin:0;text-wrap:balance;}
+  .ss-h2{font-size:var(--fs-xl);font-weight:800;font-stretch:87.5%;letter-spacing:-0.015em;line-height:1.15;margin:0;text-wrap:balance;}
+  .ss-h3{font-size:var(--fs-l);font-weight:700;line-height:1.25;margin:0;}
+  .ss-sub{font-size:var(--fs-m);color:var(--ink-soft);line-height:1.5;margin:0;}
+  .ss-k{font-size:var(--fs-xs);color:var(--ink-soft);}
+  .ss-label{font-size:var(--fs-xs);font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .ss-num{font-variant-numeric:tabular-nums;font-weight:800;}
+  .ss-pos{color:var(--good);} .ss-neg{color:var(--bad);}
+
+  /* --- bottoni: primario (uno per schermata), secondario, leggero; piccoli e a tutta larghezza */
+  .ss-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:800;font-size:var(--fs-m);
+    min-height:48px;padding:12px 20px;border-radius:var(--r-pill);border:1px solid transparent;cursor:pointer;text-decoration:none;
+    transition:transform .12s var(--ease), box-shadow .2s, background .2s, opacity .2s;-webkit-tap-highlight-color:transparent;}
+  .ss-btn:active{transform:scale(.97);}
+  .ss-btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;}
+  .ss-btn .ico{width:20px;height:20px;}
+  .ss-btn-primary{background:var(--grad-brand);color:var(--brand-ink);box-shadow:0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent);}
+  .ss-btn-secondary{background:var(--surface-2);color:var(--ink);border-color:var(--line);}
+  .ss-btn-ghost{background:none;color:var(--accent-strong);padding-inline:10px;min-height:40px;}
+  .ss-btn-sm{min-height:36px;padding:7px 14px;font-size:var(--fs-s);}
+  .ss-btn-block{display:flex;width:100%;}
+  /* il vecchio .primary (scuro) prende lo stesso colore del primario */
+  :root[data-dark="1"] .primary:not([disabled]){background:var(--grad-brand);border-color:transparent;color:var(--brand-ink);}
+
+  /* --- schede: normale, rialzata, in evidenza (bordo a gradiente), selezionabile */
+  .ss-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:var(--sp-4);box-shadow:var(--sh-1);}
+  .ss-card + .ss-card{margin-top:var(--sp-3);}
+  .ss-card-raised{background:var(--surface-2);}
+  .ss-card-hero{position:relative;background:var(--grad-hero), var(--surface);border:1px solid color-mix(in srgb, var(--accent) 35%, var(--line));}
+  .ss-card-select{cursor:pointer;transition:border-color .2s, box-shadow .2s;}
+  .ss-card-select.on,.ss-card-select[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent), var(--sh-1);}
+
+  /* --- icona in tessera colorata (sempre SVG dello sprite, mai emoji) */
+  .ss-icbadge{display:inline-grid;place-items:center;flex:none;width:40px;height:40px;border-radius:12px;color:#fff;background:var(--grad-teal);}
+  .ss-icbadge .ico{width:22px;height:22px;stroke-width:2;}
+  .ss-icbadge.brand{background:var(--grad-brand);color:var(--brand-ink);}
+  .ss-icbadge.live{background:linear-gradient(135deg,#FF6A55,#D9302B);}
+  .ss-icbadge.info{background:linear-gradient(135deg,#6DB3F5,#2F79C9);}
+  .ss-icbadge.good{background:linear-gradient(135deg,#7DD3A3,#3C8A5F);}
+  .ss-icbadge.lg{width:56px;height:56px;border-radius:16px;} .ss-icbadge.lg .ico{width:30px;height:30px;}
+
+  /* --- pillole e filtri: riga che scorre, una o piu' accese con aria-pressed */
+  .ss-pills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px 6px;}
+  .ss-pills::-webkit-scrollbar{display:none;}
+  .ss-pill{flex:none;display:inline-flex;align-items:center;gap:6px;font:inherit;font-weight:700;font-size:var(--fs-s);white-space:nowrap;
+    min-height:36px;padding:7px 14px;border-radius:var(--r-pill);border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);cursor:pointer;}
+  .ss-pill[aria-pressed="true"],.ss-pill.on{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+  :root[data-dark="1"] .ss-pill[aria-pressed="true"],:root[data-dark="1"] .ss-pill.on{background:var(--accent);border-color:var(--accent);color:var(--brand-ink);}
+  .ss-pill .ico{width:16px;height:16px;}
+  .ss-tag{display:inline-flex;align-items:center;gap:4px;font-size:.66rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+    padding:3px 8px;border-radius:var(--r-pill);background:var(--brand-soft);color:var(--accent-strong);}
+  .ss-tag.live{background:color-mix(in srgb, var(--live) 16%, transparent);color:var(--live);}
+  .ss-tag.live::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;animation:sslive 1.4s ease-in-out infinite;}
+  .ss-tag.good{background:var(--good-soft);color:var(--good);} .ss-tag.bad{background:var(--bad-soft);color:var(--bad);}
+  .ss-tag.teal{background:var(--teal-soft);color:var(--teal);}
+  @keyframes sslive{50%{opacity:.3;}}
+
+  /* --- numeri in riga (casi, strike, quota, rendimento) */
+  .ss-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(64px,1fr));gap:6px;}
+  .ss-stat{background:var(--surface-2);border-radius:var(--r-m);padding:8px 10px;min-width:0;}
+  .ss-stat b{display:block;font-size:1.05rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2;}
+  .ss-stat span{display:block;font-size:.68rem;line-height:1.2;color:var(--ink-soft);overflow-wrap:anywhere;}
+
+  /* --- barra di avanzamento e passi ("Passo 1 di 3") */
+  .ss-progress{height:8px;border-radius:var(--r-pill);background:var(--surface-3);overflow:hidden;}
+  .ss-progress > i{display:block;height:100%;border-radius:inherit;background:var(--grad-brand);transition:width .5s var(--ease);}
+  .ss-progress.teal > i{background:var(--grad-teal);}
+  .ss-progress.sm{height:5px;}
+  .ss-steps{display:flex;align-items:center;gap:10px;}
+  .ss-steps .ss-label{flex:none;}
+  .ss-steps .seg{flex:1;display:flex;gap:5px;}
+  .ss-steps .seg i{flex:1;height:5px;border-radius:var(--r-pill);background:var(--surface-3);transition:background .3s;}
+  .ss-steps .seg i.on{background:var(--grad-brand);}
+
+  /* --- lucchetto Full: il contenuto si vede SFOCATO sotto, con l'invito sopra (mai nasconderlo e basta) */
+  .ss-lock{position:relative;border-radius:var(--r-l);overflow:hidden;}
+  .ss-lock > .ss-lock-content{filter:blur(6px) saturate(.8);opacity:.75;pointer-events:none;user-select:none;}
+  .ss-lock > .ss-lock-cta{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    padding:16px;text-align:center;background:linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--bg) 70%, transparent) 55%);}
+  .ss-lock-cta .ss-icbadge{width:44px;height:44px;}
+  .ss-lock-cta b{font-size:var(--fs-m);} .ss-lock-cta .ss-k{max-width:260px;}
+
+  /* --- bottone fisso in basso a destra, sopra il menu */
+  .ss-fab{position:fixed;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 86px);z-index:12;display:inline-flex;align-items:center;gap:8px;
+    min-height:52px;padding:0 18px;border-radius:var(--r-pill);border:none;font:inherit;font-weight:800;cursor:pointer;
+    background:var(--grad-brand);color:var(--brand-ink);box-shadow:var(--sh-2);}
+  .ss-fab.round{width:56px;padding:0;justify-content:center;}
+  .ss-fab .ico{width:22px;height:22px;}
+  .ss-fab .ss-badge{position:absolute;top:-4px;right:-4px;}
+  .ss-badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:var(--r-pill);background:var(--live);color:#fff;font-size:.68rem;font-weight:800;}
+
+  /* --- menu in basso: superficie un po' trasparente, scheda accesa con la pillola del colore del marchio */
+  .tabbar{background:color-mix(in srgb, var(--surface) 90%, transparent);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);}
+  .tab[aria-current="page"] .ic{background:var(--brand-soft);}
+  .tab[aria-current="page"]{font-weight:800;}
+
+  /* --- elenco di voci con icona, testo e azione a destra */
+  .ss-row{display:flex;align-items:center;gap:12px;min-width:0;}
+  .ss-row > .ss-grow{flex:1;min-width:0;}
+  .ss-row .ss-k{display:block;}
+  .ss-divider{height:1px;background:var(--line);margin:var(--sp-3) 0;border:none;}
+
+  /* --- campo di testo */
+  .ss-input{font:inherit;font-size:1rem;width:100%;min-height:48px;padding:12px 14px;border-radius:var(--r-m);border:1px solid var(--line);
+    background:var(--surface-2);color:var(--ink);}
+  .ss-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);}
+
+  @media (prefers-reduced-motion: reduce){
+    .ss-btn,.ss-progress > i,.ss-steps .seg i{transition:none;} .ss-tag.live::before{animation:none;}
+  }
+  /* ================================================================ Primo avvio (09/10/2026, 41_1_primo_avvio.js)
+     A tutto schermo: niente barra in alto ne' menu, testata con "Passo 1 di 3", bottone grande fisso in fondo. */
+  body:has(#view-benvenuto:not([hidden])) .topbar{display:none;}
+  #view-benvenuto{padding:0;background:radial-gradient(130% 55% at 0% 0%, color-mix(in srgb, var(--accent) 16%, transparent) 0%, transparent 70%), radial-gradient(90% 40% at 100% 18%, color-mix(in srgb, var(--teal) 14%, transparent) 0%, transparent 70%), var(--bg);}
+  .ob{min-height:100%;display:flex;flex-direction:column;max-width:520px;margin:0 auto;}
+  .obtop{position:sticky;top:0;z-index:2;display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:10px;
+    padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 10px;background:color-mix(in srgb, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);}
+  .obback.iconbtn{width:40px;height:40px;font-size:1.5rem;line-height:1;padding-bottom:3px;}
+  .obtop .ss-btn-ghost{color:var(--ink-soft);}
+  .obbody{flex:1;padding:8px 16px 16px;display:flex;flex-direction:column;gap:14px;}
+  .obbody > .ss-h1,.obbody > .ss-h2{margin-top:6px;}
+  .obfoot{position:sticky;bottom:0;z-index:2;padding:12px 16px calc(env(safe-area-inset-bottom,0px) + 16px);display:flex;flex-direction:column;gap:6px;
+    background:linear-gradient(180deg, transparent 0%, var(--bg) 28%);}
+  .obhint{text-align:center;}
+  .obbrand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;font-stretch:87.5%;}
+  .obbrand img{border-radius:12px;box-shadow:var(--sh-1);}
+
+  /* schede di valore: il "telefono" disegnato */
+  .obmock{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:16px;box-shadow:var(--sh-2);display:flex;flex-direction:column;gap:12px;
+    animation:obin .5s var(--ease) both;}
+  .obmhead{justify-content:space-between;}
+  .obmscore{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;text-align:center;font-weight:700;color:var(--ink-soft);}
+  .obmscore b{font-size:2rem;color:var(--ink);letter-spacing:.02em;}
+  .obmstat .ss-row{gap:8px;} .obmstat .ss-k{text-align:center;}
+  .obmbar{display:flex;gap:4px;height:7px;margin-top:5px;}
+  .obmbar i{display:block;height:100%;border-radius:var(--r-pill);transform-origin:left;animation:obgrow .9s var(--ease) both;}
+  .obmbar i:first-child{background:var(--grad-brand);} .obmbar i:last-child{background:var(--surface-3);transform-origin:right;}
+  .obmalert{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r-m);background:var(--brand-soft);animation:obin .5s .9s var(--ease) both;}
+  .obmalert b,.obmalert .ss-k{display:block;}
+  .obmsl{display:grid;grid-template-columns:92px 1fr;align-items:center;gap:10px;}
+  .obmrange{position:relative;height:6px;border-radius:var(--r-pill);background:var(--surface-3);}
+  .obmrange i{position:absolute;top:0;bottom:0;border-radius:inherit;background:var(--grad-brand);}
+  .obmrange b{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#fff;border:3px solid var(--accent);box-shadow:var(--sh-1);}
+  .obmres{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .obdots{display:flex;gap:4px;} .obdots i{width:10px;height:10px;border-radius:50%;} .obdots i.w{background:var(--good);} .obdots i.l{background:var(--bad);}
+  .obdotsnav{display:flex;justify-content:center;gap:6px;margin-top:4px;}
+  .obdotsnav i{width:7px;height:7px;border-radius:var(--r-pill);background:var(--surface-3);transition:width .3s var(--ease);}
+  .obdotsnav i.on{width:22px;background:var(--accent);}
+
+  /* passi */
+  .ob .pkstep{margin:6px 2px 0;}
+  .ob .hscroll{margin-bottom:-4px;}
+  .obgifticon{margin-top:4px;}
+  .obgift{display:flex;flex-direction:column;gap:12px;transition:opacity .2s, border-color .2s;animation:obin .45s var(--ease) both;}
+  .obgift:nth-child(4){animation-delay:.08s;} .obgift:nth-child(5){animation-delay:.16s;} .obgift:nth-child(6){animation-delay:.24s;}
+  .obgift.on{border-color:color-mix(in srgb, var(--accent) 45%, var(--line));}
+  .obgift:not(.on){opacity:.6;}
+  .obgname{display:block;font-size:1rem;}
+  .obhonest{display:flex;gap:6px;align-items:flex-start;margin:0;} .obhonest .ico{flex:none;margin-top:1px;}
+  .obsig{display:flex;flex-direction:column;gap:12px;}
+  .obsigev{display:block;font-size:1.05rem;}
+  .obsigpick{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:var(--r-m);background:var(--surface-2);}
+  .obsigpick b{font-size:1.05rem;} .obsigpick .ss-num{margin-left:auto;font-size:1.25rem;color:var(--accent-strong);}
+  .obnotif{display:flex;flex-direction:column;gap:12px;}
+  .obnotif b,.obnotif .ss-k{display:block;}
+  .obfull{display:flex;flex-direction:column;gap:12px;align-items:flex-start;padding:20px;}
+  .obfeats{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:4px;}
+  .obfeats .ss-row{font-weight:700;font-size:var(--fs-s);} .obfeats .ss-icbadge{width:34px;height:34px;border-radius:10px;} .obfeats .ss-icbadge .ico{width:18px;height:18px;}
+  @keyframes obin{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @keyframes obgrow{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @media (prefers-reduced-motion: reduce){ .obmock,.obmalert,.obgift,.obmbar i{animation:none;} }
+  .obbody .ss-card + .ss-card{margin-top:0;}
 </style>
 </head>
 <body>
@@ -4671,15 +4873,7 @@
       + '<span class="mefav">' + ic(me.sport) + ' ' + NAME[me.sport] + (c ? ' · ' + esc(c.label) : "") + '</span>'
       + (me.team ? '<span class="mefav">' + teamLogo(me.team, me.sport) + '<span translate="no">' + esc(me.team) + '</span></span>' : "") + '</div>';
   }
-  function renderBenvenuto() {
-    $("benvenuto").innerHTML = '<div class="welcome"><img src="icon-192.png" alt="" width="64" height="64"><h1 class="dtitle" style="margin:8px 0 2px;">Benvenuto in StatSight</h1>'
-      + '<div class="k">Raccontaci cosa segui: mettiamo in primo piano il tuo campionato e la tua squadra, e ti proponiamo le sfide giuste. Si cambia quando vuoi dal Diario.</div></div>'
-      + '<div class="pkstep">Il tuo @username</div><div class="userrow"><span>@</span><input class="meinput" id="bvuser" maxlength="20" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="come ti taggano gli altri" value="' + esc(pick.user || me.user || "") + '" translate="no"></div>'
-      + '<div class="note namemsg" id="bvusermsg" role="alert"' + (pick.userMsg ? "" : " hidden") + '>' + esc(pick.userMsg || "") + '</div>'
-      + pickerHtml(pick)
-      + '<button class="primary block" type="button" data-pkgo="1" style="margin-top:16px;"' + (pick.sport ? "" : " disabled") + '>Inizia</button>'
-      + '<button class="linkbtn" type="button" data-pkskip="1" style="display:block;margin:10px auto;">Salta, lo faccio dopo</button>';
-  }
+  // il benvenuto della prima apertura (renderBenvenuto) sta in 41_1_primo_avvio.js
   // squadre e tennisti preferiti, piu' la nazionale del paese scelto: per "Per te" nelle Partite
   function normName(s) {
     return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\b(fc|ac|afc|sc|cf|ssc|as|us|calcio)\b/g, " ").replace(/[^a-z0-9]+/g, " ").trim();
@@ -7053,18 +7247,7 @@
       meEdit = false; renderAll();
     }
   });
-  // prima apertura: benvenuto con il selettore (nazione, sport, campionato, squadra)
-  $("benvenuto").addEventListener("input", function (e) { if (e.target.dataset.pkfree) pick.free = e.target.value; if (e.target.id === "bvuser") pick.user = e.target.value; });
-  $("benvenuto").addEventListener("click", function (e) {
-    var b = e.target.closest("button"); if (!b) return;
-    if (pickerClick(pick, b)) { keepScroll($("benvenuto"), renderBenvenuto); return; }
-    if (b.dataset.pkgo) {
-      var u = ($("bvuser").value || "").trim().toLowerCase().replace(/^@/, ""), up = handleProblem(u);
-      if (up) { pick.user = u; pick.userMsg = up; keepScroll($("benvenuto"), renderBenvenuto); return; }
-      if (u) me.user = u;
-      commitPick(pick); me.onboarded = true; saveMe(); if (data) renderAll(); show("radar"); window.scrollTo(0, 0); tutorialFirst(); return; }
-    if (b.dataset.pkskip) { me.onboarded = true; saveMe(); show("radar"); tutorialFirst(); }
-  });
+  // prima apertura: il benvenuto a passi e i suoi tocchi stanno in 41_1_primo_avvio.js
   // Team StatSight: profilo, segui, filtro della bacheca
   ["bacheca", "persona", "occhioclassifica", "occhiolevel", "esplora", "attivita"].forEach(function (id) {
     $(id).addEventListener("input", function (e) {
@@ -8926,6 +9109,196 @@
     return true;
   }
 
+  // ---------------------------------------------------------------- Primo avvio (09/10/2026, sistema grafico)
+  // Come i concorrenti piu' curati (docs/screen_concorrenti/ANALISI.md), con grafica e regole nostre:
+  //   2 schede di valore -> Passo 1 di 3 "Cosa segui" (@username, nazione/sport/campionato/squadra, codice invito)
+  //   -> Passo 2 "Le tue 3 strategie" (le migliori nello storico per il tuo sport, regalate e gia' accese)
+  //   -> Passo 3 "Il tuo primo segnale" + permesso delle notifiche -> StatSight Full gratis per un mese.
+  // Tutto su questo telefono (statsight.profilo: invite, gifts, notifPerm; statsight.prova_full): col server va
+  // sull'account (docs/piano_server.md). Si salta in ogni momento ("Salta"): parte il tutorial come prima.
+  var BV_STEPS = ["v1", "v2", "s1", "s2", "s3", "full"], bv = { step: "v1", off: {} };
+  var TRIAL_KEY = "statsight.prova_full", TRIAL_DAYS = 30;
+  function bvGo(step) { bv.step = step; renderBenvenuto(); var v = $("view-benvenuto"); if (v) v.scrollTop = 0; window.scrollTo(0, 0); }
+  // le 3 strategie da regalare: prima quelle con le barre del tuo sport (combinazione migliore dello storico),
+  // poi le nostre dello stesso sport, poi le altre; sempre con almeno 30 casi e in ordine di rendimento
+  function giftStrategies(sport) {
+    var out = [], seen = {};
+    function add(list) { list.sort(function (a, b) { return b.roi - a.roi; }).forEach(function (x) { if (out.length < 3 && !seen[x.id]) { seen[x.id] = 1; out.push(x); } }); }
+    function fromCat(sp) {
+      var c = data && catOf(sp);
+      return ((c && c.strategies) || []).filter(function (s) { return !catLocked(s.id) && s.grid && s.grid[s.default]; }).map(function (s) {
+        var g = s.grid[s.default];
+        return { kind: "cat", id: s.id, sport: sp, name: s.name, pick: s.pick || "", n: g[0], win: g[1], odds: g[2], roi: g[3] };
+      }).filter(function (x) { return x.n >= 30; });
+    }
+    function fromOurs(sp) {
+      return ((data && data.catalog) || []).filter(function (s) { return !s.retired && (!sp || s.sport === sp) && !catLocked(s.id); }).map(function (s) {
+        var st = (s.detail && s.detail.stats) || {};
+        return { kind: "our", id: s.id, sport: s.sport, name: s.name, pick: "", n: st.n || 0, win: st.n ? (st.wins || 0) / st.n : null, odds: null, roi: st.roi };
+      }).filter(function (x) { return x.n >= 30 && x.roi != null; });
+    }
+    var sp = sport || "calcio";
+    add(fromCat(sp)); add(fromOurs(sp));
+    ["calcio", "tennis", "basket", "hockey"].forEach(function (o) { if (o !== sp) add(fromCat(o)); });
+    add(fromOurs(null));
+    return out;
+  }
+  function giftCard(g) {
+    var on = !bv.off[g.id];
+    return '<div class="ss-card obgift' + (on ? " on" : "") + '"><div class="ss-row"><span class="ss-icbadge' + (g.kind === "cat" ? " brand" : "") + '">' + ic(g.sport) + '</span>'
+      + '<div class="ss-grow"><b class="obgname">' + esc(g.name) + '</b><span class="ss-k">' + esc(NAME[g.sport] || "") + (g.pick ? " · " + esc(g.pick) : "") + '</span></div>'
+      + '<span class="switch"><input type="checkbox" role="switch" data-bvgift="' + esc(g.id) + '"' + (on ? " checked" : "") + ' aria-label="Accesa"><span class="slider"></span></span></div>'
+      + '<div class="ss-stats obgstats"><div class="ss-stat"><b>' + g.n + '</b><span>casi</span></div>'
+      + (g.win != null ? '<div class="ss-stat"><b>' + Math.round(g.win * 100) + '%</b><span>vinte</span></div>' : "")
+      + (g.odds ? '<div class="ss-stat"><b>' + it(g.odds, 2) + '</b><span>quota media</span></div>' : "")
+      + '<div class="ss-stat"><b class="' + (g.roi >= 0 ? "ss-pos" : "ss-neg") + '">' + pct(g.roi) + '</b><span>rendimento</span></div></div>'
+      + (g.win != null ? '<div class="ss-progress sm teal obgbar"><i style="width:' + Math.round(g.win * 100) + '%"></i></div>' : "") + '</div>';
+  }
+  // il primo segnale: uno vero di oggi (delle tue strategie, o del tuo sport), altrimenti come arrivera'
+  function firstSignal(gifts) {
+    var ids = gifts.map(function (g) { return g.id; }), feed = (data && data.feed) || [];
+    var sig = feed.filter(function (f) { return f.kind === "signal" && ids.indexOf(f.main || f.strategy) >= 0; })[0]
+      || feed.filter(function (f) { return f.kind === "signal" && f.sport === me.sport; })[0]
+      || feed.filter(function (f) { return f.kind === "signal"; })[0];
+    if (sig) {
+      return '<div class="ss-card ss-card-hero obsig"><div class="ss-row"><span class="ss-icbadge live">' + ic(sig.sport) + '</span><div class="ss-grow"><span class="ss-k">' + esc(sig.cat || NAME[sig.sport] || "") + '</span>'
+        + '<b class="obsigev">' + esc(sig.event) + '</b></div>' + (sig.timing === "live" ? '<span class="ss-tag live">Live</span>' : '<span class="ss-tag">' + esc(whenLabel(sig.ts)) + '</span>') + '</div>'
+        + '<div class="obsigpick"><span class="ss-label">Indicazione</span><b>' + esc(sig.pick || "") + '</b>' + (sig.odds > 1 ? '<span class="ss-num">' + oddsTxt(sig.odds) + '</span>' : "") + '</div>'
+        + ((sig.main || sig.strategy) ? '<div class="ss-k">Strategia: <b>' + esc(nameOf(sig.main || sig.strategy)) + '</b></div>' : "") + '</div>';
+    }
+    var g = gifts[0];
+    return '<div class="ss-card ss-card-hero obsig"><div class="ss-row"><span class="ss-icbadge live">' + ic("bolt") + '</span><div class="ss-grow"><b>Nessun segnale in questo momento</b>'
+      + '<span class="ss-k">Appena una delle tue strategie scatta, il segnale arriva qui con la partita, l\'indicazione e la quota.</span></div></div>'
+      + (g ? '<div class="obsigpick"><span class="ss-label">Strategia</span><b>' + esc(g.name) + '</b>' + (g.pick ? '<span class="ss-k">' + esc(g.pick) + '</span>' : "") + '</div>' : "") + '</div>';
+  }
+  // schede di valore: disegni fatti col codice (niente foto, niente marchi)
+  function mockLive() {
+    var rows = [["Tiri in porta", "7", "2", 78], ["xG", "1,84", "0,62", 75], ["Attacchi pericolosi", "58", "31", 65]];
+    return '<div class="obmock"><div class="ss-row obmhead"><span class="ss-tag live">Live</span><span class="ss-k">63\'</span></div>'
+      + '<div class="obmscore"><span>Casa</span><b class="ss-num">1 - 1</b><span>Ospiti</span></div>'
+      + rows.map(function (r, i) {
+        return '<div class="obmstat"><div class="ss-row"><b class="ss-num">' + r[1] + '</b><span class="ss-grow ss-k">' + r[0] + '</span><b class="ss-num">' + r[2] + '</b></div>'
+          + '<div class="obmbar"><i style="width:' + r[3] + '%;animation-delay:' + (i * 0.15) + 's"></i><i style="width:' + (100 - r[3]) + '%;animation-delay:' + (i * 0.15) + 's"></i></div></div>';
+      }).join("")
+      + '<div class="obmalert"><span class="ss-icbadge brand">' + ic("bolt") + '</span><div><b>La partita si accende</b><span class="ss-k">Una strategia accesa ha visto il momento</span></div></div></div>';
+  }
+  function mockStrat() {
+    var best = null;
+    ["calcio", "tennis"].forEach(function (sp) { var c = data && catOf(sp); ((c && c.strategies) || []).forEach(function (s) { var g = s.grid && s.grid[s.default]; if (g && g[0] >= 30 && (!best || g[3] > best.g[3])) best = { s: s, g: g }; }); });
+    var name = best ? best.s.name : "Favorita sotto di un gol", g = best ? best.g : null, res = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0];
+    return '<div class="obmock"><div class="ss-row obmhead"><span class="ss-icbadge brand">' + ic("strategie") + '</span><b class="ss-grow">' + esc(name) + '</b>' + (best ? "" : '<span class="ss-tag teal">Esempio</span>') + '</div>'
+      + '<div class="obmsl"><span class="ss-k">Minuto</span><div class="obmrange"><i style="left:18%;right:30%"></i><b style="left:18%"></b><b style="left:70%"></b></div></div>'
+      + '<div class="obmsl"><span class="ss-k">Quota minima</span><div class="obmrange"><i style="left:0;right:55%"></i><b style="left:45%"></b></div></div>'
+      + '<div class="ss-stats"><div class="ss-stat"><b>' + (g ? g[0] : "—") + '</b><span>casi</span></div><div class="ss-stat"><b>' + (g ? Math.round(g[1] * 100) + "%" : "—") + '</b><span>vinte</span></div>'
+      + '<div class="ss-stat"><b>' + (g ? it(g[2], 2) : "—") + '</b><span>quota media</span></div><div class="ss-stat"><b class="' + (!g || g[3] >= 0 ? "ss-pos" : "ss-neg") + '">' + (g ? pct(g[3]) : "—") + '</b><span>rendimento</span></div></div>'
+      + '<div class="obmres"><span class="ss-k">Vinti e persi, tutti</span><span class="obdots">' + res.map(function (w) { return '<i class="' + (w ? "w" : "l") + '"></i>'; }).join("") + '</span></div></div>';
+  }
+  function bvHead(n) {   // n = passo 1..3; 0 = schede di valore e piano Full (senza barra)
+    var i = BV_STEPS.indexOf(bv.step);
+    return '<div class="obtop">' + (i > 0 ? '<button class="iconbtn obback" type="button" data-bvback="1" aria-label="Indietro">‹</button>' : '<span class="obback"></span>')
+      + (n ? '<div class="ss-steps obsteps"><span class="ss-label">Passo ' + n + ' di 3</span><span class="seg"><i class="on"></i><i' + (n >= 2 ? ' class="on"' : "") + '></i><i' + (n >= 3 ? ' class="on"' : "") + '></i></span></div>' : '<span class="obsteps"></span>')
+      + (bv.step !== "full" ? '<button class="ss-btn ss-btn-ghost ss-btn-sm" type="button" data-pkskip="1">Salta</button>' : '<span></span>') + '</div>';
+  }
+  function bvDots(k) { return '<div class="obdotsnav"><i' + (k === 0 ? ' class="on"' : "") + '></i><i' + (k === 1 ? ' class="on"' : "") + '></i></div>'; }
+  function renderBenvenuto() {
+    var s = bv.step, h = "";
+    if (s === "v1") {
+      h = bvHead(0) + '<div class="obbody"><div class="obbrand"><img src="icon-192.png" alt="" width="44" height="44"><b>StatSight</b></div>' + mockLive()
+        + '<h1 class="ss-h1">Le partite live, lette dai numeri</h1><p class="ss-sub">Tiri, xG, attacchi e quote minuto per minuto. Quando una partita si accende, lo vedi subito.</p>' + bvDots(0) + '</div>'
+        + '<div class="obfoot"><button class="ss-btn ss-btn-primary ss-btn-block" type="button" data-bvnext="v2">Avanti</button></div>';
+    } else if (s === "v2") {
+      h = bvHead(0) + '<div class="obbody">' + mockStrat()
+        + '<h1 class="ss-h1">Strategie con i numeri veri</h1><p class="ss-sub">Regole provate sullo storico: quante volte, quanto spesso vincono, a che quota e quanto rendono. Le cambi con le barre e vedi subito come sarebbe andata.</p>' + bvDots(1) + '</div>'
+        + '<div class="obfoot"><button class="ss-btn ss-btn-primary ss-btn-block" type="button" data-bvnext="s1">Inizia</button></div>';
+    } else if (s === "s1") {
+      h = bvHead(1) + '<div class="obbody"><h2 class="ss-h2">Cosa segui?</h2><p class="ss-sub">Mettiamo in primo piano il tuo campionato e la tua squadra. Si cambia quando vuoi dal Diario.</p>'
+        + '<div class="pkstep">Il tuo @username</div><div class="userrow"><span>@</span><input class="meinput" id="bvuser" maxlength="20" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="come ti taggano gli altri" value="' + esc(pick.user || me.user || "") + '" translate="no"></div>'
+        + '<div class="note namemsg" id="bvusermsg" role="alert"' + (pick.userMsg ? "" : " hidden") + '>' + esc(pick.userMsg || "") + '</div>'
+        + pickerHtml(pick)
+        + '<div class="pkstep">Codice invito</div><input class="ss-input" id="bvinvite" maxlength="16" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="Se un amico te l\'ha dato (facoltativo)" value="' + esc(pick.invite != null ? pick.invite : me.invite || "") + '" translate="no">'
+        + '</div><div class="obfoot"><button class="ss-btn ss-btn-primary ss-btn-block" type="button" data-pkgo="1"' + (pick.sport ? "" : " disabled") + '>Avanti</button>'
+        + (pick.sport ? "" : '<div class="ss-k obhint">Scegli almeno lo sport per andare avanti.</div>') + '</div>';
+    } else if (s === "s2") {
+      var gifts = giftStrategies(me.sport);
+      h = bvHead(2) + '<div class="obbody"><span class="ss-icbadge brand lg obgifticon">' + ic("trophy") + '</span><h2 class="ss-h2">Ecco le tue 3 strategie</h2>'
+        + '<p class="ss-sub">Le migliori nello storico per il tuo sport. Te le regaliamo già accese: quando scattano arriva il segnale.</p>'
+        + (gifts.length ? gifts.map(giftCard).join("") : '<div class="note">Le strategie arrivano con i dati: le trovi poi in Strategie.</div>')
+        + '<p class="ss-k obhonest">' + ic("info") + ' Lo storico non promette niente sul futuro: in Strategie vedi anche come vanno dal vivo, vinti e persi.</p></div>'
+        + '<div class="obfoot"><button class="ss-btn ss-btn-primary ss-btn-block" type="button" data-bvgifts="1">' + (gifts.some(function (g) { return !bv.off[g.id]; }) ? "Tienile accese" : "Avanti") + '</button></div>';
+    } else if (s === "s3") {
+      var perm = me.notifPerm || "";
+      h = bvHead(3) + '<div class="obbody"><h2 class="ss-h2">Il tuo primo segnale</h2><p class="ss-sub">Così arriva un segnale: la partita, cosa indica la strategia e la quota di quel momento.</p>'
+        + firstSignal(giftStrategies(me.sport))
+        + '<div class="ss-card obnotif"><div class="ss-row"><span class="ss-icbadge info">' + ic("bell") + '</span><div class="ss-grow"><b>Avvisami quando scatta</b>'
+        + '<span class="ss-k">' + (perm === "granted" ? "Avvisi accesi. Scegli quali strategie in Notifiche." : perm === "denied" ? "Le notifiche sono bloccate: si riaccendono dalle impostazioni del telefono." : perm === "unsupported" ? "Qui le notifiche non ci sono: arrivano con l'app installata." : "Un avviso sul telefono quando una tua strategia vede il momento.") + '</span></div></div>'
+        + (perm === "granted" ? "" : '<button class="ss-btn ss-btn-secondary ss-btn-block obnotifbtn" type="button" data-bvnotif="1">' + ic("bell") + ' Attiva le notifiche</button>') + '</div></div>'
+        + '<div class="obfoot"><button class="ss-btn ss-btn-primary ss-btn-block" type="button" data-bvnext="full">Avanti</button></div>';
+    } else {
+      var feats = [["bolt", "xG, attacchi pericolosi e possesso dal vivo"], ["tennis", "Statistiche al servizio nel tennis"], ["strategie", "Tutte le strategie, anche quelle che usano queste statistiche"], ["flame", "Le partite calde del Radar con la strategia e i numeri"]];
+      h = bvHead(0) + '<div class="obbody"><div class="ss-card ss-card-hero obfull"><span class="ss-tag">Regalo di benvenuto</span><h2 class="ss-h2">StatSight Full gratis per un mese</h2>'
+        + '<p class="ss-sub">Tutto sbloccato per 30 giorni. Poi scegli tu se restare su Full o passare al Gratuito.</p>'
+        + '<div class="obfeats">' + feats.map(function (f) { return '<div class="ss-row"><span class="ss-icbadge brand">' + ic(f[0]) + '</span><span class="ss-grow">' + f[1] + '</span>' + ic("check", "ss-pos") + '</div>'; }).join("") + '</div></div></div>'
+        + '<div class="obfoot"><button class="ss-btn ss-btn-primary ss-btn-block" type="button" data-bvfull="1">Attiva il mese gratis</button>'
+        + '<button class="ss-btn ss-btn-ghost ss-btn-block" type="button" data-bvfree="1">Continua con il Gratuito</button></div>';
+    }
+    $("benvenuto").innerHTML = '<div class="ob ob-' + s + '">' + h + '</div>';
+  }
+  function bvFinish() {
+    me.onboarded = true; saveMe();
+    if (data) renderAll(); show("radar"); window.scrollTo(0, 0); tutorialFirst();
+  }
+  $("benvenuto").addEventListener("input", function (e) {
+    if (e.target.dataset.pkfree) pick.free = e.target.value;
+    if (e.target.id === "bvuser") pick.user = e.target.value;
+    if (e.target.id === "bvinvite") pick.invite = e.target.value;
+  });
+  $("benvenuto").addEventListener("change", function (e) {
+    var g = e.target.closest("input[data-bvgift]"); if (!g) return;
+    if (g.checked) delete bv.off[g.dataset.bvgift]; else bv.off[g.dataset.bvgift] = 1;
+    renderBenvenuto();
+  });
+  $("benvenuto").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var d = b.dataset;
+    if (pickerClick(pick, b)) { keepScroll($("benvenuto"), renderBenvenuto); return; }
+    if (d.bvback) { bvGo(BV_STEPS[Math.max(0, BV_STEPS.indexOf(bv.step) - 1)]); return; }
+    if (d.bvnext) { bvGo(d.bvnext); return; }
+    if (d.pkgo) {
+      var u = ($("bvuser").value || "").trim().toLowerCase().replace(/^@/, ""), up = handleProblem(u);
+      if (up) { pick.user = u; pick.userMsg = up; keepScroll($("benvenuto"), renderBenvenuto); return; }
+      pick.userMsg = "";
+      if (u) me.user = u;
+      var inv = ($("bvinvite").value || "").trim().toUpperCase().replace(/[^A-Z0-9_-]/g, "").slice(0, 16);
+      if (inv) me.invite = inv; else delete me.invite;
+      commitPick(pick); saveMe();
+      bvGo("s2"); return;
+    }
+    if (d.bvgifts) {   // le regalate restano accese: quelle con le barre nei segnali, le nostre non nascoste
+      var gifts = giftStrategies(me.sport).filter(function (g) { return !bv.off[g.id]; });
+      gifts.forEach(function (g) { if (g.kind === "cat") catOn.add(g.id); else hidden.delete(g.id); });
+      saveCatOn(); saveHidden();
+      me.gifts = gifts.map(function (g) { return g.id; }); saveMe();
+      bvGo("s3"); return;
+    }
+    if (d.bvnotif) {
+      var done = function (r) { me.notifPerm = r || "default"; saveMe(); if (bv.step === "s3") renderBenvenuto(); };
+      try {
+        if (window.Notification && Notification.requestPermission) { var p = Notification.requestPermission(done); if (p && p.then) p.then(done, function () { done("default"); }); }
+        else done("unsupported");
+      } catch (er) { done("unsupported"); }
+      return;
+    }
+    if (d.bvfull) {
+      var now = Date.now();
+      try { localStorage.setItem(PLAN_KEY, "full"); localStorage.setItem(TRIAL_KEY, JSON.stringify({ from: now, to: now + TRIAL_DAYS * 86400000 })); } catch (er) {}
+      bvFinish(); return;
+    }
+    if (d.bvfree) { try { localStorage.setItem(PLAN_KEY, "free"); } catch (er) {} bvFinish(); return; }
+    if (d.pkskip) {   // si salta: quello gia' scelto resta, il resto si trova nelle sezioni
+      if (bv.step === "s1" && pick.sport) commitPick(pick);
+      bvFinish();
+    }
+  });
   // ---------------------------------------------------------------- Notifiche (richiesta 03/10, idea BetMines)
   // Per ogni strategia accesa e per "Le tue barre": notifica si'/no e cosa mostrare nel messaggio. Oggi sono solo
   // preferenze su questo telefono (statsight.notifiche); le notifiche vere partono col server (docs/piano_server.md).
