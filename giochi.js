@@ -15,6 +15,7 @@
   // ------------------------------------------------------------------ catalogo (need = vittorie per sbloccare)
   var PELLE = ["#F6D7B8", "#EDC09A", "#D9A273", "#B97F51", "#8D5A35", "#5E3B22"];
   var CAPELLI_COL = ["#1E1712", "#4A2E1B", "#7A4B26", "#B7782F", "#E2C27A", "#B8B8B8", "#C0392B", "#2F6FB5", "#E2488F", "#36A86A", "#F4F4F4", "#7E57C2"];
+  var WHITES = "#F2EFE6";   // divisa bianca da cricket
   var COLORI = ["#E8E8E8", "#1C1F24", "#C62828", "#1565C0", "#2E7D32", "#F9A825", "#6A1B9A", "#00838F", "#EF6C00", "#AD1457", "#5D4037", "#90CAF9"];
   // req: numero = livello che lo sblocca (nel prototipo: vittorie); "c:N" = si compra con N monete (le cose strane)
   var CAT = {
@@ -27,14 +28,14 @@
     bocca: [["sorriso", "Sorriso", 0], ["sorrisone", "Sorrisone", 0], ["seria", "Seria", 0], ["smorfia", "Smorfia", 3], ["furbo", "Sorriso furbo", 2], ["linguaccia", "Linguaccia", "c:250"], ["dente", "Dente d'oro", "c:600"]],
     capelli: [["corti", "Corti", 0], ["rasati", "Rasati", 0], ["frangia", "Frangia", 0], ["ricci", "Ricci", 0], ["lunghi", "Lunghi", 0], ["calvo", "Calvo", 0], ["coda", "Coda", 2], ["afro", "Afro", 4], ["cresta", "Cresta", 7], ["spettinati", "Spettinati", 0], ["chignon", "Chignon", 3], ["trecce", "Trecce", 5], ["ciuffo", "Ciuffo", 6], ["mullet", "Mullet", "c:350"]],
     barba: [["no", "Niente", 0], ["corta", "Corta", 0], ["baffi", "Baffi", 2], ["piena", "Piena", 5]],
-    maglia: [["maglia", "Maglia", 0], ["strisce", "Strisce", 0], ["polo", "Polo tennis", 0], ["righe", "Righe", 2], ["canotta", "Canotta", 3], ["meta", "Metà e metà", 4], ["banda", "Banda", 6], ["felpa", "Felpa", 8], ["portiere", "Maglia portiere", 10], ["cappuccio", "Felpa col cappuccio", 12], ["tuta", "Giacca tuta", 15]],
-    cappello: [["no", "Niente", 0], ["fascia", "Fascia", 0], ["cappellino", "Cappellino", 2], ["berretto", "Berretto di lana", 5], ["rovescio", "Cappellino al contrario", 9], ["visiera", "Visiera", 11], ["cuffie", "Cuffie", 4], ["cowboy", "Cappello da cowboy", 8], ["casco", "Casco da football", 10], ["bandana", "Bandana", "c:300"], ["cilindro", "Cilindro", "c:350"], ["vichingo", "Elmo vichingo", "c:900"], ["corona", "Corona", "c:1500"]],
+    maglia: [["maglia", "Maglia", 0], ["strisce", "Strisce", 0], ["polo", "Polo tennis", 0], ["righe", "Righe", 2], ["canotta", "Canotta", 3], ["meta", "Metà e metà", 4], ["banda", "Banda", 6], ["felpa", "Felpa", 8], ["portiere", "Maglia portiere", 10], ["cappuccio", "Felpa col cappuccio", 12], ["tuta", "Giacca tuta", 15], ["cricket", "Maglia da cricket (T20)", 0], ["bianca", "Divisa bianca da cricket", 0]],
+    cappello: [["no", "Niente", 0], ["fascia", "Fascia", 0], ["cappellino", "Cappellino", 2], ["berretto", "Berretto di lana", 5], ["rovescio", "Cappellino al contrario", 9], ["visiera", "Visiera", 11], ["cuffie", "Cuffie", 4], ["cowboy", "Cappello da cowboy", 8], ["casco", "Casco da football", 10], ["bandana", "Bandana", "c:300"], ["cilindro", "Cilindro", "c:350"], ["vichingo", "Elmo vichingo", "c:900"], ["corona", "Corona", "c:1500"], ["cricket", "Berretto da cricket", 0], ["sole", "Cappello da sole", 0], ["elmetto", "Casco da cricket", 0], ["turbante", "Turbante", 0], ["patka", "Patka", 0]],
     accessorio: [["no", "Niente", 0], ["tondi", "Occhiali tondi", 2], ["polsini", "Polsini", 3], ["quadrati", "Occhiali squadrati", 5], ["occhiali", "Occhiali da sole", 7], ["maschera", "Maschera da supereroe", 9], ["cuore", "Occhiali a cuore", "c:300"], ["capitano", "Fascia da capitano", 14], ["collana", "Catenina d'oro", "c:500"]],
     scarpe: [["scarpini", "Scarpini", 0], ["tennis", "Scarpe da tennis", 0], ["oro", "Scarpini d'oro", "c:1200"]],
-    pallone: [["classico", "Classico", 0], ["retro", "Cuoio anni '70", 6], ["notte", "Notturno", 10], ["arcobaleno", "Arcobaleno", "c:400"], ["stelle", "Stelle", "c:600"], ["fiamme", "Fiamme", "c:800"], ["oro", "Pallone d'oro", "c:2000"]],
+    pallone: [["classico", "Classico", 0], ["retro", "Cuoio anni '70", 6], ["notte", "Notturno", 10], ["arcobaleno", "Arcobaleno", "c:400"], ["stelle", "Stelle", "c:600"], ["fiamme", "Fiamme", "c:800"], ["oro", "Pallone d'oro", "c:2000"], ["cricket", "Palla da cricket", 0], ["cricket_t20", "Palla bianca (T20)", 0]],
     racchetta: [["classica", "Classica", 0], ["rossa", "Rossa", 3], ["blu", "Blu", 5], ["legno", "Legno vintage", 9], ["neon", "Neon", "c:500"], ["carbonio", "Carbonio", "c:800"], ["oro", "Racchetta d'oro", "c:2000"]],
     guanti: [["verdi", "Verdi", 0], ["arancio", "Arancio", 4], ["rosa", "Rosa", 8], ["neri", "Neri e oro", "c:500"]],
-    posa: [["piedi", "In piedi", 0], ["saluto", "Saluto", 0], ["conserte", "Braccia conserte", 0], ["sottobraccio", "Pallone sotto il braccio", 2], ["spalla", "Racchetta in spalla", 2], ["fianchi", "Mani sui fianchi", 4], ["palleggio", "Palleggio", 6], ["cielo", "Dito al cielo", 10], ["pollice", "Pollice su", 13]],
+    posa: [["piedi", "In piedi", 0], ["saluto", "Saluto", 0], ["conserte", "Braccia conserte", 0], ["sottobraccio", "Pallone sotto il braccio", 2], ["spalla", "Racchetta in spalla", 2], ["fianchi", "Mani sui fianchi", 4], ["palleggio", "Palleggio", 6], ["cielo", "Dito al cielo", 10], ["pollice", "Pollice su", 13], ["mazza", "Mazza da cricket", 0]],
     esulta: [["salto", "Salto di gioia", 0], ["braccia", "Braccia al cielo", 0], ["pugno", "Pugno", 3], ["aereo", "Aeroplano", 7], ["ballo", "Ballo", "c:300"], ["inchino", "Inchino", 16], ["giro", "Giravolta", "c:700"], ["trofeo", "Coppa alzata", "c:1500"]]
   };
   function reqOf(cat, id) { var it = (CAT[cat] || []).filter(function (x) { return x[0] === id; })[0]; return it ? it[2] : 0; }
@@ -54,13 +55,17 @@
   function drawBall(c, x, y, r, id, rot) {
     id = id || "classico"; rot = rot || 0;
     c.save(); c.translate(x, y); c.rotate(rot);
-    var base = { classico: "#FAFAFA", retro: "#8B5A2B", notte: "#14171C", arcobaleno: "#FFFFFF", stelle: "#1B2A6B", fiamme: "#FFF3E0", oro: "#F2C230" }[id] || "#FAFAFA";
+    var base = { classico: "#FAFAFA", retro: "#8B5A2B", notte: "#14171C", arcobaleno: "#FFFFFF", stelle: "#1B2A6B", fiamme: "#FFF3E0", oro: "#F2C230", cricket: "#A31F1F", cricket_t20: "#F4F4F0" }[id] || "#FAFAFA";
     c.beginPath(); c.arc(0, 0, r, 0, TAU); c.fillStyle = base; c.fill();
     c.save(); c.clip();
     if (id === "arcobaleno") { ["#E53935", "#FB8C00", "#FDD835", "#43A047", "#1E88E5", "#8E24AA"].forEach(function (col, i) { c.fillStyle = col; c.fillRect(-r + i * r / 3, -r, r / 3 + 0.5, 2 * r); }); }
     if (id === "fiamme") { c.fillStyle = "#FF7043"; for (var i = 0; i < 5; i++) { c.beginPath(); var a = i / 5 * TAU; c.moveTo(Math.cos(a) * r * 0.2, Math.sin(a) * r * 0.2); c.quadraticCurveTo(Math.cos(a + 0.5) * r, Math.sin(a + 0.5) * r, Math.cos(a + 0.2) * r * 1.1, Math.sin(a + 0.2) * r * 1.1); c.quadraticCurveTo(Math.cos(a - 0.1) * r * 0.7, Math.sin(a - 0.1) * r * 0.7, Math.cos(a) * r * 0.2, Math.sin(a) * r * 0.2); c.fill(); } }
     if (id === "retro") { c.strokeStyle = "#5B3716"; c.lineWidth = Math.max(1, r * 0.08); for (var k = -1; k <= 1; k++) { c.beginPath(); c.moveTo(-r, k * r * 0.45); c.quadraticCurveTo(0, k * r * 0.45 + r * 0.25, r, k * r * 0.45); c.stroke(); } }
     else if (id === "stelle") { c.fillStyle = "#FFE082"; [[0, 0, 0.35], [-0.55, -0.45, 0.2], [0.55, 0.4, 0.22], [0.5, -0.55, 0.15], [-0.5, 0.55, 0.16]].forEach(function (s) { star(c, s[0] * r, s[1] * r, s[2] * r); }); }
+    else if (id === "cricket" || id === "cricket_t20") {   // cucitura in rilievo
+      c.strokeStyle = id === "cricket" ? "#F3E6D0" : "#1F2A44"; c.lineWidth = Math.max(0.8, r * 0.09);
+      c.beginPath(); c.arc(-r * 1.6, 0, r * 1.75, -0.55, 0.55); c.stroke(); c.beginPath(); c.arc(-r * 1.45, 0, r * 1.75, -0.55, 0.55); c.stroke();
+    }
     else if (id !== "arcobaleno") {
       var pc = { classico: "#1D2326", notte: "#39FF88", fiamme: "#D84315", oro: "#9C6B00" }[id] || "#1D2326";
       c.fillStyle = pc; pent(c, 0, 0, r * 0.36);
@@ -80,6 +85,14 @@
     c.fillStyle = "#C8924E"; c.beginPath(); c.moveTo(-2, 0); c.lineTo(-L * 0.06, -L); c.quadraticCurveTo(0, -L * 1.06, L * 0.06, -L); c.lineTo(2, 0); c.closePath(); c.fill();
     c.fillStyle = "rgba(0,0,0,.18)"; c.fillRect(0, -L, L * 0.05, L);
     c.strokeStyle = "#1C1F24"; c.lineWidth = 5; c.beginPath(); c.moveTo(0, 2); c.lineTo(0, -L * 0.22); c.stroke();
+    c.restore();
+  }
+  // mazza da cricket con l'impugnatura in (0,0) e la lama verso -y (09/10)
+  function drawCricketBat(c, L) {
+    c.save();
+    c.fillStyle = "#E3C48E"; rr(c, -L * 0.075, -L, L * 0.15, L * 0.68, L * 0.03); c.fill();
+    c.fillStyle = "rgba(0,0,0,.12)"; c.fillRect(L * 0.03, -L, L * 0.045, L * 0.68);
+    c.fillStyle = "#1C1F24"; rr(c, -L * 0.03, -L * 0.34, L * 0.06, L * 0.36, L * 0.02); c.fill();
     c.restore();
   }
   // pallone ovale da football americano centrato in (x,y), raggio lungo r
@@ -161,7 +174,7 @@
     // cappuccio dietro la testa
     if (top === "cappuccio" && !back) { c.fillStyle = shade(c1, -0.25); c.beginPath(); c.ellipse(0, shY - 4, 24, 12, 0, 0, TAU); c.fill(); }
     // braccio dietro (a sinistra dello schermo se di schiena il destro... semplice: entrambi dopo il busto, tranne se all'indietro)
-    var sleeveCol = noSleeve ? skin : c1;
+    var sleeveCol = noSleeve ? skin : top === "bianca" ? WHITES : c1;
     function arm(side) {
       var a = pose[side === -1 ? "al" : "ar"], sx = side * 20 * wf, g;
       g = limb(c, sx, shY + 4, a[0], a[1], 30, 28, 11, 10, sleeveCol, longSleeve ? sleeveCol : skin, longSleeve ? 1 : noSleeve ? 0 : 0.45);
@@ -178,6 +191,7 @@
     if (pose.hold === "ball") drawBall(c, armL.end[0] + 2, armL.end[1] - 8, 13, A.pallone, 0.3);
     if (pose.hold === "racket" || opt.racket) { c.save(); c.translate(armR.end[0], armR.end[1]); c.rotate(pose.racketAng != null ? pose.racketAng : armR.ang + Math.PI); drawRacket(c, 62, A.racchetta); c.restore(); }
     if (pose.hold === "bat") { c.save(); c.translate((armL.end[0] + armR.end[0]) / 2, (armL.end[1] + armR.end[1]) / 2); c.rotate(pose.batAng || 0); drawBat(c, 78 * (pose.batLen || 1)); c.restore(); }
+    if (pose.hold === "cbat") { c.save(); c.translate((armL.end[0] + armR.end[0]) / 2, (armL.end[1] + armR.end[1]) / 2); c.rotate(pose.batAng || 0); drawCricketBat(c, 74); c.restore(); }
     if (pose.hold === "nfl") { c.save(); c.translate(armR.end[0], armR.end[1] - 6); c.rotate(-0.6); drawFootball(c, 0, 0, 11); c.restore(); }
     if (pose.hold === "trofeo") { c.save(); c.translate((armL.end[0] + armR.end[0]) / 2, Math.min(armL.end[1], armR.end[1]) - 6); trophy(c); c.restore(); }
     // collo e testa
@@ -189,8 +203,10 @@
   function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
   function trophy(c) { c.fillStyle = "#F2C230"; c.beginPath(); c.moveTo(-14, -30); c.lineTo(14, -30); c.quadraticCurveTo(14, -6, 0, -4); c.quadraticCurveTo(-14, -6, -14, -30); c.fill(); c.fillRect(-3, -5, 6, 8); c.fillRect(-9, 2, 18, 5); c.strokeStyle = "#F2C230"; c.lineWidth = 3; c.beginPath(); c.arc(-15, -22, 6, Math.PI * 0.5, Math.PI * 1.5); c.stroke(); c.beginPath(); c.arc(15, -22, 6, -Math.PI * 0.5, Math.PI * 0.5); c.stroke(); }
   function torso(c, top, c1, c2, x, y, w, h, back, A, keeper) {
-    c.save(); rr(c, x, y, w, h, 12); c.fillStyle = c1; c.fill(); c.clip();
-    if (top === "strisce") { c.fillStyle = c2; for (var i = 0; i < 5; i += 2) c.fillRect(x + i * w / 5, y, w / 5, h); }
+    c.save(); rr(c, x, y, w, h, 12); c.fillStyle = top === "bianca" ? WHITES : c1; c.fill(); c.clip();
+    if (top === "cricket") { c.fillStyle = c2; c.beginPath(); c.moveTo(x, y); c.lineTo(x + w, y); c.lineTo(x + w, y + h * 0.22); c.quadraticCurveTo(x + w / 2, y + h * 0.42, x, y + h * 0.22); c.closePath(); c.fill(); c.fillRect(x, y + h - 7, w, 7); }
+    else if (top === "bianca") { c.fillStyle = c1; c.fillRect(x, y + h - 5, w, 5); c.fillStyle = c2 === c1 ? shade(c1, -0.3) : c2; c.fillRect(x, y + h - 8, w, 3); }
+    else if (top === "strisce") { c.fillStyle = c2; for (var i = 0; i < 5; i += 2) c.fillRect(x + i * w / 5, y, w / 5, h); }
     else if (top === "righe") { c.fillStyle = c2; for (var j = 1; j < 6; j += 2) c.fillRect(x, y + j * h / 6, w, h / 6); }
     else if (top === "meta") { c.fillStyle = c2; c.fillRect(x + w / 2, y, w / 2, h); }
     else if (top === "banda") { c.fillStyle = c2; c.beginPath(); c.moveTo(x, y + 8); c.lineTo(x + 12, y); c.lineTo(x + w, y + h - 12); c.lineTo(x + w - 12, y + h); c.closePath(); c.fill(); }
@@ -205,8 +221,12 @@
       if (A.nome) { c.font = "800 " + (h * 0.15) + "px Archivo, sans-serif"; c.fillText(String(A.nome).toUpperCase().slice(0, 10), x + w / 2, y + h * 0.2); }
     } else {
       if (top === "polo") { c.fillStyle = "#fff"; c.beginPath(); c.moveTo(x + w / 2 - 9, y); c.lineTo(x + w / 2, y + 9); c.lineTo(x + w / 2 + 9, y); c.fill(); }
+      else if (top === "cricket" || top === "bianca") {   // scollo a V con il bordo colorato
+        c.fillStyle = top === "bianca" ? shade(WHITES, -0.12) : shade(c1, -0.25); c.beginPath(); c.moveTo(x + w / 2 - 10, y); c.lineTo(x + w / 2, y + 13); c.lineTo(x + w / 2 + 10, y); c.fill();
+        c.strokeStyle = top === "bianca" ? c1 : c2; c.lineWidth = 2.6; c.beginPath(); c.moveTo(x + w / 2 - 11, y); c.lineTo(x + w / 2, y + 14); c.lineTo(x + w / 2 + 11, y); c.stroke();
+      }
       else if (top !== "canotta") { c.strokeStyle = c2 === c1 ? shade(c1, -0.3) : c2; c.lineWidth = 3; c.beginPath(); c.arc(x + w / 2, y - 2, 9, 0.2, Math.PI - 0.2); c.stroke(); }
-      if (top !== "tuta" && top !== "cappuccio") { c.fillStyle = c2 === c1 ? "#fff" : c2; c.font = "800 " + (h * 0.22) + "px Archivo, sans-serif"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(String(A.num != null ? A.num : ""), x + w * 0.7, y + h * 0.3); }
+      if (top !== "tuta" && top !== "cappuccio" && top !== "bianca") { c.fillStyle = top === "cricket" ? (c2 === c1 ? "#fff" : "#fff") : c2 === c1 ? "#fff" : c2; c.font = "800 " + (h * 0.22) + "px Archivo, sans-serif"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(String(A.num != null ? A.num : ""), x + w * 0.7, y + h * 0.3); }
       if (A.accessorio === "collana") { c.strokeStyle = "#F2C230"; c.lineWidth = 1.6; c.beginPath(); c.arc(x + w / 2, y - 4, 11, 0.4, Math.PI - 0.4); c.stroke(); }
     }
     c.restore();
@@ -390,6 +410,36 @@
       c.fillStyle = "#9AA3AD"; cap(1.07, y - 6); c.fillStyle = "#6E7780"; headPart(c, A, x, y, R, 1.08 * hairUp, function () { band(c, x, y, R, y - 10, y - 5); });
       for (var r2 = -2; r2 <= 2; r2++) { c.beginPath(); c.arc(x + r2 * W * 0.35, y - 7.5, 1.4, 0, TAU); c.fill(); }
     }
+    else if (h === "cricket") {   // berretto morbido da cricket, visiera corta
+      cap(1.1, y - 3); c.fillStyle = shade(col, -0.22);
+      if (!back) { c.beginPath(); c.ellipse(x, y - 3, W * hairUp + 5, 4.5, 0, 0, Math.PI); c.fill(); }
+      c.fillStyle = shade(col, -0.35); c.beginPath(); c.arc(x, y - D.top * 1.1 * hairUp - 1, 2.2, 0, TAU); c.fill();
+    }
+    else if (h === "sole") {   // cappello da sole a tesa larga
+      var sb = y - D.top * 0.45; cap(1.08, sb - 2); c.fillStyle = shade(col, -0.25); headPart(c, A, x, y, R, 1.08 * hairUp, function () { band(c, x, y, R, sb - 8, sb - 3); });
+      c.fillStyle = shade(col, -0.1); c.beginPath(); c.ellipse(x, sb, W * 1.55 * hairUp, 6.5, 0, 0, TAU); c.fill();
+    }
+    else if (h === "elmetto") {   // casco da cricket: calotta, visiera e griglia davanti al viso
+      cap(1.14, y - 1); c.fillStyle = shade(col, -0.3);
+      if (!back) {
+        c.beginPath(); c.ellipse(x, y - 2, W + 7, 4.5, 0, 0, Math.PI); c.fill();
+        c.fillStyle = col; rr(c, x - W - 4, y - 4, 7, 17, 3); c.fill(); rr(c, x + W - 3, y - 4, 7, 17, 3); c.fill();
+        c.strokeStyle = "#C9CED3"; c.lineWidth = 2; c.beginPath();
+        for (var gy = 4; gy <= 16; gy += 6) { c.moveTo(x - W * 0.95, y + gy); c.lineTo(x + W * 0.95, y + gy); }
+        for (var gx = -1; gx <= 1; gx++) { c.moveTo(x + gx * W * 0.45, y + 2); c.lineTo(x + gx * W * 0.45, y + 16); }
+        c.stroke();
+      }
+    }
+    else if (h === "turbante") {   // turbante a fasce avvolte, con la punta davanti
+      cap(1.2, y - 1); c.strokeStyle = shade(col, -0.2); c.lineWidth = 2;
+      for (var tf = 0; tf < 3; tf++) { c.beginPath(); c.ellipse(x, y - 2 - tf * 6, W * (1.12 - tf * 0.08) * hairUp, 5 + tf, 0, Math.PI * 1.05, Math.PI * 1.95); c.stroke(); }
+      if (!back) { c.fillStyle = shade(col, -0.12); c.beginPath(); c.moveTo(x - 9, y - 4); c.lineTo(x, y - D.top * 1.2 * hairUp + 2); c.lineTo(x + 9, y - 4); c.closePath(); c.fill(); }
+    }
+    else if (h === "patka") {   // patka: telo annodato con il nodo in alto
+      cap(1.1, y - 3); c.fillStyle = shade(col, -0.15);
+      c.beginPath(); c.arc(x, y - D.top * 1.1 * hairUp - 3, 6, 0, TAU); c.fill();
+      if (back) { c.fillStyle = col; c.beginPath(); c.moveTo(x - 3, y - 4); c.lineTo(x - 7, y + 10); c.lineTo(x + 5, y + 6); c.fill(); }
+    }
     else if (h === "corona") { c.save(); c.translate(0, R * 1.06 - D.top * hairUp); var cw = W / (R * 0.94); c.fillStyle = "#F2C230"; c.beginPath(); c.moveTo(x - 18 * cw, y - 16); c.lineTo(x - 20 * cw, y - 36); c.lineTo(x - 9 * cw, y - 26); c.lineTo(x, y - 40); c.lineTo(x + 9 * cw, y - 26); c.lineTo(x + 20 * cw, y - 36); c.lineTo(x + 18 * cw, y - 16); c.closePath(); c.fill(); c.fillStyle = "#C62828"; c.beginPath(); c.arc(x, y - 22, 3, 0, TAU); c.fill(); c.restore(); }
   }
   // ------------------------------------------------------------------ pose ed esultanze (funzione del tempo)
@@ -402,7 +452,8 @@
     palleggio: function (t) { var k = Math.abs(Math.sin(t * 5)); return P({ ll: [0.5 * k, -0.6 * k], al: [-0.6, 0.2], ar: [0.6, -0.2], ballY: k }); },
     cielo: function () { return P({ ar: [2.9, 0.1], face: "happy" }); },
     fianchi: function () { return P({ al: [-0.8, 2.0], ar: [0.8, -2.0], face: "happy" }); },
-    pollice: function () { return P({ ar: [1.5, 1.3], face: "happy", thumb: true }); }
+    pollice: function () { return P({ ar: [1.5, 1.3], face: "happy", thumb: true }); },
+    mazza: function () { return P({ al: [0.35, 1.25], ar: [-0.35, -1.25], hold: "cbat", batAng: 2.75, face: "happy" }); }
   };
   var WINS = {
     salto: function (t) { var k = Math.abs(Math.sin(t * 4)); return P({ lift: 40 * k, al: [-2.6, 0.2], ar: [2.6, -0.2], ll: [-0.3 * k, 0.6 * k], lr: [0.3 * k, -0.6 * k], face: "happy" }); },
