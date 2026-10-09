@@ -1268,6 +1268,8 @@ window.I18N_EN = {
   "Questo nome è riservato: scegline un altro.": "This name is reserved: choose another one.",
   "Questo nome è di un personaggio del Team StatSight: scegline un altro.": "This name belongs to a StatSight Team character: choose another one.",
   "Guida": "Guide",
+  "Rifai il primo avvio": "Redo the first setup",
+  "Cosa segui, le 3 strategie regalate e il primo segnale, dall'inizio": "What you follow, your 3 free strategies and your first signal, from the start",
   "Rivedi il tutorial": "See the tutorial again",
   "Strategie, avvisi, Radar e Diario in quattro passi": "Strategies, alerts, Radar and Diary in four steps",
   "Passo # di #": "Step # of #",
