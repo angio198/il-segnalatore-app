@@ -1838,6 +1838,7 @@
   <div class="note" style="margin-top:10px;">Cambia solo come vedi le quote: punti, monete e classifiche si calcolano sempre sulla quota decimale.</div>
   <h2 class="sectiontitle">Guida</h2>
   <button class="card navcard" type="button" id="tutbtn"><svg class="ico"><use href="#i-book"/></svg><span><b>Rivedi il tutorial</b><span class="k">Radar, segnali, strategie, avvisi, Diario e Direct, un passo alla volta</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
+  <button class="card navcard" type="button" id="bvbtn"><svg class="ico"><use href="#i-rocket"/></svg><span><b>Rifai il primo avvio</b><span class="k">Cosa segui, le 3 strategie regalate e il primo segnale, dall'inizio</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <h2 class="sectiontitle">Notifiche</h2>
   <button class="card navcard" type="button" id="notifbtn"><svg class="ico"><use href="#i-bell"/></svg><span><b>Notifiche delle strategie</b><span class="k">Quali strategie e cosa mostrare nel messaggio</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <h2 class="sectiontitle">Piano</h2>
@@ -9247,6 +9248,8 @@
     me.onboarded = true; saveMe();
     if (data) renderAll(); show("radar"); window.scrollTo(0, 0); tutorialFirst();
   }
+  // Impostazioni > Rifai il primo avvio (richiesta utente 09/10): si riparte dalla prima scheda di valore
+  $("bvbtn").addEventListener("click", function () { if (!data) return; bv = { step: "v1", off: {} }; renderBenvenuto(); show("benvenuto"); window.scrollTo(0, 0); });
   $("benvenuto").addEventListener("input", function (e) {
     if (e.target.dataset.pkfree) pick.free = e.target.value;
     if (e.target.id === "bvuser") pick.user = e.target.value;
