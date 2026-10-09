@@ -1837,6 +1837,8 @@
   </div>
   <div class="note" style="margin-top:10px;">Cambia solo come vedi le quote: punti, monete e classifiche si calcolano sempre sulla quota decimale.</div>
   <h2 class="sectiontitle">Guida</h2>
+  <button class="card navcard" type="button" id="installbtn" hidden><svg class="ico"><use href="#i-down"/></svg><span><b>Installa su PC</b><span class="k"></span></span><svg class="ico"><use href="#i-chev"/></svg></button>
+  <div class="note" id="installnote" hidden style="margin:-4px 0 10px;"></div>
   <button class="card navcard" type="button" id="tutbtn"><svg class="ico"><use href="#i-book"/></svg><span><b>Rivedi il tutorial</b><span class="k">Radar, segnali, strategie, avvisi, Diario e Direct, un passo alla volta</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <button class="card navcard" type="button" id="bvbtn"><svg class="ico"><use href="#i-rocket"/></svg><span><b>Rifai il primo avvio</b><span class="k">Cosa segui, le 3 strategie regalate e il primo segnale, dall'inizio</span></span><svg class="ico"><use href="#i-chev"/></svg></button>
   <h2 class="sectiontitle">Notifiche</h2>
@@ -9302,6 +9304,38 @@
       bvFinish();
     }
   });
+  // ---------------------------------------------------------------- Installa su PC (richiesta utente 09/10/2026)
+  // Su Windows/Mac con Chrome o Edge l'app si installa come programma (icona sul desktop, finestra sua, si
+  // aggiorna da sola): il browser manda "beforeinstallprompt", lo teniamo e il bottone in Impostazioni lo usa.
+  // Gia' installata (finestra standalone) -> bottone nascosto. Browser senza l'evento (Safari, Firefox) -> due
+  // righe su come fare a mano. Microsoft Store e .exe: dopo (docs/STATO.md).
+  var installEvt = null;
+  function isInstalled() {
+    return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+  }
+  function renderInstall() {
+    var b = $("installbtn"); if (!b) return;
+    b.hidden = isInstalled();
+    var pc = !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    b.querySelector("b").textContent = pc ? "Installa su PC" : "Installa sul telefono";
+    b.querySelector(".k").textContent = pc ? "Icona sul desktop e finestra sua, come un programma: si aggiorna da sola"
+      : "Icona nella schermata Home, a schermo intero: si aggiorna da sola";
+  }
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); installEvt = e; renderInstall(); });
+  window.addEventListener("appinstalled", function () { installEvt = null; renderInstall(); });
+  $("installbtn").addEventListener("click", function () {
+    var note = $("installnote");
+    if (installEvt) {
+      installEvt.prompt();
+      installEvt.userChoice.then(function () { installEvt = null; renderInstall(); }).catch(function () {});
+      note.hidden = true; return;
+    }
+    var ios = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    note.textContent = ios ? "Su iPhone: tocca Condividi in Safari e poi “Aggiungi alla schermata Home”."
+      : "Apri l'app con Chrome o Edge e usa l'icona di installazione nella barra dell'indirizzo (o il menu ⋮ > Installa).";
+    note.hidden = false;
+  });
+  renderInstall();
   // ---------------------------------------------------------------- Notifiche (richiesta 03/10, idea BetMines)
   // Per ogni strategia accesa e per "Le tue barre": notifica si'/no e cosa mostrare nel messaggio. Oggi sono solo
   // preferenze su questo telefono (statsight.notifiche); le notifiche vere partono col server (docs/piano_server.md).
