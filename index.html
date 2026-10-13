@@ -17,22 +17,27 @@
   :root{color-scheme:dark}
   *{box-sizing:border-box}
   html,body{min-height:100%}
-  body{margin:0;background:#101E28;color:#E8ECE6;font-family:"Archivo",system-ui,"Segoe UI",sans-serif;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+  body{margin:0;background:#041321;color:#E6F1F8;font-family:"Archivo",system-ui,"Segoe UI",sans-serif;display:flex;align-items:center;justify-content:center;padding:24px 16px}
   form,.wait{display:flex;flex-direction:column;gap:14px;width:100%;max-width:360px}
   .wait{align-items:center;text-align:center;color:#A6B3B1;font-size:.95rem}
   img{width:64px;height:64px;border-radius:16px}
   h1{margin:0;font-size:1.5rem}
   p{margin:0;color:#A6B3B1;font-size:.92rem;line-height:1.45}
   label{font-weight:600;font-size:.9rem}
-  input{font:inherit;font-size:1rem;padding:12px 14px;border-radius:12px;border:1px solid rgba(232,236,230,.18);background:#132029;color:inherit}
+  input{font:inherit;font-size:1rem;padding:12px 14px;border-radius:12px;border:1px solid rgba(232,236,230,.18);background:#0B2338;color:inherit}
   input:focus-visible,button:focus-visible{outline:2px solid #E8A252;outline-offset:2px}
-  button{font:inherit;font-weight:700;font-size:1rem;padding:13px;border:0;border-radius:12px;background:#E8A252;color:#17110A;cursor:pointer}
+  button{font:inherit;font-weight:700;font-size:1rem;padding:13px;border:0;border-radius:12px;background:#35E0C2;color:#02221D;cursor:pointer}
+  .wait .tim{position:relative;width:132px;height:132px;display:grid;place-items:center}
+  .wait .tim::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cg stroke='%23C98A45' stroke-width='3.4' stroke-linecap='round' fill='none'%3E%3Cpath d='M24 2v44M2 24h44M8.4 8.4l31.2 31.2M39.6 8.4L8.4 39.6'/%3E%3Ccircle cx='24' cy='24' r='14.5' stroke-width='4.4'/%3E%3C/g%3E%3Ccircle cx='24' cy='24' r='4.6' fill='%2335E0C2'/%3E%3C/svg%3E") center/contain no-repeat;animation:timone 3.2s linear infinite}
+  .wait .tim img{position:relative;width:74px;height:74px;border-radius:50%}
+  @keyframes timone{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){.wait .tim::before{animation:none}}
   button:disabled{opacity:.6}
   .msg{min-height:1.2em;color:#E08268;font-size:.9rem}
 </style>
 </head>
 <body>
-<div class="wait" id="wait"><img src="icon-192.png" alt=""><span id="waitmsg"></span></div>
+<div class="wait" id="wait"><span class="tim"><img src="icon-192.png" alt=""></span><span id="waitmsg"></span></div>
 <form id="f" hidden>
   <img src="icon-192.png" alt="">
   <h1>SeaOdds</h1>
