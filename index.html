@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>StatSight</title>
+<title>SeaOdds</title>
 <!-- Porta dell'app (10/10). Il sito pubblico contiene solo questa pagina e il codice CIFRATO (app.enc.json):
      senza la password non si vede niente dell'app, ne' il codice ne' i dati. Con la password giusta il codice si
      decifra nel browser e la pagina diventa l'app. La password resta sul telefono (come prima, chiave
@@ -35,7 +35,7 @@
 <div class="wait" id="wait"><img src="icon-192.png" alt=""><span id="waitmsg"></span></div>
 <form id="f" hidden>
   <img src="icon-192.png" alt="">
-  <h1>StatSight</h1>
+  <h1>SeaOdds</h1>
   <p id="intro"></p>
   <label for="pw" id="pwl"></label>
   <input id="pw" type="password" autocomplete="current-password" required>
@@ -47,9 +47,9 @@
   "use strict";
   var PW_KEY = "segnalatore.pw";
   var T = {
-    it: { wait: "Apro StatSight…", intro: "L'app è cifrata: si apre solo con la tua password. Sul tuo telefono la chiedo una volta sola.", pw: "Password", go: "Apri", bad: "Password sbagliata.", net: "Non riesco a raggiungere l'app. Controlla la connessione e riprova.", old: "Questo browser è troppo vecchio per aprire l'app: aggiornalo e riprova.", err: "Qualcosa non ha funzionato. Riprova." },
-    en: { wait: "Opening StatSight…", intro: "The app is encrypted: it only opens with your password. On your phone I ask for it once.", pw: "Password", go: "Open", bad: "Wrong password.", net: "Can't reach the app. Check your connection and try again.", old: "This browser is too old to open the app: please update it.", err: "Something went wrong. Try again." },
-    es: { wait: "Abriendo StatSight…", intro: "La app está cifrada: solo se abre con tu contraseña. En tu teléfono te la pido una sola vez.", pw: "Contraseña", go: "Abrir", bad: "Contraseña incorrecta.", net: "No puedo llegar a la app. Revisa la conexión y vuelve a intentarlo.", old: "Este navegador es demasiado antiguo para abrir la app: actualízalo.", err: "Algo no ha funcionado. Inténtalo de nuevo." }
+    it: { wait: "Apro SeaOdds…", intro: "L'app è cifrata: si apre solo con la tua password. Sul tuo telefono la chiedo una volta sola.", pw: "Password", go: "Apri", bad: "Password sbagliata.", net: "Non riesco a raggiungere l'app. Controlla la connessione e riprova.", old: "Questo browser è troppo vecchio per aprire l'app: aggiornalo e riprova.", err: "Qualcosa non ha funzionato. Riprova." },
+    en: { wait: "Opening SeaOdds…", intro: "The app is encrypted: it only opens with your password. On your phone I ask for it once.", pw: "Password", go: "Open", bad: "Wrong password.", net: "Can't reach the app. Check your connection and try again.", old: "This browser is too old to open the app: please update it.", err: "Something went wrong. Try again." },
+    es: { wait: "Abriendo SeaOdds…", intro: "La app está cifrada: solo se abre con tu contraseña. En tu teléfono te la pido una sola vez.", pw: "Contraseña", go: "Abrir", bad: "Contraseña incorrecta.", net: "No puedo llegar a la app. Revisa la conexión y vuelve a intentarlo.", old: "Este navegador es demasiado antiguo para abrir la app: actualízalo.", err: "Algo no ha funcionado. Inténtalo de nuevo." }
   };
   var lang = "it";
   try { lang = localStorage.getItem("statsight.lingua") || ""; } catch (e) {}
