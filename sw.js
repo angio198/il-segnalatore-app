@@ -3,7 +3,7 @@
 // con gli ultimi dati visti). Tutto quello che mette in cache e' gia'
 // pubblico sul sito: codice e dati restano cifrati anche qui (dal 10/10 il
 // sito ha solo la porta con la password e il codice cifrato app.enc.json).
-const CACHE = "statsight-v25";
+const CACHE = "statsight-v26";
 const CDN = "https://live.seaodds.live";        // 16/10: dati e partite in corso dalla cache di Cloudflare
 const SHELL = ["./", "./index.html", "./app.enc.json", "./moderazione.json", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 
@@ -45,7 +45,7 @@ self.addEventListener("push", (event) => {
   let d = {};
   try { d = event.data ? event.data.json() : {}; } catch (e) { d = {}; }
   const title = String(d.t || "SeaOdds").slice(0, 120), body = String(d.b || "").slice(0, 300);
-  event.waitUntil(self.registration.showNotification(title, { body, tag: String(d.tag || "seaodds").slice(0, 60), icon: "icon-192.png", badge: "icon-192.png", data: { u: "./#strategie" } }));
+  event.waitUntil(self.registration.showNotification(title, { body, tag: String(d.tag || "seaodds").slice(0, 60), icon: "icon-192.png", badge: "badge-96.png", data: { u: "./#strategie" } }));
 });
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
